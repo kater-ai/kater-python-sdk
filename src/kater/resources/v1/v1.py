@@ -99,7 +99,7 @@ class V1Resource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/kater-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/kater-ai/kater-python-sdk#accessing-raw-response-data-eg-headers
         """
         return V1ResourceWithRawResponse(self)
 
@@ -108,7 +108,7 @@ class V1Resource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/kater-python#with_streaming_response
+        For more information, see https://www.github.com/kater-ai/kater-python-sdk#with_streaming_response
         """
         return V1ResourceWithStreamingResponse(self)
 
@@ -148,7 +148,7 @@ class AsyncV1Resource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/kater-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/kater-ai/kater-python-sdk#accessing-raw-response-data-eg-headers
         """
         return AsyncV1ResourceWithRawResponse(self)
 
@@ -157,7 +157,7 @@ class AsyncV1Resource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/kater-python#with_streaming_response
+        For more information, see https://www.github.com/kater-ai/kater-python-sdk#with_streaming_response
         """
         return AsyncV1ResourceWithStreamingResponse(self)
 

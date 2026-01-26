@@ -16,39 +16,42 @@ The full API of this library can be found in [api.md](api.md).
 ## Installation
 
 ```sh
-# install from this staging repo
-pip install git+ssh://git@github.com/stainless-sdks/kater-python.git
+# install from PyPI
+pip install kater
 ```
-
-> [!NOTE]
-> Once this package is [published to PyPI](https://www.stainless.com/docs/guides/publish), this will become: `pip install kater`
 
 ## Usage
 
 The full API of this library can be found in [api.md](api.md).
 
 ```python
+import os
 from kater import Kater
 
-client = Kater()
+client = Kater(
+    bearer_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
+)
 
 api_keys = client.v1.api_keys.list()
 ```
 
-While you can provide an `api_key` keyword argument,
+While you can provide a `bearer_token` keyword argument,
 we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `KATER_API_KEY="My API Key"` to your `.env` file
-so that your API Key is not stored in source control.
+to add `KATER_AUTH_TOKEN="My Bearer Token"` to your `.env` file
+so that your Bearer Token is not stored in source control.
 
 ## Async usage
 
 Simply import `AsyncKater` instead of `Kater` and use `await` with each API call:
 
 ```python
+import os
 import asyncio
 from kater import AsyncKater
 
-client = AsyncKater()
+client = AsyncKater(
+    bearer_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
+)
 
 
 async def main() -> None:
@@ -67,13 +70,14 @@ By default, the async client uses `httpx` for HTTP requests. However, for improv
 You can enable this by installing `aiohttp`:
 
 ```sh
-# install from this staging repo
-pip install 'kater[aiohttp] @ git+ssh://git@github.com/stainless-sdks/kater-python.git'
+# install from PyPI
+pip install kater[aiohttp]
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
+import os
 import asyncio
 from kater import DefaultAioHttpClient
 from kater import AsyncKater
@@ -81,6 +85,7 @@ from kater import AsyncKater
 
 async def main() -> None:
     async with AsyncKater(
+        bearer_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
         api_keys = await client.v1.api_keys.list()
@@ -245,9 +250,9 @@ api_key = response.parse()  # get the object that `v1.api_keys.list()` would hav
 print(api_key)
 ```
 
-These methods return an [`APIResponse`](https://github.com/stainless-sdks/kater-python/tree/main/src/kater/_response.py) object.
+These methods return an [`APIResponse`](https://github.com/kater-ai/kater-python-sdk/tree/main/src/kater/_response.py) object.
 
-The async client returns an [`AsyncAPIResponse`](https://github.com/stainless-sdks/kater-python/tree/main/src/kater/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+The async client returns an [`AsyncAPIResponse`](https://github.com/kater-ai/kater-python-sdk/tree/main/src/kater/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
 
 #### `.with_streaming_response`
 
@@ -351,7 +356,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/kater-python/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/kater-ai/kater-python-sdk/issues) with questions, bugs, or suggestions.
 
 ### Determining the installed version
 
