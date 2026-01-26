@@ -407,7 +407,7 @@ class TestKater:
 
         with pytest.raises(
             TypeError,
-            match="Could not resolve authentication method. Expected the api_key to be set. Or for the `X-API-Key` headers to be explicitly omitted",
+            match="Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted",
         ):
             client2._build_request(FinalRequestOptions(method="get", url="/foo"))
 
@@ -1295,7 +1295,7 @@ class TestAsyncKater:
 
         with pytest.raises(
             TypeError,
-            match="Could not resolve authentication method. Expected the api_key to be set. Or for the `X-API-Key` headers to be explicitly omitted",
+            match="Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted",
         ):
             client2._build_request(FinalRequestOptions(method="get", url="/foo"))
 

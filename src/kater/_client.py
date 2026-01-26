@@ -41,11 +41,13 @@ __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Kater", "A
 class Kater(SyncAPIClient):
     # client options
     api_key: str | None
+    bearer_token: str | None
 
     def __init__(
         self,
         *,
         api_key: str | None = None,
+        bearer_token: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
         max_retries: int = DEFAULT_MAX_RETRIES,
@@ -67,11 +69,17 @@ class Kater(SyncAPIClient):
     ) -> None:
         """Construct a new synchronous Kater client instance.
 
-        This automatically infers the `api_key` argument from the `KATER_API_KEY` environment variable if it is not provided.
+        This automatically infers the following arguments from their corresponding environment variables if they are not provided:
+        - `api_key` from `KATER_API_KEY`
+        - `bearer_token` from `KATER_AUTH_TOKEN`
         """
         if api_key is None:
             api_key = os.environ.get("KATER_API_KEY")
         self.api_key = api_key
+
+        if bearer_token is None:
+            bearer_token = os.environ.get("KATER_AUTH_TOKEN")
+        self.bearer_token = bearer_token
 
         if base_url is None:
             base_url = os.environ.get("KATER_BASE_URL")
@@ -111,6 +119,17 @@ class Kater(SyncAPIClient):
     @property
     @override
     def auth_headers(self) -> dict[str, str]:
+        return {**self._propel_auth, **self._api_key}
+
+    @property
+    def _propel_auth(self) -> dict[str, str]:
+        bearer_token = self.bearer_token
+        if bearer_token is None:
+            return {}
+        return {"Authorization": f"Bearer {bearer_token}"}
+
+    @property
+    def _api_key(self) -> dict[str, str]:
         api_key = self.api_key
         if api_key is None:
             return {}
@@ -127,17 +146,21 @@ class Kater(SyncAPIClient):
 
     @override
     def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
+        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
+            return
+
         if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
             return
 
         raise TypeError(
-            '"Could not resolve authentication method. Expected the api_key to be set. Or for the `X-API-Key` headers to be explicitly omitted"'
+            '"Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted"'
         )
 
     def copy(
         self,
         *,
         api_key: str | None = None,
+        bearer_token: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
         http_client: httpx.Client | None = None,
@@ -172,6 +195,7 @@ class Kater(SyncAPIClient):
         http_client = http_client or self._client
         return self.__class__(
             api_key=api_key or self.api_key,
+            bearer_token=bearer_token or self.bearer_token,
             base_url=base_url or self.base_url,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
             http_client=http_client,
@@ -222,11 +246,13 @@ class Kater(SyncAPIClient):
 class AsyncKater(AsyncAPIClient):
     # client options
     api_key: str | None
+    bearer_token: str | None
 
     def __init__(
         self,
         *,
         api_key: str | None = None,
+        bearer_token: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
         max_retries: int = DEFAULT_MAX_RETRIES,
@@ -248,11 +274,17 @@ class AsyncKater(AsyncAPIClient):
     ) -> None:
         """Construct a new async AsyncKater client instance.
 
-        This automatically infers the `api_key` argument from the `KATER_API_KEY` environment variable if it is not provided.
+        This automatically infers the following arguments from their corresponding environment variables if they are not provided:
+        - `api_key` from `KATER_API_KEY`
+        - `bearer_token` from `KATER_AUTH_TOKEN`
         """
         if api_key is None:
             api_key = os.environ.get("KATER_API_KEY")
         self.api_key = api_key
+
+        if bearer_token is None:
+            bearer_token = os.environ.get("KATER_AUTH_TOKEN")
+        self.bearer_token = bearer_token
 
         if base_url is None:
             base_url = os.environ.get("KATER_BASE_URL")
@@ -292,6 +324,17 @@ class AsyncKater(AsyncAPIClient):
     @property
     @override
     def auth_headers(self) -> dict[str, str]:
+        return {**self._propel_auth, **self._api_key}
+
+    @property
+    def _propel_auth(self) -> dict[str, str]:
+        bearer_token = self.bearer_token
+        if bearer_token is None:
+            return {}
+        return {"Authorization": f"Bearer {bearer_token}"}
+
+    @property
+    def _api_key(self) -> dict[str, str]:
         api_key = self.api_key
         if api_key is None:
             return {}
@@ -308,17 +351,21 @@ class AsyncKater(AsyncAPIClient):
 
     @override
     def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
+        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
+            return
+
         if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
             return
 
         raise TypeError(
-            '"Could not resolve authentication method. Expected the api_key to be set. Or for the `X-API-Key` headers to be explicitly omitted"'
+            '"Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted"'
         )
 
     def copy(
         self,
         *,
         api_key: str | None = None,
+        bearer_token: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
         http_client: httpx.AsyncClient | None = None,
@@ -353,6 +400,7 @@ class AsyncKater(AsyncAPIClient):
         http_client = http_client or self._client
         return self.__class__(
             api_key=api_key or self.api_key,
+            bearer_token=bearer_token or self.bearer_token,
             base_url=base_url or self.base_url,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
             http_client=http_client,
