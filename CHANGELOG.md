@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 (2026-01-26)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** switch to oidc based auth ([5de423f](https://github.com/kater-ai/kater-python-sdk/commit/5de423f3de317ffa738613fd438da89df0494110))
+* **api:** update stainless config ([095300b](https://github.com/kater-ai/kater-python-sdk/commit/095300b675e3e21df0aa6a0bb8cbec3d368202dd))
+
 ## 0.1.0 (2026-01-26)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.0.1...v0.1.0)
