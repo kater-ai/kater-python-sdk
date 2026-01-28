@@ -1,13 +1,5 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .admin import (
-    AdminResource,
-    AsyncAdminResource,
-    AdminResourceWithRawResponse,
-    AsyncAdminResourceWithRawResponse,
-    AdminResourceWithStreamingResponse,
-    AsyncAdminResourceWithStreamingResponse,
-)
 from .repos import (
     ReposResource,
     AsyncReposResource,
@@ -32,14 +24,6 @@ from .scaffold import (
     ScaffoldResourceWithStreamingResponse,
     AsyncScaffoldResourceWithStreamingResponse,
 )
-from .webhooks import (
-    WebhooksResource,
-    AsyncWebhooksResource,
-    WebhooksResourceWithRawResponse,
-    AsyncWebhooksResourceWithRawResponse,
-    WebhooksResourceWithStreamingResponse,
-    AsyncWebhooksResourceWithStreamingResponse,
-)
 
 __all__ = [
     "ReposResource",
@@ -54,18 +38,6 @@ __all__ = [
     "AsyncScaffoldResourceWithRawResponse",
     "ScaffoldResourceWithStreamingResponse",
     "AsyncScaffoldResourceWithStreamingResponse",
-    "WebhooksResource",
-    "AsyncWebhooksResource",
-    "WebhooksResourceWithRawResponse",
-    "AsyncWebhooksResourceWithRawResponse",
-    "WebhooksResourceWithStreamingResponse",
-    "AsyncWebhooksResourceWithStreamingResponse",
-    "AdminResource",
-    "AsyncAdminResource",
-    "AdminResourceWithRawResponse",
-    "AsyncAdminResourceWithRawResponse",
-    "AdminResourceWithStreamingResponse",
-    "AsyncAdminResourceWithStreamingResponse",
     "GitHubResource",
     "AsyncGitHubResource",
     "GitHubResourceWithRawResponse",

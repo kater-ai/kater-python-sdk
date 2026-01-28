@@ -1,20 +1,5 @@
 # V1
 
-## APIKeys
-
-Types:
-
-```python
-from kater.types.v1 import APIKey, APIKeyCreateResponse, APIKeyListResponse
-```
-
-Methods:
-
-- <code title="post /api/v1/api-keys">client.v1.api_keys.<a href="./src/kater/resources/v1/api_keys.py">create</a>(\*\*<a href="src/kater/types/v1/api_key_create_params.py">params</a>) -> <a href="./src/kater/types/v1/api_key_create_response.py">APIKeyCreateResponse</a></code>
-- <code title="get /api/v1/api-keys/{api_key_id}">client.v1.api_keys.<a href="./src/kater/resources/v1/api_keys.py">retrieve</a>(api_key_id) -> <a href="./src/kater/types/v1/api_key.py">APIKey</a></code>
-- <code title="get /api/v1/api-keys">client.v1.api_keys.<a href="./src/kater/resources/v1/api_keys.py">list</a>() -> <a href="./src/kater/types/v1/api_key_list_response.py">APIKeyListResponse</a></code>
-- <code title="delete /api/v1/api-keys/{api_key_id}">client.v1.api_keys.<a href="./src/kater/resources/v1/api_keys.py">revoke</a>(api_key_id) -> None</code>
-
 ## Connections
 
 Types:
@@ -48,20 +33,12 @@ Methods:
 Types:
 
 ```python
-from kater.types.v1 import (
-    GitHubCheckInstallationsResponse,
-    GitHubDisconnectResponse,
-    GitHubGetStatusResponse,
-    GitHubSyncResponse,
-)
+from kater.types.v1 import GitHubGetStatusResponse
 ```
 
 Methods:
 
-- <code title="get /api/v1/github/check-installations">client.v1.github.<a href="./src/kater/resources/v1/github/github.py">check_installations</a>() -> <a href="./src/kater/types/v1/github_check_installations_response.py">GitHubCheckInstallationsResponse</a></code>
-- <code title="post /api/v1/github/disconnect">client.v1.github.<a href="./src/kater/resources/v1/github/github.py">disconnect</a>() -> <a href="./src/kater/types/v1/github_disconnect_response.py">GitHubDisconnectResponse</a></code>
 - <code title="get /api/v1/github/status">client.v1.github.<a href="./src/kater/resources/v1/github/github.py">get_status</a>() -> <a href="./src/kater/types/v1/github_get_status_response.py">GitHubGetStatusResponse</a></code>
-- <code title="post /api/v1/github/sync">client.v1.github.<a href="./src/kater/resources/v1/github/github.py">sync</a>() -> <a href="./src/kater/types/v1/github_sync_response.py">GitHubSyncResponse</a></code>
 
 ### Repos
 
@@ -81,38 +58,13 @@ Methods:
 Types:
 
 ```python
-from kater.types.v1.github import ScaffoldTrigger, ScaffoldGetStatusResponse
+from kater.types.v1.github import ScaffoldTrigger
 ```
 
 Methods:
 
-- <code title="get /api/v1/github/scaffold/status">client.v1.github.scaffold.<a href="./src/kater/resources/v1/github/scaffold.py">get_status</a>() -> <a href="./src/kater/types/v1/github/scaffold_get_status_response.py">ScaffoldGetStatusResponse</a></code>
 - <code title="post /api/v1/github/scaffold/retry">client.v1.github.scaffold.<a href="./src/kater/resources/v1/github/scaffold.py">retry</a>() -> <a href="./src/kater/types/v1/github/scaffold_trigger.py">ScaffoldTrigger</a></code>
 - <code title="post /api/v1/github/scaffold">client.v1.github.scaffold.<a href="./src/kater/resources/v1/github/scaffold.py">trigger</a>() -> <a href="./src/kater/types/v1/github/scaffold_trigger.py">ScaffoldTrigger</a></code>
-
-### Webhooks
-
-Types:
-
-```python
-from kater.types.v1.github import WebhookPingResponse
-```
-
-Methods:
-
-- <code title="get /api/v1/github/webhooks/ping">client.v1.github.webhooks.<a href="./src/kater/resources/v1/github/webhooks.py">ping</a>() -> <a href="./src/kater/types/v1/github/webhook_ping_response.py">WebhookPingResponse</a></code>
-
-### Admin
-
-Types:
-
-```python
-from kater.types.v1.github import AdminGetIntegrationStatusResponse
-```
-
-Methods:
-
-- <code title="get /api/v1/github/admin/status/{client_id}">client.v1.github.admin.<a href="./src/kater/resources/v1/github/admin.py">get_integration_status</a>(client_id) -> <a href="./src/kater/types/v1/github/admin_get_integration_status_response.py">AdminGetIntegrationStatusResponse</a></code>
 
 ## Groups
 
@@ -148,13 +100,12 @@ Methods:
 Types:
 
 ```python
-from kater.types.v1 import ClientUser, ClientUserRole, MeGetConnectionsResponse
+from kater.types.v1 import ClientUser, ClientUserRole
 ```
 
 Methods:
 
 - <code title="get /api/v1/me">client.v1.me.<a href="./src/kater/resources/v1/me.py">retrieve</a>() -> <a href="./src/kater/types/v1/client_user.py">ClientUser</a></code>
-- <code title="get /api/v1/me/connection">client.v1.me.<a href="./src/kater/resources/v1/me.py">get_connections</a>() -> <a href="./src/kater/types/v1/me_get_connections_response.py">MeGetConnectionsResponse</a></code>
 
 ## Org
 

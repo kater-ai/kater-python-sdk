@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2026-01-28)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* **api:** manual updates ([0a76475](https://github.com/kater-ai/kater-python-sdk/commit/0a7647569f34ae69b94fed8fc624a2f48e34a049))
+
 ## 0.2.1 (2026-01-27)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/kater-ai/kater-python-sdk/compare/v0.2.0...v0.2.1)

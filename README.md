@@ -32,7 +32,7 @@ client = Kater(
     bearer_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
 )
 
-api_keys = client.v1.api_keys.list()
+connections = client.v1.connections.list()
 ```
 
 While you can provide a `bearer_token` keyword argument,
@@ -55,7 +55,7 @@ client = AsyncKater(
 
 
 async def main() -> None:
-    api_keys = await client.v1.api_keys.list()
+    connections = await client.v1.connections.list()
 
 
 asyncio.run(main())
@@ -88,7 +88,7 @@ async def main() -> None:
         bearer_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
-        api_keys = await client.v1.api_keys.list()
+        connections = await client.v1.connections.list()
 
 
 asyncio.run(main())
@@ -136,7 +136,7 @@ from kater import Kater
 client = Kater()
 
 try:
-    client.v1.api_keys.list()
+    client.v1.connections.list()
 except kater.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -179,7 +179,7 @@ client = Kater(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).v1.api_keys.list()
+client.with_options(max_retries=5).v1.connections.list()
 ```
 
 ### Timeouts
@@ -202,7 +202,7 @@ client = Kater(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).v1.api_keys.list()
+client.with_options(timeout=5.0).v1.connections.list()
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -243,11 +243,11 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from kater import Kater
 
 client = Kater()
-response = client.v1.api_keys.with_raw_response.list()
+response = client.v1.connections.with_raw_response.list()
 print(response.headers.get('X-My-Header'))
 
-api_key = response.parse()  # get the object that `v1.api_keys.list()` would have returned
-print(api_key)
+connection = response.parse()  # get the object that `v1.connections.list()` would have returned
+print(connection)
 ```
 
 These methods return an [`APIResponse`](https://github.com/kater-ai/kater-python-sdk/tree/main/src/kater/_response.py) object.
@@ -261,7 +261,7 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.v1.api_keys.with_streaming_response.list() as response:
+with client.v1.connections.with_streaming_response.list() as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():
