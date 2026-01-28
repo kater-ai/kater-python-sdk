@@ -48,14 +48,6 @@ from .tenants import (
     TenantsResourceWithStreamingResponse,
     AsyncTenantsResourceWithStreamingResponse,
 )
-from .api_keys import (
-    APIKeysResource,
-    AsyncAPIKeysResource,
-    APIKeysResourceWithRawResponse,
-    AsyncAPIKeysResourceWithRawResponse,
-    APIKeysResourceWithStreamingResponse,
-    AsyncAPIKeysResourceWithStreamingResponse,
-)
 from .connections import (
     ConnectionsResource,
     AsyncConnectionsResource,
@@ -66,12 +58,6 @@ from .connections import (
 )
 
 __all__ = [
-    "APIKeysResource",
-    "AsyncAPIKeysResource",
-    "APIKeysResourceWithRawResponse",
-    "AsyncAPIKeysResourceWithRawResponse",
-    "APIKeysResourceWithStreamingResponse",
-    "AsyncAPIKeysResourceWithStreamingResponse",
     "ConnectionsResource",
     "AsyncConnectionsResource",
     "ConnectionsResourceWithRawResponse",
