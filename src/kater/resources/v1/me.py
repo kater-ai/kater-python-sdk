@@ -15,7 +15,6 @@ from ..._response import (
 )
 from ..._base_client import make_request_options
 from ...types.v1.client_user import ClientUser
-from ...types.v1.me_get_connections_response import MeGetConnectionsResponse
 
 __all__ = ["MeResource", "AsyncMeResource"]
 
@@ -66,30 +65,6 @@ class MeResource(SyncAPIResource):
             cast_to=ClientUser,
         )
 
-    def get_connections(
-        self,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> MeGetConnectionsResponse:
-        """
-        Get connections accessible to the current user.
-
-        Currently returns all connections in the user's organization. All org users have
-        access to all org connections.
-        """
-        return self._get(
-            "/api/v1/me/connection",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=MeGetConnectionsResponse,
-        )
-
 
 class AsyncMeResource(AsyncAPIResource):
     @cached_property
@@ -137,30 +112,6 @@ class AsyncMeResource(AsyncAPIResource):
             cast_to=ClientUser,
         )
 
-    async def get_connections(
-        self,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> MeGetConnectionsResponse:
-        """
-        Get connections accessible to the current user.
-
-        Currently returns all connections in the user's organization. All org users have
-        access to all org connections.
-        """
-        return await self._get(
-            "/api/v1/me/connection",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=MeGetConnectionsResponse,
-        )
-
 
 class MeResourceWithRawResponse:
     def __init__(self, me: MeResource) -> None:
@@ -168,9 +119,6 @@ class MeResourceWithRawResponse:
 
         self.retrieve = to_raw_response_wrapper(
             me.retrieve,
-        )
-        self.get_connections = to_raw_response_wrapper(
-            me.get_connections,
         )
 
 
@@ -181,9 +129,6 @@ class AsyncMeResourceWithRawResponse:
         self.retrieve = async_to_raw_response_wrapper(
             me.retrieve,
         )
-        self.get_connections = async_to_raw_response_wrapper(
-            me.get_connections,
-        )
 
 
 class MeResourceWithStreamingResponse:
@@ -193,9 +138,6 @@ class MeResourceWithStreamingResponse:
         self.retrieve = to_streamed_response_wrapper(
             me.retrieve,
         )
-        self.get_connections = to_streamed_response_wrapper(
-            me.get_connections,
-        )
 
 
 class AsyncMeResourceWithStreamingResponse:
@@ -204,7 +146,4 @@ class AsyncMeResourceWithStreamingResponse:
 
         self.retrieve = async_to_streamed_response_wrapper(
             me.retrieve,
-        )
-        self.get_connections = async_to_streamed_response_wrapper(
-            me.get_connections,
         )
