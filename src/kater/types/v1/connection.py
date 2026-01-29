@@ -26,6 +26,9 @@ class DatabaseSchema(BaseModel):
     id: str
     """Schema ID"""
 
+    database_object_name: str
+    """Actual name of the schema in the warehouse"""
+
     name: str
     """Schema name"""
 
@@ -41,6 +44,9 @@ class Database(BaseModel):
 
     id: str
     """Database ID"""
+
+    database_object_name: str
+    """Actual name of the database in the warehouse"""
 
     name: str
     """Database name"""

@@ -26,17 +26,9 @@ Methods:
 
 ### Databases
 
-Types:
-
-```python
-from kater.types.v1.connections import DatabaseUpdateResponse, DatabaseUpdateSchemaResponse
-```
-
 Methods:
 
-- <code title="patch /api/v1/connections/{connection_id}/databases/{database_id}">client.v1.connections.databases.<a href="./src/kater/resources/v1/connections/databases.py">update</a>(database_id, \*, connection_id, \*\*<a href="src/kater/types/v1/connections/database_update_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/database_update_response.py">DatabaseUpdateResponse</a></code>
 - <code title="delete /api/v1/connections/{connection_id}/databases/{database_id}/schemas/{schema_id}">client.v1.connections.databases.<a href="./src/kater/resources/v1/connections/databases.py">delete_schema</a>(schema_id, \*, connection_id, database_id) -> None</code>
-- <code title="patch /api/v1/connections/{connection_id}/databases/{database_id}/schemas/{schema_id}">client.v1.connections.databases.<a href="./src/kater/resources/v1/connections/databases.py">update_schema</a>(schema_id, \*, connection_id, database_id, \*\*<a href="src/kater/types/v1/connections/database_update_schema_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/database_update_schema_response.py">DatabaseUpdateSchemaResponse</a></code>
 
 ## GitHub
 
