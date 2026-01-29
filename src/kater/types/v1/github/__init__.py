@@ -7,3 +7,4 @@ from .scaffold_trigger import ScaffoldTrigger as ScaffoldTrigger
 from .repo_list_response import RepoListResponse as RepoListResponse
 from .repo_select_params import RepoSelectParams as RepoSelectParams
 from .repo_select_response import RepoSelectResponse as RepoSelectResponse
+from .webhook_receive_response import WebhookReceiveResponse as WebhookReceiveResponse

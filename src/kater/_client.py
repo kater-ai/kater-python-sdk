@@ -12,7 +12,6 @@ from . import _exceptions
 from ._qs import Querystring
 from ._types import (
     Omit,
-    Headers,
     Timeout,
     NotGiven,
     Transport,
@@ -32,8 +31,10 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import v1
+    from .resources import v1, readyz, healthz
     from .resources.v1.v1 import V1Resource, AsyncV1Resource
+    from .resources.readyz import ReadyzResource, AsyncReadyzResource
+    from .resources.healthz import HealthzResource, AsyncHealthzResource
 
 __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Kater", "AsyncKater", "Client", "AsyncClient"]
 
@@ -104,6 +105,18 @@ class Kater(SyncAPIClient):
         return V1Resource(self)
 
     @cached_property
+    def healthz(self) -> HealthzResource:
+        from .resources.healthz import HealthzResource
+
+        return HealthzResource(self)
+
+    @cached_property
+    def readyz(self) -> ReadyzResource:
+        from .resources.readyz import ReadyzResource
+
+        return ReadyzResource(self)
+
+    @cached_property
     def with_raw_response(self) -> KaterWithRawResponse:
         return KaterWithRawResponse(self)
 
@@ -118,43 +131,12 @@ class Kater(SyncAPIClient):
 
     @property
     @override
-    def auth_headers(self) -> dict[str, str]:
-        return {**self._propel_auth, **self._api_key}
-
-    @property
-    def _propel_auth(self) -> dict[str, str]:
-        bearer_token = self.bearer_token
-        if bearer_token is None:
-            return {}
-        return {"Authorization": f"Bearer {bearer_token}"}
-
-    @property
-    def _api_key(self) -> dict[str, str]:
-        api_key = self.api_key
-        if api_key is None:
-            return {}
-        return {"X-API-Key": api_key}
-
-    @property
-    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
             "X-Stainless-Async": "false",
             **self._custom_headers,
         }
-
-    @override
-    def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
-        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
-            return
-
-        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
-            return
-
-        raise TypeError(
-            '"Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted"'
-        )
 
     def copy(
         self,
@@ -309,6 +291,18 @@ class AsyncKater(AsyncAPIClient):
         return AsyncV1Resource(self)
 
     @cached_property
+    def healthz(self) -> AsyncHealthzResource:
+        from .resources.healthz import AsyncHealthzResource
+
+        return AsyncHealthzResource(self)
+
+    @cached_property
+    def readyz(self) -> AsyncReadyzResource:
+        from .resources.readyz import AsyncReadyzResource
+
+        return AsyncReadyzResource(self)
+
+    @cached_property
     def with_raw_response(self) -> AsyncKaterWithRawResponse:
         return AsyncKaterWithRawResponse(self)
 
@@ -323,43 +317,12 @@ class AsyncKater(AsyncAPIClient):
 
     @property
     @override
-    def auth_headers(self) -> dict[str, str]:
-        return {**self._propel_auth, **self._api_key}
-
-    @property
-    def _propel_auth(self) -> dict[str, str]:
-        bearer_token = self.bearer_token
-        if bearer_token is None:
-            return {}
-        return {"Authorization": f"Bearer {bearer_token}"}
-
-    @property
-    def _api_key(self) -> dict[str, str]:
-        api_key = self.api_key
-        if api_key is None:
-            return {}
-        return {"X-API-Key": api_key}
-
-    @property
-    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
             "X-Stainless-Async": f"async:{get_async_library()}",
             **self._custom_headers,
         }
-
-    @override
-    def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
-        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
-            return
-
-        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
-            return
-
-        raise TypeError(
-            '"Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted"'
-        )
 
     def copy(
         self,
@@ -460,6 +423,18 @@ class KaterWithRawResponse:
 
         return V1ResourceWithRawResponse(self._client.v1)
 
+    @cached_property
+    def healthz(self) -> healthz.HealthzResourceWithRawResponse:
+        from .resources.healthz import HealthzResourceWithRawResponse
+
+        return HealthzResourceWithRawResponse(self._client.healthz)
+
+    @cached_property
+    def readyz(self) -> readyz.ReadyzResourceWithRawResponse:
+        from .resources.readyz import ReadyzResourceWithRawResponse
+
+        return ReadyzResourceWithRawResponse(self._client.readyz)
+
 
 class AsyncKaterWithRawResponse:
     _client: AsyncKater
@@ -472,6 +447,18 @@ class AsyncKaterWithRawResponse:
         from .resources.v1 import AsyncV1ResourceWithRawResponse
 
         return AsyncV1ResourceWithRawResponse(self._client.v1)
+
+    @cached_property
+    def healthz(self) -> healthz.AsyncHealthzResourceWithRawResponse:
+        from .resources.healthz import AsyncHealthzResourceWithRawResponse
+
+        return AsyncHealthzResourceWithRawResponse(self._client.healthz)
+
+    @cached_property
+    def readyz(self) -> readyz.AsyncReadyzResourceWithRawResponse:
+        from .resources.readyz import AsyncReadyzResourceWithRawResponse
+
+        return AsyncReadyzResourceWithRawResponse(self._client.readyz)
 
 
 class KaterWithStreamedResponse:
@@ -486,6 +473,18 @@ class KaterWithStreamedResponse:
 
         return V1ResourceWithStreamingResponse(self._client.v1)
 
+    @cached_property
+    def healthz(self) -> healthz.HealthzResourceWithStreamingResponse:
+        from .resources.healthz import HealthzResourceWithStreamingResponse
+
+        return HealthzResourceWithStreamingResponse(self._client.healthz)
+
+    @cached_property
+    def readyz(self) -> readyz.ReadyzResourceWithStreamingResponse:
+        from .resources.readyz import ReadyzResourceWithStreamingResponse
+
+        return ReadyzResourceWithStreamingResponse(self._client.readyz)
+
 
 class AsyncKaterWithStreamedResponse:
     _client: AsyncKater
@@ -498,6 +497,18 @@ class AsyncKaterWithStreamedResponse:
         from .resources.v1 import AsyncV1ResourceWithStreamingResponse
 
         return AsyncV1ResourceWithStreamingResponse(self._client.v1)
+
+    @cached_property
+    def healthz(self) -> healthz.AsyncHealthzResourceWithStreamingResponse:
+        from .resources.healthz import AsyncHealthzResourceWithStreamingResponse
+
+        return AsyncHealthzResourceWithStreamingResponse(self._client.healthz)
+
+    @cached_property
+    def readyz(self) -> readyz.AsyncReadyzResourceWithStreamingResponse:
+        from .resources.readyz import AsyncReadyzResourceWithStreamingResponse
+
+        return AsyncReadyzResourceWithStreamingResponse(self._client.readyz)
 
 
 Client = Kater

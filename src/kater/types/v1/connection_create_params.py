@@ -28,7 +28,7 @@ class PostgresConnectionConfig(TypedDict, total=False):
     """Database host"""
 
     name: Required[str]
-    """Name of the connection"""
+    """Name of the connection (snake_case: lowercase letters, numbers, underscores)"""
 
     password: Required[str]
     """Database password"""
@@ -39,6 +39,9 @@ class PostgresConnectionConfig(TypedDict, total=False):
     warehouse_type: Required[Literal["postgresql"]]
     """Warehouse type"""
 
+    database_timezone: Optional[str]
+    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
+
     description: Optional[str]
     """Description of the connection"""
 
@@ -47,6 +50,12 @@ class PostgresConnectionConfig(TypedDict, total=False):
 
     port: int
     """Database port"""
+
+    query_timeout: Optional[int]
+    """Query timeout in seconds (1-3600)"""
+
+    query_timezone_conversion: Optional[str]
+    """Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'"""
 
 
 class SnowflakeConnectionConfig(TypedDict, total=False):
@@ -60,7 +69,7 @@ class SnowflakeConnectionConfig(TypedDict, total=False):
     """Databases to include in the connection (at least one required)"""
 
     name: Required[str]
-    """Name of the connection"""
+    """Name of the connection (snake_case: lowercase letters, numbers, underscores)"""
 
     role: Required[str]
     """Snowflake role"""
@@ -74,11 +83,20 @@ class SnowflakeConnectionConfig(TypedDict, total=False):
     warehouse_type: Required[Literal["snowflake"]]
     """Warehouse type"""
 
+    database_timezone: Optional[str]
+    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
+
     description: Optional[str]
     """Description of the connection"""
 
     label: Optional[str]
     """Human-readable label for the connection (defaults to name if not set)"""
+
+    query_timeout: Optional[int]
+    """Query timeout in seconds (1-3600)"""
+
+    query_timezone_conversion: Optional[str]
+    """Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'"""
 
 
 class SnowflakeConnectionConfigAuthSnowflakePasswordAuth(TypedDict, total=False):
@@ -120,7 +138,7 @@ class DatabricksConnectionConfig(TypedDict, total=False):
     """SQL warehouse HTTP path (e.g., '/sql/1.0/warehouses/xxx')"""
 
     name: Required[str]
-    """Name of the connection"""
+    """Name of the connection (snake_case: lowercase letters, numbers, underscores)"""
 
     server_hostname: Required[str]
     """Databricks server hostname (e.g., 'dbc-xxx.cloud.databricks.com')"""
@@ -128,11 +146,20 @@ class DatabricksConnectionConfig(TypedDict, total=False):
     warehouse_type: Required[Literal["databricks"]]
     """Warehouse type"""
 
+    database_timezone: Optional[str]
+    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
+
     description: Optional[str]
     """Description of the connection"""
 
     label: Optional[str]
     """Human-readable label for the connection (defaults to name if not set)"""
+
+    query_timeout: Optional[int]
+    """Query timeout in seconds (1-3600)"""
+
+    query_timezone_conversion: Optional[str]
+    """Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'"""
 
 
 class ClickHouseConnectionConfig(TypedDict, total=False):
@@ -143,7 +170,7 @@ class ClickHouseConnectionConfig(TypedDict, total=False):
     """ClickHouse host"""
 
     name: Required[str]
-    """Name of the connection"""
+    """Name of the connection (snake_case: lowercase letters, numbers, underscores)"""
 
     password: Required[str]
     """ClickHouse password"""
@@ -154,6 +181,9 @@ class ClickHouseConnectionConfig(TypedDict, total=False):
     warehouse_type: Required[Literal["clickhouse"]]
     """Warehouse type"""
 
+    database_timezone: Optional[str]
+    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
+
     description: Optional[str]
     """Description of the connection"""
 
@@ -162,6 +192,12 @@ class ClickHouseConnectionConfig(TypedDict, total=False):
 
     port: int
     """ClickHouse port"""
+
+    query_timeout: Optional[int]
+    """Query timeout in seconds (1-3600)"""
+
+    query_timezone_conversion: Optional[str]
+    """Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'"""
 
 
 class MssqlConnectionConfig(TypedDict, total=False):
@@ -172,7 +208,7 @@ class MssqlConnectionConfig(TypedDict, total=False):
     """SQL Server host"""
 
     name: Required[str]
-    """Name of the connection"""
+    """Name of the connection (snake_case: lowercase letters, numbers, underscores)"""
 
     password: Required[str]
     """SQL Server password"""
@@ -183,6 +219,9 @@ class MssqlConnectionConfig(TypedDict, total=False):
     warehouse_type: Required[Literal["mssql"]]
     """Warehouse type"""
 
+    database_timezone: Optional[str]
+    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
+
     description: Optional[str]
     """Description of the connection"""
 
@@ -191,6 +230,12 @@ class MssqlConnectionConfig(TypedDict, total=False):
 
     port: int
     """SQL Server port"""
+
+    query_timeout: Optional[int]
+    """Query timeout in seconds (1-3600)"""
+
+    query_timezone_conversion: Optional[str]
+    """Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'"""
 
 
 ConnectionCreateParams: TypeAlias = Union[

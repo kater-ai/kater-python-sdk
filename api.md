@@ -18,26 +18,43 @@ Methods:
 
 - <code title="post /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">create</a>(\*\*<a href="src/kater/types/v1/connection_create_params.py">params</a>) -> <a href="./src/kater/types/v1/connection.py">Connection</a></code>
 - <code title="get /api/v1/connections/{connection_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">retrieve</a>(connection_id) -> <a href="./src/kater/types/v1/connection.py">Connection</a></code>
+- <code title="patch /api/v1/connections/{connection_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">update</a>(connection_id, \*\*<a href="src/kater/types/v1/connection_update_params.py">params</a>) -> <a href="./src/kater/types/v1/connection.py">Connection</a></code>
 - <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list</a>() -> <a href="./src/kater/types/v1/connection_list_response.py">ConnectionListResponse</a></code>
+- <code title="delete /api/v1/connections/{connection_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">delete</a>(connection_id) -> None</code>
 - <code title="get /api/v1/connections/{connection_id}/credential">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">retrieve_credential</a>(connection_id) -> <a href="./src/kater/types/v1/connection_retrieve_credential_response.py">ConnectionRetrieveCredentialResponse</a></code>
 - <code title="post /api/v1/connections/{connection_id}/sync">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">sync</a>(connection_id) -> <a href="./src/kater/types/v1/connection_sync_response.py">ConnectionSyncResponse</a></code>
 
 ### Databases
 
+Types:
+
+```python
+from kater.types.v1.connections import DatabaseUpdateResponse, DatabaseUpdateSchemaResponse
+```
+
 Methods:
 
+- <code title="patch /api/v1/connections/{connection_id}/databases/{database_id}">client.v1.connections.databases.<a href="./src/kater/resources/v1/connections/databases.py">update</a>(database_id, \*, connection_id, \*\*<a href="src/kater/types/v1/connections/database_update_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/database_update_response.py">DatabaseUpdateResponse</a></code>
 - <code title="delete /api/v1/connections/{connection_id}/databases/{database_id}/schemas/{schema_id}">client.v1.connections.databases.<a href="./src/kater/resources/v1/connections/databases.py">delete_schema</a>(schema_id, \*, connection_id, database_id) -> None</code>
+- <code title="patch /api/v1/connections/{connection_id}/databases/{database_id}/schemas/{schema_id}">client.v1.connections.databases.<a href="./src/kater/resources/v1/connections/databases.py">update_schema</a>(schema_id, \*, connection_id, database_id, \*\*<a href="src/kater/types/v1/connections/database_update_schema_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/database_update_schema_response.py">DatabaseUpdateSchemaResponse</a></code>
 
 ## GitHub
 
 Types:
 
 ```python
-from kater.types.v1 import GitHubGetStatusResponse
+from kater.types.v1 import (
+    GitHubConnectResponse,
+    GitHubGetInstallationLinkResponse,
+    GitHubGetStatusResponse,
+)
 ```
 
 Methods:
 
+- <code title="get /api/v1/github/callback">client.v1.github.<a href="./src/kater/resources/v1/github/github.py">callback</a>(\*\*<a href="src/kater/types/v1/github_callback_params.py">params</a>) -> object</code>
+- <code title="get /api/v1/github/connect">client.v1.github.<a href="./src/kater/resources/v1/github/github.py">connect</a>(\*\*<a href="src/kater/types/v1/github_connect_params.py">params</a>) -> <a href="./src/kater/types/v1/github_connect_response.py">GitHubConnectResponse</a></code>
+- <code title="get /api/v1/github/installation-link">client.v1.github.<a href="./src/kater/resources/v1/github/github.py">get_installation_link</a>() -> <a href="./src/kater/types/v1/github_get_installation_link_response.py">GitHubGetInstallationLinkResponse</a></code>
 - <code title="get /api/v1/github/status">client.v1.github.<a href="./src/kater/resources/v1/github/github.py">get_status</a>() -> <a href="./src/kater/types/v1/github_get_status_response.py">GitHubGetStatusResponse</a></code>
 
 ### Repos
@@ -65,6 +82,18 @@ Methods:
 
 - <code title="post /api/v1/github/scaffold/retry">client.v1.github.scaffold.<a href="./src/kater/resources/v1/github/scaffold.py">retry</a>() -> <a href="./src/kater/types/v1/github/scaffold_trigger.py">ScaffoldTrigger</a></code>
 - <code title="post /api/v1/github/scaffold">client.v1.github.scaffold.<a href="./src/kater/resources/v1/github/scaffold.py">trigger</a>() -> <a href="./src/kater/types/v1/github/scaffold_trigger.py">ScaffoldTrigger</a></code>
+
+### Webhooks
+
+Types:
+
+```python
+from kater.types.v1.github import WebhookReceiveResponse
+```
+
+Methods:
+
+- <code title="post /api/v1/github/webhooks/receiver">client.v1.github.webhooks.<a href="./src/kater/resources/v1/github/webhooks.py">receive</a>() -> <a href="./src/kater/types/v1/github/webhook_receive_response.py">WebhookReceiveResponse</a></code>
 
 ## Groups
 
@@ -186,3 +215,27 @@ Methods:
 
 - <code title="post /api/v1/tenants/import/csv">client.v1.tenants.import*.<a href="./src/kater/resources/v1/tenants/import*.py">from_csv</a>(\*\*<a href="src/kater/types/v1/tenants/import_from_csv_params.py">params</a>) -> <a href="./src/kater/types/v1/tenants/import_tenants.py">ImportTenants</a></code>
 - <code title="post /api/v1/tenants/import/warehouse">client.v1.tenants.import*.<a href="./src/kater/resources/v1/tenants/import*.py">from_warehouse</a>(\*\*<a href="src/kater/types/v1/tenants/import_from_warehouse_params.py">params</a>) -> <a href="./src/kater/types/v1/tenants/import_tenants.py">ImportTenants</a></code>
+
+# Healthz
+
+Types:
+
+```python
+from kater.types import HealthzCheckResponse
+```
+
+Methods:
+
+- <code title="get /healthz">client.healthz.<a href="./src/kater/resources/healthz.py">check</a>() -> <a href="./src/kater/types/healthz_check_response.py">HealthzCheckResponse</a></code>
+
+# Readyz
+
+Types:
+
+```python
+from kater.types import ReadyzCheckResponse
+```
+
+Methods:
+
+- <code title="get /readyz">client.readyz.<a href="./src/kater/resources/readyz.py">check</a>() -> <a href="./src/kater/types/readyz_check_response.py">ReadyzCheckResponse</a></code>
