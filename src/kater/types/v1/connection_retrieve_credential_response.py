@@ -22,7 +22,7 @@ __all__ = [
 class PostgresCredentialResponse(BaseModel):
     """PostgreSQL credential response."""
 
-    database: Optional[str] = None
+    database: str
     """Database name"""
 
     host: str
@@ -114,9 +114,6 @@ class DatabricksCredentialResponse(BaseModel):
 class ClickHouseCredentialResponse(BaseModel):
     """ClickHouse credential response."""
 
-    database: Optional[str] = None
-    """Database name"""
-
     host: str
     """ClickHouse host"""
 
@@ -132,12 +129,12 @@ class ClickHouseCredentialResponse(BaseModel):
     warehouse_type: Literal["clickhouse"]
     """Warehouse type"""
 
+    database: Optional[str] = None
+    """Database name"""
+
 
 class MssqlCredentialResponse(BaseModel):
     """Microsoft SQL Server credential response."""
-
-    database: Optional[str] = None
-    """Database name"""
 
     host: str
     """SQL Server host"""
@@ -153,6 +150,9 @@ class MssqlCredentialResponse(BaseModel):
 
     warehouse_type: Literal["mssql"]
     """Warehouse type"""
+
+    database: Optional[str] = None
+    """Database name"""
 
 
 ConnectionRetrieveCredentialResponse: TypeAlias = Annotated[
