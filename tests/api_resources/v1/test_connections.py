@@ -27,7 +27,7 @@ class TestConnections:
     @parametrize
     def test_method_create_overload_1(self, client: Kater) -> None:
         connection = client.v1.connections.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -42,16 +42,14 @@ class TestConnections:
         connection = client.v1.connections.create(
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -76,7 +74,7 @@ class TestConnections:
     @parametrize
     def test_raw_response_create_overload_1(self, client: Kater) -> None:
         response = client.v1.connections.with_raw_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -93,7 +91,7 @@ class TestConnections:
     @parametrize
     def test_streaming_response_create_overload_1(self, client: Kater) -> None:
         with client.v1.connections.with_streaming_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -117,7 +115,7 @@ class TestConnections:
                 "auth_type": "password",
                 "password": "password",
             },
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             name="name",
             role="role",
             username="username",
@@ -137,16 +135,14 @@ class TestConnections:
             },
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -175,7 +171,7 @@ class TestConnections:
                 "auth_type": "password",
                 "password": "password",
             },
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             name="name",
             role="role",
             username="username",
@@ -197,7 +193,7 @@ class TestConnections:
                 "auth_type": "password",
                 "password": "password",
             },
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             name="name",
             role="role",
             username="username",
@@ -217,7 +213,7 @@ class TestConnections:
     def test_method_create_overload_3(self, client: Kater) -> None:
         connection = client.v1.connections.create(
             access_token="access_token",
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             http_path="http_path",
             name="name",
             server_hostname="server_hostname",
@@ -232,16 +228,14 @@ class TestConnections:
             access_token="access_token",
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -265,7 +259,7 @@ class TestConnections:
     def test_raw_response_create_overload_3(self, client: Kater) -> None:
         response = client.v1.connections.with_raw_response.create(
             access_token="access_token",
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             http_path="http_path",
             name="name",
             server_hostname="server_hostname",
@@ -282,7 +276,7 @@ class TestConnections:
     def test_streaming_response_create_overload_3(self, client: Kater) -> None:
         with client.v1.connections.with_streaming_response.create(
             access_token="access_token",
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             http_path="http_path",
             name="name",
             server_hostname="server_hostname",
@@ -300,7 +294,7 @@ class TestConnections:
     @parametrize
     def test_method_create_overload_4(self, client: Kater) -> None:
         connection = client.v1.connections.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -315,16 +309,14 @@ class TestConnections:
         connection = client.v1.connections.create(
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -349,7 +341,7 @@ class TestConnections:
     @parametrize
     def test_raw_response_create_overload_4(self, client: Kater) -> None:
         response = client.v1.connections.with_raw_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -366,7 +358,7 @@ class TestConnections:
     @parametrize
     def test_streaming_response_create_overload_4(self, client: Kater) -> None:
         with client.v1.connections.with_streaming_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -385,7 +377,7 @@ class TestConnections:
     @parametrize
     def test_method_create_overload_5(self, client: Kater) -> None:
         connection = client.v1.connections.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -400,16 +392,14 @@ class TestConnections:
         connection = client.v1.connections.create(
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -434,7 +424,7 @@ class TestConnections:
     @parametrize
     def test_raw_response_create_overload_5(self, client: Kater) -> None:
         response = client.v1.connections.with_raw_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -451,7 +441,7 @@ class TestConnections:
     @parametrize
     def test_streaming_response_create_overload_5(self, client: Kater) -> None:
         with client.v1.connections.with_streaming_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -753,7 +743,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_method_create_overload_1(self, async_client: AsyncKater) -> None:
         connection = await async_client.v1.connections.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -768,16 +758,14 @@ class TestAsyncConnections:
         connection = await async_client.v1.connections.create(
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -802,7 +790,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_raw_response_create_overload_1(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.connections.with_raw_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -819,7 +807,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_streaming_response_create_overload_1(self, async_client: AsyncKater) -> None:
         async with async_client.v1.connections.with_streaming_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -843,7 +831,7 @@ class TestAsyncConnections:
                 "auth_type": "password",
                 "password": "password",
             },
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             name="name",
             role="role",
             username="username",
@@ -863,16 +851,14 @@ class TestAsyncConnections:
             },
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -901,7 +887,7 @@ class TestAsyncConnections:
                 "auth_type": "password",
                 "password": "password",
             },
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             name="name",
             role="role",
             username="username",
@@ -923,7 +909,7 @@ class TestAsyncConnections:
                 "auth_type": "password",
                 "password": "password",
             },
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             name="name",
             role="role",
             username="username",
@@ -943,7 +929,7 @@ class TestAsyncConnections:
     async def test_method_create_overload_3(self, async_client: AsyncKater) -> None:
         connection = await async_client.v1.connections.create(
             access_token="access_token",
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             http_path="http_path",
             name="name",
             server_hostname="server_hostname",
@@ -958,16 +944,14 @@ class TestAsyncConnections:
             access_token="access_token",
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -991,7 +975,7 @@ class TestAsyncConnections:
     async def test_raw_response_create_overload_3(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.connections.with_raw_response.create(
             access_token="access_token",
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             http_path="http_path",
             name="name",
             server_hostname="server_hostname",
@@ -1008,7 +992,7 @@ class TestAsyncConnections:
     async def test_streaming_response_create_overload_3(self, async_client: AsyncKater) -> None:
         async with async_client.v1.connections.with_streaming_response.create(
             access_token="access_token",
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             http_path="http_path",
             name="name",
             server_hostname="server_hostname",
@@ -1026,7 +1010,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_method_create_overload_4(self, async_client: AsyncKater) -> None:
         connection = await async_client.v1.connections.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -1041,16 +1025,14 @@ class TestAsyncConnections:
         connection = await async_client.v1.connections.create(
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -1075,7 +1057,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_raw_response_create_overload_4(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.connections.with_raw_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -1092,7 +1074,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_streaming_response_create_overload_4(self, async_client: AsyncKater) -> None:
         async with async_client.v1.connections.with_streaming_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -1111,7 +1093,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_method_create_overload_5(self, async_client: AsyncKater) -> None:
         connection = await async_client.v1.connections.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -1126,16 +1108,14 @@ class TestAsyncConnections:
         connection = await async_client.v1.connections.create(
             databases=[
                 {
-                    "database_object_name": "x",
+                    "name": "x",
                     "description": "description",
                     "label": "label",
-                    "name": "x",
                     "schemas": [
                         {
-                            "database_object_name": "x",
+                            "name": "x",
                             "description": "description",
                             "label": "label",
-                            "name": "x",
                         }
                     ],
                     "timezone": "UTC",
@@ -1160,7 +1140,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_raw_response_create_overload_5(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.connections.with_raw_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",
@@ -1177,7 +1157,7 @@ class TestAsyncConnections:
     @parametrize
     async def test_streaming_response_create_overload_5(self, async_client: AsyncKater) -> None:
         async with async_client.v1.connections.with_streaming_response.create(
-            databases=[{"database_object_name": "x"}],
+            databases=[{"name": "x"}],
             host="host",
             name="name",
             password="password",

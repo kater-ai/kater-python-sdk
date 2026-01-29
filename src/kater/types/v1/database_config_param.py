@@ -11,8 +11,8 @@ __all__ = ["DatabaseConfigParam", "Schema"]
 class Schema(TypedDict, total=False):
     """Schema configuration for connection creation request."""
 
-    database_object_name: Required[str]
-    """The actual name of the schema object in the warehouse"""
+    name: Required[str]
+    """Schema name (also used as the warehouse object name)"""
 
     description: Optional[str]
     """Description of the schema"""
@@ -20,24 +20,18 @@ class Schema(TypedDict, total=False):
     label: Optional[str]
     """Human-readable label for the schema (defaults to name if not set)"""
 
-    name: Optional[str]
-    """Schema name (defaults to database_object_name if not set)"""
-
 
 class DatabaseConfigParam(TypedDict, total=False):
     """Database configuration for connection creation request."""
 
-    database_object_name: Required[str]
-    """The actual name of the database object in the warehouse"""
+    name: Required[str]
+    """Database name (also used as the warehouse object name)"""
 
     description: Optional[str]
     """Description of the database"""
 
     label: Optional[str]
     """Human-readable label for the database (defaults to name if not set)"""
-
-    name: Optional[str]
-    """Database name (defaults to database_object_name if not set)"""
 
     schemas: Iterable[Schema]
     """Schema configurations to include (empty = discover all schemas)"""
