@@ -178,11 +178,17 @@ class Connection(BaseModel):
     warehouse_type: str
     """Warehouse type (snowflake, postgresql, etc.)"""
 
+    approval_pr_url: Optional[str] = None
+    """GitHub PR URL for approving the connection (None if already approved)"""
+
     database_timezone: Optional[str] = None
     """Default timezone for the connection"""
 
     description: Optional[str] = None
     """Connection description"""
+
+    is_pending_approval: Optional[bool] = None
+    """True if this connection is awaiting PR approval"""
 
     label: Optional[str] = None
     """Human-readable label"""
