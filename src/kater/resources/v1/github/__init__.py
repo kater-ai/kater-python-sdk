@@ -24,6 +24,14 @@ from .scaffold import (
     ScaffoldResourceWithStreamingResponse,
     AsyncScaffoldResourceWithStreamingResponse,
 )
+from .webhooks import (
+    WebhooksResource,
+    AsyncWebhooksResource,
+    WebhooksResourceWithRawResponse,
+    AsyncWebhooksResourceWithRawResponse,
+    WebhooksResourceWithStreamingResponse,
+    AsyncWebhooksResourceWithStreamingResponse,
+)
 
 __all__ = [
     "ReposResource",
@@ -38,6 +46,12 @@ __all__ = [
     "AsyncScaffoldResourceWithRawResponse",
     "ScaffoldResourceWithStreamingResponse",
     "AsyncScaffoldResourceWithStreamingResponse",
+    "WebhooksResource",
+    "AsyncWebhooksResource",
+    "WebhooksResourceWithRawResponse",
+    "AsyncWebhooksResourceWithRawResponse",
+    "WebhooksResourceWithStreamingResponse",
+    "AsyncWebhooksResourceWithStreamingResponse",
     "GitHubResource",
     "AsyncGitHubResource",
     "GitHubResourceWithRawResponse",

@@ -28,7 +28,7 @@ class TestConnections:
         connection = client.v1.connections.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="postgresql",
@@ -55,13 +55,16 @@ class TestConnections:
                 }
             ],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="postgresql",
+            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -71,7 +74,7 @@ class TestConnections:
         response = client.v1.connections.with_raw_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="postgresql",
@@ -88,7 +91,7 @@ class TestConnections:
         with client.v1.connections.with_streaming_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="postgresql",
@@ -111,7 +114,7 @@ class TestConnections:
                 "password": "password",
             },
             databases=[{"name": "x"}],
-            name="x",
+            name="name",
             role="role",
             username="username",
             warehouse="warehouse",
@@ -143,13 +146,16 @@ class TestConnections:
                     "timezone": "UTC",
                 }
             ],
-            name="x",
+            name="name",
             role="role",
             username="username",
             warehouse="warehouse",
             warehouse_type="snowflake",
+            database_timezone="database_timezone",
             description="description",
             label="label",
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -163,7 +169,7 @@ class TestConnections:
                 "password": "password",
             },
             databases=[{"name": "x"}],
-            name="x",
+            name="name",
             role="role",
             username="username",
             warehouse="warehouse",
@@ -185,7 +191,7 @@ class TestConnections:
                 "password": "password",
             },
             databases=[{"name": "x"}],
-            name="x",
+            name="name",
             role="role",
             username="username",
             warehouse="warehouse",
@@ -206,7 +212,7 @@ class TestConnections:
             access_token="access_token",
             databases=[{"name": "x"}],
             http_path="http_path",
-            name="x",
+            name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
         )
@@ -233,11 +239,14 @@ class TestConnections:
                 }
             ],
             http_path="http_path",
-            name="x",
+            name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
+            database_timezone="database_timezone",
             description="description",
             label="label",
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -248,7 +257,7 @@ class TestConnections:
             access_token="access_token",
             databases=[{"name": "x"}],
             http_path="http_path",
-            name="x",
+            name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
         )
@@ -265,7 +274,7 @@ class TestConnections:
             access_token="access_token",
             databases=[{"name": "x"}],
             http_path="http_path",
-            name="x",
+            name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
         ) as response:
@@ -283,7 +292,7 @@ class TestConnections:
         connection = client.v1.connections.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="clickhouse",
@@ -310,13 +319,16 @@ class TestConnections:
                 }
             ],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="clickhouse",
+            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -326,7 +338,7 @@ class TestConnections:
         response = client.v1.connections.with_raw_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="clickhouse",
@@ -343,7 +355,7 @@ class TestConnections:
         with client.v1.connections.with_streaming_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="clickhouse",
@@ -362,7 +374,7 @@ class TestConnections:
         connection = client.v1.connections.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="mssql",
@@ -389,13 +401,16 @@ class TestConnections:
                 }
             ],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="mssql",
+            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -405,7 +420,7 @@ class TestConnections:
         response = client.v1.connections.with_raw_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="mssql",
@@ -422,7 +437,7 @@ class TestConnections:
         with client.v1.connections.with_streaming_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="mssql",
@@ -479,6 +494,59 @@ class TestConnections:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    def test_method_update(self, client: Kater) -> None:
+        connection = client.v1.connections.update(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_update_with_all_params(self, client: Kater) -> None:
+        connection = client.v1.connections.update(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            description="description",
+            label="label",
+            name="name",
+        )
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_update(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.update(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_update(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.update(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(Connection, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_update(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.update(
+                connection_id="",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     def test_method_list(self, client: Kater) -> None:
         connection = client.v1.connections.list()
         assert_matches_type(ConnectionListResponse, connection, path=["response"])
@@ -504,6 +572,48 @@ class TestConnections:
             assert_matches_type(ConnectionListResponse, connection, path=["response"])
 
         assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_delete(self, client: Kater) -> None:
+        connection = client.v1.connections.delete(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert connection is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_delete(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.delete(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert connection is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_delete(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.delete(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert connection is None
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_delete(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.delete(
+                "",
+            )
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
@@ -601,7 +711,7 @@ class TestAsyncConnections:
         connection = await async_client.v1.connections.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="postgresql",
@@ -628,13 +738,16 @@ class TestAsyncConnections:
                 }
             ],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="postgresql",
+            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -644,7 +757,7 @@ class TestAsyncConnections:
         response = await async_client.v1.connections.with_raw_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="postgresql",
@@ -661,7 +774,7 @@ class TestAsyncConnections:
         async with async_client.v1.connections.with_streaming_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="postgresql",
@@ -684,7 +797,7 @@ class TestAsyncConnections:
                 "password": "password",
             },
             databases=[{"name": "x"}],
-            name="x",
+            name="name",
             role="role",
             username="username",
             warehouse="warehouse",
@@ -716,13 +829,16 @@ class TestAsyncConnections:
                     "timezone": "UTC",
                 }
             ],
-            name="x",
+            name="name",
             role="role",
             username="username",
             warehouse="warehouse",
             warehouse_type="snowflake",
+            database_timezone="database_timezone",
             description="description",
             label="label",
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -736,7 +852,7 @@ class TestAsyncConnections:
                 "password": "password",
             },
             databases=[{"name": "x"}],
-            name="x",
+            name="name",
             role="role",
             username="username",
             warehouse="warehouse",
@@ -758,7 +874,7 @@ class TestAsyncConnections:
                 "password": "password",
             },
             databases=[{"name": "x"}],
-            name="x",
+            name="name",
             role="role",
             username="username",
             warehouse="warehouse",
@@ -779,7 +895,7 @@ class TestAsyncConnections:
             access_token="access_token",
             databases=[{"name": "x"}],
             http_path="http_path",
-            name="x",
+            name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
         )
@@ -806,11 +922,14 @@ class TestAsyncConnections:
                 }
             ],
             http_path="http_path",
-            name="x",
+            name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
+            database_timezone="database_timezone",
             description="description",
             label="label",
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -821,7 +940,7 @@ class TestAsyncConnections:
             access_token="access_token",
             databases=[{"name": "x"}],
             http_path="http_path",
-            name="x",
+            name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
         )
@@ -838,7 +957,7 @@ class TestAsyncConnections:
             access_token="access_token",
             databases=[{"name": "x"}],
             http_path="http_path",
-            name="x",
+            name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
         ) as response:
@@ -856,7 +975,7 @@ class TestAsyncConnections:
         connection = await async_client.v1.connections.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="clickhouse",
@@ -883,13 +1002,16 @@ class TestAsyncConnections:
                 }
             ],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="clickhouse",
+            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -899,7 +1021,7 @@ class TestAsyncConnections:
         response = await async_client.v1.connections.with_raw_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="clickhouse",
@@ -916,7 +1038,7 @@ class TestAsyncConnections:
         async with async_client.v1.connections.with_streaming_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="clickhouse",
@@ -935,7 +1057,7 @@ class TestAsyncConnections:
         connection = await async_client.v1.connections.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="mssql",
@@ -962,13 +1084,16 @@ class TestAsyncConnections:
                 }
             ],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="mssql",
+            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
+            query_timeout=1,
+            query_timezone_conversion="query_timezone_conversion",
         )
         assert_matches_type(Connection, connection, path=["response"])
 
@@ -978,7 +1103,7 @@ class TestAsyncConnections:
         response = await async_client.v1.connections.with_raw_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="mssql",
@@ -995,7 +1120,7 @@ class TestAsyncConnections:
         async with async_client.v1.connections.with_streaming_response.create(
             databases=[{"name": "x"}],
             host="host",
-            name="x",
+            name="name",
             password="password",
             username="username",
             warehouse_type="mssql",
@@ -1052,6 +1177,59 @@ class TestAsyncConnections:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    async def test_method_update(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.update(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_update_with_all_params(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.update(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            description="description",
+            label="label",
+            name="name",
+        )
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_update(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.update(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_update(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.update(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(Connection, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_update(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.update(
+                connection_id="",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     async def test_method_list(self, async_client: AsyncKater) -> None:
         connection = await async_client.v1.connections.list()
         assert_matches_type(ConnectionListResponse, connection, path=["response"])
@@ -1077,6 +1255,48 @@ class TestAsyncConnections:
             assert_matches_type(ConnectionListResponse, connection, path=["response"])
 
         assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_delete(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.delete(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert connection is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_delete(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.delete(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert connection is None
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_delete(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.delete(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert connection is None
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_delete(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.delete(
+                "",
+            )
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize

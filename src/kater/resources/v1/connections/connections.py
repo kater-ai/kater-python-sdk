@@ -7,7 +7,7 @@ from typing_extensions import Literal, overload
 
 import httpx
 
-from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ...._types import Body, Omit, Query, Headers, NoneType, NotGiven, omit, not_given
 from ...._utils import required_args, maybe_transform, async_maybe_transform
 from .databases import (
     DatabasesResource,
@@ -18,7 +18,7 @@ from .databases import (
     AsyncDatabasesResourceWithStreamingResponse,
 )
 from ...._compat import cached_property
-from ....types.v1 import connection_create_params
+from ....types.v1 import connection_create_params, connection_update_params
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
     to_raw_response_wrapper,
@@ -70,9 +70,12 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["postgresql"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -88,7 +91,7 @@ class ConnectionsResource(SyncAPIResource):
 
           host: Database host
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           password: Database password
 
@@ -96,11 +99,17 @@ class ConnectionsResource(SyncAPIResource):
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
 
           port: Database port
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -124,8 +133,11 @@ class ConnectionsResource(SyncAPIResource):
         username: str,
         warehouse: str,
         warehouse_type: Literal["snowflake"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -143,7 +155,7 @@ class ConnectionsResource(SyncAPIResource):
 
           databases: Databases to include in the connection (at least one required)
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           role: Snowflake role
 
@@ -153,9 +165,15 @@ class ConnectionsResource(SyncAPIResource):
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -177,8 +195,11 @@ class ConnectionsResource(SyncAPIResource):
         name: str,
         server_hostname: str,
         warehouse_type: Literal["databricks"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -196,15 +217,21 @@ class ConnectionsResource(SyncAPIResource):
 
           http_path: SQL warehouse HTTP path (e.g., '/sql/1.0/warehouses/xxx')
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           server_hostname: Databricks server hostname (e.g., 'dbc-xxx.cloud.databricks.com')
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -226,9 +253,12 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["clickhouse"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -244,7 +274,7 @@ class ConnectionsResource(SyncAPIResource):
 
           host: ClickHouse host
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           password: ClickHouse password
 
@@ -252,11 +282,17 @@ class ConnectionsResource(SyncAPIResource):
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
 
           port: ClickHouse port
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -278,9 +314,12 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["mssql"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -296,7 +335,7 @@ class ConnectionsResource(SyncAPIResource):
 
           host: SQL Server host
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           password: SQL Server password
 
@@ -304,11 +343,17 @@ class ConnectionsResource(SyncAPIResource):
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
 
           port: SQL Server port
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -338,9 +383,12 @@ class ConnectionsResource(SyncAPIResource):
         | Literal["databricks"]
         | Literal["clickhouse"]
         | Literal["mssql"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         account: str | Omit = omit,
         auth: connection_create_params.SnowflakeConnectionConfigAuth | Omit = omit,
         role: str | Omit = omit,
@@ -365,9 +413,12 @@ class ConnectionsResource(SyncAPIResource):
                     "password": password,
                     "username": username,
                     "warehouse_type": warehouse_type,
+                    "database_timezone": database_timezone,
                     "description": description,
                     "label": label,
                     "port": port,
+                    "query_timeout": query_timeout,
+                    "query_timezone_conversion": query_timezone_conversion,
                     "account": account,
                     "auth": auth,
                     "role": role,
@@ -399,6 +450,10 @@ class ConnectionsResource(SyncAPIResource):
         Get a single warehouse connection by kater_id.
 
         Returns connection from the database (source of truth) with full hierarchy.
+        Supports content negotiation via Accept header (handled by MultiFormatRoute):
+
+        - application/json (default): Returns JSON response
+        - application/yaml: Returns YAML representation
 
         RLS: Filtered to current client (DualClientRLSDB).
 
@@ -417,6 +472,62 @@ class ConnectionsResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
         return self._get(
             f"/api/v1/connections/{connection_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=Connection,
+        )
+
+    def update(
+        self,
+        connection_id: str,
+        *,
+        description: Optional[str] | Omit = omit,
+        label: Optional[str] | Omit = omit,
+        name: Optional[str] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> Connection:
+        """
+        Update a warehouse connection's metadata.
+
+        Updates name, label, and/or description fields.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Raises: ConnectionNotFoundError: If connection doesn't exist (404)
+
+        Args:
+          description: Connection description
+
+          label: Human-readable display label
+
+          name: Connection name (snake_case identifier)
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._patch(
+            f"/api/v1/connections/{connection_id}",
+            body=maybe_transform(
+                {
+                    "description": description,
+                    "label": label,
+                    "name": name,
+                },
+                connection_update_params.ConnectionUpdateParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -448,6 +559,47 @@ class ConnectionsResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ConnectionListResponse,
+        )
+
+    def delete(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> None:
+        """
+        Delete a warehouse connection.
+
+        Soft-deletes the connection record and cascades to all associated databases and
+        schemas, setting deleted_at and deleted_by fields.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Raises: ConnectionNotFoundError: If connection doesn't exist (404)
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
+        return self._delete(
+            f"/api/v1/connections/{connection_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=NoneType,
         )
 
     def retrieve_credential(
@@ -563,9 +715,12 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["postgresql"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -581,7 +736,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           host: Database host
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           password: Database password
 
@@ -589,11 +744,17 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
 
           port: Database port
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -617,8 +778,11 @@ class AsyncConnectionsResource(AsyncAPIResource):
         username: str,
         warehouse: str,
         warehouse_type: Literal["snowflake"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -636,7 +800,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           databases: Databases to include in the connection (at least one required)
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           role: Snowflake role
 
@@ -646,9 +810,15 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -670,8 +840,11 @@ class AsyncConnectionsResource(AsyncAPIResource):
         name: str,
         server_hostname: str,
         warehouse_type: Literal["databricks"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -689,15 +862,21 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           http_path: SQL warehouse HTTP path (e.g., '/sql/1.0/warehouses/xxx')
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           server_hostname: Databricks server hostname (e.g., 'dbc-xxx.cloud.databricks.com')
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -719,9 +898,12 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["clickhouse"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -737,7 +919,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           host: ClickHouse host
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           password: ClickHouse password
 
@@ -745,11 +927,17 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
 
           port: ClickHouse port
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -771,9 +959,12 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["mssql"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -789,7 +980,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           host: SQL Server host
 
-          name: Name of the connection
+          name: Name of the connection (snake_case: lowercase letters, numbers, underscores)
 
           password: SQL Server password
 
@@ -797,11 +988,17 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           warehouse_type: Warehouse type
 
+          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
+
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
 
           port: SQL Server port
+
+          query_timeout: Query timeout in seconds (1-3600)
+
+          query_timezone_conversion: Timezone conversion mode: 'do_not_convert' or 'convert_to_utc'
 
           extra_headers: Send extra headers
 
@@ -831,9 +1028,12 @@ class AsyncConnectionsResource(AsyncAPIResource):
         | Literal["databricks"]
         | Literal["clickhouse"]
         | Literal["mssql"],
+        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
+        query_timeout: Optional[int] | Omit = omit,
+        query_timezone_conversion: Optional[str] | Omit = omit,
         account: str | Omit = omit,
         auth: connection_create_params.SnowflakeConnectionConfigAuth | Omit = omit,
         role: str | Omit = omit,
@@ -858,9 +1058,12 @@ class AsyncConnectionsResource(AsyncAPIResource):
                     "password": password,
                     "username": username,
                     "warehouse_type": warehouse_type,
+                    "database_timezone": database_timezone,
                     "description": description,
                     "label": label,
                     "port": port,
+                    "query_timeout": query_timeout,
+                    "query_timezone_conversion": query_timezone_conversion,
                     "account": account,
                     "auth": auth,
                     "role": role,
@@ -892,6 +1095,10 @@ class AsyncConnectionsResource(AsyncAPIResource):
         Get a single warehouse connection by kater_id.
 
         Returns connection from the database (source of truth) with full hierarchy.
+        Supports content negotiation via Accept header (handled by MultiFormatRoute):
+
+        - application/json (default): Returns JSON response
+        - application/yaml: Returns YAML representation
 
         RLS: Filtered to current client (DualClientRLSDB).
 
@@ -910,6 +1117,62 @@ class AsyncConnectionsResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
         return await self._get(
             f"/api/v1/connections/{connection_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=Connection,
+        )
+
+    async def update(
+        self,
+        connection_id: str,
+        *,
+        description: Optional[str] | Omit = omit,
+        label: Optional[str] | Omit = omit,
+        name: Optional[str] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> Connection:
+        """
+        Update a warehouse connection's metadata.
+
+        Updates name, label, and/or description fields.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Raises: ConnectionNotFoundError: If connection doesn't exist (404)
+
+        Args:
+          description: Connection description
+
+          label: Human-readable display label
+
+          name: Connection name (snake_case identifier)
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._patch(
+            f"/api/v1/connections/{connection_id}",
+            body=await async_maybe_transform(
+                {
+                    "description": description,
+                    "label": label,
+                    "name": name,
+                },
+                connection_update_params.ConnectionUpdateParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -941,6 +1204,47 @@ class AsyncConnectionsResource(AsyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ConnectionListResponse,
+        )
+
+    async def delete(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> None:
+        """
+        Delete a warehouse connection.
+
+        Soft-deletes the connection record and cascades to all associated databases and
+        schemas, setting deleted_at and deleted_by fields.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Raises: ConnectionNotFoundError: If connection doesn't exist (404)
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
+        return await self._delete(
+            f"/api/v1/connections/{connection_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=NoneType,
         )
 
     async def retrieve_credential(
@@ -1032,8 +1336,14 @@ class ConnectionsResourceWithRawResponse:
         self.retrieve = to_raw_response_wrapper(
             connections.retrieve,
         )
+        self.update = to_raw_response_wrapper(
+            connections.update,
+        )
         self.list = to_raw_response_wrapper(
             connections.list,
+        )
+        self.delete = to_raw_response_wrapper(
+            connections.delete,
         )
         self.retrieve_credential = to_raw_response_wrapper(
             connections.retrieve_credential,
@@ -1057,8 +1367,14 @@ class AsyncConnectionsResourceWithRawResponse:
         self.retrieve = async_to_raw_response_wrapper(
             connections.retrieve,
         )
+        self.update = async_to_raw_response_wrapper(
+            connections.update,
+        )
         self.list = async_to_raw_response_wrapper(
             connections.list,
+        )
+        self.delete = async_to_raw_response_wrapper(
+            connections.delete,
         )
         self.retrieve_credential = async_to_raw_response_wrapper(
             connections.retrieve_credential,
@@ -1082,8 +1398,14 @@ class ConnectionsResourceWithStreamingResponse:
         self.retrieve = to_streamed_response_wrapper(
             connections.retrieve,
         )
+        self.update = to_streamed_response_wrapper(
+            connections.update,
+        )
         self.list = to_streamed_response_wrapper(
             connections.list,
+        )
+        self.delete = to_streamed_response_wrapper(
+            connections.delete,
         )
         self.retrieve_credential = to_streamed_response_wrapper(
             connections.retrieve_credential,
@@ -1107,8 +1429,14 @@ class AsyncConnectionsResourceWithStreamingResponse:
         self.retrieve = async_to_streamed_response_wrapper(
             connections.retrieve,
         )
+        self.update = async_to_streamed_response_wrapper(
+            connections.update,
+        )
         self.list = async_to_streamed_response_wrapper(
             connections.list,
+        )
+        self.delete = async_to_streamed_response_wrapper(
+            connections.delete,
         )
         self.retrieve_credential = async_to_streamed_response_wrapper(
             connections.retrieve_credential,
