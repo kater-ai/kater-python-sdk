@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 (2026-01-29)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* **api:** improve OpenAPI spec generation with pre-commit validation ([bd7fb83](https://github.com/kater-ai/kater-python-sdk/commit/bd7fb83370d26957f2ace147d8544b6f78df4160))
+
 ## 0.3.0 (2026-01-28)
 
 Full Changelog: [v0.2.1...v0.3.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.2.1...v0.3.0)
