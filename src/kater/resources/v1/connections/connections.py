@@ -31,6 +31,7 @@ from ....types.v1.connection import Connection
 from ....types.v1.database_config_param import DatabaseConfigParam
 from ....types.v1.connection_list_response import ConnectionListResponse
 from ....types.v1.connection_sync_response import ConnectionSyncResponse
+from ....types.v1.connection_retrieve_schema_response import ConnectionRetrieveSchemaResponse
 from ....types.v1.connection_retrieve_credential_response import ConnectionRetrieveCredentialResponse
 
 __all__ = ["ConnectionsResource", "AsyncConnectionsResource"]
@@ -70,7 +71,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["postgresql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -98,8 +98,6 @@ class ConnectionsResource(SyncAPIResource):
           username: Database username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -133,7 +131,6 @@ class ConnectionsResource(SyncAPIResource):
         username: str,
         warehouse: str,
         warehouse_type: Literal["snowflake"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         query_timeout: Optional[int] | Omit = omit,
@@ -165,8 +162,6 @@ class ConnectionsResource(SyncAPIResource):
 
           warehouse_type: Warehouse type
 
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
-
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
@@ -195,7 +190,6 @@ class ConnectionsResource(SyncAPIResource):
         name: str,
         server_hostname: str,
         warehouse_type: Literal["databricks"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         query_timeout: Optional[int] | Omit = omit,
@@ -222,8 +216,6 @@ class ConnectionsResource(SyncAPIResource):
           server_hostname: Databricks server hostname (e.g., 'dbc-xxx.cloud.databricks.com')
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -253,7 +245,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["clickhouse"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -281,8 +272,6 @@ class ConnectionsResource(SyncAPIResource):
           username: ClickHouse username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -314,7 +303,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["mssql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -342,8 +330,6 @@ class ConnectionsResource(SyncAPIResource):
           username: SQL Server username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -383,7 +369,6 @@ class ConnectionsResource(SyncAPIResource):
         | Literal["databricks"]
         | Literal["clickhouse"]
         | Literal["mssql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -413,7 +398,6 @@ class ConnectionsResource(SyncAPIResource):
                     "password": password,
                     "username": username,
                     "warehouse_type": warehouse_type,
-                    "database_timezone": database_timezone,
                     "description": description,
                     "label": label,
                     "port": port,
@@ -447,13 +431,11 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Get a single warehouse connection by kater_id.
+        Get a single warehouse connection by ID.
 
-        Returns connection from the database (source of truth) with full hierarchy.
-        Supports content negotiation via Accept header (handled by MultiFormatRoute):
-
-        - application/json (default): Returns JSON response
-        - application/yaml: Returns YAML representation
+        Returns connection from the database (source of truth) with full hierarchy. For
+        YAML output compatible with repository files (using kater_id), use the GET
+        /connections/{id}/schema endpoint instead.
 
         RLS: Filtered to current client (DualClientRLSDB).
 
@@ -699,6 +681,46 @@ class ConnectionsResource(SyncAPIResource):
             ),
         )
 
+    def retrieve_schema(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionRetrieveSchemaResponse:
+        """
+        Get connection as a ConnectionSchema object.
+
+        Returns the connection in the YAML-compatible schema format with full
+        database/schema hierarchy.
+
+        RLS: Automatically filtered by client_id from auth context.
+
+        Raises: ConnectionNotFoundError: If connection not found or deleted.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/schema",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionRetrieveSchemaResponse,
+        )
+
     def sync(
         self,
         connection_id: str,
@@ -767,7 +789,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["postgresql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -795,8 +816,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           username: Database username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -830,7 +849,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         username: str,
         warehouse: str,
         warehouse_type: Literal["snowflake"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         query_timeout: Optional[int] | Omit = omit,
@@ -862,8 +880,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
 
           warehouse_type: Warehouse type
 
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
-
           description: Description of the connection
 
           label: Human-readable label for the connection (defaults to name if not set)
@@ -892,7 +908,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         name: str,
         server_hostname: str,
         warehouse_type: Literal["databricks"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         query_timeout: Optional[int] | Omit = omit,
@@ -919,8 +934,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           server_hostname: Databricks server hostname (e.g., 'dbc-xxx.cloud.databricks.com')
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -950,7 +963,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["clickhouse"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -978,8 +990,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           username: ClickHouse username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -1011,7 +1021,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["mssql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -1039,8 +1048,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           username: SQL Server username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -1080,7 +1087,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         | Literal["databricks"]
         | Literal["clickhouse"]
         | Literal["mssql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -1110,7 +1116,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
                     "password": password,
                     "username": username,
                     "warehouse_type": warehouse_type,
-                    "database_timezone": database_timezone,
                     "description": description,
                     "label": label,
                     "port": port,
@@ -1144,13 +1149,11 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Get a single warehouse connection by kater_id.
+        Get a single warehouse connection by ID.
 
-        Returns connection from the database (source of truth) with full hierarchy.
-        Supports content negotiation via Accept header (handled by MultiFormatRoute):
-
-        - application/json (default): Returns JSON response
-        - application/yaml: Returns YAML representation
+        Returns connection from the database (source of truth) with full hierarchy. For
+        YAML output compatible with repository files (using kater_id), use the GET
+        /connections/{id}/schema endpoint instead.
 
         RLS: Filtered to current client (DualClientRLSDB).
 
@@ -1396,6 +1399,46 @@ class AsyncConnectionsResource(AsyncAPIResource):
             ),
         )
 
+    async def retrieve_schema(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionRetrieveSchemaResponse:
+        """
+        Get connection as a ConnectionSchema object.
+
+        Returns the connection in the YAML-compatible schema format with full
+        database/schema hierarchy.
+
+        RLS: Automatically filtered by client_id from auth context.
+
+        Raises: ConnectionNotFoundError: If connection not found or deleted.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/schema",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionRetrieveSchemaResponse,
+        )
+
     async def sync(
         self,
         connection_id: str,
@@ -1455,6 +1498,9 @@ class ConnectionsResourceWithRawResponse:
         self.retrieve_credential = to_raw_response_wrapper(
             connections.retrieve_credential,
         )
+        self.retrieve_schema = to_raw_response_wrapper(
+            connections.retrieve_schema,
+        )
         self.sync = to_raw_response_wrapper(
             connections.sync,
         )
@@ -1488,6 +1534,9 @@ class AsyncConnectionsResourceWithRawResponse:
         )
         self.retrieve_credential = async_to_raw_response_wrapper(
             connections.retrieve_credential,
+        )
+        self.retrieve_schema = async_to_raw_response_wrapper(
+            connections.retrieve_schema,
         )
         self.sync = async_to_raw_response_wrapper(
             connections.sync,
@@ -1523,6 +1572,9 @@ class ConnectionsResourceWithStreamingResponse:
         self.retrieve_credential = to_streamed_response_wrapper(
             connections.retrieve_credential,
         )
+        self.retrieve_schema = to_streamed_response_wrapper(
+            connections.retrieve_schema,
+        )
         self.sync = to_streamed_response_wrapper(
             connections.sync,
         )
@@ -1556,6 +1608,9 @@ class AsyncConnectionsResourceWithStreamingResponse:
         )
         self.retrieve_credential = async_to_streamed_response_wrapper(
             connections.retrieve_credential,
+        )
+        self.retrieve_schema = async_to_streamed_response_wrapper(
+            connections.retrieve_schema,
         )
         self.sync = async_to_streamed_response_wrapper(
             connections.sync,
