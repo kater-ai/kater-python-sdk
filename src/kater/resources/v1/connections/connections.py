@@ -18,7 +18,7 @@ from .databases import (
     AsyncDatabasesResourceWithStreamingResponse,
 )
 from ...._compat import cached_property
-from ....types.v1 import connection_create_params, connection_update_params
+from ....types.v1 import connection_list_params, connection_create_params, connection_update_params
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
     to_raw_response_wrapper,
@@ -31,7 +31,6 @@ from ....types.v1.connection import Connection
 from ....types.v1.database_config_param import DatabaseConfigParam
 from ....types.v1.connection_list_response import ConnectionListResponse
 from ....types.v1.connection_sync_response import ConnectionSyncResponse
-from ....types.v1.connection_list_pending_response import ConnectionListPendingResponse
 from ....types.v1.connection_retrieve_credential_response import ConnectionRetrieveCredentialResponse
 
 __all__ = ["ConnectionsResource", "AsyncConnectionsResource"]
@@ -71,7 +70,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["postgresql"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -135,7 +133,6 @@ class ConnectionsResource(SyncAPIResource):
         username: str,
         warehouse: str,
         warehouse_type: Literal["snowflake"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -198,7 +195,6 @@ class ConnectionsResource(SyncAPIResource):
         name: str,
         server_hostname: str,
         warehouse_type: Literal["databricks"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -257,7 +253,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["clickhouse"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -319,7 +314,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["mssql"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -389,7 +383,6 @@ class ConnectionsResource(SyncAPIResource):
         | Literal["databricks"]
         | Literal["clickhouse"]
         | Literal["mssql"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -437,13 +430,7 @@ class ConnectionsResource(SyncAPIResource):
                 connection_create_params.ConnectionCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform(
-                    {"merge_immediately": merge_immediately}, connection_create_params.ConnectionCreateParams
-                ),
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=Connection,
         )
@@ -550,6 +537,7 @@ class ConnectionsResource(SyncAPIResource):
     def list(
         self,
         *,
+        status: Literal["approved", "pending", "all"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -558,18 +546,36 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ConnectionListResponse:
         """
-        List approved warehouse connections for the client.
+        List warehouse connections for the client.
 
-        Returns only approved connections (is_pending_approval=false). Use GET
-        /connections/pending for connections awaiting PR approval. Returns empty list if
-        GitHub is not configured.
+        Filter connections by approval status using the `status` query parameter:
+
+        - `approved` (default): Only approved connections (is_pending_approval=false)
+        - `pending`: Only connections awaiting PR approval (is_pending_approval=true)
+        - `all`: All connections regardless of approval status
+
+        Pending connections include their approval PR URLs when available. Returns empty
+        list if GitHub is not configured.
 
         RLS: Filtered to current client (DualClientRLSDB).
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
         return self._get(
             "/api/v1/connections",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"status": status}, connection_list_params.ConnectionListParams),
             ),
             cast_to=ConnectionListResponse,
         )
@@ -615,8 +621,9 @@ class ConnectionsResource(SyncAPIResource):
             cast_to=NoneType,
         )
 
-    def list_pending(
+    def approve(
         self,
+        connection_id: str,
         *,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -624,21 +631,27 @@ class ConnectionsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectionListPendingResponse:
+    ) -> Connection:
         """
-        List connections awaiting PR approval.
+        Merge the PR for a pending connection to finalize it.
 
-        Returns connections with is_pending_approval=true, along with their approval PR
-        URLs (if available).
+        Args:
+          extra_headers: Send extra headers
 
-        RLS: Filtered to current client (DualClientRLSDB).
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
-        return self._get(
-            "/api/v1/connections/pending",
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._post(
+            f"/api/v1/connections/{connection_id}/approve",
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ConnectionListPendingResponse,
+            cast_to=Connection,
         )
 
     def retrieve_credential(
@@ -754,7 +767,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["postgresql"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -818,7 +830,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         username: str,
         warehouse: str,
         warehouse_type: Literal["snowflake"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -881,7 +892,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         name: str,
         server_hostname: str,
         warehouse_type: Literal["databricks"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -940,7 +950,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["clickhouse"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -1002,7 +1011,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["mssql"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -1072,7 +1080,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         | Literal["databricks"]
         | Literal["clickhouse"]
         | Literal["mssql"],
-        merge_immediately: bool | Omit = omit,
         database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
@@ -1120,13 +1127,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
                 connection_create_params.ConnectionCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {"merge_immediately": merge_immediately}, connection_create_params.ConnectionCreateParams
-                ),
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=Connection,
         )
@@ -1233,6 +1234,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
     async def list(
         self,
         *,
+        status: Literal["approved", "pending", "all"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -1241,18 +1243,36 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ConnectionListResponse:
         """
-        List approved warehouse connections for the client.
+        List warehouse connections for the client.
 
-        Returns only approved connections (is_pending_approval=false). Use GET
-        /connections/pending for connections awaiting PR approval. Returns empty list if
-        GitHub is not configured.
+        Filter connections by approval status using the `status` query parameter:
+
+        - `approved` (default): Only approved connections (is_pending_approval=false)
+        - `pending`: Only connections awaiting PR approval (is_pending_approval=true)
+        - `all`: All connections regardless of approval status
+
+        Pending connections include their approval PR URLs when available. Returns empty
+        list if GitHub is not configured.
 
         RLS: Filtered to current client (DualClientRLSDB).
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
         return await self._get(
             "/api/v1/connections",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"status": status}, connection_list_params.ConnectionListParams),
             ),
             cast_to=ConnectionListResponse,
         )
@@ -1298,8 +1318,9 @@ class AsyncConnectionsResource(AsyncAPIResource):
             cast_to=NoneType,
         )
 
-    async def list_pending(
+    async def approve(
         self,
+        connection_id: str,
         *,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -1307,21 +1328,27 @@ class AsyncConnectionsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectionListPendingResponse:
+    ) -> Connection:
         """
-        List connections awaiting PR approval.
+        Merge the PR for a pending connection to finalize it.
 
-        Returns connections with is_pending_approval=true, along with their approval PR
-        URLs (if available).
+        Args:
+          extra_headers: Send extra headers
 
-        RLS: Filtered to current client (DualClientRLSDB).
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
-        return await self._get(
-            "/api/v1/connections/pending",
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._post(
+            f"/api/v1/connections/{connection_id}/approve",
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ConnectionListPendingResponse,
+            cast_to=Connection,
         )
 
     async def retrieve_credential(
@@ -1422,8 +1449,8 @@ class ConnectionsResourceWithRawResponse:
         self.delete = to_raw_response_wrapper(
             connections.delete,
         )
-        self.list_pending = to_raw_response_wrapper(
-            connections.list_pending,
+        self.approve = to_raw_response_wrapper(
+            connections.approve,
         )
         self.retrieve_credential = to_raw_response_wrapper(
             connections.retrieve_credential,
@@ -1456,8 +1483,8 @@ class AsyncConnectionsResourceWithRawResponse:
         self.delete = async_to_raw_response_wrapper(
             connections.delete,
         )
-        self.list_pending = async_to_raw_response_wrapper(
-            connections.list_pending,
+        self.approve = async_to_raw_response_wrapper(
+            connections.approve,
         )
         self.retrieve_credential = async_to_raw_response_wrapper(
             connections.retrieve_credential,
@@ -1490,8 +1517,8 @@ class ConnectionsResourceWithStreamingResponse:
         self.delete = to_streamed_response_wrapper(
             connections.delete,
         )
-        self.list_pending = to_streamed_response_wrapper(
-            connections.list_pending,
+        self.approve = to_streamed_response_wrapper(
+            connections.approve,
         )
         self.retrieve_credential = to_streamed_response_wrapper(
             connections.retrieve_credential,
@@ -1524,8 +1551,8 @@ class AsyncConnectionsResourceWithStreamingResponse:
         self.delete = async_to_streamed_response_wrapper(
             connections.delete,
         )
-        self.list_pending = async_to_streamed_response_wrapper(
-            connections.list_pending,
+        self.approve = async_to_streamed_response_wrapper(
+            connections.approve,
         )
         self.retrieve_credential = async_to_streamed_response_wrapper(
             connections.retrieve_credential,

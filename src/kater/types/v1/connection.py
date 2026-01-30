@@ -13,9 +13,9 @@ __all__ = [
     "DatabaseSchema",
     "WarehouseMetadata",
     "WarehouseMetadataSnowflakeMetadata",
-    "WarehouseMetadataPostgresMetadata",
+    "WarehouseMetadataPostgresqlMetadata",
     "WarehouseMetadataDatabricksMetadata",
-    "WarehouseMetadataClickHouseMetadata",
+    "WarehouseMetadataClickhouseMetadata",
     "WarehouseMetadataMssqlMetadata",
 ]
 
@@ -65,8 +65,6 @@ class Database(BaseModel):
 
 
 class WarehouseMetadataSnowflakeMetadata(BaseModel):
-    """Snowflake-specific warehouse metadata."""
-
     auth_method: Literal["username_password", "key_pair"]
     """Authentication method"""
 
@@ -77,70 +75,57 @@ class WarehouseMetadataSnowflakeMetadata(BaseModel):
     """Snowflake account identifier"""
 
     warehouse: str
-    """Compute warehouse name"""
+    """Snowflake compute warehouse name"""
 
     warehouse_type: Literal["snowflake"]
-    """Warehouse type discriminator"""
 
 
-class WarehouseMetadataPostgresMetadata(BaseModel):
-    """PostgreSQL-specific warehouse metadata."""
-
+class WarehouseMetadataPostgresqlMetadata(BaseModel):
     host: str
-    """Database host"""
+    """Database host address"""
 
     port: int
-    """Database port"""
+    """Database port (default: 5432)"""
 
     warehouse_type: Literal["postgresql"]
-    """Warehouse type discriminator"""
 
 
 class WarehouseMetadataDatabricksMetadata(BaseModel):
-    """Databricks-specific warehouse metadata."""
-
     http_path: str
-    """SQL warehouse HTTP path"""
+    """Databricks SQL warehouse HTTP path"""
 
     server_hostname: str
     """Databricks server hostname"""
 
     warehouse_type: Literal["databricks"]
-    """Warehouse type discriminator"""
 
 
-class WarehouseMetadataClickHouseMetadata(BaseModel):
-    """ClickHouse-specific warehouse metadata."""
-
+class WarehouseMetadataClickhouseMetadata(BaseModel):
     host: str
-    """ClickHouse host"""
+    """ClickHouse host address"""
 
     port: int
-    """ClickHouse port"""
+    """ClickHouse port (default: 8443)"""
 
     warehouse_type: Literal["clickhouse"]
-    """Warehouse type discriminator"""
 
 
 class WarehouseMetadataMssqlMetadata(BaseModel):
-    """Microsoft SQL Server-specific warehouse metadata."""
-
     host: str
-    """SQL Server host"""
+    """SQL Server host address"""
 
     port: int
-    """SQL Server port"""
+    """SQL Server port (default: 1433)"""
 
     warehouse_type: Literal["mssql"]
-    """Warehouse type discriminator"""
 
 
 WarehouseMetadata: TypeAlias = Annotated[
     Union[
         WarehouseMetadataSnowflakeMetadata,
-        WarehouseMetadataPostgresMetadata,
+        WarehouseMetadataPostgresqlMetadata,
         WarehouseMetadataDatabricksMetadata,
-        WarehouseMetadataClickHouseMetadata,
+        WarehouseMetadataClickhouseMetadata,
         WarehouseMetadataMssqlMetadata,
     ],
     PropertyInfo(discriminator="warehouse_type"),

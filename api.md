@@ -9,7 +9,6 @@ from kater.types.v1 import (
     Connection,
     DatabaseConfig,
     ConnectionListResponse,
-    ConnectionListPendingResponse,
     ConnectionRetrieveCredentialResponse,
     ConnectionSyncResponse,
 )
@@ -20,9 +19,9 @@ Methods:
 - <code title="post /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">create</a>(\*\*<a href="src/kater/types/v1/connection_create_params.py">params</a>) -> <a href="./src/kater/types/v1/connection.py">Connection</a></code>
 - <code title="get /api/v1/connections/{connection_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">retrieve</a>(connection_id) -> <a href="./src/kater/types/v1/connection.py">Connection</a></code>
 - <code title="patch /api/v1/connections/{connection_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">update</a>(connection_id, \*\*<a href="src/kater/types/v1/connection_update_params.py">params</a>) -> <a href="./src/kater/types/v1/connection.py">Connection</a></code>
-- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list</a>() -> <a href="./src/kater/types/v1/connection_list_response.py">ConnectionListResponse</a></code>
+- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list</a>(\*\*<a href="src/kater/types/v1/connection_list_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_response.py">ConnectionListResponse</a></code>
 - <code title="delete /api/v1/connections/{connection_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">delete</a>(connection_id) -> None</code>
-- <code title="get /api/v1/connections/pending">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list_pending</a>() -> <a href="./src/kater/types/v1/connection_list_pending_response.py">ConnectionListPendingResponse</a></code>
+- <code title="post /api/v1/connections/{connection_id}/approve">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">approve</a>(connection_id) -> <a href="./src/kater/types/v1/connection.py">Connection</a></code>
 - <code title="get /api/v1/connections/{connection_id}/credential">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">retrieve_credential</a>(connection_id) -> <a href="./src/kater/types/v1/connection_retrieve_credential_response.py">ConnectionRetrieveCredentialResponse</a></code>
 - <code title="post /api/v1/connections/{connection_id}/sync">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">sync</a>(connection_id) -> <a href="./src/kater/types/v1/connection_sync_response.py">ConnectionSyncResponse</a></code>
 
