@@ -16,6 +16,7 @@ from .tenant_list_response import TenantListResponse as TenantListResponse
 from .tenant_update_params import TenantUpdateParams as TenantUpdateParams
 from .database_config_param import DatabaseConfigParam as DatabaseConfigParam
 from .github_connect_params import GitHubConnectParams as GitHubConnectParams
+from .connection_list_params import ConnectionListParams as ConnectionListParams
 from .github_callback_params import GitHubCallbackParams as GitHubCallbackParams
 from .github_connect_response import GitHubConnectResponse as GitHubConnectResponse
 from .connection_create_params import ConnectionCreateParams as ConnectionCreateParams
@@ -23,7 +24,6 @@ from .connection_list_response import ConnectionListResponse as ConnectionListRe
 from .connection_sync_response import ConnectionSyncResponse as ConnectionSyncResponse
 from .connection_update_params import ConnectionUpdateParams as ConnectionUpdateParams
 from .github_get_status_response import GitHubGetStatusResponse as GitHubGetStatusResponse
-from .connection_list_pending_response import ConnectionListPendingResponse as ConnectionListPendingResponse
 from .github_get_installation_link_response import (
     GitHubGetInstallationLinkResponse as GitHubGetInstallationLinkResponse,
 )
