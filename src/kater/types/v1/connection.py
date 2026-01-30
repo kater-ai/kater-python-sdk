@@ -136,7 +136,7 @@ class Connection(BaseModel):
     """Response model for a single connection.
 
     All data comes from the database (source of truth).
-    JSON responses use 'id' field; YAML responses transform to 'kater_id' via MultiFormatRoute.
+    For YAML-compatible output with 'kater_id', use the /schema endpoint instead.
     """
 
     id: str
@@ -166,9 +166,6 @@ class Connection(BaseModel):
     approval_pr_url: Optional[str] = None
     """GitHub PR URL for approving the connection (None if already approved)"""
 
-    database_timezone: Optional[str] = None
-    """Default timezone for the connection"""
-
     description: Optional[str] = None
     """Connection description"""
 
@@ -183,6 +180,3 @@ class Connection(BaseModel):
 
     query_timezone_conversion: Optional[str] = None
     """Timezone conversion mode (do_not_convert, convert_to_utc)"""
-
-    sync_id: Optional[str] = None
-    """Sync identifier for schema sync"""

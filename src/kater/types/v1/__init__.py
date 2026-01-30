@@ -24,6 +24,7 @@ from .connection_list_response import ConnectionListResponse as ConnectionListRe
 from .connection_sync_response import ConnectionSyncResponse as ConnectionSyncResponse
 from .connection_update_params import ConnectionUpdateParams as ConnectionUpdateParams
 from .github_get_status_response import GitHubGetStatusResponse as GitHubGetStatusResponse
+from .connection_retrieve_schema_response import ConnectionRetrieveSchemaResponse as ConnectionRetrieveSchemaResponse
 from .github_get_installation_link_response import (
     GitHubGetInstallationLinkResponse as GitHubGetInstallationLinkResponse,
 )
