@@ -39,9 +39,6 @@ class PostgresConnectionConfig(TypedDict, total=False):
     warehouse_type: Required[Literal["postgresql"]]
     """Warehouse type"""
 
-    database_timezone: Optional[str]
-    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
-
     description: Optional[str]
     """Description of the connection"""
 
@@ -82,9 +79,6 @@ class SnowflakeConnectionConfig(TypedDict, total=False):
 
     warehouse_type: Required[Literal["snowflake"]]
     """Warehouse type"""
-
-    database_timezone: Optional[str]
-    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
 
     description: Optional[str]
     """Description of the connection"""
@@ -146,9 +140,6 @@ class DatabricksConnectionConfig(TypedDict, total=False):
     warehouse_type: Required[Literal["databricks"]]
     """Warehouse type"""
 
-    database_timezone: Optional[str]
-    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
-
     description: Optional[str]
     """Description of the connection"""
 
@@ -180,9 +171,6 @@ class ClickHouseConnectionConfig(TypedDict, total=False):
 
     warehouse_type: Required[Literal["clickhouse"]]
     """Warehouse type"""
-
-    database_timezone: Optional[str]
-    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
 
     description: Optional[str]
     """Description of the connection"""
@@ -218,9 +206,6 @@ class MssqlConnectionConfig(TypedDict, total=False):
 
     warehouse_type: Required[Literal["mssql"]]
     """Warehouse type"""
-
-    database_timezone: Optional[str]
-    """Default timezone for the connection (e.g., 'UTC', 'America/New_York')"""
 
     description: Optional[str]
     """Description of the connection"""

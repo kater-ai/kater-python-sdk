@@ -8,20 +8,16 @@ __all__ = ["ConnectionSyncResponse"]
 
 
 class ConnectionSyncResponse(BaseModel):
-    """Response for syncing views.
+    """Response for starting a schema sync.
 
-    Returned after successfully creating a PR with merged ViewSchema files,
-    or indicating that all views are already up to date.
+    Returned with 202 Accepted when sync workflow is successfully queued.
     """
 
-    views_updated: int
-    """Number of views in the PR"""
+    sync_id: str
+    """Schema sync record ID"""
 
-    message: Optional[str] = None
-    """Status message"""
+    hatchet_run_id: Optional[str] = None
+    """Hatchet workflow run ID"""
 
-    pr_number: Optional[int] = None
-    """GitHub PR number"""
-
-    pr_url: Optional[str] = None
-    """GitHub PR URL"""
+    status: Optional[str] = None
+    """Current sync status"""

@@ -18,7 +18,12 @@ from .databases import (
     AsyncDatabasesResourceWithStreamingResponse,
 )
 from ...._compat import cached_property
-from ....types.v1 import connection_create_params, connection_update_params
+from ....types.v1 import (
+    connection_list_params,
+    connection_create_params,
+    connection_update_params,
+    connection_list_syncs_params,
+)
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
     to_raw_response_wrapper,
@@ -31,7 +36,11 @@ from ....types.v1.connection import Connection
 from ....types.v1.database_config_param import DatabaseConfigParam
 from ....types.v1.connection_list_response import ConnectionListResponse
 from ....types.v1.connection_sync_response import ConnectionSyncResponse
+from ....types.v1.connection_list_syncs_response import ConnectionListSyncsResponse
+from ....types.v1.connection_approve_sync_response import ConnectionApproveSyncResponse
+from ....types.v1.connection_retrieve_schema_response import ConnectionRetrieveSchemaResponse
 from ....types.v1.connection_retrieve_credential_response import ConnectionRetrieveCredentialResponse
+from ....types.v1.connection_retrieve_sync_status_response import ConnectionRetrieveSyncStatusResponse
 
 __all__ = ["ConnectionsResource", "AsyncConnectionsResource"]
 
@@ -70,7 +79,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["postgresql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -84,7 +92,7 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           databases: Databases to include in the connection (at least one required)
@@ -98,8 +106,6 @@ class ConnectionsResource(SyncAPIResource):
           username: Database username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -133,7 +139,6 @@ class ConnectionsResource(SyncAPIResource):
         username: str,
         warehouse: str,
         warehouse_type: Literal["snowflake"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         query_timeout: Optional[int] | Omit = omit,
@@ -146,7 +151,7 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           account: Snowflake account identifier (e.g., 'xy12345.us-east-1')
@@ -164,8 +169,6 @@ class ConnectionsResource(SyncAPIResource):
           warehouse: Compute warehouse name
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -195,7 +198,6 @@ class ConnectionsResource(SyncAPIResource):
         name: str,
         server_hostname: str,
         warehouse_type: Literal["databricks"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         query_timeout: Optional[int] | Omit = omit,
@@ -208,7 +210,7 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           access_token: Databricks personal access token
@@ -222,8 +224,6 @@ class ConnectionsResource(SyncAPIResource):
           server_hostname: Databricks server hostname (e.g., 'dbc-xxx.cloud.databricks.com')
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -253,7 +253,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["clickhouse"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -267,7 +266,7 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           databases: Databases to include in the connection (at least one required)
@@ -281,8 +280,6 @@ class ConnectionsResource(SyncAPIResource):
           username: ClickHouse username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -314,7 +311,6 @@ class ConnectionsResource(SyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["mssql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -328,7 +324,7 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           databases: Databases to include in the connection (at least one required)
@@ -342,8 +338,6 @@ class ConnectionsResource(SyncAPIResource):
           username: SQL Server username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -383,7 +377,6 @@ class ConnectionsResource(SyncAPIResource):
         | Literal["databricks"]
         | Literal["clickhouse"]
         | Literal["mssql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -413,7 +406,6 @@ class ConnectionsResource(SyncAPIResource):
                     "password": password,
                     "username": username,
                     "warehouse_type": warehouse_type,
-                    "database_timezone": database_timezone,
                     "description": description,
                     "label": label,
                     "port": port,
@@ -447,13 +439,11 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Get a single warehouse connection by kater_id.
+        Get a single warehouse connection by ID.
 
-        Returns connection from the database (source of truth) with full hierarchy.
-        Supports content negotiation via Accept header (handled by MultiFormatRoute):
-
-        - application/json (default): Returns JSON response
-        - application/yaml: Returns YAML representation
+        Returns connection from the database (source of truth) with full hierarchy. For
+        YAML output compatible with repository files (using kater_id), use the GET
+        /connections/{id}/schema endpoint instead.
 
         RLS: Filtered to current client (DualClientRLSDB).
 
@@ -537,6 +527,7 @@ class ConnectionsResource(SyncAPIResource):
     def list(
         self,
         *,
+        status: Literal["approved", "pending", "all"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -545,18 +536,36 @@ class ConnectionsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ConnectionListResponse:
         """
-        List all warehouse connections for the client.
+        List warehouse connections for the client.
 
-        Returns connections from the database joined with schema information from
-        GitHub. Connections with pending PRs will have null GitHub fields until merged.
-        Returns empty list if GitHub is not configured.
+        Filter connections by approval status using the `status` query parameter:
+
+        - `approved` (default): Only approved connections (is_pending_approval=false)
+        - `pending`: Only connections awaiting PR approval (is_pending_approval=true)
+        - `all`: All connections regardless of approval status
+
+        Pending connections include their approval PR URLs when available. Returns empty
+        list if GitHub is not configured.
 
         RLS: Filtered to current client (DualClientRLSDB).
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
         return self._get(
             "/api/v1/connections",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"status": status}, connection_list_params.ConnectionListParams),
             ),
             cast_to=ConnectionListResponse,
         )
@@ -600,6 +609,120 @@ class ConnectionsResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=NoneType,
+        )
+
+    def approve(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> Connection:
+        """
+        Merge the PR for a pending connection to finalize it.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._post(
+            f"/api/v1/connections/{connection_id}/approve",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=Connection,
+        )
+
+    def approve_sync(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionApproveSyncResponse:
+        """
+        Merge the PR for a completed schema sync.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return self._post(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}/approve",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionApproveSyncResponse,
+        )
+
+    def list_syncs(
+        self,
+        connection_id: str,
+        *,
+        limit: int | Omit = omit,
+        offset: int | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionListSyncsResponse:
+        """
+        List all schema sync records for a connection.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/sync",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "limit": limit,
+                        "offset": offset,
+                    },
+                    connection_list_syncs_params.ConnectionListSyncsParams,
+                ),
+            ),
+            cast_to=ConnectionListSyncsResponse,
         )
 
     def retrieve_credential(
@@ -647,6 +770,118 @@ class ConnectionsResource(SyncAPIResource):
             ),
         )
 
+    def retrieve_schema(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionRetrieveSchemaResponse:
+        """
+        Get connection as a ConnectionSchema object.
+
+        Returns the connection in the YAML-compatible schema format with full
+        database/schema hierarchy.
+
+        RLS: Automatically filtered by client_id from auth context.
+
+        Raises: ConnectionNotFoundError: If connection not found or deleted.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/schema",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionRetrieveSchemaResponse,
+        )
+
+    def retrieve_sync_status(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionRetrieveSyncStatusResponse:
+        """
+        Get the current status of a schema sync workflow.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionRetrieveSyncStatusResponse,
+        )
+
+    def stream_sync_progress(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> object:
+        """
+        Server-Sent Events stream for real-time sync progress updates.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}/stream",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=object,
+        )
+
     def sync(
         self,
         connection_id: str,
@@ -658,8 +893,9 @@ class ConnectionsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ConnectionSyncResponse:
-        """
-        Sync view schemas from warehouse and create a PR (or update existing).
+        """Start a schema sync workflow.
+
+        Returns 202 Accepted with sync_id.
 
         Args:
           extra_headers: Send extra headers
@@ -715,7 +951,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["postgresql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -729,7 +964,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           databases: Databases to include in the connection (at least one required)
@@ -743,8 +978,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           username: Database username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -778,7 +1011,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         username: str,
         warehouse: str,
         warehouse_type: Literal["snowflake"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         query_timeout: Optional[int] | Omit = omit,
@@ -791,7 +1023,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           account: Snowflake account identifier (e.g., 'xy12345.us-east-1')
@@ -809,8 +1041,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           warehouse: Compute warehouse name
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -840,7 +1070,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         name: str,
         server_hostname: str,
         warehouse_type: Literal["databricks"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         query_timeout: Optional[int] | Omit = omit,
@@ -853,7 +1082,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           access_token: Databricks personal access token
@@ -867,8 +1096,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           server_hostname: Databricks server hostname (e.g., 'dbc-xxx.cloud.databricks.com')
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -898,7 +1125,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["clickhouse"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -912,7 +1138,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           databases: Databases to include in the connection (at least one required)
@@ -926,8 +1152,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           username: ClickHouse username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -959,7 +1183,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         password: str,
         username: str,
         warehouse_type: Literal["mssql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -973,7 +1196,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Create a new warehouse connection.
+        Create a new warehouse connection with PR approval flow.
 
         Args:
           databases: Databases to include in the connection (at least one required)
@@ -987,8 +1210,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
           username: SQL Server username
 
           warehouse_type: Warehouse type
-
-          database_timezone: Default timezone for the connection (e.g., 'UTC', 'America/New_York')
 
           description: Description of the connection
 
@@ -1028,7 +1249,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
         | Literal["databricks"]
         | Literal["clickhouse"]
         | Literal["mssql"],
-        database_timezone: Optional[str] | Omit = omit,
         description: Optional[str] | Omit = omit,
         label: Optional[str] | Omit = omit,
         port: int | Omit = omit,
@@ -1058,7 +1278,6 @@ class AsyncConnectionsResource(AsyncAPIResource):
                     "password": password,
                     "username": username,
                     "warehouse_type": warehouse_type,
-                    "database_timezone": database_timezone,
                     "description": description,
                     "label": label,
                     "port": port,
@@ -1092,13 +1311,11 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> Connection:
         """
-        Get a single warehouse connection by kater_id.
+        Get a single warehouse connection by ID.
 
-        Returns connection from the database (source of truth) with full hierarchy.
-        Supports content negotiation via Accept header (handled by MultiFormatRoute):
-
-        - application/json (default): Returns JSON response
-        - application/yaml: Returns YAML representation
+        Returns connection from the database (source of truth) with full hierarchy. For
+        YAML output compatible with repository files (using kater_id), use the GET
+        /connections/{id}/schema endpoint instead.
 
         RLS: Filtered to current client (DualClientRLSDB).
 
@@ -1182,6 +1399,7 @@ class AsyncConnectionsResource(AsyncAPIResource):
     async def list(
         self,
         *,
+        status: Literal["approved", "pending", "all"] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -1190,18 +1408,36 @@ class AsyncConnectionsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ConnectionListResponse:
         """
-        List all warehouse connections for the client.
+        List warehouse connections for the client.
 
-        Returns connections from the database joined with schema information from
-        GitHub. Connections with pending PRs will have null GitHub fields until merged.
-        Returns empty list if GitHub is not configured.
+        Filter connections by approval status using the `status` query parameter:
+
+        - `approved` (default): Only approved connections (is_pending_approval=false)
+        - `pending`: Only connections awaiting PR approval (is_pending_approval=true)
+        - `all`: All connections regardless of approval status
+
+        Pending connections include their approval PR URLs when available. Returns empty
+        list if GitHub is not configured.
 
         RLS: Filtered to current client (DualClientRLSDB).
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
         """
         return await self._get(
             "/api/v1/connections",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"status": status}, connection_list_params.ConnectionListParams),
             ),
             cast_to=ConnectionListResponse,
         )
@@ -1245,6 +1481,120 @@ class AsyncConnectionsResource(AsyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=NoneType,
+        )
+
+    async def approve(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> Connection:
+        """
+        Merge the PR for a pending connection to finalize it.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._post(
+            f"/api/v1/connections/{connection_id}/approve",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=Connection,
+        )
+
+    async def approve_sync(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionApproveSyncResponse:
+        """
+        Merge the PR for a completed schema sync.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return await self._post(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}/approve",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionApproveSyncResponse,
+        )
+
+    async def list_syncs(
+        self,
+        connection_id: str,
+        *,
+        limit: int | Omit = omit,
+        offset: int | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionListSyncsResponse:
+        """
+        List all schema sync records for a connection.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/sync",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "limit": limit,
+                        "offset": offset,
+                    },
+                    connection_list_syncs_params.ConnectionListSyncsParams,
+                ),
+            ),
+            cast_to=ConnectionListSyncsResponse,
         )
 
     async def retrieve_credential(
@@ -1292,6 +1642,118 @@ class AsyncConnectionsResource(AsyncAPIResource):
             ),
         )
 
+    async def retrieve_schema(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionRetrieveSchemaResponse:
+        """
+        Get connection as a ConnectionSchema object.
+
+        Returns the connection in the YAML-compatible schema format with full
+        database/schema hierarchy.
+
+        RLS: Automatically filtered by client_id from auth context.
+
+        Raises: ConnectionNotFoundError: If connection not found or deleted.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/schema",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionRetrieveSchemaResponse,
+        )
+
+    async def retrieve_sync_status(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionRetrieveSyncStatusResponse:
+        """
+        Get the current status of a schema sync workflow.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionRetrieveSyncStatusResponse,
+        )
+
+    async def stream_sync_progress(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> object:
+        """
+        Server-Sent Events stream for real-time sync progress updates.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}/stream",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=object,
+        )
+
     async def sync(
         self,
         connection_id: str,
@@ -1303,8 +1765,9 @@ class AsyncConnectionsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ConnectionSyncResponse:
-        """
-        Sync view schemas from warehouse and create a PR (or update existing).
+        """Start a schema sync workflow.
+
+        Returns 202 Accepted with sync_id.
 
         Args:
           extra_headers: Send extra headers
@@ -1345,8 +1808,26 @@ class ConnectionsResourceWithRawResponse:
         self.delete = to_raw_response_wrapper(
             connections.delete,
         )
+        self.approve = to_raw_response_wrapper(
+            connections.approve,
+        )
+        self.approve_sync = to_raw_response_wrapper(
+            connections.approve_sync,
+        )
+        self.list_syncs = to_raw_response_wrapper(
+            connections.list_syncs,
+        )
         self.retrieve_credential = to_raw_response_wrapper(
             connections.retrieve_credential,
+        )
+        self.retrieve_schema = to_raw_response_wrapper(
+            connections.retrieve_schema,
+        )
+        self.retrieve_sync_status = to_raw_response_wrapper(
+            connections.retrieve_sync_status,
+        )
+        self.stream_sync_progress = to_raw_response_wrapper(
+            connections.stream_sync_progress,
         )
         self.sync = to_raw_response_wrapper(
             connections.sync,
@@ -1376,8 +1857,26 @@ class AsyncConnectionsResourceWithRawResponse:
         self.delete = async_to_raw_response_wrapper(
             connections.delete,
         )
+        self.approve = async_to_raw_response_wrapper(
+            connections.approve,
+        )
+        self.approve_sync = async_to_raw_response_wrapper(
+            connections.approve_sync,
+        )
+        self.list_syncs = async_to_raw_response_wrapper(
+            connections.list_syncs,
+        )
         self.retrieve_credential = async_to_raw_response_wrapper(
             connections.retrieve_credential,
+        )
+        self.retrieve_schema = async_to_raw_response_wrapper(
+            connections.retrieve_schema,
+        )
+        self.retrieve_sync_status = async_to_raw_response_wrapper(
+            connections.retrieve_sync_status,
+        )
+        self.stream_sync_progress = async_to_raw_response_wrapper(
+            connections.stream_sync_progress,
         )
         self.sync = async_to_raw_response_wrapper(
             connections.sync,
@@ -1407,8 +1906,26 @@ class ConnectionsResourceWithStreamingResponse:
         self.delete = to_streamed_response_wrapper(
             connections.delete,
         )
+        self.approve = to_streamed_response_wrapper(
+            connections.approve,
+        )
+        self.approve_sync = to_streamed_response_wrapper(
+            connections.approve_sync,
+        )
+        self.list_syncs = to_streamed_response_wrapper(
+            connections.list_syncs,
+        )
         self.retrieve_credential = to_streamed_response_wrapper(
             connections.retrieve_credential,
+        )
+        self.retrieve_schema = to_streamed_response_wrapper(
+            connections.retrieve_schema,
+        )
+        self.retrieve_sync_status = to_streamed_response_wrapper(
+            connections.retrieve_sync_status,
+        )
+        self.stream_sync_progress = to_streamed_response_wrapper(
+            connections.stream_sync_progress,
         )
         self.sync = to_streamed_response_wrapper(
             connections.sync,
@@ -1438,8 +1955,26 @@ class AsyncConnectionsResourceWithStreamingResponse:
         self.delete = async_to_streamed_response_wrapper(
             connections.delete,
         )
+        self.approve = async_to_streamed_response_wrapper(
+            connections.approve,
+        )
+        self.approve_sync = async_to_streamed_response_wrapper(
+            connections.approve_sync,
+        )
+        self.list_syncs = async_to_streamed_response_wrapper(
+            connections.list_syncs,
+        )
         self.retrieve_credential = async_to_streamed_response_wrapper(
             connections.retrieve_credential,
+        )
+        self.retrieve_schema = async_to_streamed_response_wrapper(
+            connections.retrieve_schema,
+        )
+        self.retrieve_sync_status = async_to_streamed_response_wrapper(
+            connections.retrieve_sync_status,
+        )
+        self.stream_sync_progress = async_to_streamed_response_wrapper(
+            connections.stream_sync_progress,
         )
         self.sync = async_to_streamed_response_wrapper(
             connections.sync,

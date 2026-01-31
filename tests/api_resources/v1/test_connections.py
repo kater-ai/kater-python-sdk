@@ -13,7 +13,11 @@ from kater.types.v1 import (
     Connection,
     ConnectionListResponse,
     ConnectionSyncResponse,
+    ConnectionListSyncsResponse,
+    ConnectionApproveSyncResponse,
+    ConnectionRetrieveSchemaResponse,
     ConnectionRetrieveCredentialResponse,
+    ConnectionRetrieveSyncStatusResponse,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -59,7 +63,6 @@ class TestConnections:
             password="password",
             username="username",
             warehouse_type="postgresql",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
@@ -151,7 +154,6 @@ class TestConnections:
             username="username",
             warehouse="warehouse",
             warehouse_type="snowflake",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             query_timeout=1,
@@ -242,7 +244,6 @@ class TestConnections:
             name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             query_timeout=1,
@@ -323,7 +324,6 @@ class TestConnections:
             password="password",
             username="username",
             warehouse_type="clickhouse",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
@@ -405,7 +405,6 @@ class TestConnections:
             password="password",
             username="username",
             warehouse_type="mssql",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
@@ -553,6 +552,14 @@ class TestConnections:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    def test_method_list_with_all_params(self, client: Kater) -> None:
+        connection = client.v1.connections.list(
+            status="approved",
+        )
+        assert_matches_type(ConnectionListResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     def test_raw_response_list(self, client: Kater) -> None:
         response = client.v1.connections.with_raw_response.list()
 
@@ -617,6 +624,152 @@ class TestConnections:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    def test_method_approve(self, client: Kater) -> None:
+        connection = client.v1.connections.approve(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_approve(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.approve(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_approve(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.approve(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(Connection, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_approve(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.approve(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_approve_sync(self, client: Kater) -> None:
+        connection = client.v1.connections.approve_sync(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ConnectionApproveSyncResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_approve_sync(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.approve_sync(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionApproveSyncResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_approve_sync(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.approve_sync(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionApproveSyncResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_approve_sync(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.approve_sync(
+                sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                connection_id="",
+            )
+
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `sync_id` but received ''"):
+            client.v1.connections.with_raw_response.approve_sync(
+                sync_id="",
+                connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_list_syncs(self, client: Kater) -> None:
+        connection = client.v1.connections.list_syncs(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ConnectionListSyncsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_list_syncs_with_all_params(self, client: Kater) -> None:
+        connection = client.v1.connections.list_syncs(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            limit=0,
+            offset=0,
+        )
+        assert_matches_type(ConnectionListSyncsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_list_syncs(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.list_syncs(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionListSyncsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_list_syncs(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.list_syncs(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionListSyncsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_list_syncs(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.list_syncs(
+                connection_id="",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     def test_method_retrieve_credential(self, client: Kater) -> None:
         connection = client.v1.connections.retrieve_credential(
             "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -655,6 +808,152 @@ class TestConnections:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
             client.v1.connections.with_raw_response.retrieve_credential(
                 "",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_retrieve_schema(self, client: Kater) -> None:
+        connection = client.v1.connections.retrieve_schema(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ConnectionRetrieveSchemaResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_retrieve_schema(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.retrieve_schema(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionRetrieveSchemaResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_retrieve_schema(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.retrieve_schema(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionRetrieveSchemaResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_retrieve_schema(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.retrieve_schema(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_retrieve_sync_status(self, client: Kater) -> None:
+        connection = client.v1.connections.retrieve_sync_status(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ConnectionRetrieveSyncStatusResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_retrieve_sync_status(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.retrieve_sync_status(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionRetrieveSyncStatusResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_retrieve_sync_status(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.retrieve_sync_status(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionRetrieveSyncStatusResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_retrieve_sync_status(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.retrieve_sync_status(
+                sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                connection_id="",
+            )
+
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `sync_id` but received ''"):
+            client.v1.connections.with_raw_response.retrieve_sync_status(
+                sync_id="",
+                connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_stream_sync_progress(self, client: Kater) -> None:
+        connection = client.v1.connections.stream_sync_progress(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(object, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_stream_sync_progress(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.stream_sync_progress(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(object, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_stream_sync_progress(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.stream_sync_progress(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(object, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_stream_sync_progress(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.stream_sync_progress(
+                sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                connection_id="",
+            )
+
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `sync_id` but received ''"):
+            client.v1.connections.with_raw_response.stream_sync_progress(
+                sync_id="",
+                connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             )
 
     @pytest.mark.skip(reason="Prism tests are disabled")
@@ -742,7 +1041,6 @@ class TestAsyncConnections:
             password="password",
             username="username",
             warehouse_type="postgresql",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
@@ -834,7 +1132,6 @@ class TestAsyncConnections:
             username="username",
             warehouse="warehouse",
             warehouse_type="snowflake",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             query_timeout=1,
@@ -925,7 +1222,6 @@ class TestAsyncConnections:
             name="name",
             server_hostname="server_hostname",
             warehouse_type="databricks",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             query_timeout=1,
@@ -1006,7 +1302,6 @@ class TestAsyncConnections:
             password="password",
             username="username",
             warehouse_type="clickhouse",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
@@ -1088,7 +1383,6 @@ class TestAsyncConnections:
             password="password",
             username="username",
             warehouse_type="mssql",
-            database_timezone="database_timezone",
             description="description",
             label="label",
             port=1,
@@ -1236,6 +1530,14 @@ class TestAsyncConnections:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    async def test_method_list_with_all_params(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.list(
+            status="approved",
+        )
+        assert_matches_type(ConnectionListResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     async def test_raw_response_list(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.connections.with_raw_response.list()
 
@@ -1300,6 +1602,152 @@ class TestAsyncConnections:
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
+    async def test_method_approve(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.approve(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_approve(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.approve(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(Connection, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_approve(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.approve(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(Connection, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_approve(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.approve(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_approve_sync(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.approve_sync(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ConnectionApproveSyncResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_approve_sync(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.approve_sync(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionApproveSyncResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_approve_sync(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.approve_sync(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionApproveSyncResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_approve_sync(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.approve_sync(
+                sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                connection_id="",
+            )
+
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `sync_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.approve_sync(
+                sync_id="",
+                connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_list_syncs(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.list_syncs(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ConnectionListSyncsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_list_syncs_with_all_params(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.list_syncs(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            limit=0,
+            offset=0,
+        )
+        assert_matches_type(ConnectionListSyncsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_list_syncs(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.list_syncs(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionListSyncsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_list_syncs(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.list_syncs(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionListSyncsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_list_syncs(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.list_syncs(
+                connection_id="",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
     async def test_method_retrieve_credential(self, async_client: AsyncKater) -> None:
         connection = await async_client.v1.connections.retrieve_credential(
             "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -1338,6 +1786,152 @@ class TestAsyncConnections:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
             await async_client.v1.connections.with_raw_response.retrieve_credential(
                 "",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_retrieve_schema(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.retrieve_schema(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ConnectionRetrieveSchemaResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_retrieve_schema(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.retrieve_schema(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionRetrieveSchemaResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_retrieve_schema(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.retrieve_schema(
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionRetrieveSchemaResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_retrieve_schema(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.retrieve_schema(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_retrieve_sync_status(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.retrieve_sync_status(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ConnectionRetrieveSyncStatusResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_retrieve_sync_status(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.retrieve_sync_status(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionRetrieveSyncStatusResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_retrieve_sync_status(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.retrieve_sync_status(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionRetrieveSyncStatusResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_retrieve_sync_status(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.retrieve_sync_status(
+                sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                connection_id="",
+            )
+
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `sync_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.retrieve_sync_status(
+                sync_id="",
+                connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_stream_sync_progress(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.stream_sync_progress(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(object, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_stream_sync_progress(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.stream_sync_progress(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(object, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_stream_sync_progress(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.stream_sync_progress(
+            sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(object, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_stream_sync_progress(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.stream_sync_progress(
+                sync_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                connection_id="",
+            )
+
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `sync_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.stream_sync_progress(
+                sync_id="",
+                connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             )
 
     @pytest.mark.skip(reason="Prism tests are disabled")
