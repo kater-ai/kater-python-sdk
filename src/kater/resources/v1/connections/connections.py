@@ -18,7 +18,12 @@ from .databases import (
     AsyncDatabasesResourceWithStreamingResponse,
 )
 from ...._compat import cached_property
-from ....types.v1 import connection_list_params, connection_create_params, connection_update_params
+from ....types.v1 import (
+    connection_list_params,
+    connection_create_params,
+    connection_update_params,
+    connection_list_syncs_params,
+)
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
     to_raw_response_wrapper,
@@ -31,8 +36,11 @@ from ....types.v1.connection import Connection
 from ....types.v1.database_config_param import DatabaseConfigParam
 from ....types.v1.connection_list_response import ConnectionListResponse
 from ....types.v1.connection_sync_response import ConnectionSyncResponse
+from ....types.v1.connection_list_syncs_response import ConnectionListSyncsResponse
+from ....types.v1.connection_approve_sync_response import ConnectionApproveSyncResponse
 from ....types.v1.connection_retrieve_schema_response import ConnectionRetrieveSchemaResponse
 from ....types.v1.connection_retrieve_credential_response import ConnectionRetrieveCredentialResponse
+from ....types.v1.connection_retrieve_sync_status_response import ConnectionRetrieveSyncStatusResponse
 
 __all__ = ["ConnectionsResource", "AsyncConnectionsResource"]
 
@@ -636,6 +644,87 @@ class ConnectionsResource(SyncAPIResource):
             cast_to=Connection,
         )
 
+    def approve_sync(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionApproveSyncResponse:
+        """
+        Merge the PR for a completed schema sync.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return self._post(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}/approve",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionApproveSyncResponse,
+        )
+
+    def list_syncs(
+        self,
+        connection_id: str,
+        *,
+        limit: int | Omit = omit,
+        offset: int | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionListSyncsResponse:
+        """
+        List all schema sync records for a connection.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/sync",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "limit": limit,
+                        "offset": offset,
+                    },
+                    connection_list_syncs_params.ConnectionListSyncsParams,
+                ),
+            ),
+            cast_to=ConnectionListSyncsResponse,
+        )
+
     def retrieve_credential(
         self,
         connection_id: str,
@@ -721,6 +810,78 @@ class ConnectionsResource(SyncAPIResource):
             cast_to=ConnectionRetrieveSchemaResponse,
         )
 
+    def retrieve_sync_status(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionRetrieveSyncStatusResponse:
+        """
+        Get the current status of a schema sync workflow.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionRetrieveSyncStatusResponse,
+        )
+
+    def stream_sync_progress(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> object:
+        """
+        Server-Sent Events stream for real-time sync progress updates.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}/stream",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=object,
+        )
+
     def sync(
         self,
         connection_id: str,
@@ -732,8 +893,9 @@ class ConnectionsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ConnectionSyncResponse:
-        """
-        Sync view schemas from warehouse and create a PR (or update existing).
+        """Start a schema sync workflow.
+
+        Returns 202 Accepted with sync_id.
 
         Args:
           extra_headers: Send extra headers
@@ -1354,6 +1516,87 @@ class AsyncConnectionsResource(AsyncAPIResource):
             cast_to=Connection,
         )
 
+    async def approve_sync(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionApproveSyncResponse:
+        """
+        Merge the PR for a completed schema sync.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return await self._post(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}/approve",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionApproveSyncResponse,
+        )
+
+    async def list_syncs(
+        self,
+        connection_id: str,
+        *,
+        limit: int | Omit = omit,
+        offset: int | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionListSyncsResponse:
+        """
+        List all schema sync records for a connection.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/sync",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "limit": limit,
+                        "offset": offset,
+                    },
+                    connection_list_syncs_params.ConnectionListSyncsParams,
+                ),
+            ),
+            cast_to=ConnectionListSyncsResponse,
+        )
+
     async def retrieve_credential(
         self,
         connection_id: str,
@@ -1439,6 +1682,78 @@ class AsyncConnectionsResource(AsyncAPIResource):
             cast_to=ConnectionRetrieveSchemaResponse,
         )
 
+    async def retrieve_sync_status(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionRetrieveSyncStatusResponse:
+        """
+        Get the current status of a schema sync workflow.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionRetrieveSyncStatusResponse,
+        )
+
+    async def stream_sync_progress(
+        self,
+        sync_id: str,
+        *,
+        connection_id: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> object:
+        """
+        Server-Sent Events stream for real-time sync progress updates.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        if not sync_id:
+            raise ValueError(f"Expected a non-empty value for `sync_id` but received {sync_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/sync/{sync_id}/stream",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=object,
+        )
+
     async def sync(
         self,
         connection_id: str,
@@ -1450,8 +1765,9 @@ class AsyncConnectionsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ConnectionSyncResponse:
-        """
-        Sync view schemas from warehouse and create a PR (or update existing).
+        """Start a schema sync workflow.
+
+        Returns 202 Accepted with sync_id.
 
         Args:
           extra_headers: Send extra headers
@@ -1495,11 +1811,23 @@ class ConnectionsResourceWithRawResponse:
         self.approve = to_raw_response_wrapper(
             connections.approve,
         )
+        self.approve_sync = to_raw_response_wrapper(
+            connections.approve_sync,
+        )
+        self.list_syncs = to_raw_response_wrapper(
+            connections.list_syncs,
+        )
         self.retrieve_credential = to_raw_response_wrapper(
             connections.retrieve_credential,
         )
         self.retrieve_schema = to_raw_response_wrapper(
             connections.retrieve_schema,
+        )
+        self.retrieve_sync_status = to_raw_response_wrapper(
+            connections.retrieve_sync_status,
+        )
+        self.stream_sync_progress = to_raw_response_wrapper(
+            connections.stream_sync_progress,
         )
         self.sync = to_raw_response_wrapper(
             connections.sync,
@@ -1532,11 +1860,23 @@ class AsyncConnectionsResourceWithRawResponse:
         self.approve = async_to_raw_response_wrapper(
             connections.approve,
         )
+        self.approve_sync = async_to_raw_response_wrapper(
+            connections.approve_sync,
+        )
+        self.list_syncs = async_to_raw_response_wrapper(
+            connections.list_syncs,
+        )
         self.retrieve_credential = async_to_raw_response_wrapper(
             connections.retrieve_credential,
         )
         self.retrieve_schema = async_to_raw_response_wrapper(
             connections.retrieve_schema,
+        )
+        self.retrieve_sync_status = async_to_raw_response_wrapper(
+            connections.retrieve_sync_status,
+        )
+        self.stream_sync_progress = async_to_raw_response_wrapper(
+            connections.stream_sync_progress,
         )
         self.sync = async_to_raw_response_wrapper(
             connections.sync,
@@ -1569,11 +1909,23 @@ class ConnectionsResourceWithStreamingResponse:
         self.approve = to_streamed_response_wrapper(
             connections.approve,
         )
+        self.approve_sync = to_streamed_response_wrapper(
+            connections.approve_sync,
+        )
+        self.list_syncs = to_streamed_response_wrapper(
+            connections.list_syncs,
+        )
         self.retrieve_credential = to_streamed_response_wrapper(
             connections.retrieve_credential,
         )
         self.retrieve_schema = to_streamed_response_wrapper(
             connections.retrieve_schema,
+        )
+        self.retrieve_sync_status = to_streamed_response_wrapper(
+            connections.retrieve_sync_status,
+        )
+        self.stream_sync_progress = to_streamed_response_wrapper(
+            connections.stream_sync_progress,
         )
         self.sync = to_streamed_response_wrapper(
             connections.sync,
@@ -1606,11 +1958,23 @@ class AsyncConnectionsResourceWithStreamingResponse:
         self.approve = async_to_streamed_response_wrapper(
             connections.approve,
         )
+        self.approve_sync = async_to_streamed_response_wrapper(
+            connections.approve_sync,
+        )
+        self.list_syncs = async_to_streamed_response_wrapper(
+            connections.list_syncs,
+        )
         self.retrieve_credential = async_to_streamed_response_wrapper(
             connections.retrieve_credential,
         )
         self.retrieve_schema = async_to_streamed_response_wrapper(
             connections.retrieve_schema,
+        )
+        self.retrieve_sync_status = async_to_streamed_response_wrapper(
+            connections.retrieve_sync_status,
+        )
+        self.stream_sync_progress = async_to_streamed_response_wrapper(
+            connections.stream_sync_progress,
         )
         self.sync = async_to_streamed_response_wrapper(
             connections.sync,

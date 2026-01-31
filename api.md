@@ -9,8 +9,11 @@ from kater.types.v1 import (
     Connection,
     DatabaseConfig,
     ConnectionListResponse,
+    ConnectionApproveSyncResponse,
+    ConnectionListSyncsResponse,
     ConnectionRetrieveCredentialResponse,
     ConnectionRetrieveSchemaResponse,
+    ConnectionRetrieveSyncStatusResponse,
     ConnectionSyncResponse,
 )
 ```
@@ -23,8 +26,12 @@ Methods:
 - <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list</a>(\*\*<a href="src/kater/types/v1/connection_list_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_response.py">ConnectionListResponse</a></code>
 - <code title="delete /api/v1/connections/{connection_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">delete</a>(connection_id) -> None</code>
 - <code title="post /api/v1/connections/{connection_id}/approve">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">approve</a>(connection_id) -> <a href="./src/kater/types/v1/connection.py">Connection</a></code>
+- <code title="post /api/v1/connections/{connection_id}/sync/{sync_id}/approve">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">approve_sync</a>(sync_id, \*, connection_id) -> <a href="./src/kater/types/v1/connection_approve_sync_response.py">ConnectionApproveSyncResponse</a></code>
+- <code title="get /api/v1/connections/{connection_id}/sync">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list_syncs</a>(connection_id, \*\*<a href="src/kater/types/v1/connection_list_syncs_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_syncs_response.py">ConnectionListSyncsResponse</a></code>
 - <code title="get /api/v1/connections/{connection_id}/credential">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">retrieve_credential</a>(connection_id) -> <a href="./src/kater/types/v1/connection_retrieve_credential_response.py">ConnectionRetrieveCredentialResponse</a></code>
 - <code title="get /api/v1/connections/{connection_id}/schema">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">retrieve_schema</a>(connection_id) -> <a href="./src/kater/types/v1/connection_retrieve_schema_response.py">ConnectionRetrieveSchemaResponse</a></code>
+- <code title="get /api/v1/connections/{connection_id}/sync/{sync_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">retrieve_sync_status</a>(sync_id, \*, connection_id) -> <a href="./src/kater/types/v1/connection_retrieve_sync_status_response.py">ConnectionRetrieveSyncStatusResponse</a></code>
+- <code title="get /api/v1/connections/{connection_id}/sync/{sync_id}/stream">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">stream_sync_progress</a>(sync_id, \*, connection_id) -> object</code>
 - <code title="post /api/v1/connections/{connection_id}/sync">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">sync</a>(connection_id) -> <a href="./src/kater/types/v1/connection_sync_response.py">ConnectionSyncResponse</a></code>
 
 ### Databases
