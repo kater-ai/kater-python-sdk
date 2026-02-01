@@ -78,8 +78,11 @@ class ConnectionApproveSyncResponse(BaseModel):
     views_deleted: Optional[int] = None
     """Number of views deleted"""
 
+    views_inserted: Optional[int] = None
+    """Number of new views added"""
+
     views_renamed: Optional[int] = None
-    """Number of views renamed"""
+    """Number of views renamed (subset of updated)"""
 
     views_updated: Optional[int] = None
-    """Number of views updated"""
+    """Number of views updated (dimension changes or renames)"""

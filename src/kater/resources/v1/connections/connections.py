@@ -7,6 +7,14 @@ from typing_extensions import Literal, overload
 
 import httpx
 
+from .views import (
+    ViewsResource,
+    AsyncViewsResource,
+    ViewsResourceWithRawResponse,
+    AsyncViewsResourceWithRawResponse,
+    ViewsResourceWithStreamingResponse,
+    AsyncViewsResourceWithStreamingResponse,
+)
 from ...._types import Body, Omit, Query, Headers, NoneType, NotGiven, omit, not_given
 from ...._utils import required_args, maybe_transform, async_maybe_transform
 from .databases import (
@@ -49,6 +57,10 @@ class ConnectionsResource(SyncAPIResource):
     @cached_property
     def databases(self) -> DatabasesResource:
         return DatabasesResource(self._client)
+
+    @cached_property
+    def views(self) -> ViewsResource:
+        return ViewsResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> ConnectionsResourceWithRawResponse:
@@ -921,6 +933,10 @@ class AsyncConnectionsResource(AsyncAPIResource):
     @cached_property
     def databases(self) -> AsyncDatabasesResource:
         return AsyncDatabasesResource(self._client)
+
+    @cached_property
+    def views(self) -> AsyncViewsResource:
+        return AsyncViewsResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncConnectionsResourceWithRawResponse:
@@ -1837,6 +1853,10 @@ class ConnectionsResourceWithRawResponse:
     def databases(self) -> DatabasesResourceWithRawResponse:
         return DatabasesResourceWithRawResponse(self._connections.databases)
 
+    @cached_property
+    def views(self) -> ViewsResourceWithRawResponse:
+        return ViewsResourceWithRawResponse(self._connections.views)
+
 
 class AsyncConnectionsResourceWithRawResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -1885,6 +1905,10 @@ class AsyncConnectionsResourceWithRawResponse:
     @cached_property
     def databases(self) -> AsyncDatabasesResourceWithRawResponse:
         return AsyncDatabasesResourceWithRawResponse(self._connections.databases)
+
+    @cached_property
+    def views(self) -> AsyncViewsResourceWithRawResponse:
+        return AsyncViewsResourceWithRawResponse(self._connections.views)
 
 
 class ConnectionsResourceWithStreamingResponse:
@@ -1935,6 +1959,10 @@ class ConnectionsResourceWithStreamingResponse:
     def databases(self) -> DatabasesResourceWithStreamingResponse:
         return DatabasesResourceWithStreamingResponse(self._connections.databases)
 
+    @cached_property
+    def views(self) -> ViewsResourceWithStreamingResponse:
+        return ViewsResourceWithStreamingResponse(self._connections.views)
+
 
 class AsyncConnectionsResourceWithStreamingResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -1983,3 +2011,7 @@ class AsyncConnectionsResourceWithStreamingResponse:
     @cached_property
     def databases(self) -> AsyncDatabasesResourceWithStreamingResponse:
         return AsyncDatabasesResourceWithStreamingResponse(self._connections.databases)
+
+    @cached_property
+    def views(self) -> AsyncViewsResourceWithStreamingResponse:
+        return AsyncViewsResourceWithStreamingResponse(self._connections.views)
