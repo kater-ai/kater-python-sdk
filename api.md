@@ -40,6 +40,19 @@ Methods:
 
 - <code title="delete /api/v1/connections/{connection_id}/databases/{database_id}/schemas/{schema_id}">client.v1.connections.databases.<a href="./src/kater/resources/v1/connections/databases.py">delete_schema</a>(schema_id, \*, connection_id, database_id) -> None</code>
 
+### Views
+
+Types:
+
+```python
+from kater.types.v1.connections import ViewRetrieveResponse, ViewListResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/connections/{connection_id}/sync/{sync_id}/views/{file_name}">client.v1.connections.views.<a href="./src/kater/resources/v1/connections/views.py">retrieve</a>(file_name, \*, connection_id, sync_id) -> <a href="./src/kater/types/v1/connections/view_retrieve_response.py">ViewRetrieveResponse</a></code>
+- <code title="get /api/v1/connections/{connection_id}/sync/{sync_id}/views">client.v1.connections.views.<a href="./src/kater/resources/v1/connections/views.py">list</a>(sync_id, \*, connection_id) -> <a href="./src/kater/types/v1/connections/view_list_response.py">ViewListResponse</a></code>
+
 ## GitHub
 
 Types:
