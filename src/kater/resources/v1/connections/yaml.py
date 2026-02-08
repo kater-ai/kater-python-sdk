@@ -15,9 +15,9 @@ from ...._response import (
     async_to_streamed_response_wrapper,
 )
 from ...._base_client import make_request_options
-from ....types.v1.connections import yaml_commit_yaml_params
-from ....types.v1.connections.yaml_commit_yaml_response import YamlCommitYamlResponse
-from ....types.v1.connections.yaml_retrieve_yaml_response import YamlRetrieveYamlResponse
+from ....types.v1.connections import yaml_commit_params
+from ....types.v1.connections.yaml_commit_response import YamlCommitResponse
+from ....types.v1.connections.yaml_retrieve_response import YamlRetrieveResponse
 
 __all__ = ["YamlResource", "AsyncYamlResource"]
 
@@ -42,7 +42,40 @@ class YamlResource(SyncAPIResource):
         """
         return YamlResourceWithStreamingResponse(self)
 
-    def commit_yaml(
+    def retrieve(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> YamlRetrieveResponse:
+        """
+        Read connection.yaml from the main branch of the repo.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._get(
+            f"/api/v1/connections/{connection_id}/yaml",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=YamlRetrieveResponse,
+        )
+
+    def commit(
         self,
         connection_id: str,
         *,
@@ -54,7 +87,7 @@ class YamlResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> YamlCommitYamlResponse:
+    ) -> YamlCommitResponse:
         """
         Commit updated YAML to a new branch and create a PR.
 
@@ -80,45 +113,12 @@ class YamlResource(SyncAPIResource):
                     "yaml_content": yaml_content,
                     "auto_merge": auto_merge,
                 },
-                yaml_commit_yaml_params.YamlCommitYamlParams,
+                yaml_commit_params.YamlCommitParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=YamlCommitYamlResponse,
-        )
-
-    def retrieve_yaml(
-        self,
-        connection_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> YamlRetrieveYamlResponse:
-        """
-        Read connection.yaml from the main branch of the repo.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return self._get(
-            f"/api/v1/connections/{connection_id}/yaml",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=YamlRetrieveYamlResponse,
+            cast_to=YamlCommitResponse,
         )
 
 
@@ -142,7 +142,40 @@ class AsyncYamlResource(AsyncAPIResource):
         """
         return AsyncYamlResourceWithStreamingResponse(self)
 
-    async def commit_yaml(
+    async def retrieve(
+        self,
+        connection_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> YamlRetrieveResponse:
+        """
+        Read connection.yaml from the main branch of the repo.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._get(
+            f"/api/v1/connections/{connection_id}/yaml",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=YamlRetrieveResponse,
+        )
+
+    async def commit(
         self,
         connection_id: str,
         *,
@@ -154,7 +187,7 @@ class AsyncYamlResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> YamlCommitYamlResponse:
+    ) -> YamlCommitResponse:
         """
         Commit updated YAML to a new branch and create a PR.
 
@@ -180,45 +213,12 @@ class AsyncYamlResource(AsyncAPIResource):
                     "yaml_content": yaml_content,
                     "auto_merge": auto_merge,
                 },
-                yaml_commit_yaml_params.YamlCommitYamlParams,
+                yaml_commit_params.YamlCommitParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=YamlCommitYamlResponse,
-        )
-
-    async def retrieve_yaml(
-        self,
-        connection_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> YamlRetrieveYamlResponse:
-        """
-        Read connection.yaml from the main branch of the repo.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return await self._get(
-            f"/api/v1/connections/{connection_id}/yaml",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=YamlRetrieveYamlResponse,
+            cast_to=YamlCommitResponse,
         )
 
 
@@ -226,11 +226,11 @@ class YamlResourceWithRawResponse:
     def __init__(self, yaml: YamlResource) -> None:
         self._yaml = yaml
 
-        self.commit_yaml = to_raw_response_wrapper(
-            yaml.commit_yaml,
+        self.retrieve = to_raw_response_wrapper(
+            yaml.retrieve,
         )
-        self.retrieve_yaml = to_raw_response_wrapper(
-            yaml.retrieve_yaml,
+        self.commit = to_raw_response_wrapper(
+            yaml.commit,
         )
 
 
@@ -238,11 +238,11 @@ class AsyncYamlResourceWithRawResponse:
     def __init__(self, yaml: AsyncYamlResource) -> None:
         self._yaml = yaml
 
-        self.commit_yaml = async_to_raw_response_wrapper(
-            yaml.commit_yaml,
+        self.retrieve = async_to_raw_response_wrapper(
+            yaml.retrieve,
         )
-        self.retrieve_yaml = async_to_raw_response_wrapper(
-            yaml.retrieve_yaml,
+        self.commit = async_to_raw_response_wrapper(
+            yaml.commit,
         )
 
 
@@ -250,11 +250,11 @@ class YamlResourceWithStreamingResponse:
     def __init__(self, yaml: YamlResource) -> None:
         self._yaml = yaml
 
-        self.commit_yaml = to_streamed_response_wrapper(
-            yaml.commit_yaml,
+        self.retrieve = to_streamed_response_wrapper(
+            yaml.retrieve,
         )
-        self.retrieve_yaml = to_streamed_response_wrapper(
-            yaml.retrieve_yaml,
+        self.commit = to_streamed_response_wrapper(
+            yaml.commit,
         )
 
 
@@ -262,9 +262,9 @@ class AsyncYamlResourceWithStreamingResponse:
     def __init__(self, yaml: AsyncYamlResource) -> None:
         self._yaml = yaml
 
-        self.commit_yaml = async_to_streamed_response_wrapper(
-            yaml.commit_yaml,
+        self.retrieve = async_to_streamed_response_wrapper(
+            yaml.retrieve,
         )
-        self.retrieve_yaml = async_to_streamed_response_wrapper(
-            yaml.retrieve_yaml,
+        self.commit = async_to_streamed_response_wrapper(
+            yaml.commit,
         )

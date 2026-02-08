@@ -13,3 +13,4 @@ from .batch_delete_response import BatchDeleteResponse as BatchDeleteResponse
 from .batch_update_response import BatchUpdateResponse as BatchUpdateResponse
 from .import_from_csv_params import ImportFromCsvParams as ImportFromCsvParams
 from .import_from_warehouse_params import ImportFromWarehouseParams as ImportFromWarehouseParams
+from .group_retrieve_schema_response import GroupRetrieveSchemaResponse as GroupRetrieveSchemaResponse

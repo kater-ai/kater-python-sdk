@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing_extensions import Required, TypedDict
 
-__all__ = ["YamlCommitYamlParams"]
+__all__ = ["YamlCommitParams"]
 
 
-class YamlCommitYamlParams(TypedDict, total=False):
+class YamlCommitParams(TypedDict, total=False):
     yaml_content: Required[str]
     """Updated YAML content"""
 

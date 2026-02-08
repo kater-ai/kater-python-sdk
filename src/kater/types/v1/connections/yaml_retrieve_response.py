@@ -2,10 +2,10 @@
 
 from ...._models import BaseModel
 
-__all__ = ["YamlRetrieveYamlResponse"]
+__all__ = ["YamlRetrieveResponse"]
 
 
-class YamlRetrieveYamlResponse(BaseModel):
+class YamlRetrieveResponse(BaseModel):
     """Response for reading connection.yaml from repo."""
 
     folder_name: str
