@@ -60,13 +60,13 @@ Methods:
 Types:
 
 ```python
-from kater.types.v1.connections import YamlCommitYamlResponse, YamlRetrieveYamlResponse
+from kater.types.v1.connections import YamlRetrieveResponse, YamlCommitResponse
 ```
 
 Methods:
 
-- <code title="post /api/v1/connections/{connection_id}/yaml">client.v1.connections.yaml.<a href="./src/kater/resources/v1/connections/yaml.py">commit_yaml</a>(connection_id, \*\*<a href="src/kater/types/v1/connections/yaml_commit_yaml_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/yaml_commit_yaml_response.py">YamlCommitYamlResponse</a></code>
-- <code title="get /api/v1/connections/{connection_id}/yaml">client.v1.connections.yaml.<a href="./src/kater/resources/v1/connections/yaml.py">retrieve_yaml</a>(connection_id) -> <a href="./src/kater/types/v1/connections/yaml_retrieve_yaml_response.py">YamlRetrieveYamlResponse</a></code>
+- <code title="get /api/v1/connections/{connection_id}/yaml">client.v1.connections.yaml.<a href="./src/kater/resources/v1/connections/yaml.py">retrieve</a>(connection_id) -> <a href="./src/kater/types/v1/connections/yaml_retrieve_response.py">YamlRetrieveResponse</a></code>
+- <code title="post /api/v1/connections/{connection_id}/yaml">client.v1.connections.yaml.<a href="./src/kater/resources/v1/connections/yaml.py">commit</a>(connection_id, \*\*<a href="src/kater/types/v1/connections/yaml_commit_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/yaml_commit_response.py">YamlCommitResponse</a></code>
 
 ## GitHub
 
@@ -202,7 +202,7 @@ Methods:
 Types:
 
 ```python
-from kater.types.v1 import CreateTenant, Tenant, TenantListResponse
+from kater.types.v1 import CreateTenant, Tenant, TenantListResponse, TenantRetrieveSchemaResponse
 ```
 
 Methods:
@@ -212,6 +212,7 @@ Methods:
 - <code title="patch /api/v1/tenants/{tenant_id}">client.v1.tenants.<a href="./src/kater/resources/v1/tenants/tenants.py">update</a>(tenant_id, \*\*<a href="src/kater/types/v1/tenant_update_params.py">params</a>) -> <a href="./src/kater/types/v1/tenant.py">Tenant</a></code>
 - <code title="get /api/v1/tenants">client.v1.tenants.<a href="./src/kater/resources/v1/tenants/tenants.py">list</a>() -> <a href="./src/kater/types/v1/tenant_list_response.py">TenantListResponse</a></code>
 - <code title="delete /api/v1/tenants/{tenant_id}">client.v1.tenants.<a href="./src/kater/resources/v1/tenants/tenants.py">delete</a>(tenant_id) -> None</code>
+- <code title="get /api/v1/tenants/schema">client.v1.tenants.<a href="./src/kater/resources/v1/tenants/tenants.py">retrieve_schema</a>() -> <a href="./src/kater/types/v1/tenant_retrieve_schema_response.py">TenantRetrieveSchemaResponse</a></code>
 
 ### Batch
 
@@ -245,6 +246,18 @@ Methods:
 
 - <code title="post /api/v1/tenants/import/csv">client.v1.tenants.import*.<a href="./src/kater/resources/v1/tenants/import*.py">from_csv</a>(\*\*<a href="src/kater/types/v1/tenants/import_from_csv_params.py">params</a>) -> <a href="./src/kater/types/v1/tenants/import_tenants.py">ImportTenants</a></code>
 - <code title="post /api/v1/tenants/import/warehouse">client.v1.tenants.import*.<a href="./src/kater/resources/v1/tenants/import*.py">from_warehouse</a>(\*\*<a href="src/kater/types/v1/tenants/import_from_warehouse_params.py">params</a>) -> <a href="./src/kater/types/v1/tenants/import_tenants.py">ImportTenants</a></code>
+
+### Groups
+
+Types:
+
+```python
+from kater.types.v1.tenants import GroupRetrieveSchemaResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/tenants/groups/schema">client.v1.tenants.groups.<a href="./src/kater/resources/v1/tenants/groups.py">retrieve_schema</a>() -> <a href="./src/kater/types/v1/tenants/group_retrieve_schema_response.py">GroupRetrieveSchemaResponse</a></code>
 
 # Healthz
 

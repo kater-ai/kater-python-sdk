@@ -2,10 +2,10 @@
 
 from ...._models import BaseModel
 
-__all__ = ["YamlCommitYamlResponse"]
+__all__ = ["YamlCommitResponse"]
 
 
-class YamlCommitYamlResponse(BaseModel):
+class YamlCommitResponse(BaseModel):
     """Response for YAML commit endpoint."""
 
     merged: bool
