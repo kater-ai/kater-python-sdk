@@ -22,6 +22,14 @@ class GitHubGetStatusResponse(BaseModel):
 
     repository: Optional[str] = None
 
+    scaffolding_pr_author: Optional[str] = None
+
+    scaffolding_pr_created_at: Optional[str] = None
+
+    scaffolding_pr_state: Optional[str] = None
+
+    scaffolding_pr_title: Optional[str] = None
+
     scaffolding_pr_url: Optional[str] = None
 
     scaffolding_status: Optional[str] = None

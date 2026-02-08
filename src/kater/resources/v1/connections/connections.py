@@ -7,6 +7,14 @@ from typing_extensions import Literal, overload
 
 import httpx
 
+from .yaml import (
+    YamlResource,
+    AsyncYamlResource,
+    YamlResourceWithRawResponse,
+    AsyncYamlResourceWithRawResponse,
+    YamlResourceWithStreamingResponse,
+    AsyncYamlResourceWithStreamingResponse,
+)
 from .views import (
     ViewsResource,
     AsyncViewsResource,
@@ -31,6 +39,7 @@ from ....types.v1 import (
     connection_create_params,
     connection_update_params,
     connection_list_syncs_params,
+    connection_update_credentials_params,
 )
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
@@ -47,6 +56,7 @@ from ....types.v1.connection_sync_response import ConnectionSyncResponse
 from ....types.v1.connection_list_syncs_response import ConnectionListSyncsResponse
 from ....types.v1.connection_approve_sync_response import ConnectionApproveSyncResponse
 from ....types.v1.connection_retrieve_schema_response import ConnectionRetrieveSchemaResponse
+from ....types.v1.connection_update_credentials_response import ConnectionUpdateCredentialsResponse
 from ....types.v1.connection_retrieve_credential_response import ConnectionRetrieveCredentialResponse
 from ....types.v1.connection_retrieve_sync_status_response import ConnectionRetrieveSyncStatusResponse
 
@@ -61,6 +71,10 @@ class ConnectionsResource(SyncAPIResource):
     @cached_property
     def views(self) -> ViewsResource:
         return ViewsResource(self._client)
+
+    @cached_property
+    def yaml(self) -> YamlResource:
+        return YamlResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> ConnectionsResourceWithRawResponse:
@@ -928,6 +942,223 @@ class ConnectionsResource(SyncAPIResource):
             cast_to=ConnectionSyncResponse,
         )
 
+    @overload
+    def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        password: str,
+        username: str,
+        warehouse_type: Literal["postgresql"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          password: Database password
+
+          username: Database username
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        auth: connection_update_credentials_params.SnowflakeCredentialUpdateAuth,
+        username: str,
+        warehouse_type: Literal["snowflake"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          auth: Authentication credentials
+
+          username: Snowflake username
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        access_token: str,
+        warehouse_type: Literal["databricks"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          access_token: Databricks personal access token
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        password: str,
+        username: str,
+        warehouse_type: Literal["clickhouse"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          password: ClickHouse password
+
+          username: ClickHouse username
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        password: str,
+        username: str,
+        warehouse_type: Literal["mssql"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          password: SQL Server password
+
+          username: SQL Server username
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @required_args(
+        ["password", "username", "warehouse_type"],
+        ["auth", "username", "warehouse_type"],
+        ["access_token", "warehouse_type"],
+    )
+    def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        password: str | Omit = omit,
+        username: str | Omit = omit,
+        warehouse_type: Literal["postgresql"]
+        | Literal["snowflake"]
+        | Literal["databricks"]
+        | Literal["clickhouse"]
+        | Literal["mssql"],
+        auth: connection_update_credentials_params.SnowflakeCredentialUpdateAuth | Omit = omit,
+        access_token: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return self._patch(
+            f"/api/v1/connections/{connection_id}/credentials",
+            body=maybe_transform(
+                {
+                    "password": password,
+                    "username": username,
+                    "warehouse_type": warehouse_type,
+                    "auth": auth,
+                    "access_token": access_token,
+                },
+                connection_update_credentials_params.ConnectionUpdateCredentialsParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionUpdateCredentialsResponse,
+        )
+
 
 class AsyncConnectionsResource(AsyncAPIResource):
     @cached_property
@@ -937,6 +1168,10 @@ class AsyncConnectionsResource(AsyncAPIResource):
     @cached_property
     def views(self) -> AsyncViewsResource:
         return AsyncViewsResource(self._client)
+
+    @cached_property
+    def yaml(self) -> AsyncYamlResource:
+        return AsyncYamlResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncConnectionsResourceWithRawResponse:
@@ -1804,6 +2039,223 @@ class AsyncConnectionsResource(AsyncAPIResource):
             cast_to=ConnectionSyncResponse,
         )
 
+    @overload
+    async def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        password: str,
+        username: str,
+        warehouse_type: Literal["postgresql"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          password: Database password
+
+          username: Database username
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    async def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        auth: connection_update_credentials_params.SnowflakeCredentialUpdateAuth,
+        username: str,
+        warehouse_type: Literal["snowflake"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          auth: Authentication credentials
+
+          username: Snowflake username
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    async def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        access_token: str,
+        warehouse_type: Literal["databricks"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          access_token: Databricks personal access token
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    async def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        password: str,
+        username: str,
+        warehouse_type: Literal["clickhouse"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          password: ClickHouse password
+
+          username: ClickHouse username
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    async def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        password: str,
+        username: str,
+        warehouse_type: Literal["mssql"],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        """
+        Test and update warehouse credentials without modifying connection config.
+
+        Args:
+          password: SQL Server password
+
+          username: SQL Server username
+
+          warehouse_type: Warehouse type
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @required_args(
+        ["password", "username", "warehouse_type"],
+        ["auth", "username", "warehouse_type"],
+        ["access_token", "warehouse_type"],
+    )
+    async def update_credentials(
+        self,
+        connection_id: str,
+        *,
+        password: str | Omit = omit,
+        username: str | Omit = omit,
+        warehouse_type: Literal["postgresql"]
+        | Literal["snowflake"]
+        | Literal["databricks"]
+        | Literal["clickhouse"]
+        | Literal["mssql"],
+        auth: connection_update_credentials_params.SnowflakeCredentialUpdateAuth | Omit = omit,
+        access_token: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ConnectionUpdateCredentialsResponse:
+        if not connection_id:
+            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
+        return await self._patch(
+            f"/api/v1/connections/{connection_id}/credentials",
+            body=await async_maybe_transform(
+                {
+                    "password": password,
+                    "username": username,
+                    "warehouse_type": warehouse_type,
+                    "auth": auth,
+                    "access_token": access_token,
+                },
+                connection_update_credentials_params.ConnectionUpdateCredentialsParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ConnectionUpdateCredentialsResponse,
+        )
+
 
 class ConnectionsResourceWithRawResponse:
     def __init__(self, connections: ConnectionsResource) -> None:
@@ -1848,6 +2300,9 @@ class ConnectionsResourceWithRawResponse:
         self.sync = to_raw_response_wrapper(
             connections.sync,
         )
+        self.update_credentials = to_raw_response_wrapper(
+            connections.update_credentials,
+        )
 
     @cached_property
     def databases(self) -> DatabasesResourceWithRawResponse:
@@ -1856,6 +2311,10 @@ class ConnectionsResourceWithRawResponse:
     @cached_property
     def views(self) -> ViewsResourceWithRawResponse:
         return ViewsResourceWithRawResponse(self._connections.views)
+
+    @cached_property
+    def yaml(self) -> YamlResourceWithRawResponse:
+        return YamlResourceWithRawResponse(self._connections.yaml)
 
 
 class AsyncConnectionsResourceWithRawResponse:
@@ -1901,6 +2360,9 @@ class AsyncConnectionsResourceWithRawResponse:
         self.sync = async_to_raw_response_wrapper(
             connections.sync,
         )
+        self.update_credentials = async_to_raw_response_wrapper(
+            connections.update_credentials,
+        )
 
     @cached_property
     def databases(self) -> AsyncDatabasesResourceWithRawResponse:
@@ -1909,6 +2371,10 @@ class AsyncConnectionsResourceWithRawResponse:
     @cached_property
     def views(self) -> AsyncViewsResourceWithRawResponse:
         return AsyncViewsResourceWithRawResponse(self._connections.views)
+
+    @cached_property
+    def yaml(self) -> AsyncYamlResourceWithRawResponse:
+        return AsyncYamlResourceWithRawResponse(self._connections.yaml)
 
 
 class ConnectionsResourceWithStreamingResponse:
@@ -1954,6 +2420,9 @@ class ConnectionsResourceWithStreamingResponse:
         self.sync = to_streamed_response_wrapper(
             connections.sync,
         )
+        self.update_credentials = to_streamed_response_wrapper(
+            connections.update_credentials,
+        )
 
     @cached_property
     def databases(self) -> DatabasesResourceWithStreamingResponse:
@@ -1962,6 +2431,10 @@ class ConnectionsResourceWithStreamingResponse:
     @cached_property
     def views(self) -> ViewsResourceWithStreamingResponse:
         return ViewsResourceWithStreamingResponse(self._connections.views)
+
+    @cached_property
+    def yaml(self) -> YamlResourceWithStreamingResponse:
+        return YamlResourceWithStreamingResponse(self._connections.yaml)
 
 
 class AsyncConnectionsResourceWithStreamingResponse:
@@ -2007,6 +2480,9 @@ class AsyncConnectionsResourceWithStreamingResponse:
         self.sync = async_to_streamed_response_wrapper(
             connections.sync,
         )
+        self.update_credentials = async_to_streamed_response_wrapper(
+            connections.update_credentials,
+        )
 
     @cached_property
     def databases(self) -> AsyncDatabasesResourceWithStreamingResponse:
@@ -2015,3 +2491,7 @@ class AsyncConnectionsResourceWithStreamingResponse:
     @cached_property
     def views(self) -> AsyncViewsResourceWithStreamingResponse:
         return AsyncViewsResourceWithStreamingResponse(self._connections.views)
+
+    @cached_property
+    def yaml(self) -> AsyncYamlResourceWithStreamingResponse:
+        return AsyncYamlResourceWithStreamingResponse(self._connections.yaml)
