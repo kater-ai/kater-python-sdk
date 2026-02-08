@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.5.0 (2026-02-08)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* added patch connection and credentials ([fdd46a3](https://github.com/kater-ai/kater-python-sdk/commit/fdd46a31386b0f73c4547191cd5eac93d246e34b))
+* **api,core:** simplify connection creation and fix migration chain ([596e9d7](https://github.com/kater-ai/kater-python-sdk/commit/596e9d76b99aacc380a0e1836331a9973257ff86))
+* Chore/cleanup connection models ([ad51c89](https://github.com/kater-ai/kater-python-sdk/commit/ad51c89f39a99e823020679ca5e8e0d8a97be3d3))
+* **client:** add custom JSON encoder for extended type support ([2af9fb8](https://github.com/kater-ai/kater-python-sdk/commit/2af9fb811c6c09d41d75d8d870cddb13f85b3bc6))
+* **core,api,web:** display real synced view files in schema sync UI ([e3421e9](https://github.com/kater-ai/kater-python-sdk/commit/e3421e97585f2bc6179caa7f9de8ae43712f50bb))
+* **core,api,web:** implement async schema sync with Hatchet workflow… ([70ab7f2](https://github.com/kater-ai/kater-python-sdk/commit/70ab7f23dfb2f61bb1d39487860d303af134112e))
+* **core,api:** add database_object_name field to Database and Schema ([2700d6c](https://github.com/kater-ai/kater-python-sdk/commit/2700d6c33e298112baa60913a271dc3b26f44b0a))
+* **core,api:** add PR approval flow for connection creation ([22d94ac](https://github.com/kater-ai/kater-python-sdk/commit/22d94aca4238dccecec59377d92a653202ccd292))
+* Feat/fix create connection fe ([79797f4](https://github.com/kater-ai/kater-python-sdk/commit/79797f4ac92048ea7b5a8d896626cd7d7bbca2dd))
+* **tenants:** serve tenant and group YAML from server-side schema en… ([4918cbe](https://github.com/kater-ai/kater-python-sdk/commit/4918cbec00c6e383b9e1225fac6d971e5a184bf9))
+
+
+### Chores
+
+* **ci:** add missing environment ([83bbb43](https://github.com/kater-ai/kater-python-sdk/commit/83bbb4373a2c2813719d1760249ece795190b571))
+
 ## 0.4.0 (2026-01-29)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.3.0...v0.4.0)
