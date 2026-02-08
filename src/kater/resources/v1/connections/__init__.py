@@ -1,5 +1,21 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+from .yaml import (
+    YamlResource,
+    AsyncYamlResource,
+    YamlResourceWithRawResponse,
+    AsyncYamlResourceWithRawResponse,
+    YamlResourceWithStreamingResponse,
+    AsyncYamlResourceWithStreamingResponse,
+)
+from .views import (
+    ViewsResource,
+    AsyncViewsResource,
+    ViewsResourceWithRawResponse,
+    AsyncViewsResourceWithRawResponse,
+    ViewsResourceWithStreamingResponse,
+    AsyncViewsResourceWithStreamingResponse,
+)
 from .databases import (
     DatabasesResource,
     AsyncDatabasesResource,
@@ -24,6 +40,18 @@ __all__ = [
     "AsyncDatabasesResourceWithRawResponse",
     "DatabasesResourceWithStreamingResponse",
     "AsyncDatabasesResourceWithStreamingResponse",
+    "ViewsResource",
+    "AsyncViewsResource",
+    "ViewsResourceWithRawResponse",
+    "AsyncViewsResourceWithRawResponse",
+    "ViewsResourceWithStreamingResponse",
+    "AsyncViewsResourceWithStreamingResponse",
+    "YamlResource",
+    "AsyncYamlResource",
+    "YamlResourceWithRawResponse",
+    "AsyncYamlResourceWithRawResponse",
+    "YamlResourceWithStreamingResponse",
+    "AsyncYamlResourceWithStreamingResponse",
     "ConnectionsResource",
     "AsyncConnectionsResource",
     "ConnectionsResourceWithRawResponse",

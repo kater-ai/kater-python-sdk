@@ -16,6 +16,7 @@ from .tenant_list_response import TenantListResponse as TenantListResponse
 from .tenant_update_params import TenantUpdateParams as TenantUpdateParams
 from .database_config_param import DatabaseConfigParam as DatabaseConfigParam
 from .github_connect_params import GitHubConnectParams as GitHubConnectParams
+from .connection_list_params import ConnectionListParams as ConnectionListParams
 from .github_callback_params import GitHubCallbackParams as GitHubCallbackParams
 from .github_connect_response import GitHubConnectResponse as GitHubConnectResponse
 from .connection_create_params import ConnectionCreateParams as ConnectionCreateParams
@@ -23,9 +24,21 @@ from .connection_list_response import ConnectionListResponse as ConnectionListRe
 from .connection_sync_response import ConnectionSyncResponse as ConnectionSyncResponse
 from .connection_update_params import ConnectionUpdateParams as ConnectionUpdateParams
 from .github_get_status_response import GitHubGetStatusResponse as GitHubGetStatusResponse
+from .connection_list_syncs_params import ConnectionListSyncsParams as ConnectionListSyncsParams
+from .connection_list_syncs_response import ConnectionListSyncsResponse as ConnectionListSyncsResponse
+from .tenant_retrieve_schema_response import TenantRetrieveSchemaResponse as TenantRetrieveSchemaResponse
+from .connection_approve_sync_response import ConnectionApproveSyncResponse as ConnectionApproveSyncResponse
+from .connection_retrieve_schema_response import ConnectionRetrieveSchemaResponse as ConnectionRetrieveSchemaResponse
+from .connection_update_credentials_params import ConnectionUpdateCredentialsParams as ConnectionUpdateCredentialsParams
 from .github_get_installation_link_response import (
     GitHubGetInstallationLinkResponse as GitHubGetInstallationLinkResponse,
 )
+from .connection_update_credentials_response import (
+    ConnectionUpdateCredentialsResponse as ConnectionUpdateCredentialsResponse,
+)
 from .connection_retrieve_credential_response import (
     ConnectionRetrieveCredentialResponse as ConnectionRetrieveCredentialResponse,
+)
+from .connection_retrieve_sync_status_response import (
+    ConnectionRetrieveSyncStatusResponse as ConnectionRetrieveSyncStatusResponse,
 )

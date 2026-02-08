@@ -12,7 +12,7 @@ class Schema(TypedDict, total=False):
     """Schema configuration for connection creation request."""
 
     name: Required[str]
-    """Schema name"""
+    """Schema name (also used as the warehouse object name)"""
 
     description: Optional[str]
     """Description of the schema"""
@@ -25,7 +25,7 @@ class DatabaseConfigParam(TypedDict, total=False):
     """Database configuration for connection creation request."""
 
     name: Required[str]
-    """Database name"""
+    """Database name (also used as the warehouse object name)"""
 
     description: Optional[str]
     """Description of the database"""
