@@ -28,8 +28,12 @@ from .connection_list_syncs_params import ConnectionListSyncsParams as Connectio
 from .connection_list_syncs_response import ConnectionListSyncsResponse as ConnectionListSyncsResponse
 from .connection_approve_sync_response import ConnectionApproveSyncResponse as ConnectionApproveSyncResponse
 from .connection_retrieve_schema_response import ConnectionRetrieveSchemaResponse as ConnectionRetrieveSchemaResponse
+from .connection_update_credentials_params import ConnectionUpdateCredentialsParams as ConnectionUpdateCredentialsParams
 from .github_get_installation_link_response import (
     GitHubGetInstallationLinkResponse as GitHubGetInstallationLinkResponse,
+)
+from .connection_update_credentials_response import (
+    ConnectionUpdateCredentialsResponse as ConnectionUpdateCredentialsResponse,
 )
 from .connection_retrieve_credential_response import (
     ConnectionRetrieveCredentialResponse as ConnectionRetrieveCredentialResponse,

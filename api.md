@@ -15,6 +15,7 @@ from kater.types.v1 import (
     ConnectionRetrieveSchemaResponse,
     ConnectionRetrieveSyncStatusResponse,
     ConnectionSyncResponse,
+    ConnectionUpdateCredentialsResponse,
 )
 ```
 
@@ -33,6 +34,7 @@ Methods:
 - <code title="get /api/v1/connections/{connection_id}/sync/{sync_id}">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">retrieve_sync_status</a>(sync_id, \*, connection_id) -> <a href="./src/kater/types/v1/connection_retrieve_sync_status_response.py">ConnectionRetrieveSyncStatusResponse</a></code>
 - <code title="get /api/v1/connections/{connection_id}/sync/{sync_id}/stream">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">stream_sync_progress</a>(sync_id, \*, connection_id) -> object</code>
 - <code title="post /api/v1/connections/{connection_id}/sync">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">sync</a>(connection_id) -> <a href="./src/kater/types/v1/connection_sync_response.py">ConnectionSyncResponse</a></code>
+- <code title="patch /api/v1/connections/{connection_id}/credentials">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">update_credentials</a>(connection_id, \*\*<a href="src/kater/types/v1/connection_update_credentials_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_update_credentials_response.py">ConnectionUpdateCredentialsResponse</a></code>
 
 ### Databases
 
@@ -52,6 +54,19 @@ Methods:
 
 - <code title="get /api/v1/connections/{connection_id}/sync/{sync_id}/views/{file_name}">client.v1.connections.views.<a href="./src/kater/resources/v1/connections/views.py">retrieve</a>(file_name, \*, connection_id, sync_id) -> <a href="./src/kater/types/v1/connections/view_retrieve_response.py">ViewRetrieveResponse</a></code>
 - <code title="get /api/v1/connections/{connection_id}/sync/{sync_id}/views">client.v1.connections.views.<a href="./src/kater/resources/v1/connections/views.py">list</a>(sync_id, \*, connection_id) -> <a href="./src/kater/types/v1/connections/view_list_response.py">ViewListResponse</a></code>
+
+### Yaml
+
+Types:
+
+```python
+from kater.types.v1.connections import YamlCommitYamlResponse, YamlRetrieveYamlResponse
+```
+
+Methods:
+
+- <code title="post /api/v1/connections/{connection_id}/yaml">client.v1.connections.yaml.<a href="./src/kater/resources/v1/connections/yaml.py">commit_yaml</a>(connection_id, \*\*<a href="src/kater/types/v1/connections/yaml_commit_yaml_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/yaml_commit_yaml_response.py">YamlCommitYamlResponse</a></code>
+- <code title="get /api/v1/connections/{connection_id}/yaml">client.v1.connections.yaml.<a href="./src/kater/resources/v1/connections/yaml.py">retrieve_yaml</a>(connection_id) -> <a href="./src/kater/types/v1/connections/yaml_retrieve_yaml_response.py">YamlRetrieveYamlResponse</a></code>
 
 ## GitHub
 

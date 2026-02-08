@@ -16,6 +16,7 @@ from kater.types.v1 import (
     ConnectionListSyncsResponse,
     ConnectionApproveSyncResponse,
     ConnectionRetrieveSchemaResponse,
+    ConnectionUpdateCredentialsResponse,
     ConnectionRetrieveCredentialResponse,
     ConnectionRetrieveSyncStatusResponse,
 )
@@ -998,6 +999,284 @@ class TestConnections:
                 "",
             )
 
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_update_credentials_overload_1(self, client: Kater) -> None:
+        connection = client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="postgresql",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_update_credentials_overload_1(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="postgresql",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_update_credentials_overload_1(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="postgresql",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_update_credentials_overload_1(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                password="password",
+                username="username",
+                warehouse_type="postgresql",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_update_credentials_overload_2(self, client: Kater) -> None:
+        connection = client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            auth={
+                "auth_type": "password",
+                "password": "password",
+            },
+            username="username",
+            warehouse_type="snowflake",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_update_credentials_overload_2(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            auth={
+                "auth_type": "password",
+                "password": "password",
+            },
+            username="username",
+            warehouse_type="snowflake",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_update_credentials_overload_2(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            auth={
+                "auth_type": "password",
+                "password": "password",
+            },
+            username="username",
+            warehouse_type="snowflake",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_update_credentials_overload_2(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                auth={
+                    "auth_type": "password",
+                    "password": "password",
+                },
+                username="username",
+                warehouse_type="snowflake",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_update_credentials_overload_3(self, client: Kater) -> None:
+        connection = client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            access_token="access_token",
+            warehouse_type="databricks",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_update_credentials_overload_3(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            access_token="access_token",
+            warehouse_type="databricks",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_update_credentials_overload_3(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            access_token="access_token",
+            warehouse_type="databricks",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_update_credentials_overload_3(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                access_token="access_token",
+                warehouse_type="databricks",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_update_credentials_overload_4(self, client: Kater) -> None:
+        connection = client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="clickhouse",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_update_credentials_overload_4(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="clickhouse",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_update_credentials_overload_4(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="clickhouse",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_update_credentials_overload_4(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                password="password",
+                username="username",
+                warehouse_type="clickhouse",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_update_credentials_overload_5(self, client: Kater) -> None:
+        connection = client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="mssql",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_update_credentials_overload_5(self, client: Kater) -> None:
+        response = client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="mssql",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_update_credentials_overload_5(self, client: Kater) -> None:
+        with client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="mssql",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_path_params_update_credentials_overload_5(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                password="password",
+                username="username",
+                warehouse_type="mssql",
+            )
+
 
 class TestAsyncConnections:
     parametrize = pytest.mark.parametrize(
@@ -1974,4 +2253,282 @@ class TestAsyncConnections:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
             await async_client.v1.connections.with_raw_response.sync(
                 "",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_update_credentials_overload_1(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="postgresql",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_update_credentials_overload_1(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="postgresql",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_update_credentials_overload_1(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="postgresql",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_update_credentials_overload_1(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                password="password",
+                username="username",
+                warehouse_type="postgresql",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_update_credentials_overload_2(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            auth={
+                "auth_type": "password",
+                "password": "password",
+            },
+            username="username",
+            warehouse_type="snowflake",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_update_credentials_overload_2(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            auth={
+                "auth_type": "password",
+                "password": "password",
+            },
+            username="username",
+            warehouse_type="snowflake",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_update_credentials_overload_2(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            auth={
+                "auth_type": "password",
+                "password": "password",
+            },
+            username="username",
+            warehouse_type="snowflake",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_update_credentials_overload_2(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                auth={
+                    "auth_type": "password",
+                    "password": "password",
+                },
+                username="username",
+                warehouse_type="snowflake",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_update_credentials_overload_3(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            access_token="access_token",
+            warehouse_type="databricks",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_update_credentials_overload_3(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            access_token="access_token",
+            warehouse_type="databricks",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_update_credentials_overload_3(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            access_token="access_token",
+            warehouse_type="databricks",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_update_credentials_overload_3(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                access_token="access_token",
+                warehouse_type="databricks",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_update_credentials_overload_4(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="clickhouse",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_update_credentials_overload_4(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="clickhouse",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_update_credentials_overload_4(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="clickhouse",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_update_credentials_overload_4(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                password="password",
+                username="username",
+                warehouse_type="clickhouse",
+            )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_update_credentials_overload_5(self, async_client: AsyncKater) -> None:
+        connection = await async_client.v1.connections.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="mssql",
+        )
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_update_credentials_overload_5(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.with_raw_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="mssql",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        connection = await response.parse()
+        assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_update_credentials_overload_5(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.with_streaming_response.update_credentials(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            password="password",
+            username="username",
+            warehouse_type="mssql",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            connection = await response.parse()
+            assert_matches_type(ConnectionUpdateCredentialsResponse, connection, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_path_params_update_credentials_overload_5(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `connection_id` but received ''"):
+            await async_client.v1.connections.with_raw_response.update_credentials(
+                connection_id="",
+                password="password",
+                username="username",
+                warehouse_type="mssql",
             )
