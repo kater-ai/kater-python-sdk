@@ -11,6 +11,7 @@ from .create_tenant_param import CreateTenantParam as CreateTenantParam
 from .group_create_params import GroupCreateParams as GroupCreateParams
 from .group_list_response import GroupListResponse as GroupListResponse
 from .group_update_params import GroupUpdateParams as GroupUpdateParams
+from .sync_event_response import SyncEventResponse as SyncEventResponse
 from .tenant_create_params import TenantCreateParams as TenantCreateParams
 from .tenant_list_response import TenantListResponse as TenantListResponse
 from .tenant_update_params import TenantUpdateParams as TenantUpdateParams
