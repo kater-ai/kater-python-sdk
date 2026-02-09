@@ -8,6 +8,7 @@ Types:
 from kater.types.v1 import (
     Connection,
     DatabaseConfig,
+    SyncEventResponse,
     ConnectionListResponse,
     ConnectionApproveSyncResponse,
     ConnectionListSyncsResponse,
