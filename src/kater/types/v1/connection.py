@@ -4,24 +4,23 @@ from typing import List, Union, Optional
 from datetime import datetime
 from typing_extensions import Literal, Annotated, TypeAlias
 
-from .._utils import PropertyInfo
-from .._models import BaseModel
+from ..._utils import PropertyInfo
+from ..._models import BaseModel
 
 __all__ = [
-    "V1ListConnectionsResponse",
-    "V1ListConnectionsResponseItem",
-    "V1ListConnectionsResponseItemDatabase",
-    "V1ListConnectionsResponseItemDatabaseSchema",
-    "V1ListConnectionsResponseItemWarehouseMetadata",
-    "V1ListConnectionsResponseItemWarehouseMetadataSnowflakeMetadata",
-    "V1ListConnectionsResponseItemWarehouseMetadataPostgresqlMetadata",
-    "V1ListConnectionsResponseItemWarehouseMetadataDatabricksMetadata",
-    "V1ListConnectionsResponseItemWarehouseMetadataClickhouseMetadata",
-    "V1ListConnectionsResponseItemWarehouseMetadataMssqlMetadata",
+    "Connection",
+    "Database",
+    "DatabaseSchema",
+    "WarehouseMetadata",
+    "WarehouseMetadataSnowflakeMetadata",
+    "WarehouseMetadataPostgresqlMetadata",
+    "WarehouseMetadataDatabricksMetadata",
+    "WarehouseMetadataClickhouseMetadata",
+    "WarehouseMetadataMssqlMetadata",
 ]
 
 
-class V1ListConnectionsResponseItemDatabaseSchema(BaseModel):
+class DatabaseSchema(BaseModel):
     """Schema info from ConnectionSchema."""
 
     id: str
@@ -40,7 +39,7 @@ class V1ListConnectionsResponseItemDatabaseSchema(BaseModel):
     """Human-readable label"""
 
 
-class V1ListConnectionsResponseItemDatabase(BaseModel):
+class Database(BaseModel):
     """Database info from ConnectionSchema."""
 
     id: str
@@ -52,7 +51,7 @@ class V1ListConnectionsResponseItemDatabase(BaseModel):
     name: str
     """Database name"""
 
-    schemas: List[V1ListConnectionsResponseItemDatabaseSchema]
+    schemas: List[DatabaseSchema]
     """Schemas in this database"""
 
     description: Optional[str] = None
@@ -65,7 +64,7 @@ class V1ListConnectionsResponseItemDatabase(BaseModel):
     """Timezone for the database"""
 
 
-class V1ListConnectionsResponseItemWarehouseMetadataSnowflakeMetadata(BaseModel):
+class WarehouseMetadataSnowflakeMetadata(BaseModel):
     auth_method: Literal["username_password", "key_pair"]
     """Authentication method"""
 
@@ -81,7 +80,7 @@ class V1ListConnectionsResponseItemWarehouseMetadataSnowflakeMetadata(BaseModel)
     warehouse_type: Literal["snowflake"]
 
 
-class V1ListConnectionsResponseItemWarehouseMetadataPostgresqlMetadata(BaseModel):
+class WarehouseMetadataPostgresqlMetadata(BaseModel):
     host: str
     """Database host address"""
 
@@ -91,7 +90,7 @@ class V1ListConnectionsResponseItemWarehouseMetadataPostgresqlMetadata(BaseModel
     warehouse_type: Literal["postgresql"]
 
 
-class V1ListConnectionsResponseItemWarehouseMetadataDatabricksMetadata(BaseModel):
+class WarehouseMetadataDatabricksMetadata(BaseModel):
     http_path: str
     """Databricks SQL warehouse HTTP path"""
 
@@ -101,7 +100,7 @@ class V1ListConnectionsResponseItemWarehouseMetadataDatabricksMetadata(BaseModel
     warehouse_type: Literal["databricks"]
 
 
-class V1ListConnectionsResponseItemWarehouseMetadataClickhouseMetadata(BaseModel):
+class WarehouseMetadataClickhouseMetadata(BaseModel):
     host: str
     """ClickHouse host address"""
 
@@ -111,7 +110,7 @@ class V1ListConnectionsResponseItemWarehouseMetadataClickhouseMetadata(BaseModel
     warehouse_type: Literal["clickhouse"]
 
 
-class V1ListConnectionsResponseItemWarehouseMetadataMssqlMetadata(BaseModel):
+class WarehouseMetadataMssqlMetadata(BaseModel):
     host: str
     """SQL Server host address"""
 
@@ -121,19 +120,19 @@ class V1ListConnectionsResponseItemWarehouseMetadataMssqlMetadata(BaseModel):
     warehouse_type: Literal["mssql"]
 
 
-V1ListConnectionsResponseItemWarehouseMetadata: TypeAlias = Annotated[
+WarehouseMetadata: TypeAlias = Annotated[
     Union[
-        V1ListConnectionsResponseItemWarehouseMetadataSnowflakeMetadata,
-        V1ListConnectionsResponseItemWarehouseMetadataPostgresqlMetadata,
-        V1ListConnectionsResponseItemWarehouseMetadataDatabricksMetadata,
-        V1ListConnectionsResponseItemWarehouseMetadataClickhouseMetadata,
-        V1ListConnectionsResponseItemWarehouseMetadataMssqlMetadata,
+        WarehouseMetadataSnowflakeMetadata,
+        WarehouseMetadataPostgresqlMetadata,
+        WarehouseMetadataDatabricksMetadata,
+        WarehouseMetadataClickhouseMetadata,
+        WarehouseMetadataMssqlMetadata,
     ],
     PropertyInfo(discriminator="warehouse_type"),
 ]
 
 
-class V1ListConnectionsResponseItem(BaseModel):
+class Connection(BaseModel):
     """Response model for a single connection.
 
     All data comes from the database (source of truth).
@@ -149,7 +148,7 @@ class V1ListConnectionsResponseItem(BaseModel):
     credential_id: str
     """Credential ID"""
 
-    databases: List[V1ListConnectionsResponseItemDatabase]
+    databases: List[Database]
     """Databases in this connection"""
 
     name: str
@@ -158,7 +157,7 @@ class V1ListConnectionsResponseItem(BaseModel):
     updated_at: datetime
     """Last update timestamp"""
 
-    warehouse_metadata: V1ListConnectionsResponseItemWarehouseMetadata
+    warehouse_metadata: WarehouseMetadata
     """Warehouse-specific configuration"""
 
     warehouse_type: str
@@ -181,6 +180,3 @@ class V1ListConnectionsResponseItem(BaseModel):
 
     query_timezone_conversion: Optional[str] = None
     """Timezone conversion mode (do_not_convert, convert_to_utc)"""
-
-
-V1ListConnectionsResponse: TypeAlias = List[V1ListConnectionsResponseItem]
