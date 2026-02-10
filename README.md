@@ -103,6 +103,27 @@ Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typ
 
 Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
 
+## Nested params
+
+Nested parameters are dictionaries, typed using `TypedDict`, for example:
+
+```python
+from kater import Kater
+
+client = Kater()
+
+response = client.v1.compiler.compile(
+    connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+    resolved_query={
+        "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        "name": "x",
+        "source_query": "ref(dim_customer.sale_price)",
+        "topic": "ref(dim_customer.sale_price)",
+    },
+)
+print(response.resolved_query)
+```
+
 ## File uploads
 
 Request parameters that correspond to file uploads can be passed as `bytes`, or a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance or a tuple of `(filename, contents, media type)`.

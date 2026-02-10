@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from .tenants import (
-    TenantsResource,
-    AsyncTenantsResource,
-    TenantsResourceWithRawResponse,
-    AsyncTenantsResourceWithRawResponse,
-    TenantsResourceWithStreamingResponse,
-    AsyncTenantsResourceWithStreamingResponse,
+from .compiler import (
+    CompilerResource,
+    AsyncCompilerResource,
+    CompilerResourceWithRawResponse,
+    AsyncCompilerResourceWithRawResponse,
+    CompilerResourceWithStreamingResponse,
+    AsyncCompilerResourceWithStreamingResponse,
 )
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
@@ -20,11 +20,23 @@ from .connections import (
     ConnectionsResourceWithStreamingResponse,
     AsyncConnectionsResourceWithStreamingResponse,
 )
+from .tenants.tenants import (
+    TenantsResource,
+    AsyncTenantsResource,
+    TenantsResourceWithRawResponse,
+    AsyncTenantsResourceWithRawResponse,
+    TenantsResourceWithStreamingResponse,
+    AsyncTenantsResourceWithStreamingResponse,
+)
 
 __all__ = ["V1Resource", "AsyncV1Resource"]
 
 
 class V1Resource(SyncAPIResource):
+    @cached_property
+    def compiler(self) -> CompilerResource:
+        return CompilerResource(self._client)
+
     @cached_property
     def connections(self) -> ConnectionsResource:
         return ConnectionsResource(self._client)
@@ -54,6 +66,10 @@ class V1Resource(SyncAPIResource):
 
 
 class AsyncV1Resource(AsyncAPIResource):
+    @cached_property
+    def compiler(self) -> AsyncCompilerResource:
+        return AsyncCompilerResource(self._client)
+
     @cached_property
     def connections(self) -> AsyncConnectionsResource:
         return AsyncConnectionsResource(self._client)
@@ -87,6 +103,10 @@ class V1ResourceWithRawResponse:
         self._v1 = v1
 
     @cached_property
+    def compiler(self) -> CompilerResourceWithRawResponse:
+        return CompilerResourceWithRawResponse(self._v1.compiler)
+
+    @cached_property
     def connections(self) -> ConnectionsResourceWithRawResponse:
         return ConnectionsResourceWithRawResponse(self._v1.connections)
 
@@ -98,6 +118,10 @@ class V1ResourceWithRawResponse:
 class AsyncV1ResourceWithRawResponse:
     def __init__(self, v1: AsyncV1Resource) -> None:
         self._v1 = v1
+
+    @cached_property
+    def compiler(self) -> AsyncCompilerResourceWithRawResponse:
+        return AsyncCompilerResourceWithRawResponse(self._v1.compiler)
 
     @cached_property
     def connections(self) -> AsyncConnectionsResourceWithRawResponse:
@@ -113,6 +137,10 @@ class V1ResourceWithStreamingResponse:
         self._v1 = v1
 
     @cached_property
+    def compiler(self) -> CompilerResourceWithStreamingResponse:
+        return CompilerResourceWithStreamingResponse(self._v1.compiler)
+
+    @cached_property
     def connections(self) -> ConnectionsResourceWithStreamingResponse:
         return ConnectionsResourceWithStreamingResponse(self._v1.connections)
 
@@ -124,6 +152,10 @@ class V1ResourceWithStreamingResponse:
 class AsyncV1ResourceWithStreamingResponse:
     def __init__(self, v1: AsyncV1Resource) -> None:
         self._v1 = v1
+
+    @cached_property
+    def compiler(self) -> AsyncCompilerResourceWithStreamingResponse:
+        return AsyncCompilerResourceWithStreamingResponse(self._v1.compiler)
 
     @cached_property
     def connections(self) -> AsyncConnectionsResourceWithStreamingResponse:

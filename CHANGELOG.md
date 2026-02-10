@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.0 (2026-02-10)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* **api:** expose tenant and tenant group schema endpoints in public API ([4eb02c3](https://github.com/kater-ai/kater-python-sdk/commit/4eb02c3a1e8c90d7dce4902375529cdce1ec9e37))
+* **api:** manual updates ([04bd635](https://github.com/kater-ai/kater-python-sdk/commit/04bd63543e429ea0d11615f9ffda89810289545e))
+* **api:** manual updates ([f534c3a](https://github.com/kater-ai/kater-python-sdk/commit/f534c3ae729a5a94433afcd13fb84c452f217147))
+* **api:** manual updates ([e7fd1e9](https://github.com/kater-ai/kater-python-sdk/commit/e7fd1e911b46a0e5c0a886cca5df3b09ccc234b9))
+
 ## 0.6.0 (2026-02-10)
 
 Full Changelog: [v0.5.1...v0.6.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.5.1...v0.6.0)

@@ -1,0 +1,522 @@
+# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+from __future__ import annotations
+
+import os
+from typing import Any, cast
+
+import pytest
+
+from kater import Kater, AsyncKater
+from tests.utils import assert_matches_type
+from kater.types.v1 import (
+    CompilerCompileResponse,
+    CompilerResolveResponse,
+    CompilerValidateResponse,
+)
+
+base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
+
+
+class TestCompiler:
+    parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_compile(self, client: Kater) -> None:
+        compiler = client.v1.compiler.compile(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+            },
+        )
+        assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_compile_with_all_params(self, client: Kater) -> None:
+        compiler = client.v1.compiler.compile(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "ai_context": "ai_context",
+                "calculations": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "chart_hints": [
+                    {
+                        "config": {
+                            "color_by": "ref(created_date)",
+                            "size": "ref(created_date)",
+                            "stack_by": "ref(created_date)",
+                            "x_axis": "ref(created_date)",
+                            "y_axis": "ref(created_date)",
+                        },
+                        "recommend": "line",
+                        "when": {"foo": "string"},
+                    }
+                ],
+                "custom_properties": {"foo": "bar"},
+                "description": "description",
+                "dimensions": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "filters": [
+                    {
+                        "field": "ref(dim_customer.sale_price)",
+                        "name": "x",
+                        "operator": "equals",
+                        "sql_value": "SUM(ref(sale_price))",
+                        "static_values": ["string"],
+                    }
+                ],
+                "inheritance_chain": ["string"],
+                "label": "label",
+                "limit": 1,
+                "measures": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "order_by": {
+                    "asc": ["string"],
+                    "desc": ["string"],
+                },
+                "required_access_grants": ["string"],
+                "resolved_chart": {
+                    "config": {
+                        "color_by": "ref(created_date)",
+                        "size": "ref(created_date)",
+                        "stack_by": "ref(created_date)",
+                        "x_axis": "ref(created_date)",
+                        "y_axis": "ref(created_date)",
+                    },
+                    "recommend": "line",
+                },
+                "resolved_variables": [
+                    {
+                        "bound_value": "string",
+                        "default": "string",
+                        "name": "x",
+                        "type": "STRING",
+                        "allowed_values": {
+                            "static": [
+                                {
+                                    "value": "string",
+                                    "label": "label",
+                                }
+                            ]
+                        },
+                        "constraints": {
+                            "max": 0,
+                            "max_length": 1,
+                            "min": 0,
+                            "step": 0,
+                        },
+                        "description": "description",
+                        "is_default": True,
+                        "label": "label",
+                    }
+                ],
+                "widget_category": "axis",
+            },
+            source="source",
+            tenant_database="tenant_database",
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_compile(self, client: Kater) -> None:
+        response = client.v1.compiler.with_raw_response.compile(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+            },
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = response.parse()
+        assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_compile(self, client: Kater) -> None:
+        with client.v1.compiler.with_streaming_response.compile(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+            },
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = response.parse()
+            assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_resolve(self, client: Kater) -> None:
+        compiler = client.v1.compiler.resolve(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            query_ref="query_ref",
+        )
+        assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_resolve_with_all_params(self, client: Kater) -> None:
+        compiler = client.v1.compiler.resolve(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            query_ref="query_ref",
+            source="source",
+            include_calculations=["string"],
+            include_dimensions=["string"],
+            include_filters=["string"],
+            include_measures=["string"],
+            variables={"foo": "bar"},
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_resolve(self, client: Kater) -> None:
+        response = client.v1.compiler.with_raw_response.resolve(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            query_ref="query_ref",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = response.parse()
+        assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_resolve(self, client: Kater) -> None:
+        with client.v1.compiler.with_streaming_response.resolve(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            query_ref="query_ref",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = response.parse()
+            assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_validate(self, client: Kater) -> None:
+        compiler = client.v1.compiler.validate()
+        assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_validate_with_all_params(self, client: Kater) -> None:
+        compiler = client.v1.compiler.validate(
+            source="source",
+            connection_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_validate(self, client: Kater) -> None:
+        response = client.v1.compiler.with_raw_response.validate()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = response.parse()
+        assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_validate(self, client: Kater) -> None:
+        with client.v1.compiler.with_streaming_response.validate() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = response.parse()
+            assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+
+class TestAsyncCompiler:
+    parametrize = pytest.mark.parametrize(
+        "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
+    )
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_compile(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.compile(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+            },
+        )
+        assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_compile_with_all_params(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.compile(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "ai_context": "ai_context",
+                "calculations": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "chart_hints": [
+                    {
+                        "config": {
+                            "color_by": "ref(created_date)",
+                            "size": "ref(created_date)",
+                            "stack_by": "ref(created_date)",
+                            "x_axis": "ref(created_date)",
+                            "y_axis": "ref(created_date)",
+                        },
+                        "recommend": "line",
+                        "when": {"foo": "string"},
+                    }
+                ],
+                "custom_properties": {"foo": "bar"},
+                "description": "description",
+                "dimensions": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "filters": [
+                    {
+                        "field": "ref(dim_customer.sale_price)",
+                        "name": "x",
+                        "operator": "equals",
+                        "sql_value": "SUM(ref(sale_price))",
+                        "static_values": ["string"],
+                    }
+                ],
+                "inheritance_chain": ["string"],
+                "label": "label",
+                "limit": 1,
+                "measures": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "order_by": {
+                    "asc": ["string"],
+                    "desc": ["string"],
+                },
+                "required_access_grants": ["string"],
+                "resolved_chart": {
+                    "config": {
+                        "color_by": "ref(created_date)",
+                        "size": "ref(created_date)",
+                        "stack_by": "ref(created_date)",
+                        "x_axis": "ref(created_date)",
+                        "y_axis": "ref(created_date)",
+                    },
+                    "recommend": "line",
+                },
+                "resolved_variables": [
+                    {
+                        "bound_value": "string",
+                        "default": "string",
+                        "name": "x",
+                        "type": "STRING",
+                        "allowed_values": {
+                            "static": [
+                                {
+                                    "value": "string",
+                                    "label": "label",
+                                }
+                            ]
+                        },
+                        "constraints": {
+                            "max": 0,
+                            "max_length": 1,
+                            "min": 0,
+                            "step": 0,
+                        },
+                        "description": "description",
+                        "is_default": True,
+                        "label": "label",
+                    }
+                ],
+                "widget_category": "axis",
+            },
+            source="source",
+            tenant_database="tenant_database",
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_compile(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.compiler.with_raw_response.compile(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+            },
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = await response.parse()
+        assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_compile(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.compiler.with_streaming_response.compile(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+            },
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = await response.parse()
+            assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_resolve(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.resolve(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            query_ref="query_ref",
+        )
+        assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_resolve_with_all_params(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.resolve(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            query_ref="query_ref",
+            source="source",
+            include_calculations=["string"],
+            include_dimensions=["string"],
+            include_filters=["string"],
+            include_measures=["string"],
+            variables={"foo": "bar"},
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_resolve(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.compiler.with_raw_response.resolve(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            query_ref="query_ref",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = await response.parse()
+        assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_resolve(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.compiler.with_streaming_response.resolve(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            query_ref="query_ref",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = await response.parse()
+            assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_validate(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.validate()
+        assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_validate_with_all_params(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.validate(
+            source="source",
+            connection_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_validate(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.compiler.with_raw_response.validate()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = await response.parse()
+        assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_validate(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.compiler.with_streaming_response.validate() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = await response.parse()
+            assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
