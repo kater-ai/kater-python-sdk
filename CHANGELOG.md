@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.8.0 (2026-02-10)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **cli:** implement `kater validate` command with per-connection res… ([30620e0](https://github.com/kater-ai/kater-python-sdk/commit/30620e085104ba6405b8070217699f9355c2078e))
+
+
+### Chores
+
+* **internal:** bump dependencies ([66dd7fd](https://github.com/kater-ai/kater-python-sdk/commit/66dd7fdc0822343c8549d098f09499e7e17fbe8d))
+
 ## 0.7.0 (2026-02-10)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.6.0...v0.7.0)
