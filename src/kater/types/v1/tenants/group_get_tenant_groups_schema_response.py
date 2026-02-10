@@ -2,9 +2,9 @@
 
 from typing import List, Optional
 
-from ....._models import BaseModel
+from ...._models import BaseModel
 
-__all__ = ["GroupRetrieveSchemaResponse", "TenantGroup"]
+__all__ = ["GroupGetTenantGroupsSchemaResponse", "TenantGroup"]
 
 
 class TenantGroup(BaseModel):
@@ -18,7 +18,7 @@ class TenantGroup(BaseModel):
     """Description text"""
 
 
-class GroupRetrieveSchemaResponse(BaseModel):
+class GroupGetTenantGroupsSchemaResponse(BaseModel):
     """Schema for tenant group configuration files"""
 
     tenant_groups: List[TenantGroup]

@@ -6,36 +6,24 @@ from typing_extensions import Literal
 
 import httpx
 
-from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from ...._utils import maybe_transform, async_maybe_transform
-from ...._compat import cached_property
-from ....types.v1 import connection_list_connections_params
-from ...._resource import SyncAPIResource, AsyncAPIResource
-from ...._response import (
+from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ..._utils import maybe_transform, async_maybe_transform
+from ..._compat import cached_property
+from ...types.v1 import connection_list_connections_params
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ..._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...._base_client import make_request_options
-from .tenants.tenants import (
-    TenantsResource,
-    AsyncTenantsResource,
-    TenantsResourceWithRawResponse,
-    AsyncTenantsResourceWithRawResponse,
-    TenantsResourceWithStreamingResponse,
-    AsyncTenantsResourceWithStreamingResponse,
-)
-from ....types.v1.connection_list_connections_response import ConnectionListConnectionsResponse
+from ..._base_client import make_request_options
+from ...types.v1.connection_list_connections_response import ConnectionListConnectionsResponse
 
 __all__ = ["ConnectionsResource", "AsyncConnectionsResource"]
 
 
 class ConnectionsResource(SyncAPIResource):
-    @cached_property
-    def tenants(self) -> TenantsResource:
-        return TenantsResource(self._client)
-
     @cached_property
     def with_raw_response(self) -> ConnectionsResourceWithRawResponse:
         """
@@ -105,10 +93,6 @@ class ConnectionsResource(SyncAPIResource):
 
 
 class AsyncConnectionsResource(AsyncAPIResource):
-    @cached_property
-    def tenants(self) -> AsyncTenantsResource:
-        return AsyncTenantsResource(self._client)
-
     @cached_property
     def with_raw_response(self) -> AsyncConnectionsResourceWithRawResponse:
         """
@@ -185,10 +169,6 @@ class ConnectionsResourceWithRawResponse:
             connections.list_connections,
         )
 
-    @cached_property
-    def tenants(self) -> TenantsResourceWithRawResponse:
-        return TenantsResourceWithRawResponse(self._connections.tenants)
-
 
 class AsyncConnectionsResourceWithRawResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -197,10 +177,6 @@ class AsyncConnectionsResourceWithRawResponse:
         self.list_connections = async_to_raw_response_wrapper(
             connections.list_connections,
         )
-
-    @cached_property
-    def tenants(self) -> AsyncTenantsResourceWithRawResponse:
-        return AsyncTenantsResourceWithRawResponse(self._connections.tenants)
 
 
 class ConnectionsResourceWithStreamingResponse:
@@ -211,10 +187,6 @@ class ConnectionsResourceWithStreamingResponse:
             connections.list_connections,
         )
 
-    @cached_property
-    def tenants(self) -> TenantsResourceWithStreamingResponse:
-        return TenantsResourceWithStreamingResponse(self._connections.tenants)
-
 
 class AsyncConnectionsResourceWithStreamingResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -223,7 +195,3 @@ class AsyncConnectionsResourceWithStreamingResponse:
         self.list_connections = async_to_streamed_response_wrapper(
             connections.list_connections,
         )
-
-    @cached_property
-    def tenants(self) -> AsyncTenantsResourceWithStreamingResponse:
-        return AsyncTenantsResourceWithStreamingResponse(self._connections.tenants)
