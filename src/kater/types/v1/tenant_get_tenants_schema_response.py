@@ -2,9 +2,9 @@
 
 from typing import List, Optional
 
-from ...._models import BaseModel
+from ..._models import BaseModel
 
-__all__ = ["TenantRetrieveSchemaResponse", "Tenant"]
+__all__ = ["TenantGetTenantsSchemaResponse", "Tenant"]
 
 
 class Tenant(BaseModel):
@@ -21,7 +21,7 @@ class Tenant(BaseModel):
     """Human-readable display name for the tenant"""
 
 
-class TenantRetrieveSchemaResponse(BaseModel):
+class TenantGetTenantsSchemaResponse(BaseModel):
     """Schema for tenant configuration files"""
 
     tenants: List[Tenant]

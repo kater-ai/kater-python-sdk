@@ -6,24 +6,37 @@ from typing import Mapping, Optional, cast
 
 import httpx
 
-from ..._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
-from ..._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
-from ..._compat import cached_property
-from ...types.v1 import tenant_import_from_csv_params, tenant_import_from_warehouse_params
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ..._response import (
+from .groups import (
+    GroupsResource,
+    AsyncGroupsResource,
+    GroupsResourceWithRawResponse,
+    AsyncGroupsResourceWithRawResponse,
+    GroupsResourceWithStreamingResponse,
+    AsyncGroupsResourceWithStreamingResponse,
+)
+from ...._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
+from ...._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
+from ...._compat import cached_property
+from ....types.v1 import tenant_import_from_csv_params, tenant_import_from_warehouse_params
+from ...._resource import SyncAPIResource, AsyncAPIResource
+from ...._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ..._base_client import make_request_options
-from ...types.v1.import_tenants_response import ImportTenantsResponse
+from ...._base_client import make_request_options
+from ....types.v1.import_tenants_response import ImportTenantsResponse
+from ....types.v1.tenant_get_tenants_schema_response import TenantGetTenantsSchemaResponse
 
 __all__ = ["TenantsResource", "AsyncTenantsResource"]
 
 
 class TenantsResource(SyncAPIResource):
+    @cached_property
+    def groups(self) -> GroupsResource:
+        return GroupsResource(self._client)
+
     @cached_property
     def with_raw_response(self) -> TenantsResourceWithRawResponse:
         """
@@ -42,6 +55,33 @@ class TenantsResource(SyncAPIResource):
         For more information, see https://www.github.com/kater-ai/kater-python-sdk#with_streaming_response
         """
         return TenantsResourceWithStreamingResponse(self)
+
+    def get_tenants_schema(
+        self,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> TenantGetTenantsSchemaResponse:
+        """
+        Get all tenants as a TenantSchema object.
+
+        Returns tenants in the YAML-compatible schema format with group references.
+        Supports content negotiation: JSON by default, YAML with Accept:
+        application/yaml.
+
+        RLS: Filtered to current client (ClientRLSDB).
+        """
+        return self._get(
+            "/api/v1/tenants/schema",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=TenantGetTenantsSchemaResponse,
+        )
 
     def import_from_csv(
         self,
@@ -178,6 +218,10 @@ class TenantsResource(SyncAPIResource):
 
 class AsyncTenantsResource(AsyncAPIResource):
     @cached_property
+    def groups(self) -> AsyncGroupsResource:
+        return AsyncGroupsResource(self._client)
+
+    @cached_property
     def with_raw_response(self) -> AsyncTenantsResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
@@ -195,6 +239,33 @@ class AsyncTenantsResource(AsyncAPIResource):
         For more information, see https://www.github.com/kater-ai/kater-python-sdk#with_streaming_response
         """
         return AsyncTenantsResourceWithStreamingResponse(self)
+
+    async def get_tenants_schema(
+        self,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> TenantGetTenantsSchemaResponse:
+        """
+        Get all tenants as a TenantSchema object.
+
+        Returns tenants in the YAML-compatible schema format with group references.
+        Supports content negotiation: JSON by default, YAML with Accept:
+        application/yaml.
+
+        RLS: Filtered to current client (ClientRLSDB).
+        """
+        return await self._get(
+            "/api/v1/tenants/schema",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=TenantGetTenantsSchemaResponse,
+        )
 
     async def import_from_csv(
         self,
@@ -333,6 +404,9 @@ class TenantsResourceWithRawResponse:
     def __init__(self, tenants: TenantsResource) -> None:
         self._tenants = tenants
 
+        self.get_tenants_schema = to_raw_response_wrapper(
+            tenants.get_tenants_schema,
+        )
         self.import_from_csv = to_raw_response_wrapper(
             tenants.import_from_csv,
         )
@@ -340,11 +414,18 @@ class TenantsResourceWithRawResponse:
             tenants.import_from_warehouse,
         )
 
+    @cached_property
+    def groups(self) -> GroupsResourceWithRawResponse:
+        return GroupsResourceWithRawResponse(self._tenants.groups)
+
 
 class AsyncTenantsResourceWithRawResponse:
     def __init__(self, tenants: AsyncTenantsResource) -> None:
         self._tenants = tenants
 
+        self.get_tenants_schema = async_to_raw_response_wrapper(
+            tenants.get_tenants_schema,
+        )
         self.import_from_csv = async_to_raw_response_wrapper(
             tenants.import_from_csv,
         )
@@ -352,11 +433,18 @@ class AsyncTenantsResourceWithRawResponse:
             tenants.import_from_warehouse,
         )
 
+    @cached_property
+    def groups(self) -> AsyncGroupsResourceWithRawResponse:
+        return AsyncGroupsResourceWithRawResponse(self._tenants.groups)
+
 
 class TenantsResourceWithStreamingResponse:
     def __init__(self, tenants: TenantsResource) -> None:
         self._tenants = tenants
 
+        self.get_tenants_schema = to_streamed_response_wrapper(
+            tenants.get_tenants_schema,
+        )
         self.import_from_csv = to_streamed_response_wrapper(
             tenants.import_from_csv,
         )
@@ -364,14 +452,25 @@ class TenantsResourceWithStreamingResponse:
             tenants.import_from_warehouse,
         )
 
+    @cached_property
+    def groups(self) -> GroupsResourceWithStreamingResponse:
+        return GroupsResourceWithStreamingResponse(self._tenants.groups)
+
 
 class AsyncTenantsResourceWithStreamingResponse:
     def __init__(self, tenants: AsyncTenantsResource) -> None:
         self._tenants = tenants
 
+        self.get_tenants_schema = async_to_streamed_response_wrapper(
+            tenants.get_tenants_schema,
+        )
         self.import_from_csv = async_to_streamed_response_wrapper(
             tenants.import_from_csv,
         )
         self.import_from_warehouse = async_to_streamed_response_wrapper(
             tenants.import_from_warehouse,
         )
+
+    @cached_property
+    def groups(self) -> AsyncGroupsResourceWithStreamingResponse:
+        return AsyncGroupsResourceWithStreamingResponse(self._tenants.groups)
