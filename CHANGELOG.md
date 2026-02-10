@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.6.0 (2026-02-10)
+
+Full Changelog: [v0.5.1...v0.6.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.5.1...v0.6.0)
+
+### Features
+
+* **api:** manual updates ([a245c4a](https://github.com/kater-ai/kater-python-sdk/commit/a245c4af66be42f56225fa7fbb0e419efaa35320))
+* **api:** manual updates ([d2e3e1d](https://github.com/kater-ai/kater-python-sdk/commit/d2e3e1d7b3be8b59fd6921283d6c3b7083014a4d))
+* **api:** manual updates ([7c32ece](https://github.com/kater-ai/kater-python-sdk/commit/7c32eced7c16df58a225951404973f1b3cf48ed8))
+* **api:** manual updates ([985f3cb](https://github.com/kater-ai/kater-python-sdk/commit/985f3cb5388d8e181e6a8686bdba439e3985d5d3))
+* **api:** manual updates ([c8a945c](https://github.com/kater-ai/kater-python-sdk/commit/c8a945cdea037b68b13025929668b2d1f9ee4ca5))
+
+
+### Bug Fixes
+
+* **api:** prune orphaned schemas and preserve auto-generated security… ([a6af3dd](https://github.com/kater-ai/kater-python-sdk/commit/a6af3dda2068cfb67bd63f857ee8eb2ee49d0c9d))
+
+
+### Chores
+
+* add internal route tagging, clean up CLI, and fix CI build issues ([3313bdc](https://github.com/kater-ai/kater-python-sdk/commit/3313bdc24743c68e0415fcf5fb12cf014c4234be))
+
 ## 0.5.1 (2026-02-09)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/kater-ai/kater-python-sdk/compare/v0.5.0...v0.5.1)
