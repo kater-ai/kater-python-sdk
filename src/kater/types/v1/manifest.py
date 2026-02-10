@@ -2,7 +2,7 @@
 
 from typing import Dict, Optional
 
-from ...._models import BaseModel
+from ..._models import BaseModel
 from .manifest_entry import ManifestEntry
 
 __all__ = ["Manifest"]

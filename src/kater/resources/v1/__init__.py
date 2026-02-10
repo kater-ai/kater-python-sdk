@@ -16,6 +16,14 @@ from .tenants import (
     TenantsResourceWithStreamingResponse,
     AsyncTenantsResourceWithStreamingResponse,
 )
+from .compiler import (
+    CompilerResource,
+    AsyncCompilerResource,
+    CompilerResourceWithRawResponse,
+    AsyncCompilerResourceWithRawResponse,
+    CompilerResourceWithStreamingResponse,
+    AsyncCompilerResourceWithStreamingResponse,
+)
 from .connections import (
     ConnectionsResource,
     AsyncConnectionsResource,
@@ -26,6 +34,12 @@ from .connections import (
 )
 
 __all__ = [
+    "CompilerResource",
+    "AsyncCompilerResource",
+    "CompilerResourceWithRawResponse",
+    "AsyncCompilerResourceWithRawResponse",
+    "CompilerResourceWithStreamingResponse",
+    "AsyncCompilerResourceWithStreamingResponse",
     "ConnectionsResource",
     "AsyncConnectionsResource",
     "ConnectionsResourceWithRawResponse",

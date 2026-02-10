@@ -112,7 +112,7 @@ from kater import Kater
 
 client = Kater()
 
-response = client.v1.connections.compiler.compile(
+response = client.v1.compiler.compile(
     connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
     resolved_query={
         "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",

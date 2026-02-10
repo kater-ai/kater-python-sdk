@@ -9,7 +9,7 @@ import pytest
 
 from kater import Kater, AsyncKater
 from tests.utils import assert_matches_type
-from kater.types.v1.connections import (
+from kater.types.v1 import (
     CompilerCompileResponse,
     CompilerResolveResponse,
     CompilerValidateResponse,
@@ -24,7 +24,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_compile(self, client: Kater) -> None:
-        compiler = client.v1.connections.compiler.compile(
+        compiler = client.v1.compiler.compile(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             resolved_query={
                 "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -38,7 +38,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_compile_with_all_params(self, client: Kater) -> None:
-        compiler = client.v1.connections.compiler.compile(
+        compiler = client.v1.compiler.compile(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             resolved_query={
                 "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -142,7 +142,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_compile(self, client: Kater) -> None:
-        response = client.v1.connections.compiler.with_raw_response.compile(
+        response = client.v1.compiler.with_raw_response.compile(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             resolved_query={
                 "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -160,7 +160,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_compile(self, client: Kater) -> None:
-        with client.v1.connections.compiler.with_streaming_response.compile(
+        with client.v1.compiler.with_streaming_response.compile(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             resolved_query={
                 "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -180,7 +180,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_resolve(self, client: Kater) -> None:
-        compiler = client.v1.connections.compiler.resolve(
+        compiler = client.v1.compiler.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
         )
@@ -189,7 +189,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_resolve_with_all_params(self, client: Kater) -> None:
-        compiler = client.v1.connections.compiler.resolve(
+        compiler = client.v1.compiler.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
             source="source",
@@ -205,7 +205,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_resolve(self, client: Kater) -> None:
-        response = client.v1.connections.compiler.with_raw_response.resolve(
+        response = client.v1.compiler.with_raw_response.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
         )
@@ -218,7 +218,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_resolve(self, client: Kater) -> None:
-        with client.v1.connections.compiler.with_streaming_response.resolve(
+        with client.v1.compiler.with_streaming_response.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
         ) as response:
@@ -233,13 +233,13 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_validate(self, client: Kater) -> None:
-        compiler = client.v1.connections.compiler.validate()
+        compiler = client.v1.compiler.validate()
         assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_method_validate_with_all_params(self, client: Kater) -> None:
-        compiler = client.v1.connections.compiler.validate(
+        compiler = client.v1.compiler.validate(
             source="source",
             connection_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],
             x_kater_cli_id="X-Kater-CLI-ID",
@@ -249,7 +249,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_raw_response_validate(self, client: Kater) -> None:
-        response = client.v1.connections.compiler.with_raw_response.validate()
+        response = client.v1.compiler.with_raw_response.validate()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -259,7 +259,7 @@ class TestCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     def test_streaming_response_validate(self, client: Kater) -> None:
-        with client.v1.connections.compiler.with_streaming_response.validate() as response:
+        with client.v1.compiler.with_streaming_response.validate() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -277,7 +277,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_compile(self, async_client: AsyncKater) -> None:
-        compiler = await async_client.v1.connections.compiler.compile(
+        compiler = await async_client.v1.compiler.compile(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             resolved_query={
                 "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -291,7 +291,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_compile_with_all_params(self, async_client: AsyncKater) -> None:
-        compiler = await async_client.v1.connections.compiler.compile(
+        compiler = await async_client.v1.compiler.compile(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             resolved_query={
                 "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -395,7 +395,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_compile(self, async_client: AsyncKater) -> None:
-        response = await async_client.v1.connections.compiler.with_raw_response.compile(
+        response = await async_client.v1.compiler.with_raw_response.compile(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             resolved_query={
                 "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -413,7 +413,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_compile(self, async_client: AsyncKater) -> None:
-        async with async_client.v1.connections.compiler.with_streaming_response.compile(
+        async with async_client.v1.compiler.with_streaming_response.compile(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             resolved_query={
                 "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -433,7 +433,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_resolve(self, async_client: AsyncKater) -> None:
-        compiler = await async_client.v1.connections.compiler.resolve(
+        compiler = await async_client.v1.compiler.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
         )
@@ -442,7 +442,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_resolve_with_all_params(self, async_client: AsyncKater) -> None:
-        compiler = await async_client.v1.connections.compiler.resolve(
+        compiler = await async_client.v1.compiler.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
             source="source",
@@ -458,7 +458,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_resolve(self, async_client: AsyncKater) -> None:
-        response = await async_client.v1.connections.compiler.with_raw_response.resolve(
+        response = await async_client.v1.compiler.with_raw_response.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
         )
@@ -471,7 +471,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_resolve(self, async_client: AsyncKater) -> None:
-        async with async_client.v1.connections.compiler.with_streaming_response.resolve(
+        async with async_client.v1.compiler.with_streaming_response.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
         ) as response:
@@ -486,13 +486,13 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_validate(self, async_client: AsyncKater) -> None:
-        compiler = await async_client.v1.connections.compiler.validate()
+        compiler = await async_client.v1.compiler.validate()
         assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
 
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_method_validate_with_all_params(self, async_client: AsyncKater) -> None:
-        compiler = await async_client.v1.connections.compiler.validate(
+        compiler = await async_client.v1.compiler.validate(
             source="source",
             connection_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],
             x_kater_cli_id="X-Kater-CLI-ID",
@@ -502,7 +502,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_raw_response_validate(self, async_client: AsyncKater) -> None:
-        response = await async_client.v1.connections.compiler.with_raw_response.validate()
+        response = await async_client.v1.compiler.with_raw_response.validate()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -512,7 +512,7 @@ class TestAsyncCompiler:
     @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
     async def test_streaming_response_validate(self, async_client: AsyncKater) -> None:
-        async with async_client.v1.connections.compiler.with_streaming_response.validate() as response:
+        async with async_client.v1.compiler.with_streaming_response.validate() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
