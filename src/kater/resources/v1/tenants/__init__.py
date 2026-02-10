@@ -1,21 +1,5 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .batch import (
-    BatchResource,
-    AsyncBatchResource,
-    BatchResourceWithRawResponse,
-    AsyncBatchResourceWithRawResponse,
-    BatchResourceWithStreamingResponse,
-    AsyncBatchResourceWithStreamingResponse,
-)
-from .groups import (
-    GroupsResource,
-    AsyncGroupsResource,
-    GroupsResourceWithRawResponse,
-    AsyncGroupsResourceWithRawResponse,
-    GroupsResourceWithStreamingResponse,
-    AsyncGroupsResourceWithStreamingResponse,
-)
 from .import_ import (
     ImportResource,
     AsyncImportResource,
@@ -34,24 +18,12 @@ from .tenants import (
 )
 
 __all__ = [
-    "BatchResource",
-    "AsyncBatchResource",
-    "BatchResourceWithRawResponse",
-    "AsyncBatchResourceWithRawResponse",
-    "BatchResourceWithStreamingResponse",
-    "AsyncBatchResourceWithStreamingResponse",
     "ImportResource",
     "AsyncImportResource",
     "ImportResourceWithRawResponse",
     "AsyncImportResourceWithRawResponse",
     "ImportResourceWithStreamingResponse",
     "AsyncImportResourceWithStreamingResponse",
-    "GroupsResource",
-    "AsyncGroupsResource",
-    "GroupsResourceWithRawResponse",
-    "AsyncGroupsResourceWithRawResponse",
-    "GroupsResourceWithStreamingResponse",
-    "AsyncGroupsResourceWithStreamingResponse",
     "TenantsResource",
     "AsyncTenantsResource",
     "TenantsResourceWithRawResponse",
