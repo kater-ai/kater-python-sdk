@@ -5,7 +5,7 @@
 Types:
 
 ```python
-from kater.types.v1 import Connection, DatabaseConfig, SyncEventResponse, ConnectionListResponse
+from kater.types.v1 import Connection, ConnectionListResponse
 ```
 
 Methods:
@@ -13,20 +13,6 @@ Methods:
 - <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections.py">list</a>(\*\*<a href="src/kater/types/v1/connection_list_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_response.py">ConnectionListResponse</a></code>
 
 ## Tenants
-
-Types:
-
-```python
-from kater.types.v1 import CreateTenant, Tenant
-```
-
-### Batch
-
-Types:
-
-```python
-from kater.types.v1.tenants import BatchTenantError, BatchTenantSuccess
-```
 
 ### Import
 
