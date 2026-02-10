@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .connection import Connection as Connection
+from .import_tenants_response import ImportTenantsResponse as ImportTenantsResponse
 from .tenant_import_from_csv_params import TenantImportFromCsvParams as TenantImportFromCsvParams
 from .connection_list_connections_params import ConnectionListConnectionsParams as ConnectionListConnectionsParams
 from .tenant_import_from_warehouse_params import TenantImportFromWarehouseParams as TenantImportFromWarehouseParams
