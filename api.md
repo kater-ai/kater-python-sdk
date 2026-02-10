@@ -18,6 +18,13 @@ Types:
 
 ```python
 from kater.types.v1.connections import (
+    ChartConfig,
+    CompilerErrorItem,
+    InlineField,
+    Manifest,
+    ManifestEntry,
+    RefWithLabel,
+    SubqueryCondition,
     CompilerCompileResponse,
     CompilerResolveResponse,
     CompilerValidateResponse,
