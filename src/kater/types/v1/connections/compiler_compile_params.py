@@ -7,36 +7,27 @@ from typing_extensions import Literal, Required, Annotated, TypeAlias, TypedDict
 
 from ...._types import SequenceNotStr
 from ...._utils import PropertyInfo
+from .chart_config_param import ChartConfigParam
+from .inline_field_param import InlineFieldParam
+from .ref_with_label_param import RefWithLabelParam
+from .subquery_condition_param import SubqueryConditionParam
 
 __all__ = [
     "CompilerCompileParams",
     "ResolvedQuery",
     "ResolvedQueryCalculation",
-    "ResolvedQueryCalculationRefWithLabel",
-    "ResolvedQueryCalculationInlineField",
     "ResolvedQueryChartHint",
     "ResolvedQueryChartHintChartHint1",
-    "ResolvedQueryChartHintChartHint1Config",
     "ResolvedQueryChartHintChartHint2Input",
     "ResolvedQueryChartHintChartHint2InputDefault",
-    "ResolvedQueryChartHintChartHint2InputDefaultConfig",
     "ResolvedQueryDimension",
-    "ResolvedQueryDimensionRefWithLabel",
-    "ResolvedQueryDimensionInlineField",
     "ResolvedQueryFilter",
     "ResolvedQueryFilterInlineFieldFilter",
     "ResolvedQueryFilterInlineExistsFilter1",
-    "ResolvedQueryFilterInlineExistsFilter1Exists",
-    "ResolvedQueryFilterInlineExistsFilter1NotExists",
     "ResolvedQueryFilterInlineExistsFilter2",
-    "ResolvedQueryFilterInlineExistsFilter2NotExists",
-    "ResolvedQueryFilterInlineExistsFilter2Exists",
     "ResolvedQueryMeasure",
-    "ResolvedQueryMeasureRefWithLabel",
-    "ResolvedQueryMeasureInlineField",
     "ResolvedQueryOrderBy",
     "ResolvedQueryResolvedChart",
-    "ResolvedQueryResolvedChartConfig",
     "ResolvedQueryResolvedVariable",
     "ResolvedQueryResolvedVariableAllowedValues",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
@@ -61,60 +52,13 @@ class CompilerCompileParams(TypedDict, total=False):
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]
 
 
-class ResolvedQueryCalculationRefWithLabel(TypedDict, total=False):
-    """A reference with optional label override"""
-
-    ref: Required[str]
-    """Reference using ref(), var(), or expr() syntax"""
-
-    label: Optional[str]
-    """Optional label override for this reference"""
-
-
-class ResolvedQueryCalculationInlineField(TypedDict, total=False):
-    """An inline field definition for dimensions/measures/calculations"""
-
-    kater_id: Required[str]
-    """Unique identifier for this inline field"""
-
-    name: Required[str]
-    """Name of the inline field"""
-
-    sql: Required[str]
-    """SQL expression for the field"""
-
-    label: Optional[str]
-    """Human-readable label"""
-
-
-ResolvedQueryCalculation: TypeAlias = Union[
-    ResolvedQueryCalculationRefWithLabel, ResolvedQueryCalculationInlineField, str
-]
-
-
-class ResolvedQueryChartHintChartHint1Config(TypedDict, total=False):
-    """Chart configuration with variable references"""
-
-    color_by: Optional[str]
-    """Field or variable reference for color grouping"""
-
-    size: Optional[str]
-    """Field or variable reference for size"""
-
-    stack_by: Optional[str]
-    """Field or variable reference for stacking"""
-
-    x_axis: Optional[str]
-    """Field or variable reference for x-axis"""
-
-    y_axis: Optional[str]
-    """Field or variable reference for y-axis"""
+ResolvedQueryCalculation: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
 
 
 class ResolvedQueryChartHintChartHint1(TypedDict, total=False):
     """A chart recommendation rule"""
 
-    config: Required[ResolvedQueryChartHintChartHint1Config]
+    config: Required[ChartConfigParam]
     """Chart configuration with variable references"""
 
     recommend: Required[
@@ -129,27 +73,8 @@ class ResolvedQueryChartHintChartHint1(TypedDict, total=False):
     """
 
 
-class ResolvedQueryChartHintChartHint2InputDefaultConfig(TypedDict, total=False):
-    """Chart configuration with variable references"""
-
-    color_by: Optional[str]
-    """Field or variable reference for color grouping"""
-
-    size: Optional[str]
-    """Field or variable reference for size"""
-
-    stack_by: Optional[str]
-    """Field or variable reference for stacking"""
-
-    x_axis: Optional[str]
-    """Field or variable reference for x-axis"""
-
-    y_axis: Optional[str]
-    """Field or variable reference for y-axis"""
-
-
 class ResolvedQueryChartHintChartHint2InputDefault(TypedDict, total=False):
-    config: Required[ResolvedQueryChartHintChartHint2InputDefaultConfig]
+    config: Required[ChartConfigParam]
     """Chart configuration with variable references"""
 
     recommend: Required[
@@ -166,34 +91,7 @@ class ResolvedQueryChartHintChartHint2Input(TypedDict, total=False):
 
 ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1, ResolvedQueryChartHintChartHint2Input]
 
-
-class ResolvedQueryDimensionRefWithLabel(TypedDict, total=False):
-    """A reference with optional label override"""
-
-    ref: Required[str]
-    """Reference using ref(), var(), or expr() syntax"""
-
-    label: Optional[str]
-    """Optional label override for this reference"""
-
-
-class ResolvedQueryDimensionInlineField(TypedDict, total=False):
-    """An inline field definition for dimensions/measures/calculations"""
-
-    kater_id: Required[str]
-    """Unique identifier for this inline field"""
-
-    name: Required[str]
-    """Name of the inline field"""
-
-    sql: Required[str]
-    """SQL expression for the field"""
-
-    label: Optional[str]
-    """Human-readable label"""
-
-
-ResolvedQueryDimension: TypeAlias = Union[ResolvedQueryDimensionRefWithLabel, ResolvedQueryDimensionInlineField, str]
+ResolvedQueryDimension: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
 
 
 class ResolvedQueryFilterInlineFieldFilter(TypedDict, total=False):
@@ -235,46 +133,10 @@ class ResolvedQueryFilterInlineFieldFilter(TypedDict, total=False):
     """Fixed values for the filter"""
 
 
-_ResolvedQueryFilterInlineExistsFilter1ExistsReservedKeywords = TypedDict(
-    "_ResolvedQueryFilterInlineExistsFilter1ExistsReservedKeywords",
-    {
-        "from": str,
-    },
-    total=False,
-)
-
-
-class ResolvedQueryFilterInlineExistsFilter1Exists(
-    _ResolvedQueryFilterInlineExistsFilter1ExistsReservedKeywords, total=False
-):
-    """EXISTS subquery condition"""
-
-    where: Required[SequenceNotStr[str]]
-    """WHERE conditions for the subquery"""
-
-
-_ResolvedQueryFilterInlineExistsFilter1NotExistsReservedKeywords = TypedDict(
-    "_ResolvedQueryFilterInlineExistsFilter1NotExistsReservedKeywords",
-    {
-        "from": str,
-    },
-    total=False,
-)
-
-
-class ResolvedQueryFilterInlineExistsFilter1NotExists(
-    _ResolvedQueryFilterInlineExistsFilter1NotExistsReservedKeywords, total=False
-):
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-    where: Required[SequenceNotStr[str]]
-    """WHERE conditions for the subquery"""
-
-
 class ResolvedQueryFilterInlineExistsFilter1(TypedDict, total=False):
     """An inline filter using EXISTS or NOT EXISTS with a subquery"""
 
-    exists: Required[ResolvedQueryFilterInlineExistsFilter1Exists]
+    exists: Required[SubqueryConditionParam]
     """EXISTS subquery condition"""
 
     name: Required[str]
@@ -286,44 +148,8 @@ class ResolvedQueryFilterInlineExistsFilter1(TypedDict, total=False):
     label: Optional[str]
     """Human-readable label"""
 
-    not_exists: Optional[ResolvedQueryFilterInlineExistsFilter1NotExists]
+    not_exists: Optional[SubqueryConditionParam]
     """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-
-_ResolvedQueryFilterInlineExistsFilter2NotExistsReservedKeywords = TypedDict(
-    "_ResolvedQueryFilterInlineExistsFilter2NotExistsReservedKeywords",
-    {
-        "from": str,
-    },
-    total=False,
-)
-
-
-class ResolvedQueryFilterInlineExistsFilter2NotExists(
-    _ResolvedQueryFilterInlineExistsFilter2NotExistsReservedKeywords, total=False
-):
-    """NOT EXISTS subquery condition"""
-
-    where: Required[SequenceNotStr[str]]
-    """WHERE conditions for the subquery"""
-
-
-_ResolvedQueryFilterInlineExistsFilter2ExistsReservedKeywords = TypedDict(
-    "_ResolvedQueryFilterInlineExistsFilter2ExistsReservedKeywords",
-    {
-        "from": str,
-    },
-    total=False,
-)
-
-
-class ResolvedQueryFilterInlineExistsFilter2Exists(
-    _ResolvedQueryFilterInlineExistsFilter2ExistsReservedKeywords, total=False
-):
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-    where: Required[SequenceNotStr[str]]
-    """WHERE conditions for the subquery"""
 
 
 class ResolvedQueryFilterInlineExistsFilter2(TypedDict, total=False):
@@ -332,13 +158,13 @@ class ResolvedQueryFilterInlineExistsFilter2(TypedDict, total=False):
     name: Required[str]
     """Name of the inline filter"""
 
-    not_exists: Required[ResolvedQueryFilterInlineExistsFilter2NotExists]
+    not_exists: Required[SubqueryConditionParam]
     """NOT EXISTS subquery condition"""
 
     description: Optional[str]
     """Description of the filter"""
 
-    exists: Optional[ResolvedQueryFilterInlineExistsFilter2Exists]
+    exists: Optional[SubqueryConditionParam]
     """A subquery condition for EXISTS/NOT EXISTS filters"""
 
     label: Optional[str]
@@ -352,34 +178,7 @@ ResolvedQueryFilter: TypeAlias = Union[
     ResolvedQueryFilterInlineExistsFilter2,
 ]
 
-
-class ResolvedQueryMeasureRefWithLabel(TypedDict, total=False):
-    """A reference with optional label override"""
-
-    ref: Required[str]
-    """Reference using ref(), var(), or expr() syntax"""
-
-    label: Optional[str]
-    """Optional label override for this reference"""
-
-
-class ResolvedQueryMeasureInlineField(TypedDict, total=False):
-    """An inline field definition for dimensions/measures/calculations"""
-
-    kater_id: Required[str]
-    """Unique identifier for this inline field"""
-
-    name: Required[str]
-    """Name of the inline field"""
-
-    sql: Required[str]
-    """SQL expression for the field"""
-
-    label: Optional[str]
-    """Human-readable label"""
-
-
-ResolvedQueryMeasure: TypeAlias = Union[ResolvedQueryMeasureRefWithLabel, ResolvedQueryMeasureInlineField, str]
+ResolvedQueryMeasure: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
 
 
 class ResolvedQueryOrderBy(TypedDict, total=False):
@@ -395,29 +194,10 @@ class ResolvedQueryOrderBy(TypedDict, total=False):
     """Fields to sort in descending order (highest/newest first)"""
 
 
-class ResolvedQueryResolvedChartConfig(TypedDict, total=False):
-    """Chart configuration"""
-
-    color_by: Optional[str]
-    """Field or variable reference for color grouping"""
-
-    size: Optional[str]
-    """Field or variable reference for size"""
-
-    stack_by: Optional[str]
-    """Field or variable reference for stacking"""
-
-    x_axis: Optional[str]
-    """Field or variable reference for x-axis"""
-
-    y_axis: Optional[str]
-    """Field or variable reference for y-axis"""
-
-
 class ResolvedQueryResolvedChart(TypedDict, total=False):
     """The matched chart recommendation after evaluating chart hints"""
 
-    config: Required[ResolvedQueryResolvedChartConfig]
+    config: Required[ChartConfigParam]
     """Chart configuration"""
 
     recommend: Required[

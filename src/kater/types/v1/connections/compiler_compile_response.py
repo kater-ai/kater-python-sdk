@@ -1,58 +1,12 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import Dict, List, Optional
+from typing import List, Optional
 
+from .manifest import Manifest
 from ...._models import BaseModel
+from .compiler_error_item import CompilerErrorItem
 
-__all__ = ["CompilerCompileResponse", "Error", "Manifest", "ManifestObjects", "Metadata"]
-
-
-class Error(BaseModel):
-    """A single compiler validation or compilation error."""
-
-    code: str
-    """Machine-readable error code"""
-
-    message: str
-    """Human-readable error description"""
-
-    file: Optional[str] = None
-    """Source file path where the error occurred"""
-
-    line: Optional[int] = None
-    """Line number in the source file"""
-
-    ref: Optional[str] = None
-    """Reference to the source element (e.g. view or query name)"""
-
-    remediation: Optional[str] = None
-    """Suggested fix for this error"""
-
-
-class ManifestObjects(BaseModel):
-    """A single object entry in the manifest."""
-
-    kater_id: str
-
-    name: str
-
-    type: str
-
-    label: Optional[str] = None
-
-    parent_id: Optional[str] = None
-
-    source_file: Optional[str] = None
-
-
-class Manifest(BaseModel):
-    """Compilation manifest with all named objects."""
-
-    generated_at: str
-
-    objects: Dict[str, ManifestObjects]
-
-    schema_version: Optional[str] = None
+__all__ = ["CompilerCompileResponse", "Metadata"]
 
 
 class Metadata(BaseModel):
@@ -86,7 +40,7 @@ class CompilerCompileResponse(BaseModel):
     success: bool
     """Whether compilation succeeded"""
 
-    errors: Optional[List[Error]] = None
+    errors: Optional[List[CompilerErrorItem]] = None
     """Compilation errors"""
 
     manifest: Optional[Manifest] = None

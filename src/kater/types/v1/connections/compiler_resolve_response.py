@@ -3,39 +3,29 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
-from pydantic import Field as FieldInfo
-
+from .manifest import Manifest
 from ...._models import BaseModel
+from .chart_config import ChartConfig
+from .inline_field import InlineField
+from .ref_with_label import RefWithLabel
+from .subquery_condition import SubqueryCondition
 
 __all__ = [
     "CompilerResolveResponse",
     "ResolvedQuery",
     "ResolvedQueryCalculation",
-    "ResolvedQueryCalculationRefWithLabel",
-    "ResolvedQueryCalculationInlineField",
     "ResolvedQueryChartHint",
     "ResolvedQueryChartHintChartHint1",
-    "ResolvedQueryChartHintChartHint1Config",
     "ResolvedQueryChartHintChartHint2Output",
     "ResolvedQueryChartHintChartHint2OutputDefault",
-    "ResolvedQueryChartHintChartHint2OutputDefaultConfig",
     "ResolvedQueryDimension",
-    "ResolvedQueryDimensionRefWithLabel",
-    "ResolvedQueryDimensionInlineField",
     "ResolvedQueryFilter",
     "ResolvedQueryFilterInlineFieldFilter",
     "ResolvedQueryFilterInlineExistsFilter1",
-    "ResolvedQueryFilterInlineExistsFilter1Exists",
-    "ResolvedQueryFilterInlineExistsFilter1NotExists",
     "ResolvedQueryFilterInlineExistsFilter2",
-    "ResolvedQueryFilterInlineExistsFilter2NotExists",
-    "ResolvedQueryFilterInlineExistsFilter2Exists",
     "ResolvedQueryMeasure",
-    "ResolvedQueryMeasureRefWithLabel",
-    "ResolvedQueryMeasureInlineField",
     "ResolvedQueryOrderBy",
     "ResolvedQueryResolvedChart",
-    "ResolvedQueryResolvedChartConfig",
     "ResolvedQueryResolvedVariable",
     "ResolvedQueryResolvedVariableAllowedValues",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
@@ -44,65 +34,15 @@ __all__ = [
     "ResolvedQueryResolvedVariableConstraints",
     "DependencyGraph",
     "DependencyGraphNodes",
-    "Manifest",
-    "ManifestObjects",
 ]
 
-
-class ResolvedQueryCalculationRefWithLabel(BaseModel):
-    """A reference with optional label override"""
-
-    ref: str
-    """Reference using ref(), var(), or expr() syntax"""
-
-    label: Optional[str] = None
-    """Optional label override for this reference"""
-
-
-class ResolvedQueryCalculationInlineField(BaseModel):
-    """An inline field definition for dimensions/measures/calculations"""
-
-    kater_id: str
-    """Unique identifier for this inline field"""
-
-    name: str
-    """Name of the inline field"""
-
-    sql: str
-    """SQL expression for the field"""
-
-    label: Optional[str] = None
-    """Human-readable label"""
-
-
-ResolvedQueryCalculation: TypeAlias = Union[
-    ResolvedQueryCalculationRefWithLabel, ResolvedQueryCalculationInlineField, str
-]
-
-
-class ResolvedQueryChartHintChartHint1Config(BaseModel):
-    """Chart configuration with variable references"""
-
-    color_by: Optional[str] = None
-    """Field or variable reference for color grouping"""
-
-    size: Optional[str] = None
-    """Field or variable reference for size"""
-
-    stack_by: Optional[str] = None
-    """Field or variable reference for stacking"""
-
-    x_axis: Optional[str] = None
-    """Field or variable reference for x-axis"""
-
-    y_axis: Optional[str] = None
-    """Field or variable reference for y-axis"""
+ResolvedQueryCalculation: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
 class ResolvedQueryChartHintChartHint1(BaseModel):
     """A chart recommendation rule"""
 
-    config: ResolvedQueryChartHintChartHint1Config
+    config: ChartConfig
     """Chart configuration with variable references"""
 
     recommend: Literal[
@@ -117,27 +57,8 @@ class ResolvedQueryChartHintChartHint1(BaseModel):
     """
 
 
-class ResolvedQueryChartHintChartHint2OutputDefaultConfig(BaseModel):
-    """Chart configuration with variable references"""
-
-    color_by: Optional[str] = None
-    """Field or variable reference for color grouping"""
-
-    size: Optional[str] = None
-    """Field or variable reference for size"""
-
-    stack_by: Optional[str] = None
-    """Field or variable reference for stacking"""
-
-    x_axis: Optional[str] = None
-    """Field or variable reference for x-axis"""
-
-    y_axis: Optional[str] = None
-    """Field or variable reference for y-axis"""
-
-
 class ResolvedQueryChartHintChartHint2OutputDefault(BaseModel):
-    config: ResolvedQueryChartHintChartHint2OutputDefaultConfig
+    config: ChartConfig
     """Chart configuration with variable references"""
 
     recommend: Literal[
@@ -154,34 +75,7 @@ class ResolvedQueryChartHintChartHint2Output(BaseModel):
 
 ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1, ResolvedQueryChartHintChartHint2Output]
 
-
-class ResolvedQueryDimensionRefWithLabel(BaseModel):
-    """A reference with optional label override"""
-
-    ref: str
-    """Reference using ref(), var(), or expr() syntax"""
-
-    label: Optional[str] = None
-    """Optional label override for this reference"""
-
-
-class ResolvedQueryDimensionInlineField(BaseModel):
-    """An inline field definition for dimensions/measures/calculations"""
-
-    kater_id: str
-    """Unique identifier for this inline field"""
-
-    name: str
-    """Name of the inline field"""
-
-    sql: str
-    """SQL expression for the field"""
-
-    label: Optional[str] = None
-    """Human-readable label"""
-
-
-ResolvedQueryDimension: TypeAlias = Union[ResolvedQueryDimensionRefWithLabel, ResolvedQueryDimensionInlineField, str]
+ResolvedQueryDimension: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
 class ResolvedQueryFilterInlineFieldFilter(BaseModel):
@@ -221,30 +115,10 @@ class ResolvedQueryFilterInlineFieldFilter(BaseModel):
     """Fixed values for the filter"""
 
 
-class ResolvedQueryFilterInlineExistsFilter1Exists(BaseModel):
-    """EXISTS subquery condition"""
-
-    from_: str = FieldInfo(alias="from")
-    """Reference to the source view/table for the subquery"""
-
-    where: List[str]
-    """WHERE conditions for the subquery"""
-
-
-class ResolvedQueryFilterInlineExistsFilter1NotExists(BaseModel):
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-    from_: str = FieldInfo(alias="from")
-    """Reference to the source view/table for the subquery"""
-
-    where: List[str]
-    """WHERE conditions for the subquery"""
-
-
 class ResolvedQueryFilterInlineExistsFilter1(BaseModel):
     """An inline filter using EXISTS or NOT EXISTS with a subquery"""
 
-    exists: ResolvedQueryFilterInlineExistsFilter1Exists
+    exists: SubqueryCondition
     """EXISTS subquery condition"""
 
     name: str
@@ -256,28 +130,8 @@ class ResolvedQueryFilterInlineExistsFilter1(BaseModel):
     label: Optional[str] = None
     """Human-readable label"""
 
-    not_exists: Optional[ResolvedQueryFilterInlineExistsFilter1NotExists] = None
+    not_exists: Optional[SubqueryCondition] = None
     """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-
-class ResolvedQueryFilterInlineExistsFilter2NotExists(BaseModel):
-    """NOT EXISTS subquery condition"""
-
-    from_: str = FieldInfo(alias="from")
-    """Reference to the source view/table for the subquery"""
-
-    where: List[str]
-    """WHERE conditions for the subquery"""
-
-
-class ResolvedQueryFilterInlineExistsFilter2Exists(BaseModel):
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-    from_: str = FieldInfo(alias="from")
-    """Reference to the source view/table for the subquery"""
-
-    where: List[str]
-    """WHERE conditions for the subquery"""
 
 
 class ResolvedQueryFilterInlineExistsFilter2(BaseModel):
@@ -286,13 +140,13 @@ class ResolvedQueryFilterInlineExistsFilter2(BaseModel):
     name: str
     """Name of the inline filter"""
 
-    not_exists: ResolvedQueryFilterInlineExistsFilter2NotExists
+    not_exists: SubqueryCondition
     """NOT EXISTS subquery condition"""
 
     description: Optional[str] = None
     """Description of the filter"""
 
-    exists: Optional[ResolvedQueryFilterInlineExistsFilter2Exists] = None
+    exists: Optional[SubqueryCondition] = None
     """A subquery condition for EXISTS/NOT EXISTS filters"""
 
     label: Optional[str] = None
@@ -306,34 +160,7 @@ ResolvedQueryFilter: TypeAlias = Union[
     ResolvedQueryFilterInlineExistsFilter2,
 ]
 
-
-class ResolvedQueryMeasureRefWithLabel(BaseModel):
-    """A reference with optional label override"""
-
-    ref: str
-    """Reference using ref(), var(), or expr() syntax"""
-
-    label: Optional[str] = None
-    """Optional label override for this reference"""
-
-
-class ResolvedQueryMeasureInlineField(BaseModel):
-    """An inline field definition for dimensions/measures/calculations"""
-
-    kater_id: str
-    """Unique identifier for this inline field"""
-
-    name: str
-    """Name of the inline field"""
-
-    sql: str
-    """SQL expression for the field"""
-
-    label: Optional[str] = None
-    """Human-readable label"""
-
-
-ResolvedQueryMeasure: TypeAlias = Union[ResolvedQueryMeasureRefWithLabel, ResolvedQueryMeasureInlineField, str]
+ResolvedQueryMeasure: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
 class ResolvedQueryOrderBy(BaseModel):
@@ -349,29 +176,10 @@ class ResolvedQueryOrderBy(BaseModel):
     """Fields to sort in descending order (highest/newest first)"""
 
 
-class ResolvedQueryResolvedChartConfig(BaseModel):
-    """Chart configuration"""
-
-    color_by: Optional[str] = None
-    """Field or variable reference for color grouping"""
-
-    size: Optional[str] = None
-    """Field or variable reference for size"""
-
-    stack_by: Optional[str] = None
-    """Field or variable reference for stacking"""
-
-    x_axis: Optional[str] = None
-    """Field or variable reference for x-axis"""
-
-    y_axis: Optional[str] = None
-    """Field or variable reference for y-axis"""
-
-
 class ResolvedQueryResolvedChart(BaseModel):
     """The matched chart recommendation after evaluating chart hints"""
 
-    config: ResolvedQueryResolvedChartConfig
+    config: ChartConfig
     """Chart configuration"""
 
     recommend: Literal[
@@ -567,32 +375,6 @@ class DependencyGraph(BaseModel):
 
     nodes: Dict[str, DependencyGraphNodes]
     """UUID string to node mapping"""
-
-
-class ManifestObjects(BaseModel):
-    """A single object entry in the manifest."""
-
-    kater_id: str
-
-    name: str
-
-    type: str
-
-    label: Optional[str] = None
-
-    parent_id: Optional[str] = None
-
-    source_file: Optional[str] = None
-
-
-class Manifest(BaseModel):
-    """Compilation manifest with all named objects."""
-
-    generated_at: str
-
-    objects: Dict[str, ManifestObjects]
-
-    schema_version: Optional[str] = None
 
 
 class CompilerResolveResponse(BaseModel):
