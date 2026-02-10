@@ -16,12 +16,9 @@ The REST API documentation can be found on [kater.ai](https://kater.ai). The ful
 ## Installation
 
 ```sh
-# install from this staging repo
-pip install git+ssh://git@github.com/stainless-sdks/kater-python.git
+# install from PyPI
+pip install kater
 ```
-
-> [!NOTE]
-> Once this package is [published to PyPI](https://www.stainless.com/docs/guides/publish), this will become: `pip install kater`
 
 ## Usage
 
@@ -32,10 +29,10 @@ import os
 from kater import Kater
 
 client = Kater(
-    api_key=os.environ.get("KATER_API_KEY"),  # This is the default and can be omitted
+    auth_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
 )
 
-response = client.v1.list_connections()
+connections = client.v1.connections.list_connections()
 ```
 
 While you can provide an `api_key` keyword argument,
@@ -53,12 +50,12 @@ import asyncio
 from kater import AsyncKater
 
 client = AsyncKater(
-    api_key=os.environ.get("KATER_API_KEY"),  # This is the default and can be omitted
+    auth_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
 )
 
 
 async def main() -> None:
-    response = await client.v1.list_connections()
+    connections = await client.v1.connections.list_connections()
 
 
 asyncio.run(main())
@@ -73,8 +70,8 @@ By default, the async client uses `httpx` for HTTP requests. However, for improv
 You can enable this by installing `aiohttp`:
 
 ```sh
-# install from this staging repo
-pip install 'kater[aiohttp] @ git+ssh://git@github.com/stainless-sdks/kater-python.git'
+# install from PyPI
+pip install kater[aiohttp]
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
@@ -88,10 +85,10 @@ from kater import AsyncKater
 
 async def main() -> None:
     async with AsyncKater(
-        api_key=os.environ.get("KATER_API_KEY"),  # This is the default and can be omitted
+        auth_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
-        response = await client.v1.list_connections()
+        connections = await client.v1.connections.list_connections()
 
 
 asyncio.run(main())
@@ -139,7 +136,7 @@ from kater import Kater
 client = Kater()
 
 try:
-    client.v1.list_connections()
+    client.v1.connections.list_connections()
 except kater.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -182,7 +179,7 @@ client = Kater(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).v1.list_connections()
+client.with_options(max_retries=5).v1.connections.list_connections()
 ```
 
 ### Timeouts
@@ -205,7 +202,7 @@ client = Kater(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).v1.list_connections()
+client.with_options(timeout=5.0).v1.connections.list_connections()
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -246,16 +243,16 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from kater import Kater
 
 client = Kater()
-response = client.v1.with_raw_response.list_connections()
+response = client.v1.connections.with_raw_response.list_connections()
 print(response.headers.get('X-My-Header'))
 
-v1 = response.parse()  # get the object that `v1.list_connections()` would have returned
-print(v1)
+connection = response.parse()  # get the object that `v1.connections.list_connections()` would have returned
+print(connection)
 ```
 
-These methods return an [`APIResponse`](https://github.com/stainless-sdks/kater-python/tree/main/src/kater/_response.py) object.
+These methods return an [`APIResponse`](https://github.com/kater-ai/kater-python-sdk/tree/main/src/kater/_response.py) object.
 
-The async client returns an [`AsyncAPIResponse`](https://github.com/stainless-sdks/kater-python/tree/main/src/kater/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+The async client returns an [`AsyncAPIResponse`](https://github.com/kater-ai/kater-python-sdk/tree/main/src/kater/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
 
 #### `.with_streaming_response`
 
@@ -264,7 +261,7 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.v1.with_streaming_response.list_connections() as response:
+with client.v1.connections.with_streaming_response.list_connections() as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():
@@ -359,7 +356,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/kater-python/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/kater-ai/kater-python-sdk/issues) with questions, bugs, or suggestions.
 
 ### Determining the installed version
 

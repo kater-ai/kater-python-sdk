@@ -1,14 +1,16 @@
 # V1
 
+## Connections
+
 Types:
 
 ```python
-from kater.types import V1ListConnectionsResponse
+from kater.types.v1 import Connection, ConnectionListConnectionsResponse
 ```
 
 Methods:
 
-- <code title="get /api/v1/connections">client.v1.<a href="./src/kater/resources/v1/v1.py">list_connections</a>(\*\*<a href="src/kater/types/v1_list_connections_params.py">params</a>) -> <a href="./src/kater/types/v1_list_connections_response.py">V1ListConnectionsResponse</a></code>
+- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections.py">list_connections</a>(\*\*<a href="src/kater/types/v1/connection_list_connections_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_connections_response.py">ConnectionListConnectionsResponse</a></code>
 
 ## Tenants
 
