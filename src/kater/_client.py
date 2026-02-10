@@ -31,10 +31,8 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import v1, readyz, healthz
+    from .resources import v1
     from .resources.v1.v1 import V1Resource, AsyncV1Resource
-    from .resources.readyz import ReadyzResource, AsyncReadyzResource
-    from .resources.healthz import HealthzResource, AsyncHealthzResource
 
 __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Kater", "AsyncKater", "Client", "AsyncClient"]
 
@@ -103,18 +101,6 @@ class Kater(SyncAPIClient):
         from .resources.v1 import V1Resource
 
         return V1Resource(self)
-
-    @cached_property
-    def healthz(self) -> HealthzResource:
-        from .resources.healthz import HealthzResource
-
-        return HealthzResource(self)
-
-    @cached_property
-    def readyz(self) -> ReadyzResource:
-        from .resources.readyz import ReadyzResource
-
-        return ReadyzResource(self)
 
     @cached_property
     def with_raw_response(self) -> KaterWithRawResponse:
@@ -291,18 +277,6 @@ class AsyncKater(AsyncAPIClient):
         return AsyncV1Resource(self)
 
     @cached_property
-    def healthz(self) -> AsyncHealthzResource:
-        from .resources.healthz import AsyncHealthzResource
-
-        return AsyncHealthzResource(self)
-
-    @cached_property
-    def readyz(self) -> AsyncReadyzResource:
-        from .resources.readyz import AsyncReadyzResource
-
-        return AsyncReadyzResource(self)
-
-    @cached_property
     def with_raw_response(self) -> AsyncKaterWithRawResponse:
         return AsyncKaterWithRawResponse(self)
 
@@ -423,18 +397,6 @@ class KaterWithRawResponse:
 
         return V1ResourceWithRawResponse(self._client.v1)
 
-    @cached_property
-    def healthz(self) -> healthz.HealthzResourceWithRawResponse:
-        from .resources.healthz import HealthzResourceWithRawResponse
-
-        return HealthzResourceWithRawResponse(self._client.healthz)
-
-    @cached_property
-    def readyz(self) -> readyz.ReadyzResourceWithRawResponse:
-        from .resources.readyz import ReadyzResourceWithRawResponse
-
-        return ReadyzResourceWithRawResponse(self._client.readyz)
-
 
 class AsyncKaterWithRawResponse:
     _client: AsyncKater
@@ -447,18 +409,6 @@ class AsyncKaterWithRawResponse:
         from .resources.v1 import AsyncV1ResourceWithRawResponse
 
         return AsyncV1ResourceWithRawResponse(self._client.v1)
-
-    @cached_property
-    def healthz(self) -> healthz.AsyncHealthzResourceWithRawResponse:
-        from .resources.healthz import AsyncHealthzResourceWithRawResponse
-
-        return AsyncHealthzResourceWithRawResponse(self._client.healthz)
-
-    @cached_property
-    def readyz(self) -> readyz.AsyncReadyzResourceWithRawResponse:
-        from .resources.readyz import AsyncReadyzResourceWithRawResponse
-
-        return AsyncReadyzResourceWithRawResponse(self._client.readyz)
 
 
 class KaterWithStreamedResponse:
@@ -473,18 +423,6 @@ class KaterWithStreamedResponse:
 
         return V1ResourceWithStreamingResponse(self._client.v1)
 
-    @cached_property
-    def healthz(self) -> healthz.HealthzResourceWithStreamingResponse:
-        from .resources.healthz import HealthzResourceWithStreamingResponse
-
-        return HealthzResourceWithStreamingResponse(self._client.healthz)
-
-    @cached_property
-    def readyz(self) -> readyz.ReadyzResourceWithStreamingResponse:
-        from .resources.readyz import ReadyzResourceWithStreamingResponse
-
-        return ReadyzResourceWithStreamingResponse(self._client.readyz)
-
 
 class AsyncKaterWithStreamedResponse:
     _client: AsyncKater
@@ -497,18 +435,6 @@ class AsyncKaterWithStreamedResponse:
         from .resources.v1 import AsyncV1ResourceWithStreamingResponse
 
         return AsyncV1ResourceWithStreamingResponse(self._client.v1)
-
-    @cached_property
-    def healthz(self) -> healthz.AsyncHealthzResourceWithStreamingResponse:
-        from .resources.healthz import AsyncHealthzResourceWithStreamingResponse
-
-        return AsyncHealthzResourceWithStreamingResponse(self._client.healthz)
-
-    @cached_property
-    def readyz(self) -> readyz.AsyncReadyzResourceWithStreamingResponse:
-        from .resources.readyz import AsyncReadyzResourceWithStreamingResponse
-
-        return AsyncReadyzResourceWithStreamingResponse(self._client.readyz)
 
 
 Client = Kater

@@ -8,22 +8,6 @@ from .v1 import (
     V1ResourceWithStreamingResponse,
     AsyncV1ResourceWithStreamingResponse,
 )
-from .readyz import (
-    ReadyzResource,
-    AsyncReadyzResource,
-    ReadyzResourceWithRawResponse,
-    AsyncReadyzResourceWithRawResponse,
-    ReadyzResourceWithStreamingResponse,
-    AsyncReadyzResourceWithStreamingResponse,
-)
-from .healthz import (
-    HealthzResource,
-    AsyncHealthzResource,
-    HealthzResourceWithRawResponse,
-    AsyncHealthzResourceWithRawResponse,
-    HealthzResourceWithStreamingResponse,
-    AsyncHealthzResourceWithStreamingResponse,
-)
 
 __all__ = [
     "V1Resource",
@@ -32,16 +16,4 @@ __all__ = [
     "AsyncV1ResourceWithRawResponse",
     "V1ResourceWithStreamingResponse",
     "AsyncV1ResourceWithStreamingResponse",
-    "HealthzResource",
-    "AsyncHealthzResource",
-    "HealthzResourceWithRawResponse",
-    "AsyncHealthzResourceWithRawResponse",
-    "HealthzResourceWithStreamingResponse",
-    "AsyncHealthzResourceWithStreamingResponse",
-    "ReadyzResource",
-    "AsyncReadyzResource",
-    "ReadyzResourceWithRawResponse",
-    "AsyncReadyzResourceWithRawResponse",
-    "ReadyzResourceWithStreamingResponse",
-    "AsyncReadyzResourceWithStreamingResponse",
 ]

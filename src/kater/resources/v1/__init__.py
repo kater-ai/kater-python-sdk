@@ -1,13 +1,5 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .me import (
-    MeResource,
-    AsyncMeResource,
-    MeResourceWithRawResponse,
-    AsyncMeResourceWithRawResponse,
-    MeResourceWithStreamingResponse,
-    AsyncMeResourceWithStreamingResponse,
-)
 from .v1 import (
     V1Resource,
     AsyncV1Resource,
@@ -15,30 +7,6 @@ from .v1 import (
     AsyncV1ResourceWithRawResponse,
     V1ResourceWithStreamingResponse,
     AsyncV1ResourceWithStreamingResponse,
-)
-from .org import (
-    OrgResource,
-    AsyncOrgResource,
-    OrgResourceWithRawResponse,
-    AsyncOrgResourceWithRawResponse,
-    OrgResourceWithStreamingResponse,
-    AsyncOrgResourceWithStreamingResponse,
-)
-from .github import (
-    GitHubResource,
-    AsyncGitHubResource,
-    GitHubResourceWithRawResponse,
-    AsyncGitHubResourceWithRawResponse,
-    GitHubResourceWithStreamingResponse,
-    AsyncGitHubResourceWithStreamingResponse,
-)
-from .groups import (
-    GroupsResource,
-    AsyncGroupsResource,
-    GroupsResourceWithRawResponse,
-    AsyncGroupsResourceWithRawResponse,
-    GroupsResourceWithStreamingResponse,
-    AsyncGroupsResourceWithStreamingResponse,
 )
 from .tenants import (
     TenantsResource,
@@ -64,30 +32,6 @@ __all__ = [
     "AsyncConnectionsResourceWithRawResponse",
     "ConnectionsResourceWithStreamingResponse",
     "AsyncConnectionsResourceWithStreamingResponse",
-    "GitHubResource",
-    "AsyncGitHubResource",
-    "GitHubResourceWithRawResponse",
-    "AsyncGitHubResourceWithRawResponse",
-    "GitHubResourceWithStreamingResponse",
-    "AsyncGitHubResourceWithStreamingResponse",
-    "GroupsResource",
-    "AsyncGroupsResource",
-    "GroupsResourceWithRawResponse",
-    "AsyncGroupsResourceWithRawResponse",
-    "GroupsResourceWithStreamingResponse",
-    "AsyncGroupsResourceWithStreamingResponse",
-    "MeResource",
-    "AsyncMeResource",
-    "MeResourceWithRawResponse",
-    "AsyncMeResourceWithRawResponse",
-    "MeResourceWithStreamingResponse",
-    "AsyncMeResourceWithStreamingResponse",
-    "OrgResource",
-    "AsyncOrgResource",
-    "OrgResourceWithRawResponse",
-    "AsyncOrgResourceWithRawResponse",
-    "OrgResourceWithStreamingResponse",
-    "AsyncOrgResourceWithStreamingResponse",
     "TenantsResource",
     "AsyncTenantsResource",
     "TenantsResourceWithRawResponse",
