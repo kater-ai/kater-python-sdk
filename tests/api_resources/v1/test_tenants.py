@@ -9,7 +9,7 @@ import pytest
 
 from kater import Kater, AsyncKater
 from tests.utils import assert_matches_type
-from kater.types.v1.tenants import ImportTenantsResponse
+from kater.types.v1 import ImportTenantsResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 

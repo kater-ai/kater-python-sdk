@@ -6,19 +6,19 @@ from typing import Mapping, Optional, cast
 
 import httpx
 
-from ...._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
-from ...._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
-from ...._compat import cached_property
-from ....types.v1 import tenant_import_from_csv_params, tenant_import_from_warehouse_params
-from ...._resource import SyncAPIResource, AsyncAPIResource
-from ...._response import (
+from ..._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
+from ..._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
+from ..._compat import cached_property
+from ...types.v1 import tenant_import_from_csv_params, tenant_import_from_warehouse_params
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ..._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...._base_client import make_request_options
-from ....types.v1.tenants.import_tenants_response import ImportTenantsResponse
+from ..._base_client import make_request_options
+from ...types.v1.import_tenants_response import ImportTenantsResponse
 
 __all__ = ["TenantsResource", "AsyncTenantsResource"]
 
