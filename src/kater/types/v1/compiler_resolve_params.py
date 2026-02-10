@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Dict, Optional
 from typing_extensions import Required, Annotated, TypedDict
 
-from ...._types import SequenceNotStr
-from ...._utils import PropertyInfo
+from ..._types import SequenceNotStr
+from ..._utils import PropertyInfo
 
 __all__ = ["CompilerResolveParams"]
 

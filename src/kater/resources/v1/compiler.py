@@ -6,21 +6,21 @@ from typing import Dict, Optional
 
 import httpx
 
-from ...._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ...._utils import maybe_transform, strip_not_given, async_maybe_transform
-from ...._compat import cached_property
-from ...._resource import SyncAPIResource, AsyncAPIResource
-from ...._response import (
+from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
+from ..._utils import maybe_transform, strip_not_given, async_maybe_transform
+from ..._compat import cached_property
+from ...types.v1 import compiler_compile_params, compiler_resolve_params, compiler_validate_params
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ..._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...._base_client import make_request_options
-from ....types.v1.connections import compiler_compile_params, compiler_resolve_params, compiler_validate_params
-from ....types.v1.connections.compiler_compile_response import CompilerCompileResponse
-from ....types.v1.connections.compiler_resolve_response import CompilerResolveResponse
-from ....types.v1.connections.compiler_validate_response import CompilerValidateResponse
+from ..._base_client import make_request_options
+from ...types.v1.compiler_compile_response import CompilerCompileResponse
+from ...types.v1.compiler_resolve_response import CompilerResolveResponse
+from ...types.v1.compiler_validate_response import CompilerValidateResponse
 
 __all__ = ["CompilerResource", "AsyncCompilerResource"]
 

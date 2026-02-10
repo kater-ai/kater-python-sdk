@@ -4,7 +4,7 @@ from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
 from .manifest import Manifest
-from ...._models import BaseModel
+from ..._models import BaseModel
 from .chart_config import ChartConfig
 from .inline_field import InlineField
 from .ref_with_label import RefWithLabel

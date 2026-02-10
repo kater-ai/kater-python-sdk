@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Dict, Union, Iterable, Optional
 from typing_extensions import Literal, Required, Annotated, TypeAlias, TypedDict
 
-from ...._types import SequenceNotStr
-from ...._utils import PropertyInfo
+from ..._types import SequenceNotStr
+from ..._utils import PropertyInfo
 from .chart_config_param import ChartConfigParam
 from .inline_field_param import InlineFieldParam
 from .ref_with_label_param import RefWithLabelParam

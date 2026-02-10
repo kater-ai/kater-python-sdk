@@ -3,7 +3,7 @@
 from typing import Dict, List, Optional
 
 from .manifest import Manifest
-from ...._models import BaseModel
+from ..._models import BaseModel
 from .compiler_error_item import CompilerErrorItem
 
 __all__ = ["CompilerValidateResponse", "DependencyGraph", "DependencyGraphNodes"]

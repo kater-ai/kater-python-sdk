@@ -1,23 +1,11 @@
 # V1
 
-## Connections
+## Compiler
 
 Types:
 
 ```python
-from kater.types.v1 import Connection, ConnectionListConnectionsResponse
-```
-
-Methods:
-
-- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list_connections</a>(\*\*<a href="src/kater/types/v1/connection_list_connections_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_connections_response.py">ConnectionListConnectionsResponse</a></code>
-
-### Compiler
-
-Types:
-
-```python
-from kater.types.v1.connections import (
+from kater.types.v1 import (
     ChartConfig,
     CompilerErrorItem,
     InlineField,
@@ -33,9 +21,21 @@ from kater.types.v1.connections import (
 
 Methods:
 
-- <code title="post /api/v1/compiler/compile">client.v1.connections.compiler.<a href="./src/kater/resources/v1/connections/compiler.py">compile</a>(\*\*<a href="src/kater/types/v1/connections/compiler_compile_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/compiler_compile_response.py">CompilerCompileResponse</a></code>
-- <code title="post /api/v1/compiler/resolve">client.v1.connections.compiler.<a href="./src/kater/resources/v1/connections/compiler.py">resolve</a>(\*\*<a href="src/kater/types/v1/connections/compiler_resolve_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/compiler_resolve_response.py">CompilerResolveResponse</a></code>
-- <code title="post /api/v1/compiler/validate">client.v1.connections.compiler.<a href="./src/kater/resources/v1/connections/compiler.py">validate</a>(\*\*<a href="src/kater/types/v1/connections/compiler_validate_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/compiler_validate_response.py">CompilerValidateResponse</a></code>
+- <code title="post /api/v1/compiler/compile">client.v1.compiler.<a href="./src/kater/resources/v1/compiler.py">compile</a>(\*\*<a href="src/kater/types/v1/compiler_compile_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_compile_response.py">CompilerCompileResponse</a></code>
+- <code title="post /api/v1/compiler/resolve">client.v1.compiler.<a href="./src/kater/resources/v1/compiler.py">resolve</a>(\*\*<a href="src/kater/types/v1/compiler_resolve_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_resolve_response.py">CompilerResolveResponse</a></code>
+- <code title="post /api/v1/compiler/validate">client.v1.compiler.<a href="./src/kater/resources/v1/compiler.py">validate</a>(\*\*<a href="src/kater/types/v1/compiler_validate_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_validate_response.py">CompilerValidateResponse</a></code>
+
+## Connections
+
+Types:
+
+```python
+from kater.types.v1 import Connection, ConnectionListConnectionsResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections.py">list_connections</a>(\*\*<a href="src/kater/types/v1/connection_list_connections_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_connections_response.py">ConnectionListConnectionsResponse</a></code>
 
 ## Tenants
 
