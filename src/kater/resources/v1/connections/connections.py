@@ -6,24 +6,36 @@ from typing_extensions import Literal
 
 import httpx
 
-from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from ..._utils import maybe_transform, async_maybe_transform
-from ..._compat import cached_property
-from ...types.v1 import connection_list_connections_params
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ..._response import (
+from .compiler import (
+    CompilerResource,
+    AsyncCompilerResource,
+    CompilerResourceWithRawResponse,
+    AsyncCompilerResourceWithRawResponse,
+    CompilerResourceWithStreamingResponse,
+    AsyncCompilerResourceWithStreamingResponse,
+)
+from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ...._utils import maybe_transform, async_maybe_transform
+from ...._compat import cached_property
+from ....types.v1 import connection_list_connections_params
+from ...._resource import SyncAPIResource, AsyncAPIResource
+from ...._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ..._base_client import make_request_options
-from ...types.v1.connection_list_connections_response import ConnectionListConnectionsResponse
+from ...._base_client import make_request_options
+from ....types.v1.connection_list_connections_response import ConnectionListConnectionsResponse
 
 __all__ = ["ConnectionsResource", "AsyncConnectionsResource"]
 
 
 class ConnectionsResource(SyncAPIResource):
+    @cached_property
+    def compiler(self) -> CompilerResource:
+        return CompilerResource(self._client)
+
     @cached_property
     def with_raw_response(self) -> ConnectionsResourceWithRawResponse:
         """
@@ -93,6 +105,10 @@ class ConnectionsResource(SyncAPIResource):
 
 
 class AsyncConnectionsResource(AsyncAPIResource):
+    @cached_property
+    def compiler(self) -> AsyncCompilerResource:
+        return AsyncCompilerResource(self._client)
+
     @cached_property
     def with_raw_response(self) -> AsyncConnectionsResourceWithRawResponse:
         """
@@ -169,6 +185,10 @@ class ConnectionsResourceWithRawResponse:
             connections.list_connections,
         )
 
+    @cached_property
+    def compiler(self) -> CompilerResourceWithRawResponse:
+        return CompilerResourceWithRawResponse(self._connections.compiler)
+
 
 class AsyncConnectionsResourceWithRawResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -177,6 +197,10 @@ class AsyncConnectionsResourceWithRawResponse:
         self.list_connections = async_to_raw_response_wrapper(
             connections.list_connections,
         )
+
+    @cached_property
+    def compiler(self) -> AsyncCompilerResourceWithRawResponse:
+        return AsyncCompilerResourceWithRawResponse(self._connections.compiler)
 
 
 class ConnectionsResourceWithStreamingResponse:
@@ -187,6 +211,10 @@ class ConnectionsResourceWithStreamingResponse:
             connections.list_connections,
         )
 
+    @cached_property
+    def compiler(self) -> CompilerResourceWithStreamingResponse:
+        return CompilerResourceWithStreamingResponse(self._connections.compiler)
+
 
 class AsyncConnectionsResourceWithStreamingResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -195,3 +223,7 @@ class AsyncConnectionsResourceWithStreamingResponse:
         self.list_connections = async_to_streamed_response_wrapper(
             connections.list_connections,
         )
+
+    @cached_property
+    def compiler(self) -> AsyncCompilerResourceWithStreamingResponse:
+        return AsyncCompilerResourceWithStreamingResponse(self._connections.compiler)
