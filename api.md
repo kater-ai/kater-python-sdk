@@ -35,7 +35,31 @@ from kater.types.v1 import Connection, ConnectionListConnectionsResponse
 
 Methods:
 
-- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections.py">list_connections</a>(\*\*<a href="src/kater/types/v1/connection_list_connections_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_connections_response.py">ConnectionListConnectionsResponse</a></code>
+- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list_connections</a>(\*\*<a href="src/kater/types/v1/connection_list_connections_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_connections_response.py">ConnectionListConnectionsResponse</a></code>
+
+### Tenants
+
+Types:
+
+```python
+from kater.types.v1.connections import TenantRetrieveSchemaResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/tenants/schema">client.v1.connections.tenants.<a href="./src/kater/resources/v1/connections/tenants/tenants.py">retrieve_schema</a>() -> <a href="./src/kater/types/v1/connections/tenant_retrieve_schema_response.py">TenantRetrieveSchemaResponse</a></code>
+
+#### Groups
+
+Types:
+
+```python
+from kater.types.v1.connections.tenants import GroupRetrieveSchemaResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/tenants/groups/schema">client.v1.connections.tenants.groups.<a href="./src/kater/resources/v1/connections/tenants/groups.py">retrieve_schema</a>() -> <a href="./src/kater/types/v1/connections/tenants/group_retrieve_schema_response.py">GroupRetrieveSchemaResponse</a></code>
 
 ## Tenants
 
