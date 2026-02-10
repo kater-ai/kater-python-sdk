@@ -4,7 +4,7 @@ from typing import List, Optional
 
 from ...._models import BaseModel
 
-__all__ = ["ImportTenants", "Error"]
+__all__ = ["ImportTenantsResponse", "Error"]
 
 
 class Error(BaseModel):
@@ -20,7 +20,7 @@ class Error(BaseModel):
     """Tenant key that failed"""
 
 
-class ImportTenants(BaseModel):
+class ImportTenantsResponse(BaseModel):
     """Response model for tenant import operation."""
 
     total_found: int
