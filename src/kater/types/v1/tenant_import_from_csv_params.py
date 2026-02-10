@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing_extensions import Required, TypedDict
 
-from ...._types import FileTypes
+from ..._types import FileTypes
 
-__all__ = ["ImportFromCsvParams"]
+__all__ = ["TenantImportFromCsvParams"]
 
 
-class ImportFromCsvParams(TypedDict, total=False):
+class TenantImportFromCsvParams(TypedDict, total=False):
     file: Required[FileTypes]
     """CSV file with tenant data"""
