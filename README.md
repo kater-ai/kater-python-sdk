@@ -25,22 +25,33 @@ pip install kater
 The full API of this library can be found in [api.md](api.md).
 
 ```python
+import os
 from kater import Kater
 
-client = Kater()
+client = Kater(
+    bearer_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
+)
 
 connections = client.v1.connections.list()
 ```
+
+While you can provide an `api_key` keyword argument,
+we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
+to add `KATER_API_KEY="My API Key"` to your `.env` file
+so that your API Key is not stored in source control.
 
 ## Async usage
 
 Simply import `AsyncKater` instead of `Kater` and use `await` with each API call:
 
 ```python
+import os
 import asyncio
 from kater import AsyncKater
 
-client = AsyncKater()
+client = AsyncKater(
+    bearer_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
+)
 
 
 async def main() -> None:
@@ -66,6 +77,7 @@ pip install kater[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
+import os
 import asyncio
 from kater import DefaultAioHttpClient
 from kater import AsyncKater
@@ -73,6 +85,7 @@ from kater import AsyncKater
 
 async def main() -> None:
     async with AsyncKater(
+        bearer_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
         connections = await client.v1.connections.list()

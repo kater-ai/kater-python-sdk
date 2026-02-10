@@ -12,6 +12,7 @@ from . import _exceptions
 from ._qs import Querystring
 from ._types import (
     Omit,
+    Headers,
     Timeout,
     NotGiven,
     Transport,
@@ -117,12 +118,43 @@ class Kater(SyncAPIClient):
 
     @property
     @override
+    def auth_headers(self) -> dict[str, str]:
+        return {**self._api_key, **self._propel_auth}
+
+    @property
+    def _api_key(self) -> dict[str, str]:
+        api_key = self.api_key
+        if api_key is None:
+            return {}
+        return {"X-API-Key": api_key}
+
+    @property
+    def _propel_auth(self) -> dict[str, str]:
+        bearer_token = self.bearer_token
+        if bearer_token is None:
+            return {}
+        return {"Authorization": f"Bearer {bearer_token}"}
+
+    @property
+    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
             "X-Stainless-Async": "false",
             **self._custom_headers,
         }
+
+    @override
+    def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
+        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
+            return
+
+        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
+            return
+
+        raise TypeError(
+            '"Could not resolve authentication method. Expected either api_key or bearer_token to be set. Or for one of the `X-API-Key` or `Authorization` headers to be explicitly omitted"'
+        )
 
     def copy(
         self,
@@ -291,12 +323,43 @@ class AsyncKater(AsyncAPIClient):
 
     @property
     @override
+    def auth_headers(self) -> dict[str, str]:
+        return {**self._api_key, **self._propel_auth}
+
+    @property
+    def _api_key(self) -> dict[str, str]:
+        api_key = self.api_key
+        if api_key is None:
+            return {}
+        return {"X-API-Key": api_key}
+
+    @property
+    def _propel_auth(self) -> dict[str, str]:
+        bearer_token = self.bearer_token
+        if bearer_token is None:
+            return {}
+        return {"Authorization": f"Bearer {bearer_token}"}
+
+    @property
+    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
             "X-Stainless-Async": f"async:{get_async_library()}",
             **self._custom_headers,
         }
+
+    @override
+    def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
+        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
+            return
+
+        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
+            return
+
+        raise TypeError(
+            '"Could not resolve authentication method. Expected either api_key or bearer_token to be set. Or for one of the `X-API-Key` or `Authorization` headers to be explicitly omitted"'
+        )
 
     def copy(
         self,
