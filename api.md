@@ -10,51 +10,7 @@ from kater.types.v1 import Connection, DatabaseConfig, SyncEventResponse, Connec
 
 Methods:
 
-- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list</a>(\*\*<a href="src/kater/types/v1/connection_list_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_response.py">ConnectionListResponse</a></code>
-
-## GitHub
-
-### Repos
-
-Types:
-
-```python
-from kater.types.v1.github import Repository
-```
-
-### Scaffold
-
-Types:
-
-```python
-from kater.types.v1.github import ScaffoldTrigger
-```
-
-## Groups
-
-Types:
-
-```python
-from kater.types.v1 import GroupDetail
-```
-
-## Me
-
-Types:
-
-```python
-from kater.types.v1 import ClientUser, ClientUserRole
-```
-
-## Org
-
-### Client
-
-Types:
-
-```python
-from kater.types.v1.org import Client, TenancyType
-```
+- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections.py">list</a>(\*\*<a href="src/kater/types/v1/connection_list_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_response.py">ConnectionListResponse</a></code>
 
 ## Tenants
 
