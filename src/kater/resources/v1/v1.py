@@ -12,7 +12,7 @@ from .tenants import (
 )
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
-from .connections import (
+from .connections.connections import (
     ConnectionsResource,
     AsyncConnectionsResource,
     ConnectionsResourceWithRawResponse,
