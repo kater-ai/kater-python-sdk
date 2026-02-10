@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing_extensions import Literal, TypedDict
 
-__all__ = ["ConnectionListParams"]
+__all__ = ["ConnectionListConnectionsParams"]
 
 
-class ConnectionListParams(TypedDict, total=False):
+class ConnectionListConnectionsParams(TypedDict, total=False):
     status: Literal["approved", "pending", "all"]

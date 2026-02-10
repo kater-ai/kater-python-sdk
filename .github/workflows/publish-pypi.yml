@@ -28,12 +28,3 @@ jobs:
       - name: Publish to PyPI
         run: |
           bash ./bin/publish-pypi
-
-      - name: Trigger docs sync
-        if: success()
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.DOCS_REPO_TOKEN }}
-          repository: kater-ai/kater
-          event-type: sdk-docs-updated
-          client-payload: '{"sdk": "python", "version": "${{ github.ref_name }}"}'

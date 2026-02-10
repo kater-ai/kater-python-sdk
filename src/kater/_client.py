@@ -12,6 +12,7 @@ from . import _exceptions
 from ._qs import Querystring
 from ._types import (
     Omit,
+    Headers,
     Timeout,
     NotGiven,
     Transport,
@@ -31,10 +32,8 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import v1, readyz, healthz
+    from .resources import v1
     from .resources.v1.v1 import V1Resource, AsyncV1Resource
-    from .resources.readyz import ReadyzResource, AsyncReadyzResource
-    from .resources.healthz import HealthzResource, AsyncHealthzResource
 
 __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Kater", "AsyncKater", "Client", "AsyncClient"]
 
@@ -42,13 +41,13 @@ __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Kater", "A
 class Kater(SyncAPIClient):
     # client options
     api_key: str | None
-    bearer_token: str | None
+    auth_token: str | None
 
     def __init__(
         self,
         *,
         api_key: str | None = None,
-        bearer_token: str | None = None,
+        auth_token: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
         max_retries: int = DEFAULT_MAX_RETRIES,
@@ -72,20 +71,20 @@ class Kater(SyncAPIClient):
 
         This automatically infers the following arguments from their corresponding environment variables if they are not provided:
         - `api_key` from `KATER_API_KEY`
-        - `bearer_token` from `KATER_AUTH_TOKEN`
+        - `auth_token` from `KATER_AUTH_TOKEN`
         """
         if api_key is None:
             api_key = os.environ.get("KATER_API_KEY")
         self.api_key = api_key
 
-        if bearer_token is None:
-            bearer_token = os.environ.get("KATER_AUTH_TOKEN")
-        self.bearer_token = bearer_token
+        if auth_token is None:
+            auth_token = os.environ.get("KATER_AUTH_TOKEN")
+        self.auth_token = auth_token
 
         if base_url is None:
             base_url = os.environ.get("KATER_BASE_URL")
         if base_url is None:
-            base_url = f"https://api.example.com"
+            base_url = f"https://api.kater.ai"
 
         super().__init__(
             version=__version__,
@@ -105,18 +104,6 @@ class Kater(SyncAPIClient):
         return V1Resource(self)
 
     @cached_property
-    def healthz(self) -> HealthzResource:
-        from .resources.healthz import HealthzResource
-
-        return HealthzResource(self)
-
-    @cached_property
-    def readyz(self) -> ReadyzResource:
-        from .resources.readyz import ReadyzResource
-
-        return ReadyzResource(self)
-
-    @cached_property
     def with_raw_response(self) -> KaterWithRawResponse:
         return KaterWithRawResponse(self)
 
@@ -131,6 +118,25 @@ class Kater(SyncAPIClient):
 
     @property
     @override
+    def auth_headers(self) -> dict[str, str]:
+        return {**self._api_key, **self._propel_auth}
+
+    @property
+    def _api_key(self) -> dict[str, str]:
+        api_key = self.api_key
+        if api_key is None:
+            return {}
+        return {"X-API-Key": api_key}
+
+    @property
+    def _propel_auth(self) -> dict[str, str]:
+        auth_token = self.auth_token
+        if auth_token is None:
+            return {}
+        return {"Authorization": f"Bearer {auth_token}"}
+
+    @property
+    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
@@ -138,11 +144,23 @@ class Kater(SyncAPIClient):
             **self._custom_headers,
         }
 
+    @override
+    def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
+        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
+            return
+
+        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
+            return
+
+        raise TypeError(
+            '"Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-API-Key` or `Authorization` headers to be explicitly omitted"'
+        )
+
     def copy(
         self,
         *,
         api_key: str | None = None,
-        bearer_token: str | None = None,
+        auth_token: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
         http_client: httpx.Client | None = None,
@@ -177,7 +195,7 @@ class Kater(SyncAPIClient):
         http_client = http_client or self._client
         return self.__class__(
             api_key=api_key or self.api_key,
-            bearer_token=bearer_token or self.bearer_token,
+            auth_token=auth_token or self.auth_token,
             base_url=base_url or self.base_url,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
             http_client=http_client,
@@ -228,13 +246,13 @@ class Kater(SyncAPIClient):
 class AsyncKater(AsyncAPIClient):
     # client options
     api_key: str | None
-    bearer_token: str | None
+    auth_token: str | None
 
     def __init__(
         self,
         *,
         api_key: str | None = None,
-        bearer_token: str | None = None,
+        auth_token: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
         max_retries: int = DEFAULT_MAX_RETRIES,
@@ -258,20 +276,20 @@ class AsyncKater(AsyncAPIClient):
 
         This automatically infers the following arguments from their corresponding environment variables if they are not provided:
         - `api_key` from `KATER_API_KEY`
-        - `bearer_token` from `KATER_AUTH_TOKEN`
+        - `auth_token` from `KATER_AUTH_TOKEN`
         """
         if api_key is None:
             api_key = os.environ.get("KATER_API_KEY")
         self.api_key = api_key
 
-        if bearer_token is None:
-            bearer_token = os.environ.get("KATER_AUTH_TOKEN")
-        self.bearer_token = bearer_token
+        if auth_token is None:
+            auth_token = os.environ.get("KATER_AUTH_TOKEN")
+        self.auth_token = auth_token
 
         if base_url is None:
             base_url = os.environ.get("KATER_BASE_URL")
         if base_url is None:
-            base_url = f"https://api.example.com"
+            base_url = f"https://api.kater.ai"
 
         super().__init__(
             version=__version__,
@@ -291,18 +309,6 @@ class AsyncKater(AsyncAPIClient):
         return AsyncV1Resource(self)
 
     @cached_property
-    def healthz(self) -> AsyncHealthzResource:
-        from .resources.healthz import AsyncHealthzResource
-
-        return AsyncHealthzResource(self)
-
-    @cached_property
-    def readyz(self) -> AsyncReadyzResource:
-        from .resources.readyz import AsyncReadyzResource
-
-        return AsyncReadyzResource(self)
-
-    @cached_property
     def with_raw_response(self) -> AsyncKaterWithRawResponse:
         return AsyncKaterWithRawResponse(self)
 
@@ -317,6 +323,25 @@ class AsyncKater(AsyncAPIClient):
 
     @property
     @override
+    def auth_headers(self) -> dict[str, str]:
+        return {**self._api_key, **self._propel_auth}
+
+    @property
+    def _api_key(self) -> dict[str, str]:
+        api_key = self.api_key
+        if api_key is None:
+            return {}
+        return {"X-API-Key": api_key}
+
+    @property
+    def _propel_auth(self) -> dict[str, str]:
+        auth_token = self.auth_token
+        if auth_token is None:
+            return {}
+        return {"Authorization": f"Bearer {auth_token}"}
+
+    @property
+    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
@@ -324,11 +349,23 @@ class AsyncKater(AsyncAPIClient):
             **self._custom_headers,
         }
 
+    @override
+    def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
+        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
+            return
+
+        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
+            return
+
+        raise TypeError(
+            '"Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-API-Key` or `Authorization` headers to be explicitly omitted"'
+        )
+
     def copy(
         self,
         *,
         api_key: str | None = None,
-        bearer_token: str | None = None,
+        auth_token: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
         http_client: httpx.AsyncClient | None = None,
@@ -363,7 +400,7 @@ class AsyncKater(AsyncAPIClient):
         http_client = http_client or self._client
         return self.__class__(
             api_key=api_key or self.api_key,
-            bearer_token=bearer_token or self.bearer_token,
+            auth_token=auth_token or self.auth_token,
             base_url=base_url or self.base_url,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
             http_client=http_client,
@@ -423,18 +460,6 @@ class KaterWithRawResponse:
 
         return V1ResourceWithRawResponse(self._client.v1)
 
-    @cached_property
-    def healthz(self) -> healthz.HealthzResourceWithRawResponse:
-        from .resources.healthz import HealthzResourceWithRawResponse
-
-        return HealthzResourceWithRawResponse(self._client.healthz)
-
-    @cached_property
-    def readyz(self) -> readyz.ReadyzResourceWithRawResponse:
-        from .resources.readyz import ReadyzResourceWithRawResponse
-
-        return ReadyzResourceWithRawResponse(self._client.readyz)
-
 
 class AsyncKaterWithRawResponse:
     _client: AsyncKater
@@ -447,18 +472,6 @@ class AsyncKaterWithRawResponse:
         from .resources.v1 import AsyncV1ResourceWithRawResponse
 
         return AsyncV1ResourceWithRawResponse(self._client.v1)
-
-    @cached_property
-    def healthz(self) -> healthz.AsyncHealthzResourceWithRawResponse:
-        from .resources.healthz import AsyncHealthzResourceWithRawResponse
-
-        return AsyncHealthzResourceWithRawResponse(self._client.healthz)
-
-    @cached_property
-    def readyz(self) -> readyz.AsyncReadyzResourceWithRawResponse:
-        from .resources.readyz import AsyncReadyzResourceWithRawResponse
-
-        return AsyncReadyzResourceWithRawResponse(self._client.readyz)
 
 
 class KaterWithStreamedResponse:
@@ -473,18 +486,6 @@ class KaterWithStreamedResponse:
 
         return V1ResourceWithStreamingResponse(self._client.v1)
 
-    @cached_property
-    def healthz(self) -> healthz.HealthzResourceWithStreamingResponse:
-        from .resources.healthz import HealthzResourceWithStreamingResponse
-
-        return HealthzResourceWithStreamingResponse(self._client.healthz)
-
-    @cached_property
-    def readyz(self) -> readyz.ReadyzResourceWithStreamingResponse:
-        from .resources.readyz import ReadyzResourceWithStreamingResponse
-
-        return ReadyzResourceWithStreamingResponse(self._client.readyz)
-
 
 class AsyncKaterWithStreamedResponse:
     _client: AsyncKater
@@ -497,18 +498,6 @@ class AsyncKaterWithStreamedResponse:
         from .resources.v1 import AsyncV1ResourceWithStreamingResponse
 
         return AsyncV1ResourceWithStreamingResponse(self._client.v1)
-
-    @cached_property
-    def healthz(self) -> healthz.AsyncHealthzResourceWithStreamingResponse:
-        from .resources.healthz import AsyncHealthzResourceWithStreamingResponse
-
-        return AsyncHealthzResourceWithStreamingResponse(self._client.healthz)
-
-    @cached_property
-    def readyz(self) -> readyz.AsyncReadyzResourceWithStreamingResponse:
-        from .resources.readyz import AsyncReadyzResourceWithStreamingResponse
-
-        return AsyncReadyzResourceWithStreamingResponse(self._client.readyz)
 
 
 Client = Kater

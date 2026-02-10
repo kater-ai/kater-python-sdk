@@ -6,44 +6,44 @@ from typing import Mapping, Optional, cast
 
 import httpx
 
-from ...._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
-from ...._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
-from ...._compat import cached_property
-from ...._resource import SyncAPIResource, AsyncAPIResource
-from ...._response import (
+from ..._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
+from ..._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
+from ..._compat import cached_property
+from ...types.v1 import tenant_import_from_csv_params, tenant_import_from_warehouse_params
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ..._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...._base_client import make_request_options
-from ....types.v1.tenants import import_from_csv_params, import_from_warehouse_params
-from ....types.v1.tenants.import_tenants import ImportTenants
+from ..._base_client import make_request_options
+from ...types.v1.import_tenants_response import ImportTenantsResponse
 
-__all__ = ["ImportResource", "AsyncImportResource"]
+__all__ = ["TenantsResource", "AsyncTenantsResource"]
 
 
-class ImportResource(SyncAPIResource):
+class TenantsResource(SyncAPIResource):
     @cached_property
-    def with_raw_response(self) -> ImportResourceWithRawResponse:
+    def with_raw_response(self) -> TenantsResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
         For more information, see https://www.github.com/kater-ai/kater-python-sdk#accessing-raw-response-data-eg-headers
         """
-        return ImportResourceWithRawResponse(self)
+        return TenantsResourceWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> ImportResourceWithStreamingResponse:
+    def with_streaming_response(self) -> TenantsResourceWithStreamingResponse:
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
         For more information, see https://www.github.com/kater-ai/kater-python-sdk#with_streaming_response
         """
-        return ImportResourceWithStreamingResponse(self)
+        return TenantsResourceWithStreamingResponse(self)
 
-    def from_csv(
+    def import_from_csv(
         self,
         *,
         file: FileTypes,
@@ -53,7 +53,7 @@ class ImportResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ImportTenants:
+    ) -> ImportTenantsResponse:
         """
         Import tenants from a CSV file using upsert semantics.
 
@@ -90,15 +90,15 @@ class ImportResource(SyncAPIResource):
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return self._post(
             "/api/v1/tenants/import/csv",
-            body=maybe_transform(body, import_from_csv_params.ImportFromCsvParams),
+            body=maybe_transform(body, tenant_import_from_csv_params.TenantImportFromCsvParams),
             files=files,
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ImportTenants,
+            cast_to=ImportTenantsResponse,
         )
 
-    def from_warehouse(
+    def import_from_warehouse(
         self,
         *,
         connection_id: str,
@@ -114,7 +114,7 @@ class ImportResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ImportTenants:
+    ) -> ImportTenantsResponse:
         """
         Import tenants from a warehouse table using upsert semantics.
 
@@ -167,36 +167,36 @@ class ImportResource(SyncAPIResource):
                     "tenant_group_column": tenant_group_column,
                     "tenant_name_column": tenant_name_column,
                 },
-                import_from_warehouse_params.ImportFromWarehouseParams,
+                tenant_import_from_warehouse_params.TenantImportFromWarehouseParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ImportTenants,
+            cast_to=ImportTenantsResponse,
         )
 
 
-class AsyncImportResource(AsyncAPIResource):
+class AsyncTenantsResource(AsyncAPIResource):
     @cached_property
-    def with_raw_response(self) -> AsyncImportResourceWithRawResponse:
+    def with_raw_response(self) -> AsyncTenantsResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
         For more information, see https://www.github.com/kater-ai/kater-python-sdk#accessing-raw-response-data-eg-headers
         """
-        return AsyncImportResourceWithRawResponse(self)
+        return AsyncTenantsResourceWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> AsyncImportResourceWithStreamingResponse:
+    def with_streaming_response(self) -> AsyncTenantsResourceWithStreamingResponse:
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
         For more information, see https://www.github.com/kater-ai/kater-python-sdk#with_streaming_response
         """
-        return AsyncImportResourceWithStreamingResponse(self)
+        return AsyncTenantsResourceWithStreamingResponse(self)
 
-    async def from_csv(
+    async def import_from_csv(
         self,
         *,
         file: FileTypes,
@@ -206,7 +206,7 @@ class AsyncImportResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ImportTenants:
+    ) -> ImportTenantsResponse:
         """
         Import tenants from a CSV file using upsert semantics.
 
@@ -243,15 +243,15 @@ class AsyncImportResource(AsyncAPIResource):
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return await self._post(
             "/api/v1/tenants/import/csv",
-            body=await async_maybe_transform(body, import_from_csv_params.ImportFromCsvParams),
+            body=await async_maybe_transform(body, tenant_import_from_csv_params.TenantImportFromCsvParams),
             files=files,
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ImportTenants,
+            cast_to=ImportTenantsResponse,
         )
 
-    async def from_warehouse(
+    async def import_from_warehouse(
         self,
         *,
         connection_id: str,
@@ -267,7 +267,7 @@ class AsyncImportResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ImportTenants:
+    ) -> ImportTenantsResponse:
         """
         Import tenants from a warehouse table using upsert semantics.
 
@@ -320,58 +320,58 @@ class AsyncImportResource(AsyncAPIResource):
                     "tenant_group_column": tenant_group_column,
                     "tenant_name_column": tenant_name_column,
                 },
-                import_from_warehouse_params.ImportFromWarehouseParams,
+                tenant_import_from_warehouse_params.TenantImportFromWarehouseParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ImportTenants,
+            cast_to=ImportTenantsResponse,
         )
 
 
-class ImportResourceWithRawResponse:
-    def __init__(self, import_: ImportResource) -> None:
-        self._import_ = import_
+class TenantsResourceWithRawResponse:
+    def __init__(self, tenants: TenantsResource) -> None:
+        self._tenants = tenants
 
-        self.from_csv = to_raw_response_wrapper(
-            import_.from_csv,
+        self.import_from_csv = to_raw_response_wrapper(
+            tenants.import_from_csv,
         )
-        self.from_warehouse = to_raw_response_wrapper(
-            import_.from_warehouse,
-        )
-
-
-class AsyncImportResourceWithRawResponse:
-    def __init__(self, import_: AsyncImportResource) -> None:
-        self._import_ = import_
-
-        self.from_csv = async_to_raw_response_wrapper(
-            import_.from_csv,
-        )
-        self.from_warehouse = async_to_raw_response_wrapper(
-            import_.from_warehouse,
+        self.import_from_warehouse = to_raw_response_wrapper(
+            tenants.import_from_warehouse,
         )
 
 
-class ImportResourceWithStreamingResponse:
-    def __init__(self, import_: ImportResource) -> None:
-        self._import_ = import_
+class AsyncTenantsResourceWithRawResponse:
+    def __init__(self, tenants: AsyncTenantsResource) -> None:
+        self._tenants = tenants
 
-        self.from_csv = to_streamed_response_wrapper(
-            import_.from_csv,
+        self.import_from_csv = async_to_raw_response_wrapper(
+            tenants.import_from_csv,
         )
-        self.from_warehouse = to_streamed_response_wrapper(
-            import_.from_warehouse,
+        self.import_from_warehouse = async_to_raw_response_wrapper(
+            tenants.import_from_warehouse,
         )
 
 
-class AsyncImportResourceWithStreamingResponse:
-    def __init__(self, import_: AsyncImportResource) -> None:
-        self._import_ = import_
+class TenantsResourceWithStreamingResponse:
+    def __init__(self, tenants: TenantsResource) -> None:
+        self._tenants = tenants
 
-        self.from_csv = async_to_streamed_response_wrapper(
-            import_.from_csv,
+        self.import_from_csv = to_streamed_response_wrapper(
+            tenants.import_from_csv,
         )
-        self.from_warehouse = async_to_streamed_response_wrapper(
-            import_.from_warehouse,
+        self.import_from_warehouse = to_streamed_response_wrapper(
+            tenants.import_from_warehouse,
+        )
+
+
+class AsyncTenantsResourceWithStreamingResponse:
+    def __init__(self, tenants: AsyncTenantsResource) -> None:
+        self._tenants = tenants
+
+        self.import_from_csv = async_to_streamed_response_wrapper(
+            tenants.import_from_csv,
+        )
+        self.import_from_warehouse = async_to_streamed_response_wrapper(
+            tenants.import_from_warehouse,
         )

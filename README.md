@@ -11,7 +11,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Documentation
 
-The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [kater.ai](https://kater.ai). The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
@@ -25,26 +25,37 @@ pip install kater
 The full API of this library can be found in [api.md](api.md).
 
 ```python
+import os
 from kater import Kater
 
-client = Kater()
+client = Kater(
+    auth_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
+)
 
-connections = client.v1.connections.list()
+connections = client.v1.connections.list_connections()
 ```
+
+While you can provide an `api_key` keyword argument,
+we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
+to add `KATER_API_KEY="My API Key"` to your `.env` file
+so that your API Key is not stored in source control.
 
 ## Async usage
 
 Simply import `AsyncKater` instead of `Kater` and use `await` with each API call:
 
 ```python
+import os
 import asyncio
 from kater import AsyncKater
 
-client = AsyncKater()
+client = AsyncKater(
+    auth_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
+)
 
 
 async def main() -> None:
-    connections = await client.v1.connections.list()
+    connections = await client.v1.connections.list_connections()
 
 
 asyncio.run(main())
@@ -66,6 +77,7 @@ pip install kater[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
+import os
 import asyncio
 from kater import DefaultAioHttpClient
 from kater import AsyncKater
@@ -73,9 +85,10 @@ from kater import AsyncKater
 
 async def main() -> None:
     async with AsyncKater(
+        auth_token=os.environ.get("KATER_AUTH_TOKEN"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
-        connections = await client.v1.connections.list()
+        connections = await client.v1.connections.list_connections()
 
 
 asyncio.run(main())
@@ -100,7 +113,7 @@ from kater import Kater
 
 client = Kater()
 
-client.v1.tenants.import_.from_csv(
+client.v1.tenants.import_from_csv(
     file=Path("/path/to/file"),
 )
 ```
@@ -123,7 +136,7 @@ from kater import Kater
 client = Kater()
 
 try:
-    client.v1.connections.list()
+    client.v1.connections.list_connections()
 except kater.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -166,7 +179,7 @@ client = Kater(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).v1.connections.list()
+client.with_options(max_retries=5).v1.connections.list_connections()
 ```
 
 ### Timeouts
@@ -189,7 +202,7 @@ client = Kater(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).v1.connections.list()
+client.with_options(timeout=5.0).v1.connections.list_connections()
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -230,10 +243,10 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from kater import Kater
 
 client = Kater()
-response = client.v1.connections.with_raw_response.list()
+response = client.v1.connections.with_raw_response.list_connections()
 print(response.headers.get('X-My-Header'))
 
-connection = response.parse()  # get the object that `v1.connections.list()` would have returned
+connection = response.parse()  # get the object that `v1.connections.list_connections()` would have returned
 print(connection)
 ```
 
@@ -248,7 +261,7 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.v1.connections.with_streaming_response.list() as response:
+with client.v1.connections.with_streaming_response.list_connections() as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():

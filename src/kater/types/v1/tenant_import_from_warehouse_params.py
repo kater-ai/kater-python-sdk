@@ -5,10 +5,10 @@ from __future__ import annotations
 from typing import Optional
 from typing_extensions import Required, TypedDict
 
-__all__ = ["ImportFromWarehouseParams"]
+__all__ = ["TenantImportFromWarehouseParams"]
 
 
-class ImportFromWarehouseParams(TypedDict, total=False):
+class TenantImportFromWarehouseParams(TypedDict, total=False):
     connection_id: Required[str]
     """Warehouse connection ID to query"""
 

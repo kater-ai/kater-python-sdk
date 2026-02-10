@@ -1,11 +1,11 @@
 [project]
 name = "kater"
-version = "0.5.1"
+version = "0.6.0"
 description = "The official Python library for the kater API"
 dynamic = ["readme"]
 license = "Apache-2.0"
 authors = [
-{ name = "Kater", email = "" },
+{ name = "Kater", email = "support@kater.ai" },
 ]
 
 dependencies = [

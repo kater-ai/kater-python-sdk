@@ -3,8 +3,8 @@
 from typing import List
 from typing_extensions import TypeAlias
 
-from .tenant import Tenant
+from .connection import Connection
 
-__all__ = ["TenantListResponse"]
+__all__ = ["ConnectionListConnectionsResponse"]
 
-TenantListResponse: TypeAlias = List[Tenant]
+ConnectionListConnectionsResponse: TypeAlias = List[Connection]

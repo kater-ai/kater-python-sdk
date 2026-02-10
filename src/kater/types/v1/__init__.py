@@ -2,43 +2,9 @@
 
 from __future__ import annotations
 
-from .tenant import Tenant as Tenant
 from .connection import Connection as Connection
-from .client_user import ClientUser as ClientUser
-from .group_detail import GroupDetail as GroupDetail
-from .client_user_role import ClientUserRole as ClientUserRole
-from .create_tenant_param import CreateTenantParam as CreateTenantParam
-from .group_create_params import GroupCreateParams as GroupCreateParams
-from .group_list_response import GroupListResponse as GroupListResponse
-from .group_update_params import GroupUpdateParams as GroupUpdateParams
-from .tenant_create_params import TenantCreateParams as TenantCreateParams
-from .tenant_list_response import TenantListResponse as TenantListResponse
-from .tenant_update_params import TenantUpdateParams as TenantUpdateParams
-from .database_config_param import DatabaseConfigParam as DatabaseConfigParam
-from .github_connect_params import GitHubConnectParams as GitHubConnectParams
-from .connection_list_params import ConnectionListParams as ConnectionListParams
-from .github_callback_params import GitHubCallbackParams as GitHubCallbackParams
-from .github_connect_response import GitHubConnectResponse as GitHubConnectResponse
-from .connection_create_params import ConnectionCreateParams as ConnectionCreateParams
-from .connection_list_response import ConnectionListResponse as ConnectionListResponse
-from .connection_sync_response import ConnectionSyncResponse as ConnectionSyncResponse
-from .connection_update_params import ConnectionUpdateParams as ConnectionUpdateParams
-from .github_get_status_response import GitHubGetStatusResponse as GitHubGetStatusResponse
-from .connection_list_syncs_params import ConnectionListSyncsParams as ConnectionListSyncsParams
-from .connection_list_syncs_response import ConnectionListSyncsResponse as ConnectionListSyncsResponse
-from .tenant_retrieve_schema_response import TenantRetrieveSchemaResponse as TenantRetrieveSchemaResponse
-from .connection_approve_sync_response import ConnectionApproveSyncResponse as ConnectionApproveSyncResponse
-from .connection_retrieve_schema_response import ConnectionRetrieveSchemaResponse as ConnectionRetrieveSchemaResponse
-from .connection_update_credentials_params import ConnectionUpdateCredentialsParams as ConnectionUpdateCredentialsParams
-from .github_get_installation_link_response import (
-    GitHubGetInstallationLinkResponse as GitHubGetInstallationLinkResponse,
-)
-from .connection_update_credentials_response import (
-    ConnectionUpdateCredentialsResponse as ConnectionUpdateCredentialsResponse,
-)
-from .connection_retrieve_credential_response import (
-    ConnectionRetrieveCredentialResponse as ConnectionRetrieveCredentialResponse,
-)
-from .connection_retrieve_sync_status_response import (
-    ConnectionRetrieveSyncStatusResponse as ConnectionRetrieveSyncStatusResponse,
-)
+from .import_tenants_response import ImportTenantsResponse as ImportTenantsResponse
+from .tenant_import_from_csv_params import TenantImportFromCsvParams as TenantImportFromCsvParams
+from .connection_list_connections_params import ConnectionListConnectionsParams as ConnectionListConnectionsParams
+from .tenant_import_from_warehouse_params import TenantImportFromWarehouseParams as TenantImportFromWarehouseParams
+from .connection_list_connections_response import ConnectionListConnectionsResponse as ConnectionListConnectionsResponse
