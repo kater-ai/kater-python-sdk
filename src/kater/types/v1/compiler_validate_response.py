@@ -2,14 +2,18 @@
 
 from typing import Dict, List, Optional
 
-from .manifest import Manifest
 from ..._models import BaseModel
 from .compiler_error_item import CompilerErrorItem
 
-__all__ = ["CompilerValidateResponse", "DependencyGraph", "DependencyGraphNodes"]
+__all__ = [
+    "CompilerValidateResponse",
+    "ConnectionResult",
+    "ConnectionResultDependencyGraph",
+    "ConnectionResultDependencyGraphNodes",
+]
 
 
-class DependencyGraphNodes(BaseModel):
+class ConnectionResultDependencyGraphNodes(BaseModel):
     """A node in the dependency graph."""
 
     file: str
@@ -28,14 +32,36 @@ class DependencyGraphNodes(BaseModel):
     """Node type: QUERY, VIEW, DIMENSION, MEASURE, FILTER, EXPRESSION"""
 
 
-class DependencyGraph(BaseModel):
+class ConnectionResultDependencyGraph(BaseModel):
     """Dependency graph between schema objects."""
 
     edges: Dict[str, Dict[str, List[str]]]
     """Edge relationships with UUID string keys"""
 
-    nodes: Dict[str, DependencyGraphNodes]
+    nodes: Dict[str, ConnectionResultDependencyGraphNodes]
     """UUID string to node mapping"""
+
+
+class ConnectionResult(BaseModel):
+    """Validation result for a single connection."""
+
+    connection_id: str
+    """Connection UUID"""
+
+    connection_name: str
+    """Connection name"""
+
+    success: bool
+    """Whether this connection validated without errors"""
+
+    dependency_graph: Optional[ConnectionResultDependencyGraph] = None
+    """Dependency graph between schema objects."""
+
+    errors: Optional[List[CompilerErrorItem]] = None
+    """Validation errors for this connection"""
+
+    warnings: Optional[List[CompilerErrorItem]] = None
+    """Validation warnings for this connection"""
 
 
 class CompilerValidateResponse(BaseModel):
@@ -44,14 +70,11 @@ class CompilerValidateResponse(BaseModel):
     success: bool
     """Whether validation passed without errors"""
 
-    dependency_graph: Optional[DependencyGraph] = None
-    """Dependency graph between schema objects."""
+    connection_results: Optional[List[ConnectionResult]] = None
+    """Per-connection validation results with dependency graphs"""
 
     errors: Optional[List[CompilerErrorItem]] = None
     """Validation errors"""
-
-    manifest: Optional[Manifest] = None
-    """Compilation manifest with all named objects."""
 
     warnings: Optional[List[CompilerErrorItem]] = None
     """Validation warnings"""
