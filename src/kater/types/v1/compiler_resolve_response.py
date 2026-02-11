@@ -295,8 +295,35 @@ class ResolvedQuery(BaseModel):
     resolution)
     """
 
+    widget_category: Literal["axis", "pie", "single_value", "heatmap", "table", "static"]
+    """Widget category that determines data shape constraints"""
+
     ai_context: Optional[str] = None
     """Usage guidance for AI processing"""
+
+    allowed_widget_types: Optional[
+        List[
+            Literal[
+                "kpi_card",
+                "line_chart",
+                "bar_chart",
+                "pie_chart",
+                "donut_chart",
+                "area_chart",
+                "scatter_chart",
+                "data_table",
+                "card_grid",
+                "heatmap",
+                "gauge",
+                "text",
+                "image",
+            ]
+        ]
+    ] = None
+    """
+    Optional subset of widget types within the declared widget_category that may
+    render this query
+    """
 
     calculations: Optional[List[ResolvedQueryCalculation]] = None
     """Merged required + selected optional calculations"""
@@ -343,9 +370,6 @@ class ResolvedQuery(BaseModel):
 
     resolved_variables: Optional[List[ResolvedQueryResolvedVariable]] = None
     """Full variable definitions with bound values"""
-
-    widget_category: Optional[Literal["axis", "pie", "single_value", "heatmap", "table", "static"]] = None
-    """Category of widget that determines data shape constraints for queries"""
 
 
 class DependencyGraphNodes(BaseModel):
