@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Optional
-from typing_extensions import TypedDict
+from typing import Dict, Union, Optional
+from typing_extensions import TypeAlias, TypedDict
 
 __all__ = ["ChartConfigParam"]
 
 
-class ChartConfigParam(TypedDict, total=False):
+class ChartConfigParamTyped(TypedDict, total=False):
     """Chart configuration with variable references"""
 
     color_by: Optional[str]
@@ -25,3 +25,6 @@ class ChartConfigParam(TypedDict, total=False):
 
     y_axis: Optional[str]
     """Field or variable reference for y-axis"""
+
+
+ChartConfigParam: TypeAlias = Union[ChartConfigParamTyped, Dict[str, object]]
