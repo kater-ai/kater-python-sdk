@@ -48,7 +48,6 @@ class TestCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
                 "ai_context": "ai_context",
-                "allowed_widget_types": ["kpi_card"],
                 "calculations": [
                     {
                         "ref": "ref",
@@ -306,7 +305,6 @@ class TestAsyncCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
                 "ai_context": "ai_context",
-                "allowed_widget_types": ["kpi_card"],
                 "calculations": [
                     {
                         "ref": "ref",

@@ -318,30 +318,6 @@ class ResolvedQuery(TypedDict, total=False):
     ai_context: Optional[str]
     """Usage guidance for AI processing"""
 
-    allowed_widget_types: Optional[
-        List[
-            Literal[
-                "kpi_card",
-                "line_chart",
-                "bar_chart",
-                "pie_chart",
-                "donut_chart",
-                "area_chart",
-                "scatter_chart",
-                "data_table",
-                "card_grid",
-                "heatmap",
-                "gauge",
-                "text",
-                "image",
-            ]
-        ]
-    ]
-    """
-    Optional subset of widget types within the declared widget_category that may
-    render this query
-    """
-
     calculations: Optional[SequenceNotStr[ResolvedQueryCalculation]]
     """Merged required + selected optional calculations"""
 
