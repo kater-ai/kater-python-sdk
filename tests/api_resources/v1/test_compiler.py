@@ -31,6 +31,7 @@ class TestCompiler:
                 "name": "x",
                 "source_query": "ref(dim_customer.sale_price)",
                 "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
             },
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
@@ -45,7 +46,9 @@ class TestCompiler:
                 "name": "x",
                 "source_query": "ref(dim_customer.sale_price)",
                 "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
                 "ai_context": "ai_context",
+                "allowed_widget_types": ["kpi_card"],
                 "calculations": [
                     {
                         "ref": "ref",
@@ -131,7 +134,6 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
-                "widget_category": "axis",
             },
             source="source",
             tenant_database="tenant_database",
@@ -149,6 +151,7 @@ class TestCompiler:
                 "name": "x",
                 "source_query": "ref(dim_customer.sale_price)",
                 "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
             },
         )
 
@@ -167,6 +170,7 @@ class TestCompiler:
                 "name": "x",
                 "source_query": "ref(dim_customer.sale_price)",
                 "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
             },
         ) as response:
             assert not response.is_closed
@@ -284,6 +288,7 @@ class TestAsyncCompiler:
                 "name": "x",
                 "source_query": "ref(dim_customer.sale_price)",
                 "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
             },
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
@@ -298,7 +303,9 @@ class TestAsyncCompiler:
                 "name": "x",
                 "source_query": "ref(dim_customer.sale_price)",
                 "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
                 "ai_context": "ai_context",
+                "allowed_widget_types": ["kpi_card"],
                 "calculations": [
                     {
                         "ref": "ref",
@@ -384,7 +391,6 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
-                "widget_category": "axis",
             },
             source="source",
             tenant_database="tenant_database",
@@ -402,6 +408,7 @@ class TestAsyncCompiler:
                 "name": "x",
                 "source_query": "ref(dim_customer.sale_price)",
                 "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
             },
         )
 
@@ -420,6 +427,7 @@ class TestAsyncCompiler:
                 "name": "x",
                 "source_query": "ref(dim_customer.sale_price)",
                 "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
             },
         ) as response:
             assert not response.is_closed
