@@ -332,6 +332,9 @@ class ResolvedQuery(BaseModel):
                 "gauge",
                 "text",
                 "image",
+                "styled_table",
+                "stat_cards",
+                "key_value_list",
             ]
         ]
     ] = None

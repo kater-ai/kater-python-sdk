@@ -349,6 +349,9 @@ class ResolvedQuery(TypedDict, total=False):
                 "gauge",
                 "text",
                 "image",
+                "styled_table",
+                "stat_cards",
+                "key_value_list",
             ]
         ]
     ]
