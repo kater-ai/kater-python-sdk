@@ -76,6 +76,7 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
+                "disallowed_widget_types": ["kpi_card"],
                 "filters": [
                     {
                         "field": "ref(dim_customer.sale_price)",
@@ -333,6 +334,7 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
+                "disallowed_widget_types": ["kpi_card"],
                 "filters": [
                     {
                         "field": "ref(dim_customer.sale_price)",

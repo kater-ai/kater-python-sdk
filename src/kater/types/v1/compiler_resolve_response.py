@@ -340,6 +340,29 @@ class ResolvedQuery(BaseModel):
     dimensions: Optional[List[ResolvedQueryDimension]] = None
     """Merged required + selected optional dimensions"""
 
+    disallowed_widget_types: Optional[
+        List[
+            Literal[
+                "kpi_card",
+                "line_chart",
+                "bar_chart",
+                "pie_chart",
+                "donut_chart",
+                "area_chart",
+                "scatter_chart",
+                "data_table",
+                "card_grid",
+                "heatmap",
+                "gauge",
+                "text",
+                "image",
+            ]
+        ]
+    ] = None
+    """
+    Widget types within the declared widget_category that must NOT render this query
+    """
+
     filters: Optional[List[ResolvedQueryFilter]] = None
     """Merged required + selected optional filters"""
 
