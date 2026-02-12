@@ -13,6 +13,7 @@ from kater.types.v1 import (
     CompilerCompileResponse,
     CompilerResolveResponse,
     CompilerValidateResponse,
+    CompilerEnumerateResponse,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -178,6 +179,51 @@ class TestCompiler:
 
             compiler = response.parse()
             assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_enumerate(self, client: Kater) -> None:
+        compiler = client.v1.compiler.enumerate(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_enumerate_with_all_params(self, client: Kater) -> None:
+        compiler = client.v1.compiler.enumerate(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            source="source",
+            query_refs=["string"],
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_enumerate(self, client: Kater) -> None:
+        response = client.v1.compiler.with_raw_response.enumerate(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = response.parse()
+        assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_enumerate(self, client: Kater) -> None:
+        with client.v1.compiler.with_streaming_response.enumerate(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = response.parse()
+            assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -435,6 +481,51 @@ class TestAsyncCompiler:
 
             compiler = await response.parse()
             assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_enumerate(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.enumerate(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_enumerate_with_all_params(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.enumerate(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            source="source",
+            query_refs=["string"],
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_enumerate(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.compiler.with_raw_response.enumerate(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = await response.parse()
+        assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_enumerate(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.compiler.with_streaming_response.enumerate(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = await response.parse()
+            assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
