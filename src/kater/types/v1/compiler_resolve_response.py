@@ -15,7 +15,7 @@ __all__ = [
     "ResolvedQuery",
     "ResolvedQueryCalculation",
     "ResolvedQueryChartHint",
-    "ResolvedQueryChartHintChartHint1",
+    "ResolvedQueryChartHintChartHint1Output",
     "ResolvedQueryChartHintChartHint2Output",
     "ResolvedQueryChartHintChartHint2OutputDefault",
     "ResolvedQueryDimension",
@@ -39,7 +39,7 @@ __all__ = [
 ResolvedQueryCalculation: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
-class ResolvedQueryChartHintChartHint1(BaseModel):
+class ResolvedQueryChartHintChartHint1Output(BaseModel):
     """A chart recommendation rule"""
 
     config: ChartConfig
@@ -73,7 +73,9 @@ class ResolvedQueryChartHintChartHint2Output(BaseModel):
     default: ResolvedQueryChartHintChartHint2OutputDefault
 
 
-ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1, ResolvedQueryChartHintChartHint2Output]
+ResolvedQueryChartHint: TypeAlias = Union[
+    ResolvedQueryChartHintChartHint1Output, ResolvedQueryChartHintChartHint2Output
+]
 
 ResolvedQueryDimension: TypeAlias = Union[RefWithLabel, InlineField, str]
 
@@ -391,6 +393,9 @@ class DependencyGraphNodes(BaseModel):
 
     node_type: str
     """Node type: QUERY, VIEW, DIMENSION, MEASURE, FILTER, EXPRESSION"""
+
+    column: Optional[int] = None
+    """Column number in source file"""
 
 
 class DependencyGraph(BaseModel):

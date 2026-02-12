@@ -17,7 +17,7 @@ __all__ = [
     "ResolvedQuery",
     "ResolvedQueryCalculation",
     "ResolvedQueryChartHint",
-    "ResolvedQueryChartHintChartHint1",
+    "ResolvedQueryChartHintChartHint1Input",
     "ResolvedQueryChartHintChartHint2Input",
     "ResolvedQueryChartHintChartHint2InputDefault",
     "ResolvedQueryDimension",
@@ -55,7 +55,7 @@ class CompilerCompileParams(TypedDict, total=False):
 ResolvedQueryCalculation: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
 
 
-class ResolvedQueryChartHintChartHint1(TypedDict, total=False):
+class ResolvedQueryChartHintChartHint1Input(TypedDict, total=False):
     """A chart recommendation rule"""
 
     config: Required[ChartConfigParam]
@@ -89,7 +89,7 @@ class ResolvedQueryChartHintChartHint2Input(TypedDict, total=False):
     default: Required[ResolvedQueryChartHintChartHint2InputDefault]
 
 
-ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1, ResolvedQueryChartHintChartHint2Input]
+ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1Input, ResolvedQueryChartHintChartHint2Input]
 
 ResolvedQueryDimension: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
 
