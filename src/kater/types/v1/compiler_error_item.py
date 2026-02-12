@@ -16,6 +16,9 @@ class CompilerErrorItem(BaseModel):
     message: str
     """Human-readable error description"""
 
+    column: Optional[int] = None
+    """Column number in the source file"""
+
     file: Optional[str] = None
     """Source file path where the error occurred"""
 

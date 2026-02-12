@@ -59,8 +59,10 @@ class TestCompiler:
                     {
                         "config": {
                             "color_by": "ref(created_date)",
+                            "comparison": "previous_period",
                             "size": "ref(created_date)",
                             "stack_by": "ref(created_date)",
+                            "target_value": "target_value",
                             "x_axis": "ref(created_date)",
                             "y_axis": "ref(created_date)",
                         },
@@ -103,8 +105,10 @@ class TestCompiler:
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
+                        "comparison": "previous_period",
                         "size": "ref(created_date)",
                         "stack_by": "ref(created_date)",
+                        "target_value": "target_value",
                         "x_axis": "ref(created_date)",
                         "y_axis": "ref(created_date)",
                     },
@@ -361,8 +365,10 @@ class TestAsyncCompiler:
                     {
                         "config": {
                             "color_by": "ref(created_date)",
+                            "comparison": "previous_period",
                             "size": "ref(created_date)",
                             "stack_by": "ref(created_date)",
+                            "target_value": "target_value",
                             "x_axis": "ref(created_date)",
                             "y_axis": "ref(created_date)",
                         },
@@ -405,8 +411,10 @@ class TestAsyncCompiler:
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
+                        "comparison": "previous_period",
                         "size": "ref(created_date)",
                         "stack_by": "ref(created_date)",
+                        "target_value": "target_value",
                         "x_axis": "ref(created_date)",
                         "y_axis": "ref(created_date)",
                     },
