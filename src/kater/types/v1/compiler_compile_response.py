@@ -6,7 +6,23 @@ from .manifest import Manifest
 from ..._models import BaseModel
 from .compiler_error_item import CompilerErrorItem
 
-__all__ = ["CompilerCompileResponse", "Metadata"]
+__all__ = ["CompilerCompileResponse", "ColumnMap", "Metadata"]
+
+
+class ColumnMap(BaseModel):
+    """Maps a UUID column alias to its human-readable name and type."""
+
+    field_type: str
+    """Field type: dimension, measure, or calculation"""
+
+    kater_id: str
+    """UUID string used as SQL column alias"""
+
+    name: str
+    """Human-readable column name"""
+
+    label: Optional[str] = None
+    """Display label"""
 
 
 class Metadata(BaseModel):
@@ -39,6 +55,9 @@ class CompilerCompileResponse(BaseModel):
 
     success: bool
     """Whether compilation succeeded"""
+
+    column_map: Optional[List[ColumnMap]] = None
+    """Maps UUID column aliases to human-readable names and types"""
 
     errors: Optional[List[CompilerErrorItem]] = None
     """Compilation errors"""
