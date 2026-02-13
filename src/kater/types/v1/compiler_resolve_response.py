@@ -32,6 +32,8 @@ __all__ = [
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2",
     "ResolvedQueryResolvedVariableConstraints",
+    "ResolvedQuerySelectFrom",
+    "ResolvedQuerySelectFromOutputColumn",
     "DependencyGraph",
     "DependencyGraphNodes",
 ]
@@ -279,6 +281,35 @@ class ResolvedQueryResolvedVariable(BaseModel):
     """Human-readable label for the variable"""
 
 
+class ResolvedQuerySelectFromOutputColumn(BaseModel):
+    """A column produced by a select_from CTE"""
+
+    column_alias: str
+    """The SQL column alias in the CTE output"""
+
+    field_name: str
+    """The field name used in q:query_name.field_name references"""
+
+    source_type: Literal["dimension", "measure", "calculation"]
+    """Original type of the field in the source query"""
+
+
+class ResolvedQuerySelectFrom(BaseModel):
+    """A resolved select_from entry with CTE metadata"""
+
+    cte_alias: str
+    """CTE alias used in the WITH clause (e.g., **sf_compliance_rate**base)"""
+
+    output_columns: List[ResolvedQuerySelectFromOutputColumn]
+    """Columns produced by the CTE, available as q:query_name.field_name in the parent"""
+
+    ref: str
+    """Reference to the source query"""
+
+    variables: Optional[Dict[str, Union[str, float, bool]]] = None
+    """Variable overrides passed to the referenced query"""
+
+
 class ResolvedQuery(BaseModel):
     """The fully resolved query object"""
 
@@ -374,6 +405,9 @@ class ResolvedQuery(BaseModel):
 
     resolved_variables: Optional[List[ResolvedQueryResolvedVariable]] = None
     """Full variable definitions with bound values"""
+
+    select_from: Optional[List[ResolvedQuerySelectFrom]] = None
+    """Resolved select_from entries with CTE metadata"""
 
 
 class DependencyGraphNodes(BaseModel):

@@ -139,9 +139,23 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
+                "select_from": [
+                    {
+                        "cte_alias": "cte_alias",
+                        "output_columns": [
+                            {
+                                "column_alias": "column_alias",
+                                "field_name": "field_name",
+                                "source_type": "dimension",
+                            }
+                        ],
+                        "ref": "ref(dim_customer.sale_price)",
+                        "variables": {"foo": "string"},
+                    }
+                ],
             },
             source="source",
-            tenant_database="tenant_database",
+            tenant_key="tenant_key",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
@@ -445,9 +459,23 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
+                "select_from": [
+                    {
+                        "cte_alias": "cte_alias",
+                        "output_columns": [
+                            {
+                                "column_alias": "column_alias",
+                                "field_name": "field_name",
+                                "source_type": "dimension",
+                            }
+                        ],
+                        "ref": "ref(dim_customer.sale_price)",
+                        "variables": {"foo": "string"},
+                    }
+                ],
             },
             source="source",
-            tenant_database="tenant_database",
+            tenant_key="tenant_key",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])

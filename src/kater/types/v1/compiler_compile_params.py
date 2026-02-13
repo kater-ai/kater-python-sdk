@@ -34,6 +34,8 @@ __all__ = [
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2",
     "ResolvedQueryResolvedVariableConstraints",
+    "ResolvedQuerySelectFrom",
+    "ResolvedQuerySelectFromOutputColumn",
 ]
 
 
@@ -46,8 +48,12 @@ class CompilerCompileParams(TypedDict, total=False):
 
     source: Optional[str]
 
-    tenant_database: Optional[str]
-    """Optional tenant database override"""
+    tenant_key: Optional[str]
+    """Tenant key for multi-tenant compilation.
+
+    For database tenancy, maps to the tenant's database. For row tenancy, used as
+    the row-level filter value.
+    """
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]
 
@@ -294,6 +300,35 @@ class ResolvedQueryResolvedVariable(TypedDict, total=False):
     """Human-readable label for the variable"""
 
 
+class ResolvedQuerySelectFromOutputColumn(TypedDict, total=False):
+    """A column produced by a select_from CTE"""
+
+    column_alias: Required[str]
+    """The SQL column alias in the CTE output"""
+
+    field_name: Required[str]
+    """The field name used in q:query_name.field_name references"""
+
+    source_type: Required[Literal["dimension", "measure", "calculation"]]
+    """Original type of the field in the source query"""
+
+
+class ResolvedQuerySelectFrom(TypedDict, total=False):
+    """A resolved select_from entry with CTE metadata"""
+
+    cte_alias: Required[str]
+    """CTE alias used in the WITH clause (e.g., **sf_compliance_rate**base)"""
+
+    output_columns: Required[Iterable[ResolvedQuerySelectFromOutputColumn]]
+    """Columns produced by the CTE, available as q:query_name.field_name in the parent"""
+
+    ref: Required[str]
+    """Reference to the source query"""
+
+    variables: Optional[Dict[str, Union[str, float, bool]]]
+    """Variable overrides passed to the referenced query"""
+
+
 class ResolvedQuery(TypedDict, total=False):
     """Previously resolved query object from /resolve"""
 
@@ -389,3 +424,6 @@ class ResolvedQuery(TypedDict, total=False):
 
     resolved_variables: Optional[Iterable[ResolvedQueryResolvedVariable]]
     """Full variable definitions with bound values"""
+
+    select_from: Optional[Iterable[ResolvedQuerySelectFrom]]
+    """Resolved select_from entries with CTE metadata"""
