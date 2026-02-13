@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Optional
 
 import httpx
 
@@ -172,11 +172,7 @@ class CompilerResource(SyncAPIResource):
         connection_id: str,
         query_ref: str,
         source: Optional[str] | Omit = omit,
-        include_calculations: SequenceNotStr[str] | Omit = omit,
-        include_dimensions: SequenceNotStr[str] | Omit = omit,
-        include_filters: SequenceNotStr[str] | Omit = omit,
-        include_measures: SequenceNotStr[str] | Omit = omit,
-        variables: Dict[str, object] | Omit = omit,
+        combination: str | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -198,15 +194,11 @@ class CompilerResource(SyncAPIResource):
 
           query_ref: Reference to the query template (e.g. 'ref(MY_QUERY)')
 
-          include_calculations: Calculation names to include
-
-          include_dimensions: Dimension names to include
-
-          include_filters: Filter names to include
-
-          include_measures: Measure names to include
-
-          variables: User-selected variable values
+          combination:
+              Comma-separated slot selections and variable assignments. Reserved keys:
+              measure, dimension, filter, calculation. All other keys are variable
+              assignments. Example: 'measure=Compliance
+              Rate,dimension=Department,breakdown=region'
 
           extra_headers: Send extra headers
 
@@ -223,11 +215,7 @@ class CompilerResource(SyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "query_ref": query_ref,
-                    "include_calculations": include_calculations,
-                    "include_dimensions": include_dimensions,
-                    "include_filters": include_filters,
-                    "include_measures": include_measures,
-                    "variables": variables,
+                    "combination": combination,
                 },
                 compiler_resolve_params.CompilerResolveParams,
             ),
@@ -431,11 +419,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         connection_id: str,
         query_ref: str,
         source: Optional[str] | Omit = omit,
-        include_calculations: SequenceNotStr[str] | Omit = omit,
-        include_dimensions: SequenceNotStr[str] | Omit = omit,
-        include_filters: SequenceNotStr[str] | Omit = omit,
-        include_measures: SequenceNotStr[str] | Omit = omit,
-        variables: Dict[str, object] | Omit = omit,
+        combination: str | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -457,15 +441,11 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           query_ref: Reference to the query template (e.g. 'ref(MY_QUERY)')
 
-          include_calculations: Calculation names to include
-
-          include_dimensions: Dimension names to include
-
-          include_filters: Filter names to include
-
-          include_measures: Measure names to include
-
-          variables: User-selected variable values
+          combination:
+              Comma-separated slot selections and variable assignments. Reserved keys:
+              measure, dimension, filter, calculation. All other keys are variable
+              assignments. Example: 'measure=Compliance
+              Rate,dimension=Department,breakdown=region'
 
           extra_headers: Send extra headers
 
@@ -482,11 +462,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "query_ref": query_ref,
-                    "include_calculations": include_calculations,
-                    "include_dimensions": include_dimensions,
-                    "include_filters": include_filters,
-                    "include_measures": include_measures,
-                    "variables": variables,
+                    "combination": combination,
                 },
                 compiler_resolve_params.CompilerResolveParams,
             ),

@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Optional
 from typing_extensions import Required, Annotated, TypedDict
 
-from ..._types import SequenceNotStr
 from ..._utils import PropertyInfo
 
 __all__ = ["CompilerResolveParams"]
@@ -20,19 +19,12 @@ class CompilerResolveParams(TypedDict, total=False):
 
     source: Optional[str]
 
-    include_calculations: SequenceNotStr[str]
-    """Calculation names to include"""
+    combination: str
+    """Comma-separated slot selections and variable assignments.
 
-    include_dimensions: SequenceNotStr[str]
-    """Dimension names to include"""
-
-    include_filters: SequenceNotStr[str]
-    """Filter names to include"""
-
-    include_measures: SequenceNotStr[str]
-    """Measure names to include"""
-
-    variables: Dict[str, object]
-    """User-selected variable values"""
+    Reserved keys: measure, dimension, filter, calculation. All other keys are
+    variable assignments. Example: 'measure=Compliance
+    Rate,dimension=Department,breakdown=region'
+    """
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]
