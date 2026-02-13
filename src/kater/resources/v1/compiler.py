@@ -57,7 +57,7 @@ class CompilerResource(SyncAPIResource):
         connection_id: str,
         resolved_query: compiler_compile_params.ResolvedQuery,
         source: Optional[str] | Omit = omit,
-        tenant_database: Optional[str] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -79,7 +79,8 @@ class CompilerResource(SyncAPIResource):
 
           resolved_query: Previously resolved query object from /resolve
 
-          tenant_database: Optional tenant database override
+          tenant_key: Tenant key for multi-tenant compilation. For database tenancy, maps to the
+              tenant's database. For row tenancy, used as the row-level filter value.
 
           extra_headers: Send extra headers
 
@@ -96,7 +97,7 @@ class CompilerResource(SyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "resolved_query": resolved_query,
-                    "tenant_database": tenant_database,
+                    "tenant_key": tenant_key,
                 },
                 compiler_compile_params.CompilerCompileParams,
             ),
@@ -313,7 +314,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         connection_id: str,
         resolved_query: compiler_compile_params.ResolvedQuery,
         source: Optional[str] | Omit = omit,
-        tenant_database: Optional[str] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -335,7 +336,8 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           resolved_query: Previously resolved query object from /resolve
 
-          tenant_database: Optional tenant database override
+          tenant_key: Tenant key for multi-tenant compilation. For database tenancy, maps to the
+              tenant's database. For row tenancy, used as the row-level filter value.
 
           extra_headers: Send extra headers
 
@@ -352,7 +354,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "resolved_query": resolved_query,
-                    "tenant_database": tenant_database,
+                    "tenant_key": tenant_key,
                 },
                 compiler_compile_params.CompilerCompileParams,
             ),
