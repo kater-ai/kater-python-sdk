@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.9.0 (2026-02-14)
+
+Full Changelog: [v0.8.0...v0.9.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.8.0...v0.9.0)
+
+### Features
+
+* **cache:** add pre-aggregate query cache with DuckDB backend ([ac8feb0](https://github.com/kater-ai/kater-python-sdk/commit/ac8feb062dd7559f7cd478f63f0bcdb3ddee061e))
+* **compiler:** add select_from for CTE-based query composition ([ef738f1](https://github.com/kater-ai/kater-python-sdk/commit/ef738f11b331edd0237c8e3c2f8515e7839a017f))
+* **compiler:** replace structured resolve fields with combination st… ([286fe57](https://github.com/kater-ai/kater-python-sdk/commit/286fe57aef3d79b2f0fce8682f08d79d51d279c2))
+* feat(all) shippable widgets ([b33363a](https://github.com/kater-ai/kater-python-sdk/commit/b33363a2508788d86e0648113b48bdcf2d285b90))
+* Feat/calculation widget mapping ([2a04ef7](https://github.com/kater-ai/kater-python-sdk/commit/2a04ef7a3329d7052764d428f3524a39140951d6))
+* Feat/compiler widget validation ([1190e30](https://github.com/kater-ai/kater-python-sdk/commit/1190e30b04a3807cae712c548f80e0feb3bb4542))
+* Feat/landing page ([9811c30](https://github.com/kater-ai/kater-python-sdk/commit/9811c305ba52f08bb755470e89b3f671125a3a38))
+* **schema:** make widget_category required and add allowed_widget_ty… ([b7dcbcf](https://github.com/kater-ai/kater-python-sdk/commit/b7dcbcf5f490a50c57c4e8e1bac280d8cbfe0b13))
+* **schema:** make widget_category required and add disallowed_widget… ([23b0482](https://github.com/kater-ai/kater-python-sdk/commit/23b04827be10b1f5e0ecaa4abefae1a20bfb28e3))
+
+
+### Chores
+
+* format all `api.md` files ([296d1f4](https://github.com/kater-ai/kater-python-sdk/commit/296d1f461f371058fcca46ead37030cd9b2f106d))
+* **internal:** fix lint error on Python 3.14 ([93b8c09](https://github.com/kater-ai/kater-python-sdk/commit/93b8c0960fee88c96fd57a1ac7e8e0ea5f69ab9c))
+
 ## 0.8.0 (2026-02-10)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.7.0...v0.8.0)
