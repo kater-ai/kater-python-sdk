@@ -11,6 +11,7 @@ from kater import Kater, AsyncKater
 from tests.utils import assert_matches_type
 from kater.types.v1 import (
     CompilerCompileResponse,
+    CompilerExecuteResponse,
     CompilerResolveResponse,
     CompilerValidateResponse,
     CompilerEnumerateResponse,
@@ -242,6 +243,184 @@ class TestCompiler:
 
             compiler = response.parse()
             assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_execute(self, client: Kater) -> None:
+        compiler = client.v1.compiler.execute(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
+            },
+        )
+        assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_execute_with_all_params(self, client: Kater) -> None:
+        compiler = client.v1.compiler.execute(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
+                "ai_context": "ai_context",
+                "calculations": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "chart_hints": [
+                    {
+                        "config": {
+                            "color_by": "ref(created_date)",
+                            "comparison": "previous_period",
+                            "size": "ref(created_date)",
+                            "stack_by": "ref(created_date)",
+                            "target_value": "target_value",
+                            "x_axis": "ref(created_date)",
+                            "y_axis": "ref(created_date)",
+                        },
+                        "recommend": "line",
+                        "when": {"foo": "string"},
+                    }
+                ],
+                "custom_properties": {"foo": "bar"},
+                "description": "description",
+                "dimensions": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "disallowed_widget_types": ["kpi_card"],
+                "filters": [
+                    {
+                        "field": "ref(dim_customer.sale_price)",
+                        "name": "x",
+                        "operator": "equals",
+                        "sql_value": "SUM(ref(sale_price))",
+                        "static_values": ["string"],
+                    }
+                ],
+                "inheritance_chain": ["string"],
+                "label": "label",
+                "limit": 1,
+                "measures": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "order_by": {
+                    "asc": ["string"],
+                    "desc": ["string"],
+                },
+                "required_access_grants": ["string"],
+                "resolved_chart": {
+                    "config": {
+                        "color_by": "ref(created_date)",
+                        "comparison": "previous_period",
+                        "size": "ref(created_date)",
+                        "stack_by": "ref(created_date)",
+                        "target_value": "target_value",
+                        "x_axis": "ref(created_date)",
+                        "y_axis": "ref(created_date)",
+                    },
+                    "recommend": "line",
+                },
+                "resolved_variables": [
+                    {
+                        "bound_value": "string",
+                        "default": "string",
+                        "name": "x",
+                        "type": "STRING",
+                        "allowed_values": {
+                            "static": [
+                                {
+                                    "value": "string",
+                                    "label": "label",
+                                }
+                            ]
+                        },
+                        "constraints": {
+                            "max": 0,
+                            "max_length": 1,
+                            "min": 0,
+                            "step": 0,
+                        },
+                        "description": "description",
+                        "is_default": True,
+                        "label": "label",
+                    }
+                ],
+                "select_from": [
+                    {
+                        "cte_alias": "cte_alias",
+                        "output_columns": [
+                            {
+                                "column_alias": "column_alias",
+                                "field_name": "field_name",
+                                "source_type": "dimension",
+                            }
+                        ],
+                        "ref": "ref(dim_customer.sale_price)",
+                        "variables": {"foo": "string"},
+                    }
+                ],
+            },
+            source="source",
+            tenant_key="tenant_key",
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_execute(self, client: Kater) -> None:
+        response = client.v1.compiler.with_raw_response.execute(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
+            },
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = response.parse()
+        assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_execute(self, client: Kater) -> None:
+        with client.v1.compiler.with_streaming_response.execute(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
+            },
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = response.parse()
+            assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -558,6 +737,184 @@ class TestAsyncCompiler:
 
             compiler = await response.parse()
             assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_execute(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.execute(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
+            },
+        )
+        assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_execute_with_all_params(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.execute(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
+                "ai_context": "ai_context",
+                "calculations": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "chart_hints": [
+                    {
+                        "config": {
+                            "color_by": "ref(created_date)",
+                            "comparison": "previous_period",
+                            "size": "ref(created_date)",
+                            "stack_by": "ref(created_date)",
+                            "target_value": "target_value",
+                            "x_axis": "ref(created_date)",
+                            "y_axis": "ref(created_date)",
+                        },
+                        "recommend": "line",
+                        "when": {"foo": "string"},
+                    }
+                ],
+                "custom_properties": {"foo": "bar"},
+                "description": "description",
+                "dimensions": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "disallowed_widget_types": ["kpi_card"],
+                "filters": [
+                    {
+                        "field": "ref(dim_customer.sale_price)",
+                        "name": "x",
+                        "operator": "equals",
+                        "sql_value": "SUM(ref(sale_price))",
+                        "static_values": ["string"],
+                    }
+                ],
+                "inheritance_chain": ["string"],
+                "label": "label",
+                "limit": 1,
+                "measures": [
+                    {
+                        "ref": "ref",
+                        "label": "label",
+                    }
+                ],
+                "order_by": {
+                    "asc": ["string"],
+                    "desc": ["string"],
+                },
+                "required_access_grants": ["string"],
+                "resolved_chart": {
+                    "config": {
+                        "color_by": "ref(created_date)",
+                        "comparison": "previous_period",
+                        "size": "ref(created_date)",
+                        "stack_by": "ref(created_date)",
+                        "target_value": "target_value",
+                        "x_axis": "ref(created_date)",
+                        "y_axis": "ref(created_date)",
+                    },
+                    "recommend": "line",
+                },
+                "resolved_variables": [
+                    {
+                        "bound_value": "string",
+                        "default": "string",
+                        "name": "x",
+                        "type": "STRING",
+                        "allowed_values": {
+                            "static": [
+                                {
+                                    "value": "string",
+                                    "label": "label",
+                                }
+                            ]
+                        },
+                        "constraints": {
+                            "max": 0,
+                            "max_length": 1,
+                            "min": 0,
+                            "step": 0,
+                        },
+                        "description": "description",
+                        "is_default": True,
+                        "label": "label",
+                    }
+                ],
+                "select_from": [
+                    {
+                        "cte_alias": "cte_alias",
+                        "output_columns": [
+                            {
+                                "column_alias": "column_alias",
+                                "field_name": "field_name",
+                                "source_type": "dimension",
+                            }
+                        ],
+                        "ref": "ref(dim_customer.sale_price)",
+                        "variables": {"foo": "string"},
+                    }
+                ],
+            },
+            source="source",
+            tenant_key="tenant_key",
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_execute(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.compiler.with_raw_response.execute(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
+            },
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = await response.parse()
+        assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_execute(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.compiler.with_streaming_response.execute(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            resolved_query={
+                "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                "name": "x",
+                "source_query": "ref(dim_customer.sale_price)",
+                "topic": "ref(dim_customer.sale_price)",
+                "widget_category": "axis",
+            },
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = await response.parse()
+            assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

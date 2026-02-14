@@ -6,32 +6,46 @@ from typing import Optional
 
 import httpx
 
-from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ..._utils import maybe_transform, strip_not_given, async_maybe_transform
-from ..._compat import cached_property
-from ...types.v1 import (
+from .cache import (
+    CacheResource,
+    AsyncCacheResource,
+    CacheResourceWithRawResponse,
+    AsyncCacheResourceWithRawResponse,
+    CacheResourceWithStreamingResponse,
+    AsyncCacheResourceWithStreamingResponse,
+)
+from ...._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
+from ...._utils import maybe_transform, strip_not_given, async_maybe_transform
+from ...._compat import cached_property
+from ....types.v1 import (
     compiler_compile_params,
+    compiler_execute_params,
     compiler_resolve_params,
     compiler_validate_params,
     compiler_enumerate_params,
 )
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ..._response import (
+from ...._resource import SyncAPIResource, AsyncAPIResource
+from ...._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ..._base_client import make_request_options
-from ...types.v1.compiler_compile_response import CompilerCompileResponse
-from ...types.v1.compiler_resolve_response import CompilerResolveResponse
-from ...types.v1.compiler_validate_response import CompilerValidateResponse
-from ...types.v1.compiler_enumerate_response import CompilerEnumerateResponse
+from ...._base_client import make_request_options
+from ....types.v1.compiler_compile_response import CompilerCompileResponse
+from ....types.v1.compiler_execute_response import CompilerExecuteResponse
+from ....types.v1.compiler_resolve_response import CompilerResolveResponse
+from ....types.v1.compiler_validate_response import CompilerValidateResponse
+from ....types.v1.compiler_enumerate_response import CompilerEnumerateResponse
 
 __all__ = ["CompilerResource", "AsyncCompilerResource"]
 
 
 class CompilerResource(SyncAPIResource):
+    @cached_property
+    def cache(self) -> CacheResource:
+        return CacheResource(self._client)
+
     @cached_property
     def with_raw_response(self) -> CompilerResourceWithRawResponse:
         """
@@ -166,6 +180,66 @@ class CompilerResource(SyncAPIResource):
             cast_to=CompilerEnumerateResponse,
         )
 
+    def execute(
+        self,
+        *,
+        connection_id: str,
+        resolved_query: compiler_execute_params.ResolvedQuery,
+        source: Optional[str] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerExecuteResponse:
+        """
+        Execute a query with transparent caching.
+
+        Compiles the resolved query to SQL, checks the cache for existing results,
+        executes against the warehouse on cache miss, and stores the result for future
+        requests. Cache failures are invisible to the caller.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Args:
+          connection_id: Connection to execute against
+
+          resolved_query: Previously resolved query object from /resolve
+
+          tenant_key: Tenant key for multi-tenant execution
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return self._post(
+            "/api/v1/compiler/execute",
+            body=maybe_transform(
+                {
+                    "connection_id": connection_id,
+                    "resolved_query": resolved_query,
+                    "tenant_key": tenant_key,
+                },
+                compiler_execute_params.CompilerExecuteParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"source": source}, compiler_execute_params.CompilerExecuteParams),
+            ),
+            cast_to=CompilerExecuteResponse,
+        )
+
     def resolve(
         self,
         *,
@@ -277,6 +351,10 @@ class CompilerResource(SyncAPIResource):
 
 
 class AsyncCompilerResource(AsyncAPIResource):
+    @cached_property
+    def cache(self) -> AsyncCacheResource:
+        return AsyncCacheResource(self._client)
+
     @cached_property
     def with_raw_response(self) -> AsyncCompilerResourceWithRawResponse:
         """
@@ -413,6 +491,66 @@ class AsyncCompilerResource(AsyncAPIResource):
             cast_to=CompilerEnumerateResponse,
         )
 
+    async def execute(
+        self,
+        *,
+        connection_id: str,
+        resolved_query: compiler_execute_params.ResolvedQuery,
+        source: Optional[str] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerExecuteResponse:
+        """
+        Execute a query with transparent caching.
+
+        Compiles the resolved query to SQL, checks the cache for existing results,
+        executes against the warehouse on cache miss, and stores the result for future
+        requests. Cache failures are invisible to the caller.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Args:
+          connection_id: Connection to execute against
+
+          resolved_query: Previously resolved query object from /resolve
+
+          tenant_key: Tenant key for multi-tenant execution
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return await self._post(
+            "/api/v1/compiler/execute",
+            body=await async_maybe_transform(
+                {
+                    "connection_id": connection_id,
+                    "resolved_query": resolved_query,
+                    "tenant_key": tenant_key,
+                },
+                compiler_execute_params.CompilerExecuteParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"source": source}, compiler_execute_params.CompilerExecuteParams),
+            ),
+            cast_to=CompilerExecuteResponse,
+        )
+
     async def resolve(
         self,
         *,
@@ -535,12 +673,19 @@ class CompilerResourceWithRawResponse:
         self.enumerate = to_raw_response_wrapper(
             compiler.enumerate,
         )
+        self.execute = to_raw_response_wrapper(
+            compiler.execute,
+        )
         self.resolve = to_raw_response_wrapper(
             compiler.resolve,
         )
         self.validate = to_raw_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def cache(self) -> CacheResourceWithRawResponse:
+        return CacheResourceWithRawResponse(self._compiler.cache)
 
 
 class AsyncCompilerResourceWithRawResponse:
@@ -553,12 +698,19 @@ class AsyncCompilerResourceWithRawResponse:
         self.enumerate = async_to_raw_response_wrapper(
             compiler.enumerate,
         )
+        self.execute = async_to_raw_response_wrapper(
+            compiler.execute,
+        )
         self.resolve = async_to_raw_response_wrapper(
             compiler.resolve,
         )
         self.validate = async_to_raw_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def cache(self) -> AsyncCacheResourceWithRawResponse:
+        return AsyncCacheResourceWithRawResponse(self._compiler.cache)
 
 
 class CompilerResourceWithStreamingResponse:
@@ -571,12 +723,19 @@ class CompilerResourceWithStreamingResponse:
         self.enumerate = to_streamed_response_wrapper(
             compiler.enumerate,
         )
+        self.execute = to_streamed_response_wrapper(
+            compiler.execute,
+        )
         self.resolve = to_streamed_response_wrapper(
             compiler.resolve,
         )
         self.validate = to_streamed_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def cache(self) -> CacheResourceWithStreamingResponse:
+        return CacheResourceWithStreamingResponse(self._compiler.cache)
 
 
 class AsyncCompilerResourceWithStreamingResponse:
@@ -589,9 +748,16 @@ class AsyncCompilerResourceWithStreamingResponse:
         self.enumerate = async_to_streamed_response_wrapper(
             compiler.enumerate,
         )
+        self.execute = async_to_streamed_response_wrapper(
+            compiler.execute,
+        )
         self.resolve = async_to_streamed_response_wrapper(
             compiler.resolve,
         )
         self.validate = async_to_streamed_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def cache(self) -> AsyncCacheResourceWithStreamingResponse:
+        return AsyncCacheResourceWithStreamingResponse(self._compiler.cache)
