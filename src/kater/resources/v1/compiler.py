@@ -6,46 +6,34 @@ from typing import Optional
 
 import httpx
 
-from .cache import (
-    CacheResource,
-    AsyncCacheResource,
-    CacheResourceWithRawResponse,
-    AsyncCacheResourceWithRawResponse,
-    CacheResourceWithStreamingResponse,
-    AsyncCacheResourceWithStreamingResponse,
-)
-from ...._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ...._utils import maybe_transform, strip_not_given, async_maybe_transform
-from ...._compat import cached_property
-from ....types.v1 import (
+from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
+from ..._utils import maybe_transform, strip_not_given, async_maybe_transform
+from ..._compat import cached_property
+from ...types.v1 import (
     compiler_compile_params,
     compiler_execute_params,
     compiler_resolve_params,
     compiler_validate_params,
     compiler_enumerate_params,
 )
-from ...._resource import SyncAPIResource, AsyncAPIResource
-from ...._response import (
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ..._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...._base_client import make_request_options
-from ....types.v1.compiler_compile_response import CompilerCompileResponse
-from ....types.v1.compiler_execute_response import CompilerExecuteResponse
-from ....types.v1.compiler_resolve_response import CompilerResolveResponse
-from ....types.v1.compiler_validate_response import CompilerValidateResponse
-from ....types.v1.compiler_enumerate_response import CompilerEnumerateResponse
+from ..._base_client import make_request_options
+from ...types.v1.compiler_compile_response import CompilerCompileResponse
+from ...types.v1.compiler_execute_response import CompilerExecuteResponse
+from ...types.v1.compiler_resolve_response import CompilerResolveResponse
+from ...types.v1.compiler_validate_response import CompilerValidateResponse
+from ...types.v1.compiler_enumerate_response import CompilerEnumerateResponse
 
 __all__ = ["CompilerResource", "AsyncCompilerResource"]
 
 
 class CompilerResource(SyncAPIResource):
-    @cached_property
-    def cache(self) -> CacheResource:
-        return CacheResource(self._client)
-
     @cached_property
     def with_raw_response(self) -> CompilerResourceWithRawResponse:
         """
@@ -351,10 +339,6 @@ class CompilerResource(SyncAPIResource):
 
 
 class AsyncCompilerResource(AsyncAPIResource):
-    @cached_property
-    def cache(self) -> AsyncCacheResource:
-        return AsyncCacheResource(self._client)
-
     @cached_property
     def with_raw_response(self) -> AsyncCompilerResourceWithRawResponse:
         """
@@ -683,10 +667,6 @@ class CompilerResourceWithRawResponse:
             compiler.validate,
         )
 
-    @cached_property
-    def cache(self) -> CacheResourceWithRawResponse:
-        return CacheResourceWithRawResponse(self._compiler.cache)
-
 
 class AsyncCompilerResourceWithRawResponse:
     def __init__(self, compiler: AsyncCompilerResource) -> None:
@@ -707,10 +687,6 @@ class AsyncCompilerResourceWithRawResponse:
         self.validate = async_to_raw_response_wrapper(
             compiler.validate,
         )
-
-    @cached_property
-    def cache(self) -> AsyncCacheResourceWithRawResponse:
-        return AsyncCacheResourceWithRawResponse(self._compiler.cache)
 
 
 class CompilerResourceWithStreamingResponse:
@@ -733,10 +709,6 @@ class CompilerResourceWithStreamingResponse:
             compiler.validate,
         )
 
-    @cached_property
-    def cache(self) -> CacheResourceWithStreamingResponse:
-        return CacheResourceWithStreamingResponse(self._compiler.cache)
-
 
 class AsyncCompilerResourceWithStreamingResponse:
     def __init__(self, compiler: AsyncCompilerResource) -> None:
@@ -757,7 +729,3 @@ class AsyncCompilerResourceWithStreamingResponse:
         self.validate = async_to_streamed_response_wrapper(
             compiler.validate,
         )
-
-    @cached_property
-    def cache(self) -> AsyncCacheResourceWithStreamingResponse:
-        return AsyncCacheResourceWithStreamingResponse(self._compiler.cache)
