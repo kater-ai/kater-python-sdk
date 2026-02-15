@@ -2,30 +2,50 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Optional
 
 import httpx
 
-from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ..._utils import maybe_transform, strip_not_given, async_maybe_transform
-from ..._compat import cached_property
-from ...types.v1 import compiler_compile_params, compiler_resolve_params, compiler_validate_params
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ..._response import (
+from .cache import (
+    CacheResource,
+    AsyncCacheResource,
+    CacheResourceWithRawResponse,
+    AsyncCacheResourceWithRawResponse,
+    CacheResourceWithStreamingResponse,
+    AsyncCacheResourceWithStreamingResponse,
+)
+from ...._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
+from ...._utils import maybe_transform, strip_not_given, async_maybe_transform
+from ...._compat import cached_property
+from ....types.v1 import (
+    compiler_compile_params,
+    compiler_execute_params,
+    compiler_resolve_params,
+    compiler_validate_params,
+    compiler_enumerate_params,
+)
+from ...._resource import SyncAPIResource, AsyncAPIResource
+from ...._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ..._base_client import make_request_options
-from ...types.v1.compiler_compile_response import CompilerCompileResponse
-from ...types.v1.compiler_resolve_response import CompilerResolveResponse
-from ...types.v1.compiler_validate_response import CompilerValidateResponse
+from ...._base_client import make_request_options
+from ....types.v1.compiler_compile_response import CompilerCompileResponse
+from ....types.v1.compiler_execute_response import CompilerExecuteResponse
+from ....types.v1.compiler_resolve_response import CompilerResolveResponse
+from ....types.v1.compiler_validate_response import CompilerValidateResponse
+from ....types.v1.compiler_enumerate_response import CompilerEnumerateResponse
 
 __all__ = ["CompilerResource", "AsyncCompilerResource"]
 
 
 class CompilerResource(SyncAPIResource):
+    @cached_property
+    def cache(self) -> CacheResource:
+        return CacheResource(self._client)
+
     @cached_property
     def with_raw_response(self) -> CompilerResourceWithRawResponse:
         """
@@ -51,7 +71,7 @@ class CompilerResource(SyncAPIResource):
         connection_id: str,
         resolved_query: compiler_compile_params.ResolvedQuery,
         source: Optional[str] | Omit = omit,
-        tenant_database: Optional[str] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -73,7 +93,8 @@ class CompilerResource(SyncAPIResource):
 
           resolved_query: Previously resolved query object from /resolve
 
-          tenant_database: Optional tenant database override
+          tenant_key: Tenant key for multi-tenant compilation. For database tenancy, maps to the
+              tenant's database. For row tenancy, used as the row-level filter value.
 
           extra_headers: Send extra headers
 
@@ -90,7 +111,7 @@ class CompilerResource(SyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "resolved_query": resolved_query,
-                    "tenant_database": tenant_database,
+                    "tenant_key": tenant_key,
                 },
                 compiler_compile_params.CompilerCompileParams,
             ),
@@ -104,17 +125,128 @@ class CompilerResource(SyncAPIResource):
             cast_to=CompilerCompileResponse,
         )
 
+    def enumerate(
+        self,
+        *,
+        connection_id: str,
+        source: Optional[str] | Omit = omit,
+        query_refs: Optional[SequenceNotStr[str]] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerEnumerateResponse:
+        """
+        Enumerate every valid query configuration for a connection.
+
+        Generates all valid combinations of optional dimensions, measures, calculations,
+        filters, and variable values, constrained by widget category rules.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Args:
+          connection_id: Connection to enumerate against
+
+          query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return self._post(
+            "/api/v1/compiler/enumerate",
+            body=maybe_transform(
+                {
+                    "connection_id": connection_id,
+                    "query_refs": query_refs,
+                },
+                compiler_enumerate_params.CompilerEnumerateParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"source": source}, compiler_enumerate_params.CompilerEnumerateParams),
+            ),
+            cast_to=CompilerEnumerateResponse,
+        )
+
+    def execute(
+        self,
+        *,
+        connection_id: str,
+        resolved_query: compiler_execute_params.ResolvedQuery,
+        source: Optional[str] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerExecuteResponse:
+        """
+        Execute a query with transparent caching.
+
+        Compiles the resolved query to SQL, checks the cache for existing results,
+        executes against the warehouse on cache miss, and stores the result for future
+        requests. Cache failures are invisible to the caller.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Args:
+          connection_id: Connection to execute against
+
+          resolved_query: Previously resolved query object from /resolve
+
+          tenant_key: Tenant key for multi-tenant execution
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return self._post(
+            "/api/v1/compiler/execute",
+            body=maybe_transform(
+                {
+                    "connection_id": connection_id,
+                    "resolved_query": resolved_query,
+                    "tenant_key": tenant_key,
+                },
+                compiler_execute_params.CompilerExecuteParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"source": source}, compiler_execute_params.CompilerExecuteParams),
+            ),
+            cast_to=CompilerExecuteResponse,
+        )
+
     def resolve(
         self,
         *,
         connection_id: str,
         query_ref: str,
         source: Optional[str] | Omit = omit,
-        include_calculations: SequenceNotStr[str] | Omit = omit,
-        include_dimensions: SequenceNotStr[str] | Omit = omit,
-        include_filters: SequenceNotStr[str] | Omit = omit,
-        include_measures: SequenceNotStr[str] | Omit = omit,
-        variables: Dict[str, object] | Omit = omit,
+        combination: str | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -136,15 +268,11 @@ class CompilerResource(SyncAPIResource):
 
           query_ref: Reference to the query template (e.g. 'ref(MY_QUERY)')
 
-          include_calculations: Calculation names to include
-
-          include_dimensions: Dimension names to include
-
-          include_filters: Filter names to include
-
-          include_measures: Measure names to include
-
-          variables: User-selected variable values
+          combination:
+              Comma-separated slot selections and variable assignments. Reserved keys:
+              measure, dimension, filter, calculation. All other keys are variable
+              assignments. Example: 'measure=Compliance
+              Rate,dimension=Department,breakdown=region'
 
           extra_headers: Send extra headers
 
@@ -161,11 +289,7 @@ class CompilerResource(SyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "query_ref": query_ref,
-                    "include_calculations": include_calculations,
-                    "include_dimensions": include_dimensions,
-                    "include_filters": include_filters,
-                    "include_measures": include_measures,
-                    "variables": variables,
+                    "combination": combination,
                 },
                 compiler_resolve_params.CompilerResolveParams,
             ),
@@ -228,6 +352,10 @@ class CompilerResource(SyncAPIResource):
 
 class AsyncCompilerResource(AsyncAPIResource):
     @cached_property
+    def cache(self) -> AsyncCacheResource:
+        return AsyncCacheResource(self._client)
+
+    @cached_property
     def with_raw_response(self) -> AsyncCompilerResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
@@ -252,7 +380,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         connection_id: str,
         resolved_query: compiler_compile_params.ResolvedQuery,
         source: Optional[str] | Omit = omit,
-        tenant_database: Optional[str] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -274,7 +402,8 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           resolved_query: Previously resolved query object from /resolve
 
-          tenant_database: Optional tenant database override
+          tenant_key: Tenant key for multi-tenant compilation. For database tenancy, maps to the
+              tenant's database. For row tenancy, used as the row-level filter value.
 
           extra_headers: Send extra headers
 
@@ -291,7 +420,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "resolved_query": resolved_query,
-                    "tenant_database": tenant_database,
+                    "tenant_key": tenant_key,
                 },
                 compiler_compile_params.CompilerCompileParams,
             ),
@@ -305,17 +434,130 @@ class AsyncCompilerResource(AsyncAPIResource):
             cast_to=CompilerCompileResponse,
         )
 
+    async def enumerate(
+        self,
+        *,
+        connection_id: str,
+        source: Optional[str] | Omit = omit,
+        query_refs: Optional[SequenceNotStr[str]] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerEnumerateResponse:
+        """
+        Enumerate every valid query configuration for a connection.
+
+        Generates all valid combinations of optional dimensions, measures, calculations,
+        filters, and variable values, constrained by widget category rules.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Args:
+          connection_id: Connection to enumerate against
+
+          query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return await self._post(
+            "/api/v1/compiler/enumerate",
+            body=await async_maybe_transform(
+                {
+                    "connection_id": connection_id,
+                    "query_refs": query_refs,
+                },
+                compiler_enumerate_params.CompilerEnumerateParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"source": source}, compiler_enumerate_params.CompilerEnumerateParams
+                ),
+            ),
+            cast_to=CompilerEnumerateResponse,
+        )
+
+    async def execute(
+        self,
+        *,
+        connection_id: str,
+        resolved_query: compiler_execute_params.ResolvedQuery,
+        source: Optional[str] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerExecuteResponse:
+        """
+        Execute a query with transparent caching.
+
+        Compiles the resolved query to SQL, checks the cache for existing results,
+        executes against the warehouse on cache miss, and stores the result for future
+        requests. Cache failures are invisible to the caller.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Args:
+          connection_id: Connection to execute against
+
+          resolved_query: Previously resolved query object from /resolve
+
+          tenant_key: Tenant key for multi-tenant execution
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return await self._post(
+            "/api/v1/compiler/execute",
+            body=await async_maybe_transform(
+                {
+                    "connection_id": connection_id,
+                    "resolved_query": resolved_query,
+                    "tenant_key": tenant_key,
+                },
+                compiler_execute_params.CompilerExecuteParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform({"source": source}, compiler_execute_params.CompilerExecuteParams),
+            ),
+            cast_to=CompilerExecuteResponse,
+        )
+
     async def resolve(
         self,
         *,
         connection_id: str,
         query_ref: str,
         source: Optional[str] | Omit = omit,
-        include_calculations: SequenceNotStr[str] | Omit = omit,
-        include_dimensions: SequenceNotStr[str] | Omit = omit,
-        include_filters: SequenceNotStr[str] | Omit = omit,
-        include_measures: SequenceNotStr[str] | Omit = omit,
-        variables: Dict[str, object] | Omit = omit,
+        combination: str | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -337,15 +579,11 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           query_ref: Reference to the query template (e.g. 'ref(MY_QUERY)')
 
-          include_calculations: Calculation names to include
-
-          include_dimensions: Dimension names to include
-
-          include_filters: Filter names to include
-
-          include_measures: Measure names to include
-
-          variables: User-selected variable values
+          combination:
+              Comma-separated slot selections and variable assignments. Reserved keys:
+              measure, dimension, filter, calculation. All other keys are variable
+              assignments. Example: 'measure=Compliance
+              Rate,dimension=Department,breakdown=region'
 
           extra_headers: Send extra headers
 
@@ -362,11 +600,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "query_ref": query_ref,
-                    "include_calculations": include_calculations,
-                    "include_dimensions": include_dimensions,
-                    "include_filters": include_filters,
-                    "include_measures": include_measures,
-                    "variables": variables,
+                    "combination": combination,
                 },
                 compiler_resolve_params.CompilerResolveParams,
             ),
@@ -436,12 +670,22 @@ class CompilerResourceWithRawResponse:
         self.compile = to_raw_response_wrapper(
             compiler.compile,
         )
+        self.enumerate = to_raw_response_wrapper(
+            compiler.enumerate,
+        )
+        self.execute = to_raw_response_wrapper(
+            compiler.execute,
+        )
         self.resolve = to_raw_response_wrapper(
             compiler.resolve,
         )
         self.validate = to_raw_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def cache(self) -> CacheResourceWithRawResponse:
+        return CacheResourceWithRawResponse(self._compiler.cache)
 
 
 class AsyncCompilerResourceWithRawResponse:
@@ -451,12 +695,22 @@ class AsyncCompilerResourceWithRawResponse:
         self.compile = async_to_raw_response_wrapper(
             compiler.compile,
         )
+        self.enumerate = async_to_raw_response_wrapper(
+            compiler.enumerate,
+        )
+        self.execute = async_to_raw_response_wrapper(
+            compiler.execute,
+        )
         self.resolve = async_to_raw_response_wrapper(
             compiler.resolve,
         )
         self.validate = async_to_raw_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def cache(self) -> AsyncCacheResourceWithRawResponse:
+        return AsyncCacheResourceWithRawResponse(self._compiler.cache)
 
 
 class CompilerResourceWithStreamingResponse:
@@ -466,12 +720,22 @@ class CompilerResourceWithStreamingResponse:
         self.compile = to_streamed_response_wrapper(
             compiler.compile,
         )
+        self.enumerate = to_streamed_response_wrapper(
+            compiler.enumerate,
+        )
+        self.execute = to_streamed_response_wrapper(
+            compiler.execute,
+        )
         self.resolve = to_streamed_response_wrapper(
             compiler.resolve,
         )
         self.validate = to_streamed_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def cache(self) -> CacheResourceWithStreamingResponse:
+        return CacheResourceWithStreamingResponse(self._compiler.cache)
 
 
 class AsyncCompilerResourceWithStreamingResponse:
@@ -481,9 +745,19 @@ class AsyncCompilerResourceWithStreamingResponse:
         self.compile = async_to_streamed_response_wrapper(
             compiler.compile,
         )
+        self.enumerate = async_to_streamed_response_wrapper(
+            compiler.enumerate,
+        )
+        self.execute = async_to_streamed_response_wrapper(
+            compiler.execute,
+        )
         self.resolve = async_to_streamed_response_wrapper(
             compiler.resolve,
         )
         self.validate = async_to_streamed_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def cache(self) -> AsyncCacheResourceWithStreamingResponse:
+        return AsyncCacheResourceWithStreamingResponse(self._compiler.cache)

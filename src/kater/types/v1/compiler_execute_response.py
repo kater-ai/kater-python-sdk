@@ -1,12 +1,11 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import Dict, List, Optional
 
-from .manifest import Manifest
 from ..._models import BaseModel
 from .compiler_error_item import CompilerErrorItem
 
-__all__ = ["CompilerCompileResponse", "ColumnMap", "Metadata"]
+__all__ = ["CompilerExecuteResponse", "ColumnMap", "Metadata"]
 
 
 class ColumnMap(BaseModel):
@@ -53,26 +52,35 @@ class Metadata(BaseModel):
     """View names used in compilation"""
 
 
-class CompilerCompileResponse(BaseModel):
-    """Response model for SQL compilation."""
+class CompilerExecuteResponse(BaseModel):
+    """Response model for query execution."""
 
     dialect: str
-    """SQL dialect used (e.g. 'snowflake')"""
+    """SQL dialect used"""
 
     success: bool
-    """Whether compilation succeeded"""
+    """Whether execution succeeded"""
+
+    cache_hit: Optional[bool] = None
+    """Whether the result was served from cache"""
 
     column_map: Optional[List[ColumnMap]] = None
-    """Maps UUID column aliases to human-readable names and types"""
+    """Maps UUID column aliases to human-readable names"""
+
+    data: Optional[List[Dict[str, object]]] = None
+    """Query result rows as list of column-value dicts"""
 
     errors: Optional[List[CompilerErrorItem]] = None
-    """Compilation errors"""
+    """Compilation errors (if any)"""
 
-    manifest: Optional[Manifest] = None
-    """Compilation manifest with all named objects."""
+    execution_time_ms: Optional[float] = None
+    """Total execution time in milliseconds"""
 
     metadata: Optional[Metadata] = None
     """Compilation metadata from the compiler."""
+
+    row_count: Optional[int] = None
+    """Number of rows returned"""
 
     sql: Optional[str] = None
     """Generated SQL statement"""

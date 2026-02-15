@@ -119,6 +119,7 @@ response = client.v1.compiler.compile(
         "name": "x",
         "source_query": "ref(dim_customer.sale_price)",
         "topic": "ref(dim_customer.sale_price)",
+        "widget_category": "axis",
     },
 )
 print(response.resolved_query)

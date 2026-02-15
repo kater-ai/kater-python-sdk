@@ -13,7 +13,7 @@ from .ref_with_label_param import RefWithLabelParam
 from .subquery_condition_param import SubqueryConditionParam
 
 __all__ = [
-    "CompilerCompileParams",
+    "CompilerExecuteParams",
     "ResolvedQuery",
     "ResolvedQueryCalculation",
     "ResolvedQueryChartHint",
@@ -39,9 +39,9 @@ __all__ = [
 ]
 
 
-class CompilerCompileParams(TypedDict, total=False):
+class CompilerExecuteParams(TypedDict, total=False):
     connection_id: Required[str]
-    """Connection to compile against"""
+    """Connection to execute against"""
 
     resolved_query: Required[ResolvedQuery]
     """Previously resolved query object from /resolve"""
@@ -49,11 +49,7 @@ class CompilerCompileParams(TypedDict, total=False):
     source: Optional[str]
 
     tenant_key: Optional[str]
-    """Tenant key for multi-tenant compilation.
-
-    For database tenancy, maps to the tenant's database. For row tenancy, used as
-    the row-level filter value.
-    """
+    """Tenant key for multi-tenant execution"""
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]
 

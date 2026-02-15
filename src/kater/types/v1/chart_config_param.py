@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import Optional
-from typing_extensions import TypedDict
+from typing_extensions import Literal, TypedDict
 
 __all__ = ["ChartConfigParam"]
 
@@ -14,11 +14,17 @@ class ChartConfigParam(TypedDict, total=False):
     color_by: Optional[str]
     """Field or variable reference for color grouping"""
 
+    comparison: Optional[Literal["previous_period", "target"]]
+    """Comparison mode for single_value widgets (e.g., previous_period, target)"""
+
     size: Optional[str]
     """Field or variable reference for size"""
 
     stack_by: Optional[str]
     """Field or variable reference for stacking"""
+
+    target_value: Optional[str]
+    """Target value for comparison: target mode"""
 
     x_axis: Optional[str]
     """Field or variable reference for x-axis"""

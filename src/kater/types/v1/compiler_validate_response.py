@@ -31,6 +31,9 @@ class ConnectionResultDependencyGraphNodes(BaseModel):
     node_type: str
     """Node type: QUERY, VIEW, DIMENSION, MEASURE, FILTER, EXPRESSION"""
 
+    column: Optional[int] = None
+    """Column number in source file"""
+
 
 class ConnectionResultDependencyGraph(BaseModel):
     """Dependency graph between schema objects."""

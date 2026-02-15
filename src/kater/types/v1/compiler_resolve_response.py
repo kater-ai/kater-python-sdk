@@ -15,7 +15,7 @@ __all__ = [
     "ResolvedQuery",
     "ResolvedQueryCalculation",
     "ResolvedQueryChartHint",
-    "ResolvedQueryChartHintChartHint1",
+    "ResolvedQueryChartHintChartHint1Output",
     "ResolvedQueryChartHintChartHint2Output",
     "ResolvedQueryChartHintChartHint2OutputDefault",
     "ResolvedQueryDimension",
@@ -32,6 +32,8 @@ __all__ = [
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2",
     "ResolvedQueryResolvedVariableConstraints",
+    "ResolvedQuerySelectFrom",
+    "ResolvedQuerySelectFromOutputColumn",
     "DependencyGraph",
     "DependencyGraphNodes",
 ]
@@ -39,7 +41,7 @@ __all__ = [
 ResolvedQueryCalculation: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
-class ResolvedQueryChartHintChartHint1(BaseModel):
+class ResolvedQueryChartHintChartHint1Output(BaseModel):
     """A chart recommendation rule"""
 
     config: ChartConfig
@@ -73,7 +75,9 @@ class ResolvedQueryChartHintChartHint2Output(BaseModel):
     default: ResolvedQueryChartHintChartHint2OutputDefault
 
 
-ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1, ResolvedQueryChartHintChartHint2Output]
+ResolvedQueryChartHint: TypeAlias = Union[
+    ResolvedQueryChartHintChartHint1Output, ResolvedQueryChartHintChartHint2Output
+]
 
 ResolvedQueryDimension: TypeAlias = Union[RefWithLabel, InlineField, str]
 
@@ -277,6 +281,35 @@ class ResolvedQueryResolvedVariable(BaseModel):
     """Human-readable label for the variable"""
 
 
+class ResolvedQuerySelectFromOutputColumn(BaseModel):
+    """A column produced by a select_from CTE"""
+
+    column_alias: str
+    """The SQL column alias in the CTE output"""
+
+    field_name: str
+    """The field name used in q:query_name.field_name references"""
+
+    source_type: Literal["dimension", "measure", "calculation"]
+    """Original type of the field in the source query"""
+
+
+class ResolvedQuerySelectFrom(BaseModel):
+    """A resolved select_from entry with CTE metadata"""
+
+    cte_alias: str
+    """CTE alias used in the WITH clause (e.g., **sf_compliance_rate**base)"""
+
+    output_columns: List[ResolvedQuerySelectFromOutputColumn]
+    """Columns produced by the CTE, available as q:query_name.field_name in the parent"""
+
+    ref: str
+    """Reference to the source query"""
+
+    variables: Optional[Dict[str, Union[str, float, bool]]] = None
+    """Variable overrides passed to the referenced query"""
+
+
 class ResolvedQuery(BaseModel):
     """The fully resolved query object"""
 
@@ -295,6 +328,9 @@ class ResolvedQuery(BaseModel):
     resolution)
     """
 
+    widget_category: Literal["axis", "pie", "single_value", "heatmap", "table", "static"]
+    """Widget category that determines data shape constraints"""
+
     ai_context: Optional[str] = None
     """Usage guidance for AI processing"""
 
@@ -312,6 +348,32 @@ class ResolvedQuery(BaseModel):
 
     dimensions: Optional[List[ResolvedQueryDimension]] = None
     """Merged required + selected optional dimensions"""
+
+    disallowed_widget_types: Optional[
+        List[
+            Literal[
+                "kpi_card",
+                "line_chart",
+                "bar_chart",
+                "pie_chart",
+                "donut_chart",
+                "area_chart",
+                "scatter_chart",
+                "data_table",
+                "card_grid",
+                "heatmap",
+                "gauge",
+                "text",
+                "image",
+                "styled_table",
+                "stat_cards",
+                "key_value_list",
+            ]
+        ]
+    ] = None
+    """
+    Widget types within the declared widget_category that must NOT render this query
+    """
 
     filters: Optional[List[ResolvedQueryFilter]] = None
     """Merged required + selected optional filters"""
@@ -344,8 +406,8 @@ class ResolvedQuery(BaseModel):
     resolved_variables: Optional[List[ResolvedQueryResolvedVariable]] = None
     """Full variable definitions with bound values"""
 
-    widget_category: Optional[Literal["axis", "pie", "single_value", "heatmap", "table", "static"]] = None
-    """Category of widget that determines data shape constraints for queries"""
+    select_from: Optional[List[ResolvedQuerySelectFrom]] = None
+    """Resolved select_from entries with CTE metadata"""
 
 
 class DependencyGraphNodes(BaseModel):
@@ -365,6 +427,9 @@ class DependencyGraphNodes(BaseModel):
 
     node_type: str
     """Node type: QUERY, VIEW, DIMENSION, MEASURE, FILTER, EXPRESSION"""
+
+    column: Optional[int] = None
+    """Column number in source file"""
 
 
 class DependencyGraph(BaseModel):
