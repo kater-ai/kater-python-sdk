@@ -309,7 +309,7 @@ class ResolvedQuerySelectFromOutputColumn(TypedDict, total=False):
     field_name: Required[str]
     """The field name used in q:query_name.field_name references"""
 
-    source_type: Required[Literal["dimension", "measure", "calculation"]]
+    source_type: Required[Literal["dimension", "dimension_date", "measure", "calculation"]]
     """Original type of the field in the source query"""
 
 
