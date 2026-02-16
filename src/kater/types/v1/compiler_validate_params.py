@@ -14,6 +14,9 @@ __all__ = ["CompilerValidateParams"]
 class CompilerValidateParams(TypedDict, total=False):
     source: Optional[str]
 
+    auto_fix: bool
+    """Automatically fix broken refs caused by renames. Defaults to True."""
+
     connection_ids: Optional[SequenceNotStr[str]]
     """Optional connection IDs to validate. If omitted, validates all connections."""
 
