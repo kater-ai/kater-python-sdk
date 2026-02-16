@@ -290,7 +290,7 @@ class ResolvedQuerySelectFromOutputColumn(BaseModel):
     field_name: str
     """The field name used in q:query_name.field_name references"""
 
-    source_type: Literal["dimension", "measure", "calculation"]
+    source_type: Literal["dimension", "dimension_date", "measure", "calculation"]
     """Original type of the field in the source query"""
 
 
