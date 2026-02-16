@@ -328,7 +328,7 @@ class ResolvedQuery(BaseModel):
     resolution)
     """
 
-    widget_category: Literal["axis", "pie", "single_value", "heatmap", "table", "static"]
+    widget_category: Literal["axis", "funnel", "heatmap", "image", "kpi_card", "pie", "table", "text"]
     """Widget category that determines data shape constraints"""
 
     ai_context: Optional[str] = None
@@ -352,22 +352,25 @@ class ResolvedQuery(BaseModel):
     disallowed_widget_types: Optional[
         List[
             Literal[
-                "kpi_card",
-                "line_chart",
-                "bar_chart",
-                "pie_chart",
-                "donut_chart",
-                "area_chart",
-                "scatter_chart",
-                "data_table",
-                "card_grid",
-                "heatmap",
-                "gauge",
-                "text",
-                "image",
-                "styled_table",
-                "stat_cards",
-                "key_value_list",
+                "axis_metric_by_dimension",
+                "axis_metric_by_dimensiondate",
+                "axis_metric_by_dimensiondate_sliced_by_dimension",
+                "axis_scatter_plot",
+                "funnel_funnel_chart",
+                "heatmap_heatmap",
+                "image_image_grid",
+                "image_single_image",
+                "kpi_measure_with_dimension_expression",
+                "kpi_measure_with_secondary_metric",
+                "kpi_single_measure_compared_to_prev_period_sparkline",
+                "kpi_single_value",
+                "pie_pie_chart",
+                "table_data_table",
+                "table_fancy_subtotal_table",
+                "table_key_value_list",
+                "table_styled_table",
+                "text_data_readout_with_sparkline",
+                "text_narrative_text",
             ]
         ]
     ] = None

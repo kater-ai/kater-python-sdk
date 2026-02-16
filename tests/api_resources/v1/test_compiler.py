@@ -79,7 +79,7 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
-                "disallowed_widget_types": ["kpi_card"],
+                "disallowed_widget_types": ["axis_metric_by_dimension"],
                 "filters": [
                     {
                         "field": "ref(dim_customer.sale_price)",
@@ -302,7 +302,7 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
-                "disallowed_widget_types": ["kpi_card"],
+                "disallowed_widget_types": ["axis_metric_by_dimension"],
                 "filters": [
                     {
                         "field": "ref(dim_customer.sale_price)",
@@ -573,7 +573,7 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
-                "disallowed_widget_types": ["kpi_card"],
+                "disallowed_widget_types": ["axis_metric_by_dimension"],
                 "filters": [
                     {
                         "field": "ref(dim_customer.sale_price)",
@@ -796,7 +796,7 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
-                "disallowed_widget_types": ["kpi_card"],
+                "disallowed_widget_types": ["axis_metric_by_dimension"],
                 "filters": [
                     {
                         "field": "ref(dim_customer.sale_price)",
