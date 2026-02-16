@@ -36,6 +36,8 @@ __all__ = [
     "ResolvedQuerySelectFromOutputColumn",
     "DependencyGraph",
     "DependencyGraphNodes",
+    "RefFix",
+    "RefFixReplacement",
 ]
 
 ResolvedQueryCalculation: TypeAlias = Union[RefWithLabel, InlineField, str]
@@ -445,6 +447,35 @@ class DependencyGraph(BaseModel):
     """UUID string to node mapping"""
 
 
+class RefFixReplacement(BaseModel):
+    """A single ref replacement within a file."""
+
+    file_path: str
+    """Path to the file containing the replaced ref"""
+
+    line_number: int
+    """Line number where the replacement occurred"""
+
+    new_ref: str
+    """Updated reference string"""
+
+    old_ref: str
+    """Original reference string"""
+
+
+class RefFix(BaseModel):
+    """A file that was modified by auto-fix with its replacements."""
+
+    file_path: str
+    """Path to the modified file"""
+
+    new_content: str
+    """Full updated file content after fixes"""
+
+    replacements: List[RefFixReplacement]
+    """Individual ref replacements made in this file"""
+
+
 class CompilerResolveResponse(BaseModel):
     """Response model for a resolved query."""
 
@@ -456,3 +487,6 @@ class CompilerResolveResponse(BaseModel):
 
     manifest: Optional[Manifest] = None
     """Compilation manifest with all named objects."""
+
+    ref_fixes: Optional[List[RefFix]] = None
+    """Files auto-fixed due to renamed refs. None when no renames detected."""

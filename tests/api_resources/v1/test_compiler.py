@@ -440,6 +440,7 @@ class TestCompiler:
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
             source="source",
+            auto_fix=True,
             combination="combination",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
@@ -484,6 +485,7 @@ class TestCompiler:
     def test_method_validate_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.validate(
             source="source",
+            auto_fix=True,
             connection_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
@@ -934,6 +936,7 @@ class TestAsyncCompiler:
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             query_ref="query_ref",
             source="source",
+            auto_fix=True,
             combination="combination",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
@@ -978,6 +981,7 @@ class TestAsyncCompiler:
     async def test_method_validate_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.validate(
             source="source",
+            auto_fix=True,
             connection_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],
             x_kater_cli_id="X-Kater-CLI-ID",
         )

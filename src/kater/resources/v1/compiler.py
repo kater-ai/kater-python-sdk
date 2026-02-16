@@ -234,6 +234,7 @@ class CompilerResource(SyncAPIResource):
         connection_id: str,
         query_ref: str,
         source: Optional[str] | Omit = omit,
+        auto_fix: bool | Omit = omit,
         combination: str | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -256,6 +257,8 @@ class CompilerResource(SyncAPIResource):
 
           query_ref: Reference to the query template (e.g. 'ref(MY_QUERY)')
 
+          auto_fix: Automatically fix broken refs caused by renames. Defaults to True.
+
           combination:
               Comma-separated slot selections and variable assignments. Reserved keys:
               measure, dimension, filter, calculation. All other keys are variable
@@ -277,6 +280,7 @@ class CompilerResource(SyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "query_ref": query_ref,
+                    "auto_fix": auto_fix,
                     "combination": combination,
                 },
                 compiler_resolve_params.CompilerResolveParams,
@@ -295,6 +299,7 @@ class CompilerResource(SyncAPIResource):
         self,
         *,
         source: Optional[str] | Omit = omit,
+        auto_fix: bool | Omit = omit,
         connection_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -313,6 +318,8 @@ class CompilerResource(SyncAPIResource):
         RLS: Filtered to current client (ClientRLSDB).
 
         Args:
+          auto_fix: Automatically fix broken refs caused by renames. Defaults to True.
+
           connection_ids: Optional connection IDs to validate. If omitted, validates all connections.
 
           extra_headers: Send extra headers
@@ -326,7 +333,13 @@ class CompilerResource(SyncAPIResource):
         extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
         return self._post(
             "/api/v1/compiler/validate",
-            body=maybe_transform({"connection_ids": connection_ids}, compiler_validate_params.CompilerValidateParams),
+            body=maybe_transform(
+                {
+                    "auto_fix": auto_fix,
+                    "connection_ids": connection_ids,
+                },
+                compiler_validate_params.CompilerValidateParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -541,6 +554,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         connection_id: str,
         query_ref: str,
         source: Optional[str] | Omit = omit,
+        auto_fix: bool | Omit = omit,
         combination: str | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -563,6 +577,8 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           query_ref: Reference to the query template (e.g. 'ref(MY_QUERY)')
 
+          auto_fix: Automatically fix broken refs caused by renames. Defaults to True.
+
           combination:
               Comma-separated slot selections and variable assignments. Reserved keys:
               measure, dimension, filter, calculation. All other keys are variable
@@ -584,6 +600,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "query_ref": query_ref,
+                    "auto_fix": auto_fix,
                     "combination": combination,
                 },
                 compiler_resolve_params.CompilerResolveParams,
@@ -602,6 +619,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         self,
         *,
         source: Optional[str] | Omit = omit,
+        auto_fix: bool | Omit = omit,
         connection_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -620,6 +638,8 @@ class AsyncCompilerResource(AsyncAPIResource):
         RLS: Filtered to current client (ClientRLSDB).
 
         Args:
+          auto_fix: Automatically fix broken refs caused by renames. Defaults to True.
+
           connection_ids: Optional connection IDs to validate. If omitted, validates all connections.
 
           extra_headers: Send extra headers
@@ -634,7 +654,11 @@ class AsyncCompilerResource(AsyncAPIResource):
         return await self._post(
             "/api/v1/compiler/validate",
             body=await async_maybe_transform(
-                {"connection_ids": connection_ids}, compiler_validate_params.CompilerValidateParams
+                {
+                    "auto_fix": auto_fix,
+                    "connection_ids": connection_ids,
+                },
+                compiler_validate_params.CompilerValidateParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers,
