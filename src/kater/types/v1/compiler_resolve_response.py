@@ -259,6 +259,9 @@ class ResolvedQueryResolvedVariable(BaseModel):
     default: Union[str, float, bool]
     """Default value for this variable"""
 
+    kater_id: str
+    """Unique identifier for this variable"""
+
     name: str
     """Variable name identifier"""
 
@@ -278,6 +281,13 @@ class ResolvedQueryResolvedVariable(BaseModel):
 
     is_default: Optional[bool] = None
     """True if bound_value equals the default value"""
+
+    is_runtime: Optional[bool] = None
+    """True if this is a runtime variable (not resolved at compile time).
+
+    Runtime variables have var() placeholders left in compiled SQL for literal
+    substitution at execution time.
+    """
 
     label: Optional[str] = None
     """Human-readable label for the variable"""
