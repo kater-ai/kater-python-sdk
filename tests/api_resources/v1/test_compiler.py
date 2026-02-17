@@ -119,6 +119,7 @@ class TestCompiler:
                     {
                         "bound_value": "string",
                         "default": "string",
+                        "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
                         "name": "x",
                         "type": "STRING",
                         "allowed_values": {
@@ -137,6 +138,7 @@ class TestCompiler:
                         },
                         "description": "description",
                         "is_default": True,
+                        "is_runtime": True,
                         "label": "label",
                     }
                 ],
@@ -342,6 +344,7 @@ class TestCompiler:
                     {
                         "bound_value": "string",
                         "default": "string",
+                        "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
                         "name": "x",
                         "type": "STRING",
                         "allowed_values": {
@@ -360,6 +363,7 @@ class TestCompiler:
                         },
                         "description": "description",
                         "is_default": True,
+                        "is_runtime": True,
                         "label": "label",
                     }
                 ],
@@ -615,6 +619,7 @@ class TestAsyncCompiler:
                     {
                         "bound_value": "string",
                         "default": "string",
+                        "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
                         "name": "x",
                         "type": "STRING",
                         "allowed_values": {
@@ -633,6 +638,7 @@ class TestAsyncCompiler:
                         },
                         "description": "description",
                         "is_default": True,
+                        "is_runtime": True,
                         "label": "label",
                     }
                 ],
@@ -838,6 +844,7 @@ class TestAsyncCompiler:
                     {
                         "bound_value": "string",
                         "default": "string",
+                        "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
                         "name": "x",
                         "type": "STRING",
                         "allowed_values": {
@@ -856,6 +863,7 @@ class TestAsyncCompiler:
                         },
                         "description": "description",
                         "is_default": True,
+                        "is_runtime": True,
                         "label": "label",
                     }
                 ],
