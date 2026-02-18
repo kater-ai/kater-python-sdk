@@ -500,3 +500,9 @@ class CompilerResolveResponse(BaseModel):
 
     ref_fixes: Optional[List[RefFix]] = None
     """Files auto-fixed due to renamed refs. None when no renames detected."""
+
+    request_id: Optional[str] = None
+    """Write-back request ID.
+
+    Non-null when ref-fix files were dispatched to CLI via WebSocket.
+    """

@@ -15,6 +15,7 @@ from kater.types.v1 import (
     CompilerResolveResponse,
     CompilerValidateResponse,
     CompilerEnumerateResponse,
+    CompilerCompileDashboardResponse,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -200,6 +201,56 @@ class TestCompiler:
 
             compiler = response.parse()
             assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_compile_dashboard(self, client: Kater) -> None:
+        compiler = client.v1.compiler.compile_dashboard(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            dashboard_path="dashboard_path",
+        )
+        assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_method_compile_dashboard_with_all_params(self, client: Kater) -> None:
+        compiler = client.v1.compiler.compile_dashboard(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            dashboard_path="dashboard_path",
+            source="source",
+            filters={"foo": "string"},
+            tenant_key="tenant_key",
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_raw_response_compile_dashboard(self, client: Kater) -> None:
+        response = client.v1.compiler.with_raw_response.compile_dashboard(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            dashboard_path="dashboard_path",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = response.parse()
+        assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    def test_streaming_response_compile_dashboard(self, client: Kater) -> None:
+        with client.v1.compiler.with_streaming_response.compile_dashboard(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            dashboard_path="dashboard_path",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = response.parse()
+            assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -700,6 +751,56 @@ class TestAsyncCompiler:
 
             compiler = await response.parse()
             assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_compile_dashboard(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.compile_dashboard(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            dashboard_path="dashboard_path",
+        )
+        assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_method_compile_dashboard_with_all_params(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.compile_dashboard(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            dashboard_path="dashboard_path",
+            source="source",
+            filters={"foo": "string"},
+            tenant_key="tenant_key",
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_raw_response_compile_dashboard(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.compiler.with_raw_response.compile_dashboard(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            dashboard_path="dashboard_path",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = await response.parse()
+        assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Prism tests are disabled")
+    @parametrize
+    async def test_streaming_response_compile_dashboard(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.compiler.with_streaming_response.compile_dashboard(
+            connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            dashboard_path="dashboard_path",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = await response.parse()
+            assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

@@ -117,5 +117,11 @@ class CompilerValidateResponse(BaseModel):
     errors: Optional[List[CompilerErrorItem]] = None
     """Validation errors"""
 
+    request_id: Optional[str] = None
+    """Write-back request ID.
+
+    Non-null when files were dispatched to CLI via WebSocket.
+    """
+
     warnings: Optional[List[CompilerErrorItem]] = None
     """Validation warnings"""
