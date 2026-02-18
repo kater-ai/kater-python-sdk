@@ -2,38 +2,52 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Dict, Union, Optional
 
 import httpx
 
-from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ..._utils import maybe_transform, strip_not_given, async_maybe_transform
-from ..._compat import cached_property
-from ...types.v1 import (
+from ...._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
+from ...._utils import maybe_transform, strip_not_given, async_maybe_transform
+from ...._compat import cached_property
+from ....types.v1 import (
     compiler_compile_params,
     compiler_execute_params,
     compiler_resolve_params,
     compiler_validate_params,
     compiler_enumerate_params,
+    compiler_compile_dashboard_params,
 )
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ..._response import (
+from .combination import (
+    CombinationResource,
+    AsyncCombinationResource,
+    CombinationResourceWithRawResponse,
+    AsyncCombinationResourceWithRawResponse,
+    CombinationResourceWithStreamingResponse,
+    AsyncCombinationResourceWithStreamingResponse,
+)
+from ...._resource import SyncAPIResource, AsyncAPIResource
+from ...._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ..._base_client import make_request_options
-from ...types.v1.compiler_compile_response import CompilerCompileResponse
-from ...types.v1.compiler_execute_response import CompilerExecuteResponse
-from ...types.v1.compiler_resolve_response import CompilerResolveResponse
-from ...types.v1.compiler_validate_response import CompilerValidateResponse
-from ...types.v1.compiler_enumerate_response import CompilerEnumerateResponse
+from ...._base_client import make_request_options
+from ....types.v1.compiler_compile_response import CompilerCompileResponse
+from ....types.v1.compiler_execute_response import CompilerExecuteResponse
+from ....types.v1.compiler_resolve_response import CompilerResolveResponse
+from ....types.v1.compiler_validate_response import CompilerValidateResponse
+from ....types.v1.compiler_enumerate_response import CompilerEnumerateResponse
+from ....types.v1.compiler_compile_dashboard_response import CompilerCompileDashboardResponse
 
 __all__ = ["CompilerResource", "AsyncCompilerResource"]
 
 
 class CompilerResource(SyncAPIResource):
+    @cached_property
+    def combination(self) -> CombinationResource:
+        return CombinationResource(self._client)
+
     @cached_property
     def with_raw_response(self) -> CompilerResourceWithRawResponse:
         """
@@ -111,6 +125,71 @@ class CompilerResource(SyncAPIResource):
                 query=maybe_transform({"source": source}, compiler_compile_params.CompilerCompileParams),
             ),
             cast_to=CompilerCompileResponse,
+        )
+
+    def compile_dashboard(
+        self,
+        *,
+        connection_id: str,
+        dashboard_path: str,
+        source: Optional[str] | Omit = omit,
+        filters: Optional[Dict[str, Union[str, SequenceNotStr[str], None]]] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerCompileDashboardResponse:
+        """
+        Compile a dashboard YAML file into fully resolved widget data.
+
+        Reads a dashboard YAML from the client repo, resolves all data slots, executes
+        queries, applies filters, and returns renderable widget data.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Args:
+          connection_id: Connection to compile against
+
+          dashboard_path: Relative path within the connection (e.g. 'dashboards/compliance_overview')
+
+          filters: Optional filter overrides from UI
+
+          tenant_key: Optional tenant key for multi-tenant execution
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return self._post(
+            "/api/v1/compiler/dashboard",
+            body=maybe_transform(
+                {
+                    "connection_id": connection_id,
+                    "dashboard_path": dashboard_path,
+                    "filters": filters,
+                    "tenant_key": tenant_key,
+                },
+                compiler_compile_dashboard_params.CompilerCompileDashboardParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {"source": source}, compiler_compile_dashboard_params.CompilerCompileDashboardParams
+                ),
+            ),
+            cast_to=CompilerCompileDashboardResponse,
         )
 
     def enumerate(
@@ -353,6 +432,10 @@ class CompilerResource(SyncAPIResource):
 
 class AsyncCompilerResource(AsyncAPIResource):
     @cached_property
+    def combination(self) -> AsyncCombinationResource:
+        return AsyncCombinationResource(self._client)
+
+    @cached_property
     def with_raw_response(self) -> AsyncCompilerResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
@@ -429,6 +512,71 @@ class AsyncCompilerResource(AsyncAPIResource):
                 query=await async_maybe_transform({"source": source}, compiler_compile_params.CompilerCompileParams),
             ),
             cast_to=CompilerCompileResponse,
+        )
+
+    async def compile_dashboard(
+        self,
+        *,
+        connection_id: str,
+        dashboard_path: str,
+        source: Optional[str] | Omit = omit,
+        filters: Optional[Dict[str, Union[str, SequenceNotStr[str], None]]] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerCompileDashboardResponse:
+        """
+        Compile a dashboard YAML file into fully resolved widget data.
+
+        Reads a dashboard YAML from the client repo, resolves all data slots, executes
+        queries, applies filters, and returns renderable widget data.
+
+        RLS: Filtered to current client (ClientRLSDB).
+
+        Args:
+          connection_id: Connection to compile against
+
+          dashboard_path: Relative path within the connection (e.g. 'dashboards/compliance_overview')
+
+          filters: Optional filter overrides from UI
+
+          tenant_key: Optional tenant key for multi-tenant execution
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return await self._post(
+            "/api/v1/compiler/dashboard",
+            body=await async_maybe_transform(
+                {
+                    "connection_id": connection_id,
+                    "dashboard_path": dashboard_path,
+                    "filters": filters,
+                    "tenant_key": tenant_key,
+                },
+                compiler_compile_dashboard_params.CompilerCompileDashboardParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"source": source}, compiler_compile_dashboard_params.CompilerCompileDashboardParams
+                ),
+            ),
+            cast_to=CompilerCompileDashboardResponse,
         )
 
     async def enumerate(
@@ -678,6 +826,9 @@ class CompilerResourceWithRawResponse:
         self.compile = to_raw_response_wrapper(
             compiler.compile,
         )
+        self.compile_dashboard = to_raw_response_wrapper(
+            compiler.compile_dashboard,
+        )
         self.enumerate = to_raw_response_wrapper(
             compiler.enumerate,
         )
@@ -691,6 +842,10 @@ class CompilerResourceWithRawResponse:
             compiler.validate,
         )
 
+    @cached_property
+    def combination(self) -> CombinationResourceWithRawResponse:
+        return CombinationResourceWithRawResponse(self._compiler.combination)
+
 
 class AsyncCompilerResourceWithRawResponse:
     def __init__(self, compiler: AsyncCompilerResource) -> None:
@@ -698,6 +853,9 @@ class AsyncCompilerResourceWithRawResponse:
 
         self.compile = async_to_raw_response_wrapper(
             compiler.compile,
+        )
+        self.compile_dashboard = async_to_raw_response_wrapper(
+            compiler.compile_dashboard,
         )
         self.enumerate = async_to_raw_response_wrapper(
             compiler.enumerate,
@@ -712,6 +870,10 @@ class AsyncCompilerResourceWithRawResponse:
             compiler.validate,
         )
 
+    @cached_property
+    def combination(self) -> AsyncCombinationResourceWithRawResponse:
+        return AsyncCombinationResourceWithRawResponse(self._compiler.combination)
+
 
 class CompilerResourceWithStreamingResponse:
     def __init__(self, compiler: CompilerResource) -> None:
@@ -719,6 +881,9 @@ class CompilerResourceWithStreamingResponse:
 
         self.compile = to_streamed_response_wrapper(
             compiler.compile,
+        )
+        self.compile_dashboard = to_streamed_response_wrapper(
+            compiler.compile_dashboard,
         )
         self.enumerate = to_streamed_response_wrapper(
             compiler.enumerate,
@@ -733,6 +898,10 @@ class CompilerResourceWithStreamingResponse:
             compiler.validate,
         )
 
+    @cached_property
+    def combination(self) -> CombinationResourceWithStreamingResponse:
+        return CombinationResourceWithStreamingResponse(self._compiler.combination)
+
 
 class AsyncCompilerResourceWithStreamingResponse:
     def __init__(self, compiler: AsyncCompilerResource) -> None:
@@ -740,6 +909,9 @@ class AsyncCompilerResourceWithStreamingResponse:
 
         self.compile = async_to_streamed_response_wrapper(
             compiler.compile,
+        )
+        self.compile_dashboard = async_to_streamed_response_wrapper(
+            compiler.compile_dashboard,
         )
         self.enumerate = async_to_streamed_response_wrapper(
             compiler.enumerate,
@@ -753,3 +925,7 @@ class AsyncCompilerResourceWithStreamingResponse:
         self.validate = async_to_streamed_response_wrapper(
             compiler.validate,
         )
+
+    @cached_property
+    def combination(self) -> AsyncCombinationResourceWithStreamingResponse:
+        return AsyncCombinationResourceWithStreamingResponse(self._compiler.combination)
