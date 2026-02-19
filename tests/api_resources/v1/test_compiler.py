@@ -83,11 +83,8 @@ class TestCompiler:
                 "disallowed_widget_types": ["axis_metric_by_dimension"],
                 "filters": [
                     {
-                        "field": "ref(dim_customer.sale_price)",
                         "name": "x",
-                        "operator": "equals",
-                        "sql_value": "SUM(ref(sale_price))",
-                        "static_values": ["string"],
+                        "sql": "sql",
                     }
                 ],
                 "inheritance_chain": ["string"],
@@ -358,11 +355,8 @@ class TestCompiler:
                 "disallowed_widget_types": ["axis_metric_by_dimension"],
                 "filters": [
                     {
-                        "field": "ref(dim_customer.sale_price)",
                         "name": "x",
-                        "operator": "equals",
-                        "sql_value": "SUM(ref(sale_price))",
-                        "static_values": ["string"],
+                        "sql": "sql",
                     }
                 ],
                 "inheritance_chain": ["string"],
@@ -633,11 +627,8 @@ class TestAsyncCompiler:
                 "disallowed_widget_types": ["axis_metric_by_dimension"],
                 "filters": [
                     {
-                        "field": "ref(dim_customer.sale_price)",
                         "name": "x",
-                        "operator": "equals",
-                        "sql_value": "SUM(ref(sale_price))",
-                        "static_values": ["string"],
+                        "sql": "sql",
                     }
                 ],
                 "inheritance_chain": ["string"],
@@ -908,11 +899,8 @@ class TestAsyncCompiler:
                 "disallowed_widget_types": ["axis_metric_by_dimension"],
                 "filters": [
                     {
-                        "field": "ref(dim_customer.sale_price)",
                         "name": "x",
-                        "operator": "equals",
-                        "sql_value": "SUM(ref(sale_price))",
-                        "static_values": ["string"],
+                        "sql": "sql",
                     }
                 ],
                 "inheritance_chain": ["string"],
