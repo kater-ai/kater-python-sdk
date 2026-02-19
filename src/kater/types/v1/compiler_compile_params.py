@@ -22,13 +22,17 @@ __all__ = [
     "ResolvedQueryChartHintChartHint2InputDefault",
     "ResolvedQueryDimension",
     "ResolvedQueryFilter",
-    "ResolvedQueryFilterInlineFieldFilter",
+    "ResolvedQueryFilterInlineFormulaFilter",
     "ResolvedQueryFilterInlineExistsFilter1",
     "ResolvedQueryFilterInlineExistsFilter2",
     "ResolvedQueryMeasure",
     "ResolvedQueryOrderBy",
     "ResolvedQueryResolvedChart",
     "ResolvedQueryResolvedVariable",
+    "ResolvedQueryResolvedVariableBoundValue",
+    "ResolvedQueryResolvedVariableBoundValueRelativeDateDefault",
+    "ResolvedQueryResolvedVariableDefault",
+    "ResolvedQueryResolvedVariableDefaultRelativeDateDefault",
     "ResolvedQueryResolvedVariableAllowedValues",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
@@ -100,43 +104,14 @@ ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1Input,
 ResolvedQueryDimension: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
 
 
-class ResolvedQueryFilterInlineFieldFilter(TypedDict, total=False):
-    """An inline filter using field + operator + values"""
-
-    field: Required[str]
-    """Reference to the field to filter on"""
+class ResolvedQueryFilterInlineFormulaFilter(TypedDict, total=False):
+    """An inline filter using a SQL/expression formula."""
 
     name: Required[str]
     """Name of the inline filter"""
 
-    operator: Required[
-        Literal[
-            "equals",
-            "not_equals",
-            "in",
-            "not_in",
-            "greater_than",
-            "less_than",
-            "greater_than_or_equals",
-            "less_than_or_equals",
-            "between",
-            "in_the_last",
-            "in_the_next",
-            "contains",
-            "not_contains",
-            "starts_with",
-            "ends_with",
-            "is_null",
-            "is_not_null",
-        ]
-    ]
-    """Filter operator to apply"""
-
-    sql_value: Optional[str]
-    """SQL expression for the filter value"""
-
-    static_values: Optional[SequenceNotStr[Union[str, float, bool]]]
-    """Fixed values for the filter"""
+    sql: Required[str]
+    """SQL expression for the filter condition"""
 
 
 class ResolvedQueryFilterInlineExistsFilter1(TypedDict, total=False):
@@ -178,7 +153,7 @@ class ResolvedQueryFilterInlineExistsFilter2(TypedDict, total=False):
 
 
 ResolvedQueryFilter: TypeAlias = Union[
-    ResolvedQueryFilterInlineFieldFilter,
+    ResolvedQueryFilterInlineFormulaFilter,
     str,
     ResolvedQueryFilterInlineExistsFilter1,
     ResolvedQueryFilterInlineExistsFilter2,
@@ -210,6 +185,46 @@ class ResolvedQueryResolvedChart(TypedDict, total=False):
         Literal["line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"]
     ]
     """Recommended chart type"""
+
+
+class ResolvedQueryResolvedVariableBoundValueRelativeDateDefault(TypedDict, total=False):
+    """
+    A relative date default for DATE/TIMESTAMP variables.
+    Computes a concrete date relative to the current date at resolve time.
+    """
+
+    amount: Required[int]
+    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
+
+    unit: Required[str]
+    """Time unit for the offset"""
+
+
+ResolvedQueryResolvedVariableBoundValue: TypeAlias = Union[
+    str,
+    float,
+    bool,
+    SequenceNotStr[Union[str, float, bool]],
+    ResolvedQueryResolvedVariableBoundValueRelativeDateDefault,
+]
+
+
+class ResolvedQueryResolvedVariableDefaultRelativeDateDefault(TypedDict, total=False):
+    """
+    A relative date default for DATE/TIMESTAMP variables.
+    Computes a concrete date relative to the current date at resolve time.
+    """
+
+    amount: Required[int]
+    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
+
+    unit: Required[str]
+    """Time unit for the offset"""
+
+
+ResolvedQueryResolvedVariableDefault: TypeAlias = Union[
+    str, float, bool, SequenceNotStr[Union[str, float, bool]], ResolvedQueryResolvedVariableDefaultRelativeDateDefault
+]
 
 
 class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static(TypedDict, total=False):
@@ -270,10 +285,10 @@ class ResolvedQueryResolvedVariableConstraints(TypedDict, total=False):
 class ResolvedQueryResolvedVariable(TypedDict, total=False):
     """A variable definition with its bound value"""
 
-    bound_value: Required[Union[str, float, bool]]
+    bound_value: Required[Optional[ResolvedQueryResolvedVariableBoundValue]]
     """The concrete value bound for this resolution"""
 
-    default: Required[Union[str, float, bool]]
+    default: Required[Optional[ResolvedQueryResolvedVariableDefault]]
     """Default value for this variable"""
 
     kater_id: Required[str]
@@ -283,7 +298,22 @@ class ResolvedQueryResolvedVariable(TypedDict, total=False):
     """Variable name identifier"""
 
     type: Required[
-        Literal["STRING", "INT", "FLOAT", "DATE", "TIMESTAMP", "BOOL", "DIMENSION", "MEASURE", "CALCULATION", "FILTER"]
+        Literal[
+            "STRING",
+            "INT",
+            "FLOAT",
+            "DATE",
+            "TIMESTAMP",
+            "BOOL",
+            "STRING[]",
+            "INT[]",
+            "FLOAT[]",
+            "DATE[]",
+            "DIMENSION",
+            "MEASURE",
+            "CALCULATION",
+            "FILTER",
+        ]
     ]
     """Data type of the variable"""
 

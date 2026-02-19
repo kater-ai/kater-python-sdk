@@ -20,13 +20,17 @@ __all__ = [
     "ResolvedQueryChartHintChartHint2OutputDefault",
     "ResolvedQueryDimension",
     "ResolvedQueryFilter",
-    "ResolvedQueryFilterInlineFieldFilter",
+    "ResolvedQueryFilterInlineFormulaFilter",
     "ResolvedQueryFilterInlineExistsFilter1",
     "ResolvedQueryFilterInlineExistsFilter2",
     "ResolvedQueryMeasure",
     "ResolvedQueryOrderBy",
     "ResolvedQueryResolvedChart",
     "ResolvedQueryResolvedVariable",
+    "ResolvedQueryResolvedVariableBoundValue",
+    "ResolvedQueryResolvedVariableBoundValueRelativeDateDefault",
+    "ResolvedQueryResolvedVariableDefault",
+    "ResolvedQueryResolvedVariableDefaultRelativeDateDefault",
     "ResolvedQueryResolvedVariableAllowedValues",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
@@ -84,41 +88,14 @@ ResolvedQueryChartHint: TypeAlias = Union[
 ResolvedQueryDimension: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
-class ResolvedQueryFilterInlineFieldFilter(BaseModel):
-    """An inline filter using field + operator + values"""
-
-    field: str
-    """Reference to the field to filter on"""
+class ResolvedQueryFilterInlineFormulaFilter(BaseModel):
+    """An inline filter using a SQL/expression formula."""
 
     name: str
     """Name of the inline filter"""
 
-    operator: Literal[
-        "equals",
-        "not_equals",
-        "in",
-        "not_in",
-        "greater_than",
-        "less_than",
-        "greater_than_or_equals",
-        "less_than_or_equals",
-        "between",
-        "in_the_last",
-        "in_the_next",
-        "contains",
-        "not_contains",
-        "starts_with",
-        "ends_with",
-        "is_null",
-        "is_not_null",
-    ]
-    """Filter operator to apply"""
-
-    sql_value: Optional[str] = None
-    """SQL expression for the filter value"""
-
-    static_values: Optional[List[Union[str, float, bool]]] = None
-    """Fixed values for the filter"""
+    sql: str
+    """SQL expression for the filter condition"""
 
 
 class ResolvedQueryFilterInlineExistsFilter1(BaseModel):
@@ -160,7 +137,7 @@ class ResolvedQueryFilterInlineExistsFilter2(BaseModel):
 
 
 ResolvedQueryFilter: TypeAlias = Union[
-    ResolvedQueryFilterInlineFieldFilter,
+    ResolvedQueryFilterInlineFormulaFilter,
     str,
     ResolvedQueryFilterInlineExistsFilter1,
     ResolvedQueryFilterInlineExistsFilter2,
@@ -192,6 +169,42 @@ class ResolvedQueryResolvedChart(BaseModel):
         "line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"
     ]
     """Recommended chart type"""
+
+
+class ResolvedQueryResolvedVariableBoundValueRelativeDateDefault(BaseModel):
+    """
+    A relative date default for DATE/TIMESTAMP variables.
+    Computes a concrete date relative to the current date at resolve time.
+    """
+
+    amount: int
+    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
+
+    unit: str
+    """Time unit for the offset"""
+
+
+ResolvedQueryResolvedVariableBoundValue: TypeAlias = Union[
+    str, float, bool, List[Union[str, float, bool]], ResolvedQueryResolvedVariableBoundValueRelativeDateDefault, None
+]
+
+
+class ResolvedQueryResolvedVariableDefaultRelativeDateDefault(BaseModel):
+    """
+    A relative date default for DATE/TIMESTAMP variables.
+    Computes a concrete date relative to the current date at resolve time.
+    """
+
+    amount: int
+    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
+
+    unit: str
+    """Time unit for the offset"""
+
+
+ResolvedQueryResolvedVariableDefault: TypeAlias = Union[
+    str, float, bool, List[Union[str, float, bool]], ResolvedQueryResolvedVariableDefaultRelativeDateDefault, None
+]
 
 
 class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static(BaseModel):
@@ -253,10 +266,10 @@ class ResolvedQueryResolvedVariableConstraints(BaseModel):
 class ResolvedQueryResolvedVariable(BaseModel):
     """A variable definition with its bound value"""
 
-    bound_value: Union[str, float, bool]
+    bound_value: Optional[ResolvedQueryResolvedVariableBoundValue] = None
     """The concrete value bound for this resolution"""
 
-    default: Union[str, float, bool]
+    default: Optional[ResolvedQueryResolvedVariableDefault] = None
     """Default value for this variable"""
 
     kater_id: str
@@ -266,7 +279,20 @@ class ResolvedQueryResolvedVariable(BaseModel):
     """Variable name identifier"""
 
     type: Literal[
-        "STRING", "INT", "FLOAT", "DATE", "TIMESTAMP", "BOOL", "DIMENSION", "MEASURE", "CALCULATION", "FILTER"
+        "STRING",
+        "INT",
+        "FLOAT",
+        "DATE",
+        "TIMESTAMP",
+        "BOOL",
+        "STRING[]",
+        "INT[]",
+        "FLOAT[]",
+        "DATE[]",
+        "DIMENSION",
+        "MEASURE",
+        "CALCULATION",
+        "FILTER",
     ]
     """Data type of the variable"""
 
