@@ -17,13 +17,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestGroups:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_tenant_groups_schema(self, client: Kater) -> None:
         group = client.v1.tenants.groups.get_tenant_groups_schema()
         assert_matches_type(GroupGetTenantGroupsSchemaResponse, group, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_get_tenant_groups_schema(self, client: Kater) -> None:
         response = client.v1.tenants.groups.with_raw_response.get_tenant_groups_schema()
@@ -33,7 +33,7 @@ class TestGroups:
         group = response.parse()
         assert_matches_type(GroupGetTenantGroupsSchemaResponse, group, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_get_tenant_groups_schema(self, client: Kater) -> None:
         with client.v1.tenants.groups.with_streaming_response.get_tenant_groups_schema() as response:
@@ -51,13 +51,13 @@ class TestAsyncGroups:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_tenant_groups_schema(self, async_client: AsyncKater) -> None:
         group = await async_client.v1.tenants.groups.get_tenant_groups_schema()
         assert_matches_type(GroupGetTenantGroupsSchemaResponse, group, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_get_tenant_groups_schema(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.tenants.groups.with_raw_response.get_tenant_groups_schema()
@@ -67,7 +67,7 @@ class TestAsyncGroups:
         group = await response.parse()
         assert_matches_type(GroupGetTenantGroupsSchemaResponse, group, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_get_tenant_groups_schema(self, async_client: AsyncKater) -> None:
         async with async_client.v1.tenants.groups.with_streaming_response.get_tenant_groups_schema() as response:

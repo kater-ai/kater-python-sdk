@@ -24,7 +24,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestCompiler:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_compile(self, client: Kater) -> None:
         compiler = client.v1.compiler.compile(
@@ -39,7 +39,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_compile_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.compile(
@@ -161,7 +161,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_compile(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.compile(
@@ -180,7 +180,7 @@ class TestCompiler:
         compiler = response.parse()
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_compile(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.compile(
@@ -201,7 +201,7 @@ class TestCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_compile_dashboard(self, client: Kater) -> None:
         compiler = client.v1.compiler.compile_dashboard(
@@ -210,7 +210,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_compile_dashboard_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.compile_dashboard(
@@ -223,7 +223,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_compile_dashboard(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.compile_dashboard(
@@ -236,7 +236,7 @@ class TestCompiler:
         compiler = response.parse()
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_compile_dashboard(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.compile_dashboard(
@@ -251,7 +251,7 @@ class TestCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_enumerate(self, client: Kater) -> None:
         compiler = client.v1.compiler.enumerate(
@@ -259,7 +259,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_enumerate_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.enumerate(
@@ -270,7 +270,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_enumerate(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.enumerate(
@@ -282,7 +282,7 @@ class TestCompiler:
         compiler = response.parse()
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_enumerate(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.enumerate(
@@ -296,7 +296,7 @@ class TestCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_execute(self, client: Kater) -> None:
         compiler = client.v1.compiler.execute(
@@ -311,7 +311,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_execute_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.execute(
@@ -433,7 +433,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_execute(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.execute(
@@ -452,7 +452,7 @@ class TestCompiler:
         compiler = response.parse()
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_execute(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.execute(
@@ -473,7 +473,7 @@ class TestCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_resolve(self, client: Kater) -> None:
         compiler = client.v1.compiler.resolve(
@@ -482,7 +482,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_resolve_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.resolve(
@@ -495,7 +495,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_resolve(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.resolve(
@@ -508,7 +508,7 @@ class TestCompiler:
         compiler = response.parse()
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_resolve(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.resolve(
@@ -523,13 +523,13 @@ class TestCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_validate(self, client: Kater) -> None:
         compiler = client.v1.compiler.validate()
         assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_validate_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.validate(
@@ -540,7 +540,7 @@ class TestCompiler:
         )
         assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_validate(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.validate()
@@ -550,7 +550,7 @@ class TestCompiler:
         compiler = response.parse()
         assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_validate(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.validate() as response:
@@ -568,7 +568,7 @@ class TestAsyncCompiler:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_compile(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.compile(
@@ -583,7 +583,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_compile_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.compile(
@@ -705,7 +705,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_compile(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.compile(
@@ -724,7 +724,7 @@ class TestAsyncCompiler:
         compiler = await response.parse()
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_compile(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.compile(
@@ -745,7 +745,7 @@ class TestAsyncCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_compile_dashboard(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.compile_dashboard(
@@ -754,7 +754,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_compile_dashboard_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.compile_dashboard(
@@ -767,7 +767,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_compile_dashboard(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.compile_dashboard(
@@ -780,7 +780,7 @@ class TestAsyncCompiler:
         compiler = await response.parse()
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_compile_dashboard(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.compile_dashboard(
@@ -795,7 +795,7 @@ class TestAsyncCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_enumerate(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.enumerate(
@@ -803,7 +803,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_enumerate_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.enumerate(
@@ -814,7 +814,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_enumerate(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.enumerate(
@@ -826,7 +826,7 @@ class TestAsyncCompiler:
         compiler = await response.parse()
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_enumerate(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.enumerate(
@@ -840,7 +840,7 @@ class TestAsyncCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_execute(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.execute(
@@ -855,7 +855,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_execute_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.execute(
@@ -977,7 +977,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_execute(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.execute(
@@ -996,7 +996,7 @@ class TestAsyncCompiler:
         compiler = await response.parse()
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_execute(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.execute(
@@ -1017,7 +1017,7 @@ class TestAsyncCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_resolve(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.resolve(
@@ -1026,7 +1026,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_resolve_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.resolve(
@@ -1039,7 +1039,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_resolve(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.resolve(
@@ -1052,7 +1052,7 @@ class TestAsyncCompiler:
         compiler = await response.parse()
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_resolve(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.resolve(
@@ -1067,13 +1067,13 @@ class TestAsyncCompiler:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_validate(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.validate()
         assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_validate_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.validate(
@@ -1084,7 +1084,7 @@ class TestAsyncCompiler:
         )
         assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_validate(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.validate()
@@ -1094,7 +1094,7 @@ class TestAsyncCompiler:
         compiler = await response.parse()
         assert_matches_type(CompilerValidateResponse, compiler, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_validate(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.validate() as response:
