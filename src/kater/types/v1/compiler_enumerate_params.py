@@ -20,4 +20,10 @@ class CompilerEnumerateParams(TypedDict, total=False):
     query_refs: Optional[SequenceNotStr[str]]
     """Optional query refs to limit enumeration. If omitted, enumerates all queries."""
 
+    tenant_key: Optional[str]
+    """Tenant key for multi-tenant clients.
+
+    Required when the client uses row or database tenancy.
+    """
+
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]
