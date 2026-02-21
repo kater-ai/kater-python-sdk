@@ -198,6 +198,7 @@ class CompilerResource(SyncAPIResource):
         connection_id: str,
         source: Optional[str] | Omit = omit,
         query_refs: Optional[SequenceNotStr[str]] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -219,6 +220,9 @@ class CompilerResource(SyncAPIResource):
 
           query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
 
+          tenant_key: Tenant key for multi-tenant clients. Required when the client uses row or
+              database tenancy.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -234,6 +238,7 @@ class CompilerResource(SyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "query_refs": query_refs,
+                    "tenant_key": tenant_key,
                 },
                 compiler_enumerate_params.CompilerEnumerateParams,
             ),
@@ -585,6 +590,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         connection_id: str,
         source: Optional[str] | Omit = omit,
         query_refs: Optional[SequenceNotStr[str]] | Omit = omit,
+        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -606,6 +612,9 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
 
+          tenant_key: Tenant key for multi-tenant clients. Required when the client uses row or
+              database tenancy.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -621,6 +630,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "query_refs": query_refs,
+                    "tenant_key": tenant_key,
                 },
                 compiler_enumerate_params.CompilerEnumerateParams,
             ),

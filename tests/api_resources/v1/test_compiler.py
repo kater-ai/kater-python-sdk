@@ -266,6 +266,7 @@ class TestCompiler:
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             source="source",
             query_refs=["string"],
+            tenant_key="tenant_key",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
@@ -810,6 +811,7 @@ class TestAsyncCompiler:
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             source="source",
             query_refs=["string"],
+            tenant_key="tenant_key",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
