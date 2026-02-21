@@ -20,13 +20,17 @@ __all__ = [
     "ResolvedQueryChartHintChartHint2OutputDefault",
     "ResolvedQueryDimension",
     "ResolvedQueryFilter",
-    "ResolvedQueryFilterInlineFieldFilter",
+    "ResolvedQueryFilterInlineFormulaFilter",
     "ResolvedQueryFilterInlineExistsFilter1",
     "ResolvedQueryFilterInlineExistsFilter2",
     "ResolvedQueryMeasure",
     "ResolvedQueryOrderBy",
     "ResolvedQueryResolvedChart",
     "ResolvedQueryResolvedVariable",
+    "ResolvedQueryResolvedVariableBoundValue",
+    "ResolvedQueryResolvedVariableBoundValueRelativeDateDefault",
+    "ResolvedQueryResolvedVariableDefault",
+    "ResolvedQueryResolvedVariableDefaultRelativeDateDefault",
     "ResolvedQueryResolvedVariableAllowedValues",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
@@ -36,6 +40,8 @@ __all__ = [
     "ResolvedQuerySelectFromOutputColumn",
     "DependencyGraph",
     "DependencyGraphNodes",
+    "RefFix",
+    "RefFixReplacement",
 ]
 
 ResolvedQueryCalculation: TypeAlias = Union[RefWithLabel, InlineField, str]
@@ -82,41 +88,14 @@ ResolvedQueryChartHint: TypeAlias = Union[
 ResolvedQueryDimension: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
-class ResolvedQueryFilterInlineFieldFilter(BaseModel):
-    """An inline filter using field + operator + values"""
-
-    field: str
-    """Reference to the field to filter on"""
+class ResolvedQueryFilterInlineFormulaFilter(BaseModel):
+    """An inline filter using a SQL/expression formula."""
 
     name: str
     """Name of the inline filter"""
 
-    operator: Literal[
-        "equals",
-        "not_equals",
-        "in",
-        "not_in",
-        "greater_than",
-        "less_than",
-        "greater_than_or_equals",
-        "less_than_or_equals",
-        "between",
-        "in_the_last",
-        "in_the_next",
-        "contains",
-        "not_contains",
-        "starts_with",
-        "ends_with",
-        "is_null",
-        "is_not_null",
-    ]
-    """Filter operator to apply"""
-
-    sql_value: Optional[str] = None
-    """SQL expression for the filter value"""
-
-    static_values: Optional[List[Union[str, float, bool]]] = None
-    """Fixed values for the filter"""
+    sql: str
+    """SQL expression for the filter condition"""
 
 
 class ResolvedQueryFilterInlineExistsFilter1(BaseModel):
@@ -158,7 +137,7 @@ class ResolvedQueryFilterInlineExistsFilter2(BaseModel):
 
 
 ResolvedQueryFilter: TypeAlias = Union[
-    ResolvedQueryFilterInlineFieldFilter,
+    ResolvedQueryFilterInlineFormulaFilter,
     str,
     ResolvedQueryFilterInlineExistsFilter1,
     ResolvedQueryFilterInlineExistsFilter2,
@@ -190,6 +169,42 @@ class ResolvedQueryResolvedChart(BaseModel):
         "line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"
     ]
     """Recommended chart type"""
+
+
+class ResolvedQueryResolvedVariableBoundValueRelativeDateDefault(BaseModel):
+    """
+    A relative date default for DATE/TIMESTAMP variables.
+    Computes a concrete date relative to the current date at resolve time.
+    """
+
+    amount: int
+    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
+
+    unit: str
+    """Time unit for the offset"""
+
+
+ResolvedQueryResolvedVariableBoundValue: TypeAlias = Union[
+    str, float, bool, List[Union[str, float, bool]], ResolvedQueryResolvedVariableBoundValueRelativeDateDefault, None
+]
+
+
+class ResolvedQueryResolvedVariableDefaultRelativeDateDefault(BaseModel):
+    """
+    A relative date default for DATE/TIMESTAMP variables.
+    Computes a concrete date relative to the current date at resolve time.
+    """
+
+    amount: int
+    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
+
+    unit: str
+    """Time unit for the offset"""
+
+
+ResolvedQueryResolvedVariableDefault: TypeAlias = Union[
+    str, float, bool, List[Union[str, float, bool]], ResolvedQueryResolvedVariableDefaultRelativeDateDefault, None
+]
 
 
 class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static(BaseModel):
@@ -251,17 +266,33 @@ class ResolvedQueryResolvedVariableConstraints(BaseModel):
 class ResolvedQueryResolvedVariable(BaseModel):
     """A variable definition with its bound value"""
 
-    bound_value: Union[str, float, bool]
+    bound_value: Optional[ResolvedQueryResolvedVariableBoundValue] = None
     """The concrete value bound for this resolution"""
 
-    default: Union[str, float, bool]
+    default: Optional[ResolvedQueryResolvedVariableDefault] = None
     """Default value for this variable"""
+
+    kater_id: str
+    """Unique identifier for this variable"""
 
     name: str
     """Variable name identifier"""
 
     type: Literal[
-        "STRING", "INT", "FLOAT", "DATE", "TIMESTAMP", "BOOL", "DIMENSION", "MEASURE", "CALCULATION", "FILTER"
+        "STRING",
+        "INT",
+        "FLOAT",
+        "DATE",
+        "TIMESTAMP",
+        "BOOL",
+        "STRING[]",
+        "INT[]",
+        "FLOAT[]",
+        "DATE[]",
+        "DIMENSION",
+        "MEASURE",
+        "CALCULATION",
+        "FILTER",
     ]
     """Data type of the variable"""
 
@@ -277,6 +308,13 @@ class ResolvedQueryResolvedVariable(BaseModel):
     is_default: Optional[bool] = None
     """True if bound_value equals the default value"""
 
+    is_runtime: Optional[bool] = None
+    """True if this is a runtime variable (not resolved at compile time).
+
+    Runtime variables have var() placeholders left in compiled SQL for literal
+    substitution at execution time.
+    """
+
     label: Optional[str] = None
     """Human-readable label for the variable"""
 
@@ -290,7 +328,7 @@ class ResolvedQuerySelectFromOutputColumn(BaseModel):
     field_name: str
     """The field name used in q:query_name.field_name references"""
 
-    source_type: Literal["dimension", "measure", "calculation"]
+    source_type: Literal["dimension", "dimension_date", "measure", "calculation"]
     """Original type of the field in the source query"""
 
 
@@ -328,7 +366,7 @@ class ResolvedQuery(BaseModel):
     resolution)
     """
 
-    widget_category: Literal["axis", "pie", "single_value", "heatmap", "table", "static"]
+    widget_category: Literal["axis", "funnel", "heatmap", "image", "kpi_card", "pie", "table", "text"]
     """Widget category that determines data shape constraints"""
 
     ai_context: Optional[str] = None
@@ -352,22 +390,25 @@ class ResolvedQuery(BaseModel):
     disallowed_widget_types: Optional[
         List[
             Literal[
-                "kpi_card",
-                "line_chart",
-                "bar_chart",
-                "pie_chart",
-                "donut_chart",
-                "area_chart",
-                "scatter_chart",
-                "data_table",
-                "card_grid",
-                "heatmap",
-                "gauge",
-                "text",
-                "image",
-                "styled_table",
-                "stat_cards",
-                "key_value_list",
+                "axis_metric_by_dimension",
+                "axis_metric_by_dimensiondate",
+                "axis_metric_by_dimensiondate_sliced_by_dimension",
+                "axis_scatter_plot",
+                "funnel_funnel_chart",
+                "heatmap_heatmap",
+                "image_image_grid",
+                "image_single_image",
+                "kpi_measure_with_dimension_expression",
+                "kpi_measure_with_secondary_metric",
+                "kpi_single_measure_compared_to_prev_period_sparkline",
+                "kpi_single_value",
+                "pie_pie_chart",
+                "table_data_table",
+                "table_fancy_subtotal_table",
+                "table_key_value_list",
+                "table_styled_table",
+                "text_data_readout_with_sparkline",
+                "text_narrative_text",
             ]
         ]
     ] = None
@@ -442,6 +483,35 @@ class DependencyGraph(BaseModel):
     """UUID string to node mapping"""
 
 
+class RefFixReplacement(BaseModel):
+    """A single ref replacement within a file."""
+
+    file_path: str
+    """Path to the file containing the replaced ref"""
+
+    line_number: int
+    """Line number where the replacement occurred"""
+
+    new_ref: str
+    """Updated reference string"""
+
+    old_ref: str
+    """Original reference string"""
+
+
+class RefFix(BaseModel):
+    """A file that was modified by auto-fix with its replacements."""
+
+    file_path: str
+    """Path to the modified file"""
+
+    new_content: str
+    """Full updated file content after fixes"""
+
+    replacements: List[RefFixReplacement]
+    """Individual ref replacements made in this file"""
+
+
 class CompilerResolveResponse(BaseModel):
     """Response model for a resolved query."""
 
@@ -453,3 +523,12 @@ class CompilerResolveResponse(BaseModel):
 
     manifest: Optional[Manifest] = None
     """Compilation manifest with all named objects."""
+
+    ref_fixes: Optional[List[RefFix]] = None
+    """Files auto-fixed due to renamed refs. None when no renames detected."""
+
+    request_id: Optional[str] = None
+    """Write-back request ID.
+
+    Non-null when ref-fix files were dispatched to CLI via WebSocket.
+    """

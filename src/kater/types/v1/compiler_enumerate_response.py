@@ -16,8 +16,14 @@ class Combination(BaseModel):
     widget_category: str
     """Widget category (e.g. 'axis', 'table')"""
 
+    combination_id: Optional[str] = None
+    """Deterministic UUID v5 for this combination"""
+
     query_label: Optional[str] = None
     """Human-readable label for the query"""
+
+    roles: Optional[Dict[str, str]] = None
+    """Field-to-role mapping (e.g. {'due_month': 'x_axis'})"""
 
     selected_calculations: Optional[List[str]] = None
     """Selected optional calculation names"""
@@ -33,6 +39,9 @@ class Combination(BaseModel):
 
     variable_assignments: Optional[Dict[str, object]] = None
     """Variable name to value assignments"""
+
+    widget_type: Optional[str] = None
+    """Resolved widget type (e.g. 'axis_metric_by_dimensiondate')"""
 
 
 class CompilerEnumerateResponse(BaseModel):

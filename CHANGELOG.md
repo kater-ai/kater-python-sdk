@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.10.0 (2026-02-21)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **cli,compiler,cache:** add `kater run` command, SDK 0.9 combinatio… ([03390ec](https://github.com/kater-ai/kater-python-sdk/commit/03390ec00cb8deb5be8b85906ed4dabb43b92779))
+* **compiler,api,cli:** auto-fix broken refs when developers rename o… ([4a670d4](https://github.com/kater-ai/kater-python-sdk/commit/4a670d492d340693f1c3134fd26739681f4ab90e))
+* **compiler:** add per-tenant isolation support across compiler and … ([c9911f7](https://github.com/kater-ai/kater-python-sdk/commit/c9911f7e15b3e9d7657152ead4a8b00f7f6ead37))
+* feat(all) updated file structures ([e0628b6](https://github.com/kater-ai/kater-python-sdk/commit/e0628b65e940423fd319a4804e6046cc519d23dd))
+* feat/yvonne ([840f1f2](https://github.com/kater-ai/kater-python-sdk/commit/840f1f212abb52a6119fb5a44925926c4a157f4d))
+* Feat/yvonne ([a56420e](https://github.com/kater-ai/kater-python-sdk/commit/a56420eec8d563237dfa05e2127e158bc98050eb))
+* **schema,compiler:** remove dynamic filters, extend variable system… ([4fcd3d9](https://github.com/kater-ai/kater-python-sdk/commit/4fcd3d9f52ca67f9b6946bf5afb06b97c83ac444))
+
+
+### Bug Fixes
+
+* address PR feedback and resolve errors (iteration 1) ([8e39e50](https://github.com/kater-ai/kater-python-sdk/commit/8e39e504892c130144552872070771a7d2017416))
+
+
+### Chores
+
+* **internal:** remove mock server code ([2f11413](https://github.com/kater-ai/kater-python-sdk/commit/2f1141377ba0117a78ebfb0e48f86bd0c6d32a24))
+* update mock server docs ([377d3c6](https://github.com/kater-ai/kater-python-sdk/commit/377d3c6e6dc53f699b8d7a8ec01c4df1e308bf85))
+
 ## 0.9.0 (2026-02-14)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.8.0...v0.9.0)

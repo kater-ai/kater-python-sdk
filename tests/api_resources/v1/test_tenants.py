@@ -20,13 +20,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestTenants:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_tenants_schema(self, client: Kater) -> None:
         tenant = client.v1.tenants.get_tenants_schema()
         assert_matches_type(TenantGetTenantsSchemaResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_get_tenants_schema(self, client: Kater) -> None:
         response = client.v1.tenants.with_raw_response.get_tenants_schema()
@@ -36,7 +36,7 @@ class TestTenants:
         tenant = response.parse()
         assert_matches_type(TenantGetTenantsSchemaResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_get_tenants_schema(self, client: Kater) -> None:
         with client.v1.tenants.with_streaming_response.get_tenants_schema() as response:
@@ -48,7 +48,7 @@ class TestTenants:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_import_from_csv(self, client: Kater) -> None:
         tenant = client.v1.tenants.import_from_csv(
@@ -56,7 +56,7 @@ class TestTenants:
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_import_from_csv(self, client: Kater) -> None:
         response = client.v1.tenants.with_raw_response.import_from_csv(
@@ -68,7 +68,7 @@ class TestTenants:
         tenant = response.parse()
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_import_from_csv(self, client: Kater) -> None:
         with client.v1.tenants.with_streaming_response.import_from_csv(
@@ -82,7 +82,7 @@ class TestTenants:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_import_from_warehouse(self, client: Kater) -> None:
         tenant = client.v1.tenants.import_from_warehouse(
@@ -94,7 +94,7 @@ class TestTenants:
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_import_from_warehouse_with_all_params(self, client: Kater) -> None:
         tenant = client.v1.tenants.import_from_warehouse(
@@ -108,7 +108,7 @@ class TestTenants:
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_import_from_warehouse(self, client: Kater) -> None:
         response = client.v1.tenants.with_raw_response.import_from_warehouse(
@@ -124,7 +124,7 @@ class TestTenants:
         tenant = response.parse()
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_import_from_warehouse(self, client: Kater) -> None:
         with client.v1.tenants.with_streaming_response.import_from_warehouse(
@@ -148,13 +148,13 @@ class TestAsyncTenants:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_tenants_schema(self, async_client: AsyncKater) -> None:
         tenant = await async_client.v1.tenants.get_tenants_schema()
         assert_matches_type(TenantGetTenantsSchemaResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_get_tenants_schema(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.tenants.with_raw_response.get_tenants_schema()
@@ -164,7 +164,7 @@ class TestAsyncTenants:
         tenant = await response.parse()
         assert_matches_type(TenantGetTenantsSchemaResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_get_tenants_schema(self, async_client: AsyncKater) -> None:
         async with async_client.v1.tenants.with_streaming_response.get_tenants_schema() as response:
@@ -176,7 +176,7 @@ class TestAsyncTenants:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_import_from_csv(self, async_client: AsyncKater) -> None:
         tenant = await async_client.v1.tenants.import_from_csv(
@@ -184,7 +184,7 @@ class TestAsyncTenants:
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_import_from_csv(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.tenants.with_raw_response.import_from_csv(
@@ -196,7 +196,7 @@ class TestAsyncTenants:
         tenant = await response.parse()
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_import_from_csv(self, async_client: AsyncKater) -> None:
         async with async_client.v1.tenants.with_streaming_response.import_from_csv(
@@ -210,7 +210,7 @@ class TestAsyncTenants:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_import_from_warehouse(self, async_client: AsyncKater) -> None:
         tenant = await async_client.v1.tenants.import_from_warehouse(
@@ -222,7 +222,7 @@ class TestAsyncTenants:
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_import_from_warehouse_with_all_params(self, async_client: AsyncKater) -> None:
         tenant = await async_client.v1.tenants.import_from_warehouse(
@@ -236,7 +236,7 @@ class TestAsyncTenants:
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_import_from_warehouse(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.tenants.with_raw_response.import_from_warehouse(
@@ -252,7 +252,7 @@ class TestAsyncTenants:
         tenant = await response.parse()
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_import_from_warehouse(self, async_client: AsyncKater) -> None:
         async with async_client.v1.tenants.with_streaming_response.import_from_warehouse(

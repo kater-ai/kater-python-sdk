@@ -19,6 +19,9 @@ class CompilerResolveParams(TypedDict, total=False):
 
     source: Optional[str]
 
+    auto_fix: bool
+    """Automatically fix broken refs caused by renames. Defaults to True."""
+
     combination: str
     """Comma-separated slot selections and variable assignments.
 

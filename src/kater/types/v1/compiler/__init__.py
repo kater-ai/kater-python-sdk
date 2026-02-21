@@ -2,5 +2,5 @@
 
 from __future__ import annotations
 
-from .cache_invalidate_params import CacheInvalidateParams as CacheInvalidateParams
-from .cache_invalidate_response import CacheInvalidateResponse as CacheInvalidateResponse
+from .combination_preview_params import CombinationPreviewParams as CombinationPreviewParams
+from .combination_preview_response import CombinationPreviewResponse as CombinationPreviewResponse
