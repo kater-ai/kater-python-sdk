@@ -8,6 +8,14 @@ from .compiler import (
     CompilerResourceWithStreamingResponse,
     AsyncCompilerResourceWithStreamingResponse,
 )
+from .manifest import (
+    ManifestResource,
+    AsyncManifestResource,
+    ManifestResourceWithRawResponse,
+    AsyncManifestResourceWithRawResponse,
+    ManifestResourceWithStreamingResponse,
+    AsyncManifestResourceWithStreamingResponse,
+)
 from .combination import (
     CombinationResource,
     AsyncCombinationResource,
@@ -24,6 +32,12 @@ __all__ = [
     "AsyncCombinationResourceWithRawResponse",
     "CombinationResourceWithStreamingResponse",
     "AsyncCombinationResourceWithStreamingResponse",
+    "ManifestResource",
+    "AsyncManifestResource",
+    "ManifestResourceWithRawResponse",
+    "AsyncManifestResourceWithRawResponse",
+    "ManifestResourceWithStreamingResponse",
+    "AsyncManifestResourceWithStreamingResponse",
     "CompilerResource",
     "AsyncCompilerResource",
     "CompilerResourceWithRawResponse",

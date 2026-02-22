@@ -6,6 +6,14 @@ from typing import Dict, Union, Optional
 
 import httpx
 
+from .manifest import (
+    ManifestResource,
+    AsyncManifestResource,
+    ManifestResourceWithRawResponse,
+    AsyncManifestResourceWithRawResponse,
+    ManifestResourceWithStreamingResponse,
+    AsyncManifestResourceWithStreamingResponse,
+)
 from ...._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
 from ...._utils import maybe_transform, strip_not_given, async_maybe_transform
 from ...._compat import cached_property
@@ -47,6 +55,10 @@ class CompilerResource(SyncAPIResource):
     @cached_property
     def combination(self) -> CombinationResource:
         return CombinationResource(self._client)
+
+    @cached_property
+    def manifest(self) -> ManifestResource:
+        return ManifestResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> CompilerResourceWithRawResponse:
@@ -439,6 +451,10 @@ class AsyncCompilerResource(AsyncAPIResource):
     @cached_property
     def combination(self) -> AsyncCombinationResource:
         return AsyncCombinationResource(self._client)
+
+    @cached_property
+    def manifest(self) -> AsyncManifestResource:
+        return AsyncManifestResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncCompilerResourceWithRawResponse:
@@ -856,6 +872,10 @@ class CompilerResourceWithRawResponse:
     def combination(self) -> CombinationResourceWithRawResponse:
         return CombinationResourceWithRawResponse(self._compiler.combination)
 
+    @cached_property
+    def manifest(self) -> ManifestResourceWithRawResponse:
+        return ManifestResourceWithRawResponse(self._compiler.manifest)
+
 
 class AsyncCompilerResourceWithRawResponse:
     def __init__(self, compiler: AsyncCompilerResource) -> None:
@@ -883,6 +903,10 @@ class AsyncCompilerResourceWithRawResponse:
     @cached_property
     def combination(self) -> AsyncCombinationResourceWithRawResponse:
         return AsyncCombinationResourceWithRawResponse(self._compiler.combination)
+
+    @cached_property
+    def manifest(self) -> AsyncManifestResourceWithRawResponse:
+        return AsyncManifestResourceWithRawResponse(self._compiler.manifest)
 
 
 class CompilerResourceWithStreamingResponse:
@@ -912,6 +936,10 @@ class CompilerResourceWithStreamingResponse:
     def combination(self) -> CombinationResourceWithStreamingResponse:
         return CombinationResourceWithStreamingResponse(self._compiler.combination)
 
+    @cached_property
+    def manifest(self) -> ManifestResourceWithStreamingResponse:
+        return ManifestResourceWithStreamingResponse(self._compiler.manifest)
+
 
 class AsyncCompilerResourceWithStreamingResponse:
     def __init__(self, compiler: AsyncCompilerResource) -> None:
@@ -939,3 +967,7 @@ class AsyncCompilerResourceWithStreamingResponse:
     @cached_property
     def combination(self) -> AsyncCombinationResourceWithStreamingResponse:
         return AsyncCombinationResourceWithStreamingResponse(self._compiler.combination)
+
+    @cached_property
+    def manifest(self) -> AsyncManifestResourceWithStreamingResponse:
+        return AsyncManifestResourceWithStreamingResponse(self._compiler.manifest)

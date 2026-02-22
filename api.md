@@ -43,6 +43,18 @@ Methods:
 
 - <code title="post /api/v1/compiler/combination/preview">client.v1.compiler.combination.<a href="./src/kater/resources/v1/compiler/combination.py">preview</a>(\*\*<a href="src/kater/types/v1/compiler/combination_preview_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler/combination_preview_response.py">CombinationPreviewResponse</a></code>
 
+### Manifest
+
+Types:
+
+```python
+from kater.types.v1.compiler import ManifestRegenerateAndCreatePrResponse
+```
+
+Methods:
+
+- <code title="post /api/v1/compiler/manifest/recovery-pr">client.v1.compiler.manifest.<a href="./src/kater/resources/v1/compiler/manifest.py">regenerate_and_create_pr</a>(\*\*<a href="src/kater/types/v1/compiler/manifest_regenerate_and_create_pr_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler/manifest_regenerate_and_create_pr_response.py">ManifestRegenerateAndCreatePrResponse</a></code>
+
 ## Connections
 
 Types:
