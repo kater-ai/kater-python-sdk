@@ -100,7 +100,6 @@ class TestCompiler:
                     "asc": ["string"],
                     "desc": ["string"],
                 },
-                "required_access_grants": ["string"],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -373,7 +372,6 @@ class TestCompiler:
                     "asc": ["string"],
                     "desc": ["string"],
                 },
-                "required_access_grants": ["string"],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -645,7 +643,6 @@ class TestAsyncCompiler:
                     "asc": ["string"],
                     "desc": ["string"],
                 },
-                "required_access_grants": ["string"],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -918,7 +915,6 @@ class TestAsyncCompiler:
                     "asc": ["string"],
                     "desc": ["string"],
                 },
-                "required_access_grants": ["string"],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",

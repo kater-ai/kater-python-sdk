@@ -27,10 +27,6 @@ __all__ = [
     "ResolvedQueryOrderBy",
     "ResolvedQueryResolvedChart",
     "ResolvedQueryResolvedVariable",
-    "ResolvedQueryResolvedVariableBoundValue",
-    "ResolvedQueryResolvedVariableBoundValueRelativeDateDefault",
-    "ResolvedQueryResolvedVariableDefault",
-    "ResolvedQueryResolvedVariableDefaultRelativeDateDefault",
     "ResolvedQueryResolvedVariableAllowedValues",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
     "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
@@ -89,7 +85,7 @@ ResolvedQueryDimension: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
 class ResolvedQueryFilterInlineFormulaFilter(BaseModel):
-    """An inline filter using a SQL/expression formula."""
+    """An inline filter using a SQL/expression formula"""
 
     name: str
     """Name of the inline filter"""
@@ -171,42 +167,6 @@ class ResolvedQueryResolvedChart(BaseModel):
     """Recommended chart type"""
 
 
-class ResolvedQueryResolvedVariableBoundValueRelativeDateDefault(BaseModel):
-    """
-    A relative date default for DATE/TIMESTAMP variables.
-    Computes a concrete date relative to the current date at resolve time.
-    """
-
-    amount: int
-    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
-
-    unit: str
-    """Time unit for the offset"""
-
-
-ResolvedQueryResolvedVariableBoundValue: TypeAlias = Union[
-    str, float, bool, List[Union[str, float, bool]], ResolvedQueryResolvedVariableBoundValueRelativeDateDefault, None
-]
-
-
-class ResolvedQueryResolvedVariableDefaultRelativeDateDefault(BaseModel):
-    """
-    A relative date default for DATE/TIMESTAMP variables.
-    Computes a concrete date relative to the current date at resolve time.
-    """
-
-    amount: int
-    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
-
-    unit: str
-    """Time unit for the offset"""
-
-
-ResolvedQueryResolvedVariableDefault: TypeAlias = Union[
-    str, float, bool, List[Union[str, float, bool]], ResolvedQueryResolvedVariableDefaultRelativeDateDefault, None
-]
-
-
 class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static(BaseModel):
     """A value with optional display label"""
 
@@ -266,10 +226,10 @@ class ResolvedQueryResolvedVariableConstraints(BaseModel):
 class ResolvedQueryResolvedVariable(BaseModel):
     """A variable definition with its bound value"""
 
-    bound_value: Optional[ResolvedQueryResolvedVariableBoundValue] = None
+    bound_value: Union[str, float, bool, List[Union[str, float, bool]]]
     """The concrete value bound for this resolution"""
 
-    default: Optional[ResolvedQueryResolvedVariableDefault] = None
+    default: Union[str, float, bool, List[Union[str, float, bool]]]
     """Default value for this variable"""
 
     kater_id: str
@@ -437,9 +397,6 @@ class ResolvedQuery(BaseModel):
     Use desc for descending (highest/newest first) and asc for ascending
     (lowest/oldest first).
     """
-
-    required_access_grants: Optional[List[str]] = None
-    """Access grants required to use this query"""
 
     resolved_chart: Optional[ResolvedQueryResolvedChart] = None
     """The matched chart recommendation after evaluating chart hints"""
