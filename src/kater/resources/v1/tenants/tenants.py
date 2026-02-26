@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Mapping, Optional, cast
+from typing import Dict, Mapping, Optional, cast
 
 import httpx
 
@@ -15,7 +15,13 @@ from .groups import (
     AsyncGroupsResourceWithStreamingResponse,
 )
 from ...._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
-from ...._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
+from ...._utils import (
+    extract_files,
+    maybe_transform,
+    strip_not_given,
+    deepcopy_minimal,
+    async_maybe_transform,
+)
 from ...._compat import cached_property
 from ....types.v1 import tenant_import_from_csv_params, tenant_import_from_warehouse_params
 from ...._resource import SyncAPIResource, AsyncAPIResource
@@ -87,6 +93,9 @@ class TenantsResource(SyncAPIResource):
         self,
         *,
         file: FileTypes,
+        source: Optional[str] | Omit = omit,
+        attribute_columns: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -102,9 +111,13 @@ class TenantsResource(SyncAPIResource):
         - tenant_key (required): Unique tenant identifier
         - tenant_name (optional): Human-readable name
         - group_names (optional): Comma-separated list of group names
+        - Additional columns can be mapped to attributes via attribute_columns
 
         Creates new tenants and updates existing ones with new name/groups. Groups are
         added additively (not replaced) and auto-created if needed.
+
+        Optionally processes attribute columns: values are validated against
+        attributes.yaml, stored additively, and validation errors are non-fatal.
 
         RLS: Filtered to current client (ClientRLSDB).
 
@@ -114,6 +127,8 @@ class TenantsResource(SyncAPIResource):
         Args:
           file: CSV file with tenant data
 
+          attribute_columns: JSON mapping: attribute_name -> csv_column_name
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -122,7 +137,13 @@ class TenantsResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal({"file": file})
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        body = deepcopy_minimal(
+            {
+                "file": file,
+                "attribute_columns": attribute_columns,
+            }
+        )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
@@ -133,7 +154,11 @@ class TenantsResource(SyncAPIResource):
             body=maybe_transform(body, tenant_import_from_csv_params.TenantImportFromCsvParams),
             files=files,
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform({"source": source}, tenant_import_from_csv_params.TenantImportFromCsvParams),
             ),
             cast_to=ImportTenantsResponse,
         )
@@ -146,8 +171,11 @@ class TenantsResource(SyncAPIResource):
         schema: str,
         table: str,
         tenant_key_column: str,
+        source: Optional[str] | Omit = omit,
+        attribute_columns: Optional[Dict[str, str]] | Omit = omit,
         tenant_group_column: Optional[str] | Omit = omit,
         tenant_name_column: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -183,6 +211,8 @@ class TenantsResource(SyncAPIResource):
 
           tenant_key_column: Column name for tenant key
 
+          attribute_columns: Mapping of attribute names to warehouse column names for attribute import
+
           tenant_group_column: Column name for tenant group (optional)
 
           tenant_name_column: Column name for tenant display name (optional)
@@ -195,6 +225,7 @@ class TenantsResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
         return self._post(
             "/api/v1/tenants/import/warehouse",
             body=maybe_transform(
@@ -204,13 +235,20 @@ class TenantsResource(SyncAPIResource):
                     "schema": schema,
                     "table": table,
                     "tenant_key_column": tenant_key_column,
+                    "attribute_columns": attribute_columns,
                     "tenant_group_column": tenant_group_column,
                     "tenant_name_column": tenant_name_column,
                 },
                 tenant_import_from_warehouse_params.TenantImportFromWarehouseParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {"source": source}, tenant_import_from_warehouse_params.TenantImportFromWarehouseParams
+                ),
             ),
             cast_to=ImportTenantsResponse,
         )
@@ -271,6 +309,9 @@ class AsyncTenantsResource(AsyncAPIResource):
         self,
         *,
         file: FileTypes,
+        source: Optional[str] | Omit = omit,
+        attribute_columns: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -286,9 +327,13 @@ class AsyncTenantsResource(AsyncAPIResource):
         - tenant_key (required): Unique tenant identifier
         - tenant_name (optional): Human-readable name
         - group_names (optional): Comma-separated list of group names
+        - Additional columns can be mapped to attributes via attribute_columns
 
         Creates new tenants and updates existing ones with new name/groups. Groups are
         added additively (not replaced) and auto-created if needed.
+
+        Optionally processes attribute columns: values are validated against
+        attributes.yaml, stored additively, and validation errors are non-fatal.
 
         RLS: Filtered to current client (ClientRLSDB).
 
@@ -298,6 +343,8 @@ class AsyncTenantsResource(AsyncAPIResource):
         Args:
           file: CSV file with tenant data
 
+          attribute_columns: JSON mapping: attribute_name -> csv_column_name
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -306,7 +353,13 @@ class AsyncTenantsResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal({"file": file})
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        body = deepcopy_minimal(
+            {
+                "file": file,
+                "attribute_columns": attribute_columns,
+            }
+        )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
@@ -317,7 +370,13 @@ class AsyncTenantsResource(AsyncAPIResource):
             body=await async_maybe_transform(body, tenant_import_from_csv_params.TenantImportFromCsvParams),
             files=files,
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"source": source}, tenant_import_from_csv_params.TenantImportFromCsvParams
+                ),
             ),
             cast_to=ImportTenantsResponse,
         )
@@ -330,8 +389,11 @@ class AsyncTenantsResource(AsyncAPIResource):
         schema: str,
         table: str,
         tenant_key_column: str,
+        source: Optional[str] | Omit = omit,
+        attribute_columns: Optional[Dict[str, str]] | Omit = omit,
         tenant_group_column: Optional[str] | Omit = omit,
         tenant_name_column: Optional[str] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -367,6 +429,8 @@ class AsyncTenantsResource(AsyncAPIResource):
 
           tenant_key_column: Column name for tenant key
 
+          attribute_columns: Mapping of attribute names to warehouse column names for attribute import
+
           tenant_group_column: Column name for tenant group (optional)
 
           tenant_name_column: Column name for tenant display name (optional)
@@ -379,6 +443,7 @@ class AsyncTenantsResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
         return await self._post(
             "/api/v1/tenants/import/warehouse",
             body=await async_maybe_transform(
@@ -388,13 +453,20 @@ class AsyncTenantsResource(AsyncAPIResource):
                     "schema": schema,
                     "table": table,
                     "tenant_key_column": tenant_key_column,
+                    "attribute_columns": attribute_columns,
                     "tenant_group_column": tenant_group_column,
                     "tenant_name_column": tenant_name_column,
                 },
                 tenant_import_from_warehouse_params.TenantImportFromWarehouseParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"source": source}, tenant_import_from_warehouse_params.TenantImportFromWarehouseParams
+                ),
             ),
             cast_to=ImportTenantsResponse,
         )

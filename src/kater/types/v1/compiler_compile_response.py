@@ -74,5 +74,11 @@ class CompilerCompileResponse(BaseModel):
     metadata: Optional[Metadata] = None
     """Compilation metadata from the compiler."""
 
+    request_id: Optional[str] = None
+    """Write-back request ID.
+
+    Non-null when files were dispatched to CLI via WebSocket.
+    """
+
     sql: Optional[str] = None
     """Generated SQL statement"""

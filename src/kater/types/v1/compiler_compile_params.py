@@ -22,7 +22,7 @@ __all__ = [
     "ResolvedQueryChartHintChartHint2InputDefault",
     "ResolvedQueryDimension",
     "ResolvedQueryFilter",
-    "ResolvedQueryFilterInlineFieldFilter",
+    "ResolvedQueryFilterInlineFormulaFilter",
     "ResolvedQueryFilterInlineExistsFilter1",
     "ResolvedQueryFilterInlineExistsFilter2",
     "ResolvedQueryMeasure",
@@ -100,43 +100,14 @@ ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1Input,
 ResolvedQueryDimension: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
 
 
-class ResolvedQueryFilterInlineFieldFilter(TypedDict, total=False):
-    """An inline filter using field + operator + values"""
-
-    field: Required[str]
-    """Reference to the field to filter on"""
+class ResolvedQueryFilterInlineFormulaFilter(TypedDict, total=False):
+    """An inline filter using a SQL/expression formula"""
 
     name: Required[str]
     """Name of the inline filter"""
 
-    operator: Required[
-        Literal[
-            "equals",
-            "not_equals",
-            "in",
-            "not_in",
-            "greater_than",
-            "less_than",
-            "greater_than_or_equals",
-            "less_than_or_equals",
-            "between",
-            "in_the_last",
-            "in_the_next",
-            "contains",
-            "not_contains",
-            "starts_with",
-            "ends_with",
-            "is_null",
-            "is_not_null",
-        ]
-    ]
-    """Filter operator to apply"""
-
-    sql_value: Optional[str]
-    """SQL expression for the filter value"""
-
-    static_values: Optional[SequenceNotStr[Union[str, float, bool]]]
-    """Fixed values for the filter"""
+    sql: Required[str]
+    """SQL expression for the filter condition"""
 
 
 class ResolvedQueryFilterInlineExistsFilter1(TypedDict, total=False):
@@ -178,7 +149,7 @@ class ResolvedQueryFilterInlineExistsFilter2(TypedDict, total=False):
 
 
 ResolvedQueryFilter: TypeAlias = Union[
-    ResolvedQueryFilterInlineFieldFilter,
+    ResolvedQueryFilterInlineFormulaFilter,
     str,
     ResolvedQueryFilterInlineExistsFilter1,
     ResolvedQueryFilterInlineExistsFilter2,
@@ -270,17 +241,35 @@ class ResolvedQueryResolvedVariableConstraints(TypedDict, total=False):
 class ResolvedQueryResolvedVariable(TypedDict, total=False):
     """A variable definition with its bound value"""
 
-    bound_value: Required[Union[str, float, bool]]
+    bound_value: Required[Union[str, float, bool, SequenceNotStr[Union[str, float, bool]]]]
     """The concrete value bound for this resolution"""
 
-    default: Required[Union[str, float, bool]]
+    default: Required[Union[str, float, bool, SequenceNotStr[Union[str, float, bool]]]]
     """Default value for this variable"""
+
+    kater_id: Required[str]
+    """Unique identifier for this variable"""
 
     name: Required[str]
     """Variable name identifier"""
 
     type: Required[
-        Literal["STRING", "INT", "FLOAT", "DATE", "TIMESTAMP", "BOOL", "DIMENSION", "MEASURE", "CALCULATION", "FILTER"]
+        Literal[
+            "STRING",
+            "INT",
+            "FLOAT",
+            "DATE",
+            "TIMESTAMP",
+            "BOOL",
+            "STRING[]",
+            "INT[]",
+            "FLOAT[]",
+            "DATE[]",
+            "DIMENSION",
+            "MEASURE",
+            "CALCULATION",
+            "FILTER",
+        ]
     ]
     """Data type of the variable"""
 
@@ -296,6 +285,13 @@ class ResolvedQueryResolvedVariable(TypedDict, total=False):
     is_default: Optional[bool]
     """True if bound_value equals the default value"""
 
+    is_runtime: Optional[bool]
+    """True if this is a runtime variable (not resolved at compile time).
+
+    Runtime variables have var() placeholders left in compiled SQL for literal
+    substitution at execution time.
+    """
+
     label: Optional[str]
     """Human-readable label for the variable"""
 
@@ -309,7 +305,7 @@ class ResolvedQuerySelectFromOutputColumn(TypedDict, total=False):
     field_name: Required[str]
     """The field name used in q:query_name.field_name references"""
 
-    source_type: Required[Literal["dimension", "measure", "calculation"]]
+    source_type: Required[Literal["dimension", "dimension_date", "measure", "calculation"]]
     """Original type of the field in the source query"""
 
 
@@ -347,7 +343,7 @@ class ResolvedQuery(TypedDict, total=False):
     resolution)
     """
 
-    widget_category: Required[Literal["axis", "pie", "single_value", "heatmap", "table", "static"]]
+    widget_category: Required[Literal["axis", "funnel", "heatmap", "image", "kpi_card", "pie", "table", "text"]]
     """Widget category that determines data shape constraints"""
 
     ai_context: Optional[str]
@@ -371,22 +367,25 @@ class ResolvedQuery(TypedDict, total=False):
     disallowed_widget_types: Optional[
         List[
             Literal[
-                "kpi_card",
-                "line_chart",
-                "bar_chart",
-                "pie_chart",
-                "donut_chart",
-                "area_chart",
-                "scatter_chart",
-                "data_table",
-                "card_grid",
-                "heatmap",
-                "gauge",
-                "text",
-                "image",
-                "styled_table",
-                "stat_cards",
-                "key_value_list",
+                "axis_metric_by_dimension",
+                "axis_metric_by_dimensiondate",
+                "axis_metric_by_dimensiondate_sliced_by_dimension",
+                "axis_scatter_plot",
+                "funnel_funnel_chart",
+                "heatmap_heatmap",
+                "image_image_grid",
+                "image_single_image",
+                "kpi_measure_with_dimension_expression",
+                "kpi_measure_with_secondary_metric",
+                "kpi_single_measure_compared_to_prev_period_sparkline",
+                "kpi_single_value",
+                "pie_pie_chart",
+                "table_data_table",
+                "table_fancy_subtotal_table",
+                "table_key_value_list",
+                "table_styled_table",
+                "text_data_readout_with_sparkline",
+                "text_narrative_text",
             ]
         ]
     ]
@@ -415,9 +414,6 @@ class ResolvedQuery(TypedDict, total=False):
     Use desc for descending (highest/newest first) and asc for ascending
     (lowest/oldest first).
     """
-
-    required_access_grants: Optional[SequenceNotStr[str]]
-    """Access grants required to use this query"""
 
     resolved_chart: Optional[ResolvedQueryResolvedChart]
     """The matched chart recommendation after evaluating chart hints"""

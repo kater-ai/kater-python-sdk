@@ -1,13 +1,5 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .cache import (
-    CacheResource,
-    AsyncCacheResource,
-    CacheResourceWithRawResponse,
-    AsyncCacheResourceWithRawResponse,
-    CacheResourceWithStreamingResponse,
-    AsyncCacheResourceWithStreamingResponse,
-)
 from .compiler import (
     CompilerResource,
     AsyncCompilerResource,
@@ -16,14 +8,36 @@ from .compiler import (
     CompilerResourceWithStreamingResponse,
     AsyncCompilerResourceWithStreamingResponse,
 )
+from .manifest import (
+    ManifestResource,
+    AsyncManifestResource,
+    ManifestResourceWithRawResponse,
+    AsyncManifestResourceWithRawResponse,
+    ManifestResourceWithStreamingResponse,
+    AsyncManifestResourceWithStreamingResponse,
+)
+from .combination import (
+    CombinationResource,
+    AsyncCombinationResource,
+    CombinationResourceWithRawResponse,
+    AsyncCombinationResourceWithRawResponse,
+    CombinationResourceWithStreamingResponse,
+    AsyncCombinationResourceWithStreamingResponse,
+)
 
 __all__ = [
-    "CacheResource",
-    "AsyncCacheResource",
-    "CacheResourceWithRawResponse",
-    "AsyncCacheResourceWithRawResponse",
-    "CacheResourceWithStreamingResponse",
-    "AsyncCacheResourceWithStreamingResponse",
+    "CombinationResource",
+    "AsyncCombinationResource",
+    "CombinationResourceWithRawResponse",
+    "AsyncCombinationResourceWithRawResponse",
+    "CombinationResourceWithStreamingResponse",
+    "AsyncCombinationResourceWithStreamingResponse",
+    "ManifestResource",
+    "AsyncManifestResource",
+    "ManifestResourceWithRawResponse",
+    "AsyncManifestResourceWithRawResponse",
+    "ManifestResourceWithStreamingResponse",
+    "AsyncManifestResourceWithStreamingResponse",
     "CompilerResource",
     "AsyncCompilerResource",
     "CompilerResourceWithRawResponse",

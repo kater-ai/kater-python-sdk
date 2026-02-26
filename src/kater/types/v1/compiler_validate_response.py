@@ -2,6 +2,7 @@
 
 from typing import Dict, List, Optional
 
+from .manifest import Manifest
 from ..._models import BaseModel
 from .compiler_error_item import CompilerErrorItem
 
@@ -10,6 +11,8 @@ __all__ = [
     "ConnectionResult",
     "ConnectionResultDependencyGraph",
     "ConnectionResultDependencyGraphNodes",
+    "ConnectionResultRefFix",
+    "ConnectionResultRefFixReplacement",
 ]
 
 
@@ -45,6 +48,35 @@ class ConnectionResultDependencyGraph(BaseModel):
     """UUID string to node mapping"""
 
 
+class ConnectionResultRefFixReplacement(BaseModel):
+    """A single ref replacement within a file."""
+
+    file_path: str
+    """Path to the file containing the replaced ref"""
+
+    line_number: int
+    """Line number where the replacement occurred"""
+
+    new_ref: str
+    """Updated reference string"""
+
+    old_ref: str
+    """Original reference string"""
+
+
+class ConnectionResultRefFix(BaseModel):
+    """A file that was modified by auto-fix with its replacements."""
+
+    file_path: str
+    """Path to the modified file"""
+
+    new_content: str
+    """Full updated file content after fixes"""
+
+    replacements: List[ConnectionResultRefFixReplacement]
+    """Individual ref replacements made in this file"""
+
+
 class ConnectionResult(BaseModel):
     """Validation result for a single connection."""
 
@@ -63,6 +95,12 @@ class ConnectionResult(BaseModel):
     errors: Optional[List[CompilerErrorItem]] = None
     """Validation errors for this connection"""
 
+    manifest: Optional[Manifest] = None
+    """Compilation manifest with all named objects."""
+
+    ref_fixes: Optional[List[ConnectionResultRefFix]] = None
+    """Files auto-fixed due to renamed refs. None when no renames detected."""
+
     warnings: Optional[List[CompilerErrorItem]] = None
     """Validation warnings for this connection"""
 
@@ -78,6 +116,12 @@ class CompilerValidateResponse(BaseModel):
 
     errors: Optional[List[CompilerErrorItem]] = None
     """Validation errors"""
+
+    request_id: Optional[str] = None
+    """Write-back request ID.
+
+    Non-null when files were dispatched to CLI via WebSocket.
+    """
 
     warnings: Optional[List[CompilerErrorItem]] = None
     """Validation warnings"""
