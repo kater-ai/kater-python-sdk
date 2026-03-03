@@ -52,12 +52,16 @@ __all__ = ["CompilerResource", "AsyncCompilerResource"]
 
 
 class CompilerResource(SyncAPIResource):
+    """Validate, resolve, and compile query templates to SQL"""
+
     @cached_property
     def combination(self) -> CombinationResource:
+        """Validate, resolve, and compile query templates to SQL"""
         return CombinationResource(self._client)
 
     @cached_property
     def manifest(self) -> ManifestResource:
+        """Validate, resolve, and compile query templates to SQL"""
         return ManifestResource(self._client)
 
     @cached_property
@@ -448,12 +452,16 @@ class CompilerResource(SyncAPIResource):
 
 
 class AsyncCompilerResource(AsyncAPIResource):
+    """Validate, resolve, and compile query templates to SQL"""
+
     @cached_property
     def combination(self) -> AsyncCombinationResource:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncCombinationResource(self._client)
 
     @cached_property
     def manifest(self) -> AsyncManifestResource:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncManifestResource(self._client)
 
     @cached_property
@@ -870,10 +878,12 @@ class CompilerResourceWithRawResponse:
 
     @cached_property
     def combination(self) -> CombinationResourceWithRawResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return CombinationResourceWithRawResponse(self._compiler.combination)
 
     @cached_property
     def manifest(self) -> ManifestResourceWithRawResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return ManifestResourceWithRawResponse(self._compiler.manifest)
 
 
@@ -902,10 +912,12 @@ class AsyncCompilerResourceWithRawResponse:
 
     @cached_property
     def combination(self) -> AsyncCombinationResourceWithRawResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncCombinationResourceWithRawResponse(self._compiler.combination)
 
     @cached_property
     def manifest(self) -> AsyncManifestResourceWithRawResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncManifestResourceWithRawResponse(self._compiler.manifest)
 
 
@@ -934,10 +946,12 @@ class CompilerResourceWithStreamingResponse:
 
     @cached_property
     def combination(self) -> CombinationResourceWithStreamingResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return CombinationResourceWithStreamingResponse(self._compiler.combination)
 
     @cached_property
     def manifest(self) -> ManifestResourceWithStreamingResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return ManifestResourceWithStreamingResponse(self._compiler.manifest)
 
 
@@ -966,8 +980,10 @@ class AsyncCompilerResourceWithStreamingResponse:
 
     @cached_property
     def combination(self) -> AsyncCombinationResourceWithStreamingResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncCombinationResourceWithStreamingResponse(self._compiler.combination)
 
     @cached_property
     def manifest(self) -> AsyncManifestResourceWithStreamingResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncManifestResourceWithStreamingResponse(self._compiler.manifest)

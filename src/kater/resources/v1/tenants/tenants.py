@@ -39,8 +39,11 @@ __all__ = ["TenantsResource", "AsyncTenantsResource"]
 
 
 class TenantsResource(SyncAPIResource):
+    """Manage tenants (your end customers)"""
+
     @cached_property
     def groups(self) -> GroupsResource:
+        """Manage tenants (your end customers)"""
         return GroupsResource(self._client)
 
     @cached_property
@@ -255,8 +258,11 @@ class TenantsResource(SyncAPIResource):
 
 
 class AsyncTenantsResource(AsyncAPIResource):
+    """Manage tenants (your end customers)"""
+
     @cached_property
     def groups(self) -> AsyncGroupsResource:
+        """Manage tenants (your end customers)"""
         return AsyncGroupsResource(self._client)
 
     @cached_property
@@ -488,6 +494,7 @@ class TenantsResourceWithRawResponse:
 
     @cached_property
     def groups(self) -> GroupsResourceWithRawResponse:
+        """Manage tenants (your end customers)"""
         return GroupsResourceWithRawResponse(self._tenants.groups)
 
 
@@ -507,6 +514,7 @@ class AsyncTenantsResourceWithRawResponse:
 
     @cached_property
     def groups(self) -> AsyncGroupsResourceWithRawResponse:
+        """Manage tenants (your end customers)"""
         return AsyncGroupsResourceWithRawResponse(self._tenants.groups)
 
 
@@ -526,6 +534,7 @@ class TenantsResourceWithStreamingResponse:
 
     @cached_property
     def groups(self) -> GroupsResourceWithStreamingResponse:
+        """Manage tenants (your end customers)"""
         return GroupsResourceWithStreamingResponse(self._tenants.groups)
 
 
@@ -545,4 +554,5 @@ class AsyncTenantsResourceWithStreamingResponse:
 
     @cached_property
     def groups(self) -> AsyncGroupsResourceWithStreamingResponse:
+        """Manage tenants (your end customers)"""
         return AsyncGroupsResourceWithStreamingResponse(self._tenants.groups)

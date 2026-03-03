@@ -35,14 +35,17 @@ __all__ = ["V1Resource", "AsyncV1Resource"]
 class V1Resource(SyncAPIResource):
     @cached_property
     def compiler(self) -> CompilerResource:
+        """Validate, resolve, and compile query templates to SQL"""
         return CompilerResource(self._client)
 
     @cached_property
     def connections(self) -> ConnectionsResource:
+        """Manage database connections to your data warehouse"""
         return ConnectionsResource(self._client)
 
     @cached_property
     def tenants(self) -> TenantsResource:
+        """Manage tenants (your end customers)"""
         return TenantsResource(self._client)
 
     @cached_property
@@ -68,14 +71,17 @@ class V1Resource(SyncAPIResource):
 class AsyncV1Resource(AsyncAPIResource):
     @cached_property
     def compiler(self) -> AsyncCompilerResource:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncCompilerResource(self._client)
 
     @cached_property
     def connections(self) -> AsyncConnectionsResource:
+        """Manage database connections to your data warehouse"""
         return AsyncConnectionsResource(self._client)
 
     @cached_property
     def tenants(self) -> AsyncTenantsResource:
+        """Manage tenants (your end customers)"""
         return AsyncTenantsResource(self._client)
 
     @cached_property
@@ -104,14 +110,17 @@ class V1ResourceWithRawResponse:
 
     @cached_property
     def compiler(self) -> CompilerResourceWithRawResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return CompilerResourceWithRawResponse(self._v1.compiler)
 
     @cached_property
     def connections(self) -> ConnectionsResourceWithRawResponse:
+        """Manage database connections to your data warehouse"""
         return ConnectionsResourceWithRawResponse(self._v1.connections)
 
     @cached_property
     def tenants(self) -> TenantsResourceWithRawResponse:
+        """Manage tenants (your end customers)"""
         return TenantsResourceWithRawResponse(self._v1.tenants)
 
 
@@ -121,14 +130,17 @@ class AsyncV1ResourceWithRawResponse:
 
     @cached_property
     def compiler(self) -> AsyncCompilerResourceWithRawResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncCompilerResourceWithRawResponse(self._v1.compiler)
 
     @cached_property
     def connections(self) -> AsyncConnectionsResourceWithRawResponse:
+        """Manage database connections to your data warehouse"""
         return AsyncConnectionsResourceWithRawResponse(self._v1.connections)
 
     @cached_property
     def tenants(self) -> AsyncTenantsResourceWithRawResponse:
+        """Manage tenants (your end customers)"""
         return AsyncTenantsResourceWithRawResponse(self._v1.tenants)
 
 
@@ -138,14 +150,17 @@ class V1ResourceWithStreamingResponse:
 
     @cached_property
     def compiler(self) -> CompilerResourceWithStreamingResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return CompilerResourceWithStreamingResponse(self._v1.compiler)
 
     @cached_property
     def connections(self) -> ConnectionsResourceWithStreamingResponse:
+        """Manage database connections to your data warehouse"""
         return ConnectionsResourceWithStreamingResponse(self._v1.connections)
 
     @cached_property
     def tenants(self) -> TenantsResourceWithStreamingResponse:
+        """Manage tenants (your end customers)"""
         return TenantsResourceWithStreamingResponse(self._v1.tenants)
 
 
@@ -155,12 +170,15 @@ class AsyncV1ResourceWithStreamingResponse:
 
     @cached_property
     def compiler(self) -> AsyncCompilerResourceWithStreamingResponse:
+        """Validate, resolve, and compile query templates to SQL"""
         return AsyncCompilerResourceWithStreamingResponse(self._v1.compiler)
 
     @cached_property
     def connections(self) -> AsyncConnectionsResourceWithStreamingResponse:
+        """Manage database connections to your data warehouse"""
         return AsyncConnectionsResourceWithStreamingResponse(self._v1.connections)
 
     @cached_property
     def tenants(self) -> AsyncTenantsResourceWithStreamingResponse:
+        """Manage tenants (your end customers)"""
         return AsyncTenantsResourceWithStreamingResponse(self._v1.tenants)

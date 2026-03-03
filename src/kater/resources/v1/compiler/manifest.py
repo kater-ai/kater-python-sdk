@@ -24,6 +24,8 @@ __all__ = ["ManifestResource", "AsyncManifestResource"]
 
 
 class ManifestResource(SyncAPIResource):
+    """Validate, resolve, and compile query templates to SQL"""
+
     @cached_property
     def with_raw_response(self) -> ManifestResourceWithRawResponse:
         """
@@ -101,6 +103,8 @@ class ManifestResource(SyncAPIResource):
 
 
 class AsyncManifestResource(AsyncAPIResource):
+    """Validate, resolve, and compile query templates to SQL"""
+
     @cached_property
     def with_raw_response(self) -> AsyncManifestResourceWithRawResponse:
         """
