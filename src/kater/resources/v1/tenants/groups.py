@@ -20,6 +20,8 @@ __all__ = ["GroupsResource", "AsyncGroupsResource"]
 
 
 class GroupsResource(SyncAPIResource):
+    """Manage tenants (your end customers)"""
+
     @cached_property
     def with_raw_response(self) -> GroupsResourceWithRawResponse:
         """
@@ -67,6 +69,8 @@ class GroupsResource(SyncAPIResource):
 
 
 class AsyncGroupsResource(AsyncAPIResource):
+    """Manage tenants (your end customers)"""
+
     @cached_property
     def with_raw_response(self) -> AsyncGroupsResourceWithRawResponse:
         """
