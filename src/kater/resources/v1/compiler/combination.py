@@ -24,6 +24,8 @@ __all__ = ["CombinationResource", "AsyncCombinationResource"]
 
 
 class CombinationResource(SyncAPIResource):
+    """Validate, resolve, and compile query templates to SQL"""
+
     @cached_property
     def with_raw_response(self) -> CombinationResourceWithRawResponse:
         """
@@ -109,6 +111,8 @@ class CombinationResource(SyncAPIResource):
 
 
 class AsyncCombinationResource(AsyncAPIResource):
+    """Validate, resolve, and compile query templates to SQL"""
+
     @cached_property
     def with_raw_response(self) -> AsyncCombinationResourceWithRawResponse:
         """

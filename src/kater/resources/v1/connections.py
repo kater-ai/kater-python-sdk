@@ -24,6 +24,8 @@ __all__ = ["ConnectionsResource", "AsyncConnectionsResource"]
 
 
 class ConnectionsResource(SyncAPIResource):
+    """Manage database connections to your data warehouse"""
+
     @cached_property
     def with_raw_response(self) -> ConnectionsResourceWithRawResponse:
         """
@@ -93,6 +95,8 @@ class ConnectionsResource(SyncAPIResource):
 
 
 class AsyncConnectionsResource(AsyncAPIResource):
+    """Manage database connections to your data warehouse"""
+
     @cached_property
     def with_raw_response(self) -> AsyncConnectionsResourceWithRawResponse:
         """

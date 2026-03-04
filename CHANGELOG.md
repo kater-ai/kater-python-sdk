@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.10.1 (2026-03-04)
+
+Full Changelog: [v0.10.0...v0.10.1](https://github.com/kater-ai/kater-python-sdk/compare/v0.10.0...v0.10.1)
+
+### Chores
+
+* **ci:** bump uv version ([11fb0a9](https://github.com/kater-ai/kater-python-sdk/commit/11fb0a98b8c4a8872d8b13e028aab21dd24fc49d))
+* **internal:** codegen related update ([e6a50a2](https://github.com/kater-ai/kater-python-sdk/commit/e6a50a215eb8b5b5b99a9e8b982342e716e07a44))
+* **internal:** refactor authentication internals ([b3e64fc](https://github.com/kater-ai/kater-python-sdk/commit/b3e64fce966342f76ab5fca477ae281edd4b19ea))
+
 ## 0.10.0 (2026-02-25)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.9.0...v0.10.0)
