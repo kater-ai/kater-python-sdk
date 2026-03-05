@@ -50,9 +50,10 @@ class CombinationResource(SyncAPIResource):
         *,
         combination: str,
         connection_id: str,
-        query_ref: str,
+        query_id: str,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
+        pinned_variant: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -75,10 +76,12 @@ class CombinationResource(SyncAPIResource):
 
           connection_id: Connection to preview against
 
-          query_ref: Query template reference (e.g. 'q:compliance_trend.\\__base')
+          query_id: UUID of the query template
 
           tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
               clients.
+
+          pinned_variant: Optional pinned variant name (e.g. '\\__base').
 
           extra_headers: Send extra headers
 
@@ -95,8 +98,9 @@ class CombinationResource(SyncAPIResource):
                 {
                     "combination": combination,
                     "connection_id": connection_id,
-                    "query_ref": query_ref,
+                    "query_id": query_id,
                     "tenant_key": tenant_key,
+                    "pinned_variant": pinned_variant,
                 },
                 combination_preview_params.CombinationPreviewParams,
             ),
@@ -138,9 +142,10 @@ class AsyncCombinationResource(AsyncAPIResource):
         *,
         combination: str,
         connection_id: str,
-        query_ref: str,
+        query_id: str,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
+        pinned_variant: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -163,10 +168,12 @@ class AsyncCombinationResource(AsyncAPIResource):
 
           connection_id: Connection to preview against
 
-          query_ref: Query template reference (e.g. 'q:compliance_trend.\\__base')
+          query_id: UUID of the query template
 
           tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
               clients.
+
+          pinned_variant: Optional pinned variant name (e.g. '\\__base').
 
           extra_headers: Send extra headers
 
@@ -183,8 +190,9 @@ class AsyncCombinationResource(AsyncAPIResource):
                 {
                     "combination": combination,
                     "connection_id": connection_id,
-                    "query_ref": query_ref,
+                    "query_id": query_id,
                     "tenant_key": tenant_key,
+                    "pinned_variant": pinned_variant,
                 },
                 combination_preview_params.CombinationPreviewParams,
             ),
