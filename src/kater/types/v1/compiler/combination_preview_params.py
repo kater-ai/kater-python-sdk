@@ -20,12 +20,18 @@ class CombinationPreviewParams(TypedDict, total=False):
     connection_id: Required[str]
     """Connection to preview against"""
 
-    query_ref: Required[str]
-    """Query template reference (e.g. 'q:compliance_trend.\\__base')"""
+    query_id: Required[str]
+    """UUID of the query template"""
+
+    tenant_key: Required[str]
+    """Tenant key for multi-tenant execution.
+
+    Use 'kater_global_tenant' for no-tenancy clients.
+    """
 
     source: Optional[str]
 
-    tenant_key: Optional[str]
-    """Optional tenant key for multi-tenant execution"""
+    pinned_variant: Optional[str]
+    """Optional pinned variant name (e.g. '\\__base')."""
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]

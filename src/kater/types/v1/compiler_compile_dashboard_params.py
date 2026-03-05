@@ -18,12 +18,15 @@ class CompilerCompileDashboardParams(TypedDict, total=False):
     dashboard_path: Required[str]
     """Relative path within the connection (e.g. 'dashboards/compliance_overview')"""
 
+    tenant_key: Required[str]
+    """Tenant key for multi-tenant execution.
+
+    Use 'kater_global_tenant' for no-tenancy clients.
+    """
+
     source: Optional[str]
 
     filters: Optional[Dict[str, Union[str, SequenceNotStr[str], None]]]
     """Optional filter overrides from UI"""
-
-    tenant_key: Optional[str]
-    """Optional tenant key for multi-tenant execution"""
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]

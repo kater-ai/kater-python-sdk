@@ -46,14 +46,15 @@ class CompilerCompileParams(TypedDict, total=False):
     resolved_query: Required[ResolvedQuery]
     """Previously resolved query object from /resolve"""
 
-    source: Optional[str]
-
-    tenant_key: Optional[str]
+    tenant_key: Required[str]
     """Tenant key for multi-tenant compilation.
 
+    Use 'kater_global_tenant' for no-tenancy clients or to bypass tenant isolation.
     For database tenancy, maps to the tenant's database. For row tenancy, used as
     the row-level filter value.
     """
+
+    source: Optional[str]
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]
 

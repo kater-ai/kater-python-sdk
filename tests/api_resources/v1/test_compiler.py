@@ -36,6 +36,7 @@ class TestCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
 
@@ -154,8 +155,8 @@ class TestCompiler:
                     }
                 ],
             },
-            source="source",
             tenant_key="tenant_key",
+            source="source",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
@@ -172,6 +173,7 @@ class TestCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -191,6 +193,7 @@ class TestCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -206,6 +209,7 @@ class TestCompiler:
         compiler = client.v1.compiler.compile_dashboard(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             dashboard_path="dashboard_path",
+            tenant_key="tenant_key",
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
@@ -215,9 +219,9 @@ class TestCompiler:
         compiler = client.v1.compiler.compile_dashboard(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             dashboard_path="dashboard_path",
+            tenant_key="tenant_key",
             source="source",
             filters={"foo": "string"},
-            tenant_key="tenant_key",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
@@ -228,6 +232,7 @@ class TestCompiler:
         response = client.v1.compiler.with_raw_response.compile_dashboard(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             dashboard_path="dashboard_path",
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -241,6 +246,7 @@ class TestCompiler:
         with client.v1.compiler.with_streaming_response.compile_dashboard(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             dashboard_path="dashboard_path",
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -255,6 +261,7 @@ class TestCompiler:
     def test_method_enumerate(self, client: Kater) -> None:
         compiler = client.v1.compiler.enumerate(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
@@ -263,9 +270,9 @@ class TestCompiler:
     def test_method_enumerate_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.enumerate(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            source="source",
-            query_refs=["string"],
             tenant_key="tenant_key",
+            source="source",
+            query_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
@@ -275,6 +282,7 @@ class TestCompiler:
     def test_raw_response_enumerate(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.enumerate(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -287,6 +295,7 @@ class TestCompiler:
     def test_streaming_response_enumerate(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.enumerate(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -308,6 +317,7 @@ class TestCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
@@ -426,8 +436,8 @@ class TestCompiler:
                     }
                 ],
             },
-            source="source",
             tenant_key="tenant_key",
+            source="source",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
@@ -444,6 +454,7 @@ class TestCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -463,6 +474,7 @@ class TestCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -477,7 +489,7 @@ class TestCompiler:
     def test_method_resolve(self, client: Kater) -> None:
         compiler = client.v1.compiler.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
 
@@ -486,10 +498,11 @@ class TestCompiler:
     def test_method_resolve_with_all_params(self, client: Kater) -> None:
         compiler = client.v1.compiler.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             source="source",
             auto_fix=True,
             combination="combination",
+            pinned_variant="pinned_variant",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
@@ -499,7 +512,7 @@ class TestCompiler:
     def test_raw_response_resolve(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -512,7 +525,7 @@ class TestCompiler:
     def test_streaming_response_resolve(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -579,6 +592,7 @@ class TestAsyncCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
 
@@ -697,8 +711,8 @@ class TestAsyncCompiler:
                     }
                 ],
             },
-            source="source",
             tenant_key="tenant_key",
+            source="source",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
@@ -715,6 +729,7 @@ class TestAsyncCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -734,6 +749,7 @@ class TestAsyncCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -749,6 +765,7 @@ class TestAsyncCompiler:
         compiler = await async_client.v1.compiler.compile_dashboard(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             dashboard_path="dashboard_path",
+            tenant_key="tenant_key",
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
 
@@ -758,9 +775,9 @@ class TestAsyncCompiler:
         compiler = await async_client.v1.compiler.compile_dashboard(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             dashboard_path="dashboard_path",
+            tenant_key="tenant_key",
             source="source",
             filters={"foo": "string"},
-            tenant_key="tenant_key",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
@@ -771,6 +788,7 @@ class TestAsyncCompiler:
         response = await async_client.v1.compiler.with_raw_response.compile_dashboard(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             dashboard_path="dashboard_path",
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -784,6 +802,7 @@ class TestAsyncCompiler:
         async with async_client.v1.compiler.with_streaming_response.compile_dashboard(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             dashboard_path="dashboard_path",
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -798,6 +817,7 @@ class TestAsyncCompiler:
     async def test_method_enumerate(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.enumerate(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
 
@@ -806,9 +826,9 @@ class TestAsyncCompiler:
     async def test_method_enumerate_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.enumerate(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            source="source",
-            query_refs=["string"],
             tenant_key="tenant_key",
+            source="source",
+            query_ids=["182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerEnumerateResponse, compiler, path=["response"])
@@ -818,6 +838,7 @@ class TestAsyncCompiler:
     async def test_raw_response_enumerate(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.enumerate(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -830,6 +851,7 @@ class TestAsyncCompiler:
     async def test_streaming_response_enumerate(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.enumerate(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -851,6 +873,7 @@ class TestAsyncCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
 
@@ -969,8 +992,8 @@ class TestAsyncCompiler:
                     }
                 ],
             },
-            source="source",
             tenant_key="tenant_key",
+            source="source",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
@@ -987,6 +1010,7 @@ class TestAsyncCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -1006,6 +1030,7 @@ class TestAsyncCompiler:
                 "topic": "ref(dim_customer.sale_price)",
                 "widget_category": "axis",
             },
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1020,7 +1045,7 @@ class TestAsyncCompiler:
     async def test_method_resolve(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
 
@@ -1029,10 +1054,11 @@ class TestAsyncCompiler:
     async def test_method_resolve_with_all_params(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             source="source",
             auto_fix=True,
             combination="combination",
+            pinned_variant="pinned_variant",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
@@ -1042,7 +1068,7 @@ class TestAsyncCompiler:
     async def test_raw_response_resolve(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -1055,7 +1081,7 @@ class TestAsyncCompiler:
     async def test_streaming_response_resolve(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.resolve(
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

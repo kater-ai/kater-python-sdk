@@ -15,15 +15,16 @@ class CompilerEnumerateParams(TypedDict, total=False):
     connection_id: Required[str]
     """Connection to enumerate against"""
 
-    source: Optional[str]
-
-    query_refs: Optional[SequenceNotStr[str]]
-    """Optional query refs to limit enumeration. If omitted, enumerates all queries."""
-
-    tenant_key: Optional[str]
+    tenant_key: Required[str]
     """Tenant key for multi-tenant clients.
 
-    Required when the client uses row or database tenancy.
+    Use 'kater_global_tenant' for no-tenancy clients or when no tenant isolation is
+    needed.
     """
+
+    source: Optional[str]
+
+    query_ids: Optional[SequenceNotStr[str]]
+    """Optional query UUIDs to limit enumeration. If omitted, enumerates all queries."""
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.11.0 (2026-03-05)
+
+Full Changelog: [v0.10.1...v0.11.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.10.1...v0.11.0)
+
+### Features
+
+* Feat/query id fix ([bf307f3](https://github.com/kater-ai/kater-python-sdk/commit/bf307f376ea77d8e525980eb9e912d67c440f928))
+* **security:** make tenant_key required on all API endpoints and cod… ([af0933f](https://github.com/kater-ai/kater-python-sdk/commit/af0933f75055e4dc72061682728587693a2bb6d3))
+
 ## 0.10.1 (2026-03-04)
 
 Full Changelog: [v0.10.0...v0.10.1](https://github.com/kater-ai/kater-python-sdk/compare/v0.10.0...v0.10.1)

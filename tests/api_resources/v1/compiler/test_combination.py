@@ -23,7 +23,8 @@ class TestCombination:
         combination = client.v1.compiler.combination.preview(
             combination="combination",
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         )
         assert_matches_type(CombinationPreviewResponse, combination, path=["response"])
 
@@ -33,9 +34,10 @@ class TestCombination:
         combination = client.v1.compiler.combination.preview(
             combination="combination",
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
-            source="source",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             tenant_key="tenant_key",
+            source="source",
+            pinned_variant="pinned_variant",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CombinationPreviewResponse, combination, path=["response"])
@@ -46,7 +48,8 @@ class TestCombination:
         response = client.v1.compiler.combination.with_raw_response.preview(
             combination="combination",
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -60,7 +63,8 @@ class TestCombination:
         with client.v1.compiler.combination.with_streaming_response.preview(
             combination="combination",
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -82,7 +86,8 @@ class TestAsyncCombination:
         combination = await async_client.v1.compiler.combination.preview(
             combination="combination",
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         )
         assert_matches_type(CombinationPreviewResponse, combination, path=["response"])
 
@@ -92,9 +97,10 @@ class TestAsyncCombination:
         combination = await async_client.v1.compiler.combination.preview(
             combination="combination",
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
-            source="source",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             tenant_key="tenant_key",
+            source="source",
+            pinned_variant="pinned_variant",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CombinationPreviewResponse, combination, path=["response"])
@@ -105,7 +111,8 @@ class TestAsyncCombination:
         response = await async_client.v1.compiler.combination.with_raw_response.preview(
             combination="combination",
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         )
 
         assert response.is_closed is True
@@ -119,7 +126,8 @@ class TestAsyncCombination:
         async with async_client.v1.compiler.combination.with_streaming_response.preview(
             combination="combination",
             connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            query_ref="query_ref",
+            query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            tenant_key="tenant_key",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
