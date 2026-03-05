@@ -19,6 +19,9 @@ class Combination(BaseModel):
     combination_id: Optional[str] = None
     """Deterministic UUID v5 for this combination"""
 
+    query_kater_id: Optional[str] = None
+    """UUID of the query template"""
+
     query_label: Optional[str] = None
     """Human-readable label for the query"""
 

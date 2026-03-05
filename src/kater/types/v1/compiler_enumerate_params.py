@@ -24,7 +24,7 @@ class CompilerEnumerateParams(TypedDict, total=False):
 
     source: Optional[str]
 
-    query_refs: Optional[SequenceNotStr[str]]
-    """Optional query refs to limit enumeration. If omitted, enumerates all queries."""
+    query_ids: Optional[SequenceNotStr[str]]
+    """Optional query UUIDs to limit enumeration. If omitted, enumerates all queries."""
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]

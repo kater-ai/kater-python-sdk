@@ -14,8 +14,8 @@ class CompilerResolveParams(TypedDict, total=False):
     connection_id: Required[str]
     """Connection to resolve against"""
 
-    query_ref: Required[str]
-    """Reference to the query template (e.g. 'ref(MY_QUERY)')"""
+    query_id: Required[str]
+    """UUID of the query template"""
 
     source: Optional[str]
 
@@ -28,6 +28,12 @@ class CompilerResolveParams(TypedDict, total=False):
     Reserved keys: measure, dimension, filter, calculation. All other keys are
     variable assignments. Example: 'measure=Compliance
     Rate,dimension=Department,breakdown=region'
+    """
+
+    pinned_variant: Optional[str]
+    """Optional pinned variant name (e.g.
+
+    '\\__base'). Selects a specific pinned configuration.
     """
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]

@@ -216,7 +216,7 @@ class CompilerResource(SyncAPIResource):
         connection_id: str,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
-        query_refs: Optional[SequenceNotStr[str]] | Omit = omit,
+        query_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -239,7 +239,7 @@ class CompilerResource(SyncAPIResource):
           tenant_key: Tenant key for multi-tenant clients. Use 'kater_global_tenant' for no-tenancy
               clients or when no tenant isolation is needed.
 
-          query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
+          query_ids: Optional query UUIDs to limit enumeration. If omitted, enumerates all queries.
 
           extra_headers: Send extra headers
 
@@ -256,7 +256,7 @@ class CompilerResource(SyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "tenant_key": tenant_key,
-                    "query_refs": query_refs,
+                    "query_ids": query_ids,
                 },
                 compiler_enumerate_params.CompilerEnumerateParams,
             ),
@@ -335,10 +335,11 @@ class CompilerResource(SyncAPIResource):
         self,
         *,
         connection_id: str,
-        query_ref: str,
+        query_id: str,
         source: Optional[str] | Omit = omit,
         auto_fix: bool | Omit = omit,
         combination: str | Omit = omit,
+        pinned_variant: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -358,7 +359,7 @@ class CompilerResource(SyncAPIResource):
         Args:
           connection_id: Connection to resolve against
 
-          query_ref: Reference to the query template (e.g. 'ref(MY_QUERY)')
+          query_id: UUID of the query template
 
           auto_fix: Automatically fix broken refs caused by renames. Defaults to True.
 
@@ -367,6 +368,9 @@ class CompilerResource(SyncAPIResource):
               measure, dimension, filter, calculation. All other keys are variable
               assignments. Example: 'measure=Compliance
               Rate,dimension=Department,breakdown=region'
+
+          pinned_variant: Optional pinned variant name (e.g. '\\__base'). Selects a specific pinned
+              configuration.
 
           extra_headers: Send extra headers
 
@@ -382,9 +386,10 @@ class CompilerResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "connection_id": connection_id,
-                    "query_ref": query_ref,
+                    "query_id": query_id,
                     "auto_fix": auto_fix,
                     "combination": combination,
+                    "pinned_variant": pinned_variant,
                 },
                 compiler_resolve_params.CompilerResolveParams,
             ),
@@ -619,7 +624,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         connection_id: str,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
-        query_refs: Optional[SequenceNotStr[str]] | Omit = omit,
+        query_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -642,7 +647,7 @@ class AsyncCompilerResource(AsyncAPIResource):
           tenant_key: Tenant key for multi-tenant clients. Use 'kater_global_tenant' for no-tenancy
               clients or when no tenant isolation is needed.
 
-          query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
+          query_ids: Optional query UUIDs to limit enumeration. If omitted, enumerates all queries.
 
           extra_headers: Send extra headers
 
@@ -659,7 +664,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "tenant_key": tenant_key,
-                    "query_refs": query_refs,
+                    "query_ids": query_ids,
                 },
                 compiler_enumerate_params.CompilerEnumerateParams,
             ),
@@ -740,10 +745,11 @@ class AsyncCompilerResource(AsyncAPIResource):
         self,
         *,
         connection_id: str,
-        query_ref: str,
+        query_id: str,
         source: Optional[str] | Omit = omit,
         auto_fix: bool | Omit = omit,
         combination: str | Omit = omit,
+        pinned_variant: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -763,7 +769,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         Args:
           connection_id: Connection to resolve against
 
-          query_ref: Reference to the query template (e.g. 'ref(MY_QUERY)')
+          query_id: UUID of the query template
 
           auto_fix: Automatically fix broken refs caused by renames. Defaults to True.
 
@@ -772,6 +778,9 @@ class AsyncCompilerResource(AsyncAPIResource):
               measure, dimension, filter, calculation. All other keys are variable
               assignments. Example: 'measure=Compliance
               Rate,dimension=Department,breakdown=region'
+
+          pinned_variant: Optional pinned variant name (e.g. '\\__base'). Selects a specific pinned
+              configuration.
 
           extra_headers: Send extra headers
 
@@ -787,9 +796,10 @@ class AsyncCompilerResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "connection_id": connection_id,
-                    "query_ref": query_ref,
+                    "query_id": query_id,
                     "auto_fix": auto_fix,
                     "combination": combination,
+                    "pinned_variant": pinned_variant,
                 },
                 compiler_resolve_params.CompilerResolveParams,
             ),
