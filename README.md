@@ -121,6 +121,7 @@ response = client.v1.compiler.compile(
         "topic": "ref(dim_customer.sale_price)",
         "widget_category": "axis",
     },
+    tenant_key="tenant_key",
 )
 print(response.resolved_query)
 ```

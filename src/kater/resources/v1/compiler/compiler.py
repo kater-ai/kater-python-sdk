@@ -88,8 +88,8 @@ class CompilerResource(SyncAPIResource):
         *,
         connection_id: str,
         resolved_query: compiler_compile_params.ResolvedQuery,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -111,8 +111,9 @@ class CompilerResource(SyncAPIResource):
 
           resolved_query: Previously resolved query object from /resolve
 
-          tenant_key: Tenant key for multi-tenant compilation. For database tenancy, maps to the
-              tenant's database. For row tenancy, used as the row-level filter value.
+          tenant_key: Tenant key for multi-tenant compilation. Use 'kater_global_tenant' for
+              no-tenancy clients or to bypass tenant isolation. For database tenancy, maps to
+              the tenant's database. For row tenancy, used as the row-level filter value.
 
           extra_headers: Send extra headers
 
@@ -148,9 +149,9 @@ class CompilerResource(SyncAPIResource):
         *,
         connection_id: str,
         dashboard_path: str,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
         filters: Optional[Dict[str, Union[str, SequenceNotStr[str], None]]] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -172,9 +173,10 @@ class CompilerResource(SyncAPIResource):
 
           dashboard_path: Relative path within the connection (e.g. 'dashboards/compliance_overview')
 
-          filters: Optional filter overrides from UI
+          tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
+              clients.
 
-          tenant_key: Optional tenant key for multi-tenant execution
+          filters: Optional filter overrides from UI
 
           extra_headers: Send extra headers
 
@@ -191,8 +193,8 @@ class CompilerResource(SyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "dashboard_path": dashboard_path,
-                    "filters": filters,
                     "tenant_key": tenant_key,
+                    "filters": filters,
                 },
                 compiler_compile_dashboard_params.CompilerCompileDashboardParams,
             ),
@@ -212,9 +214,9 @@ class CompilerResource(SyncAPIResource):
         self,
         *,
         connection_id: str,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
         query_refs: Optional[SequenceNotStr[str]] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -234,10 +236,10 @@ class CompilerResource(SyncAPIResource):
         Args:
           connection_id: Connection to enumerate against
 
-          query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
+          tenant_key: Tenant key for multi-tenant clients. Use 'kater_global_tenant' for no-tenancy
+              clients or when no tenant isolation is needed.
 
-          tenant_key: Tenant key for multi-tenant clients. Required when the client uses row or
-              database tenancy.
+          query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
 
           extra_headers: Send extra headers
 
@@ -253,8 +255,8 @@ class CompilerResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "connection_id": connection_id,
-                    "query_refs": query_refs,
                     "tenant_key": tenant_key,
+                    "query_refs": query_refs,
                 },
                 compiler_enumerate_params.CompilerEnumerateParams,
             ),
@@ -273,8 +275,8 @@ class CompilerResource(SyncAPIResource):
         *,
         connection_id: str,
         resolved_query: compiler_execute_params.ResolvedQuery,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -297,7 +299,8 @@ class CompilerResource(SyncAPIResource):
 
           resolved_query: Previously resolved query object from /resolve
 
-          tenant_key: Tenant key for multi-tenant execution
+          tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
+              clients.
 
           extra_headers: Send extra headers
 
@@ -488,8 +491,8 @@ class AsyncCompilerResource(AsyncAPIResource):
         *,
         connection_id: str,
         resolved_query: compiler_compile_params.ResolvedQuery,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -511,8 +514,9 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           resolved_query: Previously resolved query object from /resolve
 
-          tenant_key: Tenant key for multi-tenant compilation. For database tenancy, maps to the
-              tenant's database. For row tenancy, used as the row-level filter value.
+          tenant_key: Tenant key for multi-tenant compilation. Use 'kater_global_tenant' for
+              no-tenancy clients or to bypass tenant isolation. For database tenancy, maps to
+              the tenant's database. For row tenancy, used as the row-level filter value.
 
           extra_headers: Send extra headers
 
@@ -548,9 +552,9 @@ class AsyncCompilerResource(AsyncAPIResource):
         *,
         connection_id: str,
         dashboard_path: str,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
         filters: Optional[Dict[str, Union[str, SequenceNotStr[str], None]]] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -572,9 +576,10 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           dashboard_path: Relative path within the connection (e.g. 'dashboards/compliance_overview')
 
-          filters: Optional filter overrides from UI
+          tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
+              clients.
 
-          tenant_key: Optional tenant key for multi-tenant execution
+          filters: Optional filter overrides from UI
 
           extra_headers: Send extra headers
 
@@ -591,8 +596,8 @@ class AsyncCompilerResource(AsyncAPIResource):
                 {
                     "connection_id": connection_id,
                     "dashboard_path": dashboard_path,
-                    "filters": filters,
                     "tenant_key": tenant_key,
+                    "filters": filters,
                 },
                 compiler_compile_dashboard_params.CompilerCompileDashboardParams,
             ),
@@ -612,9 +617,9 @@ class AsyncCompilerResource(AsyncAPIResource):
         self,
         *,
         connection_id: str,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
         query_refs: Optional[SequenceNotStr[str]] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -634,10 +639,10 @@ class AsyncCompilerResource(AsyncAPIResource):
         Args:
           connection_id: Connection to enumerate against
 
-          query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
+          tenant_key: Tenant key for multi-tenant clients. Use 'kater_global_tenant' for no-tenancy
+              clients or when no tenant isolation is needed.
 
-          tenant_key: Tenant key for multi-tenant clients. Required when the client uses row or
-              database tenancy.
+          query_refs: Optional query refs to limit enumeration. If omitted, enumerates all queries.
 
           extra_headers: Send extra headers
 
@@ -653,8 +658,8 @@ class AsyncCompilerResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "connection_id": connection_id,
-                    "query_refs": query_refs,
                     "tenant_key": tenant_key,
+                    "query_refs": query_refs,
                 },
                 compiler_enumerate_params.CompilerEnumerateParams,
             ),
@@ -675,8 +680,8 @@ class AsyncCompilerResource(AsyncAPIResource):
         *,
         connection_id: str,
         resolved_query: compiler_execute_params.ResolvedQuery,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -699,7 +704,8 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           resolved_query: Previously resolved query object from /resolve
 
-          tenant_key: Tenant key for multi-tenant execution
+          tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
+              clients.
 
           extra_headers: Send extra headers
 
