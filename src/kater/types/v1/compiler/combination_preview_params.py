@@ -23,9 +23,12 @@ class CombinationPreviewParams(TypedDict, total=False):
     query_ref: Required[str]
     """Query template reference (e.g. 'q:compliance_trend.\\__base')"""
 
-    source: Optional[str]
+    tenant_key: Required[str]
+    """Tenant key for multi-tenant execution.
 
-    tenant_key: Optional[str]
-    """Optional tenant key for multi-tenant execution"""
+    Use 'kater_global_tenant' for no-tenancy clients.
+    """
+
+    source: Optional[str]
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]

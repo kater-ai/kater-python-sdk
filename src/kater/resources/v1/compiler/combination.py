@@ -51,8 +51,8 @@ class CombinationResource(SyncAPIResource):
         combination: str,
         connection_id: str,
         query_ref: str,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -77,7 +77,8 @@ class CombinationResource(SyncAPIResource):
 
           query_ref: Query template reference (e.g. 'q:compliance_trend.\\__base')
 
-          tenant_key: Optional tenant key for multi-tenant execution
+          tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
+              clients.
 
           extra_headers: Send extra headers
 
@@ -138,8 +139,8 @@ class AsyncCombinationResource(AsyncAPIResource):
         combination: str,
         connection_id: str,
         query_ref: str,
+        tenant_key: str,
         source: Optional[str] | Omit = omit,
-        tenant_key: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -164,7 +165,8 @@ class AsyncCombinationResource(AsyncAPIResource):
 
           query_ref: Query template reference (e.g. 'q:compliance_trend.\\__base')
 
-          tenant_key: Optional tenant key for multi-tenant execution
+          tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
+              clients.
 
           extra_headers: Send extra headers
 
