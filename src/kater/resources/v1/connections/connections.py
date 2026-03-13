@@ -6,25 +6,62 @@ from typing_extensions import Literal
 
 import httpx
 
-from ..._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from ..._utils import maybe_transform, async_maybe_transform
-from ..._compat import cached_property
-from ...types.v1 import connection_list_connections_params
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ..._response import (
+from .oauth import (
+    OAuthResource,
+    AsyncOAuthResource,
+    OAuthResourceWithRawResponse,
+    AsyncOAuthResourceWithRawResponse,
+    OAuthResourceWithStreamingResponse,
+    AsyncOAuthResourceWithStreamingResponse,
+)
+from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ...._utils import maybe_transform, async_maybe_transform
+from ...._compat import cached_property
+from ....types.v1 import connection_list_connections_params
+from ...._resource import SyncAPIResource, AsyncAPIResource
+from ...._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ..._base_client import make_request_options
-from ...types.v1.connection_list_connections_response import ConnectionListConnectionsResponse
+from .client.client import (
+    ClientResource,
+    AsyncClientResource,
+    ClientResourceWithRawResponse,
+    AsyncClientResourceWithRawResponse,
+    ClientResourceWithStreamingResponse,
+    AsyncClientResourceWithStreamingResponse,
+)
+from .tenant.tenant import (
+    TenantResource,
+    AsyncTenantResource,
+    TenantResourceWithRawResponse,
+    AsyncTenantResourceWithRawResponse,
+    TenantResourceWithStreamingResponse,
+    AsyncTenantResourceWithStreamingResponse,
+)
+from ...._base_client import make_request_options
+from ....types.v1.connection_list_connections_response import ConnectionListConnectionsResponse
 
 __all__ = ["ConnectionsResource", "AsyncConnectionsResource"]
 
 
 class ConnectionsResource(SyncAPIResource):
     """Manage database connections to your data warehouse"""
+
+    @cached_property
+    def client(self) -> ClientResource:
+        return ClientResource(self._client)
+
+    @cached_property
+    def oauth(self) -> OAuthResource:
+        """Tenant MCP credential management"""
+        return OAuthResource(self._client)
+
+    @cached_property
+    def tenant(self) -> TenantResource:
+        return TenantResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> ConnectionsResourceWithRawResponse:
@@ -96,6 +133,19 @@ class ConnectionsResource(SyncAPIResource):
 
 class AsyncConnectionsResource(AsyncAPIResource):
     """Manage database connections to your data warehouse"""
+
+    @cached_property
+    def client(self) -> AsyncClientResource:
+        return AsyncClientResource(self._client)
+
+    @cached_property
+    def oauth(self) -> AsyncOAuthResource:
+        """Tenant MCP credential management"""
+        return AsyncOAuthResource(self._client)
+
+    @cached_property
+    def tenant(self) -> AsyncTenantResource:
+        return AsyncTenantResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncConnectionsResourceWithRawResponse:
@@ -173,6 +223,19 @@ class ConnectionsResourceWithRawResponse:
             connections.list_connections,
         )
 
+    @cached_property
+    def client(self) -> ClientResourceWithRawResponse:
+        return ClientResourceWithRawResponse(self._connections.client)
+
+    @cached_property
+    def oauth(self) -> OAuthResourceWithRawResponse:
+        """Tenant MCP credential management"""
+        return OAuthResourceWithRawResponse(self._connections.oauth)
+
+    @cached_property
+    def tenant(self) -> TenantResourceWithRawResponse:
+        return TenantResourceWithRawResponse(self._connections.tenant)
+
 
 class AsyncConnectionsResourceWithRawResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -181,6 +244,19 @@ class AsyncConnectionsResourceWithRawResponse:
         self.list_connections = async_to_raw_response_wrapper(
             connections.list_connections,
         )
+
+    @cached_property
+    def client(self) -> AsyncClientResourceWithRawResponse:
+        return AsyncClientResourceWithRawResponse(self._connections.client)
+
+    @cached_property
+    def oauth(self) -> AsyncOAuthResourceWithRawResponse:
+        """Tenant MCP credential management"""
+        return AsyncOAuthResourceWithRawResponse(self._connections.oauth)
+
+    @cached_property
+    def tenant(self) -> AsyncTenantResourceWithRawResponse:
+        return AsyncTenantResourceWithRawResponse(self._connections.tenant)
 
 
 class ConnectionsResourceWithStreamingResponse:
@@ -191,6 +267,19 @@ class ConnectionsResourceWithStreamingResponse:
             connections.list_connections,
         )
 
+    @cached_property
+    def client(self) -> ClientResourceWithStreamingResponse:
+        return ClientResourceWithStreamingResponse(self._connections.client)
+
+    @cached_property
+    def oauth(self) -> OAuthResourceWithStreamingResponse:
+        """Tenant MCP credential management"""
+        return OAuthResourceWithStreamingResponse(self._connections.oauth)
+
+    @cached_property
+    def tenant(self) -> TenantResourceWithStreamingResponse:
+        return TenantResourceWithStreamingResponse(self._connections.tenant)
+
 
 class AsyncConnectionsResourceWithStreamingResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -199,3 +288,16 @@ class AsyncConnectionsResourceWithStreamingResponse:
         self.list_connections = async_to_streamed_response_wrapper(
             connections.list_connections,
         )
+
+    @cached_property
+    def client(self) -> AsyncClientResourceWithStreamingResponse:
+        return AsyncClientResourceWithStreamingResponse(self._connections.client)
+
+    @cached_property
+    def oauth(self) -> AsyncOAuthResourceWithStreamingResponse:
+        """Tenant MCP credential management"""
+        return AsyncOAuthResourceWithStreamingResponse(self._connections.oauth)
+
+    @cached_property
+    def tenant(self) -> AsyncTenantResourceWithStreamingResponse:
+        return AsyncTenantResourceWithStreamingResponse(self._connections.tenant)

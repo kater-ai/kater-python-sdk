@@ -75,9 +75,10 @@ class CompilerCompileResponse(BaseModel):
     """Compilation metadata from the compiler."""
 
     request_id: Optional[str] = None
-    """Write-back request ID.
+    """Reserved for write-back flows.
 
-    Non-null when files were dispatched to CLI via WebSocket.
+    Compile responses currently return null because compiled SQL and resolved-query
+    artifacts are not written back.
     """
 
     sql: Optional[str] = None
