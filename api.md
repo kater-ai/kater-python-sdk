@@ -65,7 +65,86 @@ from kater.types.v1 import Connection, ConnectionListConnectionsResponse
 
 Methods:
 
-- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections.py">list_connections</a>(\*\*<a href="src/kater/types/v1/connection_list_connections_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_connections_response.py">ConnectionListConnectionsResponse</a></code>
+- <code title="get /api/v1/connections">client.v1.connections.<a href="./src/kater/resources/v1/connections/connections.py">list_connections</a>(\*\*<a href="src/kater/types/v1/connection_list_connections_params.py">params</a>) -> <a href="./src/kater/types/v1/connection_list_connections_response.py">ConnectionListConnectionsResponse</a></code>
+
+### Client
+
+#### Mcp
+
+##### Servers
+
+Types:
+
+```python
+from kater.types.v1.connections.client.mcp import (
+    ServerCreateResponse,
+    ServerUpdateResponse,
+    ServerListResponse,
+    ServerDiscoverResponse,
+    ServerRediscoverResponse,
+)
+```
+
+Methods:
+
+- <code title="post /api/v1/client/mcp/servers">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">create</a>(\*\*<a href="src/kater/types/v1/connections/client/mcp/server_create_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/client/mcp/server_create_response.py">ServerCreateResponse</a></code>
+- <code title="put /api/v1/client/mcp/servers/{mcp_id}">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">update</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/client/mcp/server_update_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/client/mcp/server_update_response.py">ServerUpdateResponse</a></code>
+- <code title="get /api/v1/client/mcp/servers">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">list</a>() -> <a href="./src/kater/types/v1/connections/client/mcp/server_list_response.py">ServerListResponse</a></code>
+- <code title="delete /api/v1/client/mcp/servers/{mcp_id}">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">delete</a>(mcp_id) -> None</code>
+- <code title="post /api/v1/client/mcp/servers/{mcp_id}/discover">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">discover</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/client/mcp/server_discover_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/client/mcp/server_discover_response.py">ServerDiscoverResponse</a></code>
+- <code title="post /api/v1/client/mcp/servers/{mcp_id}/rediscover">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">rediscover</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/client/mcp/server_rediscover_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/client/mcp/server_rediscover_response.py">ServerRediscoverResponse</a></code>
+
+### OAuth
+
+Types:
+
+```python
+from kater.types.v1.connections import OAuthHandleCallbackResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/oauth/callback">client.v1.connections.oauth.<a href="./src/kater/resources/v1/connections/oauth.py">handle_callback</a>(\*\*<a href="src/kater/types/v1/connections/oauth_handle_callback_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/oauth_handle_callback_response.py">OAuthHandleCallbackResponse</a></code>
+
+### Tenant
+
+#### Mcp
+
+Types:
+
+```python
+from kater.types.v1.connections.tenant import McpListResponse, McpGetAuditHistoryResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/tenant/mcp">client.v1.connections.tenant.mcp.<a href="./src/kater/resources/v1/connections/tenant/mcp/mcp.py">list</a>(\*\*<a href="src/kater/types/v1/connections/tenant/mcp_list_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/tenant/mcp_list_response.py">McpListResponse</a></code>
+- <code title="get /api/v1/tenant/mcp/{mcp_id}/audit">client.v1.connections.tenant.mcp.<a href="./src/kater/resources/v1/connections/tenant/mcp/mcp.py">get_audit_history</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/tenant/mcp_get_audit_history_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/tenant/mcp_get_audit_history_response.py">McpGetAuditHistoryResponse</a></code>
+
+##### Credentials
+
+Types:
+
+```python
+from kater.types.v1.connections.tenant.mcp import CredentialCreateResponse
+```
+
+Methods:
+
+- <code title="post /api/v1/tenant/mcp/{mcp_id}/credentials">client.v1.connections.tenant.mcp.credentials.<a href="./src/kater/resources/v1/connections/tenant/mcp/credentials.py">create</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/tenant/mcp/credential_create_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/tenant/mcp/credential_create_response.py">CredentialCreateResponse</a></code>
+- <code title="delete /api/v1/tenant/mcp/{mcp_id}/credentials">client.v1.connections.tenant.mcp.credentials.<a href="./src/kater/resources/v1/connections/tenant/mcp/credentials.py">revoke</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/tenant/mcp/credential_revoke_params.py">params</a>) -> None</code>
+
+##### OAuth
+
+Types:
+
+```python
+from kater.types.v1.connections.tenant.mcp import OAuthInitiateResponse
+```
+
+Methods:
+
+- <code title="get /api/v1/tenant/mcp/{mcp_id}/oauth/authorize">client.v1.connections.tenant.mcp.oauth.<a href="./src/kater/resources/v1/connections/tenant/mcp/oauth.py">initiate</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/tenant/mcp/oauth_initiate_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/tenant/mcp/oauth_initiate_response.py">OAuthInitiateResponse</a></code>
 
 ## Tenants
 
