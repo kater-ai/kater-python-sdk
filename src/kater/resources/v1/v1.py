@@ -4,14 +4,6 @@ from __future__ import annotations
 
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
-from .connections import (
-    ConnectionsResource,
-    AsyncConnectionsResource,
-    ConnectionsResourceWithRawResponse,
-    AsyncConnectionsResourceWithRawResponse,
-    ConnectionsResourceWithStreamingResponse,
-    AsyncConnectionsResourceWithStreamingResponse,
-)
 from .tenants.tenants import (
     TenantsResource,
     AsyncTenantsResource,
@@ -27,6 +19,14 @@ from .compiler.compiler import (
     AsyncCompilerResourceWithRawResponse,
     CompilerResourceWithStreamingResponse,
     AsyncCompilerResourceWithStreamingResponse,
+)
+from .connections.connections import (
+    ConnectionsResource,
+    AsyncConnectionsResource,
+    ConnectionsResourceWithRawResponse,
+    AsyncConnectionsResourceWithRawResponse,
+    ConnectionsResourceWithStreamingResponse,
+    AsyncConnectionsResourceWithStreamingResponse,
 )
 
 __all__ = ["V1Resource", "AsyncV1Resource"]
