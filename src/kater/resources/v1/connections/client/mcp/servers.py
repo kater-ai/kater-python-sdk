@@ -21,14 +21,15 @@ from ......_base_client import make_request_options
 from ......types.v1.connections.client.mcp import (
     server_create_params,
     server_update_params,
-    server_discover_params,
-    server_rediscover_params,
+    server_update_config_params,
+    server_update_api_key_params,
 )
 from ......types.v1.connections.client.mcp.server_list_response import ServerListResponse
 from ......types.v1.connections.client.mcp.server_create_response import ServerCreateResponse
 from ......types.v1.connections.client.mcp.server_update_response import ServerUpdateResponse
 from ......types.v1.connections.client.mcp.server_discover_response import ServerDiscoverResponse
 from ......types.v1.connections.client.mcp.server_rediscover_response import ServerRediscoverResponse
+from ......types.v1.connections.client.mcp.server_update_config_response import ServerUpdateConfigResponse
 
 __all__ = ["ServersResource", "AsyncServersResource"]
 
@@ -61,6 +62,7 @@ class ServersResource(SyncAPIResource):
         name: str,
         server_url: str,
         slug: str,
+        api_key: Optional[str] | Omit = omit,
         auth_type: Literal["api_key", "oauth2", "none"] | Omit = omit,
         description: Optional[str] | Omit = omit,
         oauth_authorize_url: Optional[str] | Omit = omit,
@@ -90,6 +92,8 @@ class ServersResource(SyncAPIResource):
           server_url: HTTPS URL of the MCP server
 
           slug: Unique snake_case identifier
+
+          api_key: API key (for auth_type=api_key). Stored as shared client-level credential.
 
           auth_type: Authentication type
 
@@ -126,6 +130,7 @@ class ServersResource(SyncAPIResource):
                     "name": name,
                     "server_url": server_url,
                     "slug": slug,
+                    "api_key": api_key,
                     "auth_type": auth_type,
                     "description": description,
                     "oauth_authorize_url": oauth_authorize_url,
@@ -153,7 +158,7 @@ class ServersResource(SyncAPIResource):
         self,
         mcp_id: str,
         *,
-        allowed_capabilities: Iterable[server_update_params.AllowedCapability],
+        allowed_capabilities: Optional[Iterable[server_update_params.AllowedCapability]] | Omit = omit,
         enabled: Optional[bool] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -279,8 +284,6 @@ class ServersResource(SyncAPIResource):
         self,
         mcp_id: str,
         *,
-        test_api_key: Optional[str] | Omit = omit,
-        test_bearer_token: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -291,15 +294,10 @@ class ServersResource(SyncAPIResource):
         """
         Discover capabilities from a registered MCP server.
 
-        Connects to the MCP server via tools/list, optionally retrying with test
-        credentials on 401/403. Test credentials are never persisted. Discovery does NOT
-        change server status.
+        For api_key servers with a stored credential, uses the API key for discovery.
+        Discovery does NOT change server status.
 
         Args:
-          test_api_key: Test API key (never persisted)
-
-          test_bearer_token: Test bearer token (never persisted)
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -312,13 +310,6 @@ class ServersResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return self._post(
             f"/api/v1/client/mcp/servers/{mcp_id}/discover",
-            body=maybe_transform(
-                {
-                    "test_api_key": test_api_key,
-                    "test_bearer_token": test_bearer_token,
-                },
-                server_discover_params.ServerDiscoverParams,
-            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -333,8 +324,6 @@ class ServersResource(SyncAPIResource):
         self,
         mcp_id: str,
         *,
-        test_api_key: Optional[str] | Omit = omit,
-        test_bearer_token: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -350,10 +339,6 @@ class ServersResource(SyncAPIResource):
         allowed_capabilities list and status are NOT modified.
 
         Args:
-          test_api_key: Test API key (never persisted)
-
-          test_bearer_token: Test bearer token (never persisted)
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -366,13 +351,6 @@ class ServersResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return self._post(
             f"/api/v1/client/mcp/servers/{mcp_id}/rediscover",
-            body=maybe_transform(
-                {
-                    "test_api_key": test_api_key,
-                    "test_bearer_token": test_bearer_token,
-                },
-                server_rediscover_params.ServerRediscoverParams,
-            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -381,6 +359,121 @@ class ServersResource(SyncAPIResource):
                 security={"propel_auth": True},
             ),
             cast_to=ServerRediscoverResponse,
+        )
+
+    def update_api_key(
+        self,
+        mcp_id: str,
+        *,
+        api_key: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> None:
+        """
+        Replace the shared API key credential for an api_key MCP server.
+
+        Soft-deletes the old credential and creates a new one.
+
+        Args:
+          api_key: New API key value
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not mcp_id:
+            raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
+        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
+        return self._put(
+            f"/api/v1/client/mcp/servers/{mcp_id}/api-key",
+            body=maybe_transform({"api_key": api_key}, server_update_api_key_params.ServerUpdateAPIKeyParams),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={"propel_auth": True},
+            ),
+            cast_to=NoneType,
+        )
+
+    def update_config(
+        self,
+        mcp_id: str,
+        *,
+        auth_type: Optional[Literal["api_key", "oauth2", "none"]] | Omit = omit,
+        description: Optional[str] | Omit = omit,
+        name: Optional[str] | Omit = omit,
+        oauth_authorize_url: Optional[str] | Omit = omit,
+        oauth_client_id: Optional[str] | Omit = omit,
+        oauth_client_secret: Optional[str] | Omit = omit,
+        oauth_revoke_url: Optional[str] | Omit = omit,
+        oauth_scopes_requested: Optional[str] | Omit = omit,
+        oauth_token_url: Optional[str] | Omit = omit,
+        server_url: Optional[str] | Omit = omit,
+        transport: Optional[Literal["auto", "streamable_http", "sse"]] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ServerUpdateConfigResponse:
+        """
+        Update the configuration of a registered MCP server.
+
+        Slug is not editable (used in tool naming). Changing server_url or auth_type
+        resets server to pending_setup and revokes all tenant credential settings.
+
+        Args:
+          auth_type: Authentication type for MCP server connections.
+
+          transport: Transport protocol for MCP server communication.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not mcp_id:
+            raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
+        return self._patch(
+            f"/api/v1/client/mcp/servers/{mcp_id}/config",
+            body=maybe_transform(
+                {
+                    "auth_type": auth_type,
+                    "description": description,
+                    "name": name,
+                    "oauth_authorize_url": oauth_authorize_url,
+                    "oauth_client_id": oauth_client_id,
+                    "oauth_client_secret": oauth_client_secret,
+                    "oauth_revoke_url": oauth_revoke_url,
+                    "oauth_scopes_requested": oauth_scopes_requested,
+                    "oauth_token_url": oauth_token_url,
+                    "server_url": server_url,
+                    "transport": transport,
+                },
+                server_update_config_params.ServerUpdateConfigParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={"propel_auth": True},
+            ),
+            cast_to=ServerUpdateConfigResponse,
         )
 
 
@@ -412,6 +505,7 @@ class AsyncServersResource(AsyncAPIResource):
         name: str,
         server_url: str,
         slug: str,
+        api_key: Optional[str] | Omit = omit,
         auth_type: Literal["api_key", "oauth2", "none"] | Omit = omit,
         description: Optional[str] | Omit = omit,
         oauth_authorize_url: Optional[str] | Omit = omit,
@@ -441,6 +535,8 @@ class AsyncServersResource(AsyncAPIResource):
           server_url: HTTPS URL of the MCP server
 
           slug: Unique snake_case identifier
+
+          api_key: API key (for auth_type=api_key). Stored as shared client-level credential.
 
           auth_type: Authentication type
 
@@ -477,6 +573,7 @@ class AsyncServersResource(AsyncAPIResource):
                     "name": name,
                     "server_url": server_url,
                     "slug": slug,
+                    "api_key": api_key,
                     "auth_type": auth_type,
                     "description": description,
                     "oauth_authorize_url": oauth_authorize_url,
@@ -504,7 +601,7 @@ class AsyncServersResource(AsyncAPIResource):
         self,
         mcp_id: str,
         *,
-        allowed_capabilities: Iterable[server_update_params.AllowedCapability],
+        allowed_capabilities: Optional[Iterable[server_update_params.AllowedCapability]] | Omit = omit,
         enabled: Optional[bool] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -630,8 +727,6 @@ class AsyncServersResource(AsyncAPIResource):
         self,
         mcp_id: str,
         *,
-        test_api_key: Optional[str] | Omit = omit,
-        test_bearer_token: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -642,15 +737,10 @@ class AsyncServersResource(AsyncAPIResource):
         """
         Discover capabilities from a registered MCP server.
 
-        Connects to the MCP server via tools/list, optionally retrying with test
-        credentials on 401/403. Test credentials are never persisted. Discovery does NOT
-        change server status.
+        For api_key servers with a stored credential, uses the API key for discovery.
+        Discovery does NOT change server status.
 
         Args:
-          test_api_key: Test API key (never persisted)
-
-          test_bearer_token: Test bearer token (never persisted)
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -663,13 +753,6 @@ class AsyncServersResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return await self._post(
             f"/api/v1/client/mcp/servers/{mcp_id}/discover",
-            body=await async_maybe_transform(
-                {
-                    "test_api_key": test_api_key,
-                    "test_bearer_token": test_bearer_token,
-                },
-                server_discover_params.ServerDiscoverParams,
-            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -684,8 +767,6 @@ class AsyncServersResource(AsyncAPIResource):
         self,
         mcp_id: str,
         *,
-        test_api_key: Optional[str] | Omit = omit,
-        test_bearer_token: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -701,10 +782,6 @@ class AsyncServersResource(AsyncAPIResource):
         allowed_capabilities list and status are NOT modified.
 
         Args:
-          test_api_key: Test API key (never persisted)
-
-          test_bearer_token: Test bearer token (never persisted)
-
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -717,13 +794,6 @@ class AsyncServersResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return await self._post(
             f"/api/v1/client/mcp/servers/{mcp_id}/rediscover",
-            body=await async_maybe_transform(
-                {
-                    "test_api_key": test_api_key,
-                    "test_bearer_token": test_bearer_token,
-                },
-                server_rediscover_params.ServerRediscoverParams,
-            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -732,6 +802,123 @@ class AsyncServersResource(AsyncAPIResource):
                 security={"propel_auth": True},
             ),
             cast_to=ServerRediscoverResponse,
+        )
+
+    async def update_api_key(
+        self,
+        mcp_id: str,
+        *,
+        api_key: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> None:
+        """
+        Replace the shared API key credential for an api_key MCP server.
+
+        Soft-deletes the old credential and creates a new one.
+
+        Args:
+          api_key: New API key value
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not mcp_id:
+            raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
+        extra_headers = {"Accept": "*/*", **(extra_headers or {})}
+        return await self._put(
+            f"/api/v1/client/mcp/servers/{mcp_id}/api-key",
+            body=await async_maybe_transform(
+                {"api_key": api_key}, server_update_api_key_params.ServerUpdateAPIKeyParams
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={"propel_auth": True},
+            ),
+            cast_to=NoneType,
+        )
+
+    async def update_config(
+        self,
+        mcp_id: str,
+        *,
+        auth_type: Optional[Literal["api_key", "oauth2", "none"]] | Omit = omit,
+        description: Optional[str] | Omit = omit,
+        name: Optional[str] | Omit = omit,
+        oauth_authorize_url: Optional[str] | Omit = omit,
+        oauth_client_id: Optional[str] | Omit = omit,
+        oauth_client_secret: Optional[str] | Omit = omit,
+        oauth_revoke_url: Optional[str] | Omit = omit,
+        oauth_scopes_requested: Optional[str] | Omit = omit,
+        oauth_token_url: Optional[str] | Omit = omit,
+        server_url: Optional[str] | Omit = omit,
+        transport: Optional[Literal["auto", "streamable_http", "sse"]] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ServerUpdateConfigResponse:
+        """
+        Update the configuration of a registered MCP server.
+
+        Slug is not editable (used in tool naming). Changing server_url or auth_type
+        resets server to pending_setup and revokes all tenant credential settings.
+
+        Args:
+          auth_type: Authentication type for MCP server connections.
+
+          transport: Transport protocol for MCP server communication.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not mcp_id:
+            raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
+        return await self._patch(
+            f"/api/v1/client/mcp/servers/{mcp_id}/config",
+            body=await async_maybe_transform(
+                {
+                    "auth_type": auth_type,
+                    "description": description,
+                    "name": name,
+                    "oauth_authorize_url": oauth_authorize_url,
+                    "oauth_client_id": oauth_client_id,
+                    "oauth_client_secret": oauth_client_secret,
+                    "oauth_revoke_url": oauth_revoke_url,
+                    "oauth_scopes_requested": oauth_scopes_requested,
+                    "oauth_token_url": oauth_token_url,
+                    "server_url": server_url,
+                    "transport": transport,
+                },
+                server_update_config_params.ServerUpdateConfigParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={"propel_auth": True},
+            ),
+            cast_to=ServerUpdateConfigResponse,
         )
 
 
@@ -757,6 +944,12 @@ class ServersResourceWithRawResponse:
         self.rediscover = to_raw_response_wrapper(
             servers.rediscover,
         )
+        self.update_api_key = to_raw_response_wrapper(
+            servers.update_api_key,
+        )
+        self.update_config = to_raw_response_wrapper(
+            servers.update_config,
+        )
 
 
 class AsyncServersResourceWithRawResponse:
@@ -780,6 +973,12 @@ class AsyncServersResourceWithRawResponse:
         )
         self.rediscover = async_to_raw_response_wrapper(
             servers.rediscover,
+        )
+        self.update_api_key = async_to_raw_response_wrapper(
+            servers.update_api_key,
+        )
+        self.update_config = async_to_raw_response_wrapper(
+            servers.update_config,
         )
 
 
@@ -805,6 +1004,12 @@ class ServersResourceWithStreamingResponse:
         self.rediscover = to_streamed_response_wrapper(
             servers.rediscover,
         )
+        self.update_api_key = to_streamed_response_wrapper(
+            servers.update_api_key,
+        )
+        self.update_config = to_streamed_response_wrapper(
+            servers.update_config,
+        )
 
 
 class AsyncServersResourceWithStreamingResponse:
@@ -828,4 +1033,10 @@ class AsyncServersResourceWithStreamingResponse:
         )
         self.rediscover = async_to_streamed_response_wrapper(
             servers.rediscover,
+        )
+        self.update_api_key = async_to_streamed_response_wrapper(
+            servers.update_api_key,
+        )
+        self.update_config = async_to_streamed_response_wrapper(
+            servers.update_config,
         )

@@ -15,6 +15,7 @@ from kater.types.v1.connections.client.mcp import (
     ServerUpdateResponse,
     ServerDiscoverResponse,
     ServerRediscoverResponse,
+    ServerUpdateConfigResponse,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -40,6 +41,7 @@ class TestServers:
             name="x",
             server_url="server_url",
             slug="x",
+            api_key="api_key",
             auth_type="api_key",
             description="description",
             oauth_authorize_url="oauth_authorize_url",
@@ -88,14 +90,6 @@ class TestServers:
     def test_method_update(self, client: Kater) -> None:
         server = client.v1.connections.client.mcp.servers.update(
             mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            allowed_capabilities=[
-                {
-                    "description": "description",
-                    "input_schema": {"foo": "bar"},
-                    "is_write": True,
-                    "name": "name",
-                }
-            ],
         )
         assert_matches_type(ServerUpdateResponse, server, path=["response"])
 
@@ -108,7 +102,6 @@ class TestServers:
                 {
                     "description": "description",
                     "input_schema": {"foo": "bar"},
-                    "is_write": True,
                     "name": "name",
                 }
             ],
@@ -121,14 +114,6 @@ class TestServers:
     def test_raw_response_update(self, client: Kater) -> None:
         response = client.v1.connections.client.mcp.servers.with_raw_response.update(
             mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            allowed_capabilities=[
-                {
-                    "description": "description",
-                    "input_schema": {"foo": "bar"},
-                    "is_write": True,
-                    "name": "name",
-                }
-            ],
         )
 
         assert response.is_closed is True
@@ -141,14 +126,6 @@ class TestServers:
     def test_streaming_response_update(self, client: Kater) -> None:
         with client.v1.connections.client.mcp.servers.with_streaming_response.update(
             mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            allowed_capabilities=[
-                {
-                    "description": "description",
-                    "input_schema": {"foo": "bar"},
-                    "is_write": True,
-                    "name": "name",
-                }
-            ],
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -164,14 +141,6 @@ class TestServers:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
             client.v1.connections.client.mcp.servers.with_raw_response.update(
                 mcp_id="",
-                allowed_capabilities=[
-                    {
-                        "description": "description",
-                        "input_schema": {"foo": "bar"},
-                        "is_write": True,
-                        "name": "name",
-                    }
-                ],
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -248,17 +217,7 @@ class TestServers:
     @parametrize
     def test_method_discover(self, client: Kater) -> None:
         server = client.v1.connections.client.mcp.servers.discover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
-        assert_matches_type(ServerDiscoverResponse, server, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_method_discover_with_all_params(self, client: Kater) -> None:
-        server = client.v1.connections.client.mcp.servers.discover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            test_api_key="test_api_key",
-            test_bearer_token="test_bearer_token",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(ServerDiscoverResponse, server, path=["response"])
 
@@ -266,7 +225,7 @@ class TestServers:
     @parametrize
     def test_raw_response_discover(self, client: Kater) -> None:
         response = client.v1.connections.client.mcp.servers.with_raw_response.discover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -278,7 +237,7 @@ class TestServers:
     @parametrize
     def test_streaming_response_discover(self, client: Kater) -> None:
         with client.v1.connections.client.mcp.servers.with_streaming_response.discover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -293,24 +252,14 @@ class TestServers:
     def test_path_params_discover(self, client: Kater) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
             client.v1.connections.client.mcp.servers.with_raw_response.discover(
-                mcp_id="",
+                "",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_rediscover(self, client: Kater) -> None:
         server = client.v1.connections.client.mcp.servers.rediscover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
-        assert_matches_type(ServerRediscoverResponse, server, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    def test_method_rediscover_with_all_params(self, client: Kater) -> None:
-        server = client.v1.connections.client.mcp.servers.rediscover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            test_api_key="test_api_key",
-            test_bearer_token="test_bearer_token",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(ServerRediscoverResponse, server, path=["response"])
 
@@ -318,7 +267,7 @@ class TestServers:
     @parametrize
     def test_raw_response_rediscover(self, client: Kater) -> None:
         response = client.v1.connections.client.mcp.servers.with_raw_response.rediscover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -330,7 +279,7 @@ class TestServers:
     @parametrize
     def test_streaming_response_rediscover(self, client: Kater) -> None:
         with client.v1.connections.client.mcp.servers.with_streaming_response.rediscover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -345,6 +294,113 @@ class TestServers:
     def test_path_params_rediscover(self, client: Kater) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
             client.v1.connections.client.mcp.servers.with_raw_response.rediscover(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_update_api_key(self, client: Kater) -> None:
+        server = client.v1.connections.client.mcp.servers.update_api_key(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            api_key="x",
+        )
+        assert server is None
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_update_api_key(self, client: Kater) -> None:
+        response = client.v1.connections.client.mcp.servers.with_raw_response.update_api_key(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            api_key="x",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        server = response.parse()
+        assert server is None
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_update_api_key(self, client: Kater) -> None:
+        with client.v1.connections.client.mcp.servers.with_streaming_response.update_api_key(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            api_key="x",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            server = response.parse()
+            assert server is None
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_path_params_update_api_key(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
+            client.v1.connections.client.mcp.servers.with_raw_response.update_api_key(
+                mcp_id="",
+                api_key="x",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_update_config(self, client: Kater) -> None:
+        server = client.v1.connections.client.mcp.servers.update_config(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ServerUpdateConfigResponse, server, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_update_config_with_all_params(self, client: Kater) -> None:
+        server = client.v1.connections.client.mcp.servers.update_config(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            auth_type="api_key",
+            description="description",
+            name="x",
+            oauth_authorize_url="oauth_authorize_url",
+            oauth_client_id="oauth_client_id",
+            oauth_client_secret="oauth_client_secret",
+            oauth_revoke_url="oauth_revoke_url",
+            oauth_scopes_requested="oauth_scopes_requested",
+            oauth_token_url="oauth_token_url",
+            server_url="server_url",
+            transport="auto",
+        )
+        assert_matches_type(ServerUpdateConfigResponse, server, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_update_config(self, client: Kater) -> None:
+        response = client.v1.connections.client.mcp.servers.with_raw_response.update_config(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        server = response.parse()
+        assert_matches_type(ServerUpdateConfigResponse, server, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_update_config(self, client: Kater) -> None:
+        with client.v1.connections.client.mcp.servers.with_streaming_response.update_config(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            server = response.parse()
+            assert_matches_type(ServerUpdateConfigResponse, server, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_path_params_update_config(self, client: Kater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
+            client.v1.connections.client.mcp.servers.with_raw_response.update_config(
                 mcp_id="",
             )
 
@@ -371,6 +427,7 @@ class TestAsyncServers:
             name="x",
             server_url="server_url",
             slug="x",
+            api_key="api_key",
             auth_type="api_key",
             description="description",
             oauth_authorize_url="oauth_authorize_url",
@@ -419,14 +476,6 @@ class TestAsyncServers:
     async def test_method_update(self, async_client: AsyncKater) -> None:
         server = await async_client.v1.connections.client.mcp.servers.update(
             mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            allowed_capabilities=[
-                {
-                    "description": "description",
-                    "input_schema": {"foo": "bar"},
-                    "is_write": True,
-                    "name": "name",
-                }
-            ],
         )
         assert_matches_type(ServerUpdateResponse, server, path=["response"])
 
@@ -439,7 +488,6 @@ class TestAsyncServers:
                 {
                     "description": "description",
                     "input_schema": {"foo": "bar"},
-                    "is_write": True,
                     "name": "name",
                 }
             ],
@@ -452,14 +500,6 @@ class TestAsyncServers:
     async def test_raw_response_update(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.connections.client.mcp.servers.with_raw_response.update(
             mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            allowed_capabilities=[
-                {
-                    "description": "description",
-                    "input_schema": {"foo": "bar"},
-                    "is_write": True,
-                    "name": "name",
-                }
-            ],
         )
 
         assert response.is_closed is True
@@ -472,14 +512,6 @@ class TestAsyncServers:
     async def test_streaming_response_update(self, async_client: AsyncKater) -> None:
         async with async_client.v1.connections.client.mcp.servers.with_streaming_response.update(
             mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            allowed_capabilities=[
-                {
-                    "description": "description",
-                    "input_schema": {"foo": "bar"},
-                    "is_write": True,
-                    "name": "name",
-                }
-            ],
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -495,14 +527,6 @@ class TestAsyncServers:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
             await async_client.v1.connections.client.mcp.servers.with_raw_response.update(
                 mcp_id="",
-                allowed_capabilities=[
-                    {
-                        "description": "description",
-                        "input_schema": {"foo": "bar"},
-                        "is_write": True,
-                        "name": "name",
-                    }
-                ],
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -579,17 +603,7 @@ class TestAsyncServers:
     @parametrize
     async def test_method_discover(self, async_client: AsyncKater) -> None:
         server = await async_client.v1.connections.client.mcp.servers.discover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
-        assert_matches_type(ServerDiscoverResponse, server, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_method_discover_with_all_params(self, async_client: AsyncKater) -> None:
-        server = await async_client.v1.connections.client.mcp.servers.discover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            test_api_key="test_api_key",
-            test_bearer_token="test_bearer_token",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(ServerDiscoverResponse, server, path=["response"])
 
@@ -597,7 +611,7 @@ class TestAsyncServers:
     @parametrize
     async def test_raw_response_discover(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.connections.client.mcp.servers.with_raw_response.discover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -609,7 +623,7 @@ class TestAsyncServers:
     @parametrize
     async def test_streaming_response_discover(self, async_client: AsyncKater) -> None:
         async with async_client.v1.connections.client.mcp.servers.with_streaming_response.discover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -624,24 +638,14 @@ class TestAsyncServers:
     async def test_path_params_discover(self, async_client: AsyncKater) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
             await async_client.v1.connections.client.mcp.servers.with_raw_response.discover(
-                mcp_id="",
+                "",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_rediscover(self, async_client: AsyncKater) -> None:
         server = await async_client.v1.connections.client.mcp.servers.rediscover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        )
-        assert_matches_type(ServerRediscoverResponse, server, path=["response"])
-
-    @pytest.mark.skip(reason="Mock server tests are disabled")
-    @parametrize
-    async def test_method_rediscover_with_all_params(self, async_client: AsyncKater) -> None:
-        server = await async_client.v1.connections.client.mcp.servers.rediscover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            test_api_key="test_api_key",
-            test_bearer_token="test_bearer_token",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(ServerRediscoverResponse, server, path=["response"])
 
@@ -649,7 +653,7 @@ class TestAsyncServers:
     @parametrize
     async def test_raw_response_rediscover(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.connections.client.mcp.servers.with_raw_response.rediscover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
 
         assert response.is_closed is True
@@ -661,7 +665,7 @@ class TestAsyncServers:
     @parametrize
     async def test_streaming_response_rediscover(self, async_client: AsyncKater) -> None:
         async with async_client.v1.connections.client.mcp.servers.with_streaming_response.rediscover(
-            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -676,5 +680,112 @@ class TestAsyncServers:
     async def test_path_params_rediscover(self, async_client: AsyncKater) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
             await async_client.v1.connections.client.mcp.servers.with_raw_response.rediscover(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_update_api_key(self, async_client: AsyncKater) -> None:
+        server = await async_client.v1.connections.client.mcp.servers.update_api_key(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            api_key="x",
+        )
+        assert server is None
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_update_api_key(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.client.mcp.servers.with_raw_response.update_api_key(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            api_key="x",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        server = await response.parse()
+        assert server is None
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_update_api_key(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.client.mcp.servers.with_streaming_response.update_api_key(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            api_key="x",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            server = await response.parse()
+            assert server is None
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_path_params_update_api_key(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
+            await async_client.v1.connections.client.mcp.servers.with_raw_response.update_api_key(
+                mcp_id="",
+                api_key="x",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_update_config(self, async_client: AsyncKater) -> None:
+        server = await async_client.v1.connections.client.mcp.servers.update_config(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+        assert_matches_type(ServerUpdateConfigResponse, server, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_update_config_with_all_params(self, async_client: AsyncKater) -> None:
+        server = await async_client.v1.connections.client.mcp.servers.update_config(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            auth_type="api_key",
+            description="description",
+            name="x",
+            oauth_authorize_url="oauth_authorize_url",
+            oauth_client_id="oauth_client_id",
+            oauth_client_secret="oauth_client_secret",
+            oauth_revoke_url="oauth_revoke_url",
+            oauth_scopes_requested="oauth_scopes_requested",
+            oauth_token_url="oauth_token_url",
+            server_url="server_url",
+            transport="auto",
+        )
+        assert_matches_type(ServerUpdateConfigResponse, server, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_update_config(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.connections.client.mcp.servers.with_raw_response.update_config(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        server = await response.parse()
+        assert_matches_type(ServerUpdateConfigResponse, server, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_update_config(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.connections.client.mcp.servers.with_streaming_response.update_config(
+            mcp_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            server = await response.parse()
+            assert_matches_type(ServerUpdateConfigResponse, server, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_path_params_update_config(self, async_client: AsyncKater) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `mcp_id` but received ''"):
+            await async_client.v1.connections.client.mcp.servers.with_raw_response.update_config(
                 mcp_id="",
             )

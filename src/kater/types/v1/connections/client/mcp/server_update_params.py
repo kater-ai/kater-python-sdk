@@ -11,7 +11,7 @@ __all__ = ["ServerUpdateParams", "AllowedCapability"]
 
 
 class ServerUpdateParams(TypedDict, total=False):
-    allowed_capabilities: Required[Iterable[AllowedCapability]]
+    allowed_capabilities: Optional[Iterable[AllowedCapability]]
     """Capabilities to expose as LLM tools"""
 
     enabled: Optional[bool]
@@ -24,7 +24,5 @@ class AllowedCapability(TypedDict, total=False):
     description: Required[str]
 
     input_schema: Required[Annotated[Dict[str, object], PropertyInfo(alias="inputSchema")]]
-
-    is_write: Required[bool]
 
     name: Required[str]

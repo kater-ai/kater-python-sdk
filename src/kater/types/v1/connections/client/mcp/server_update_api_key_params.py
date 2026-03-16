@@ -4,13 +4,9 @@ from __future__ import annotations
 
 from typing_extensions import Required, TypedDict
 
-__all__ = ["CredentialCreateParams"]
+__all__ = ["ServerUpdateAPIKeyParams"]
 
 
-class CredentialCreateParams(TypedDict, total=False):
-    tenant_id: Required[str]
-
-    tenant_user_id: Required[str]
-
+class ServerUpdateAPIKeyParams(TypedDict, total=False):
     api_key: Required[str]
-    """The API key to store (write-only)"""
+    """New API key value"""
