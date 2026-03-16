@@ -118,9 +118,10 @@ class CompilerValidateResponse(BaseModel):
     """Validation errors"""
 
     request_id: Optional[str] = None
-    """Write-back request ID.
+    """Reserved for write-back flows.
 
-    Non-null when files were dispatched to CLI via WebSocket.
+    Compile responses currently return null because compiled SQL and resolved-query
+    artifacts are not written back.
     """
 
     warnings: Optional[List[CompilerErrorItem]] = None

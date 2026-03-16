@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.12.0 (2026-03-16)
+
+Full Changelog: [v0.11.0...v0.12.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.11.0...v0.12.0)
+
+### Features
+
+* Feat/landing page ([865ae33](https://github.com/kater-ai/kater-python-sdk/commit/865ae339879dd62355881f1201f4b754e0cb41b2))
+* **mcp:** full MCP integration with OAuth2, API key auth, and capabi… ([c857cdf](https://github.com/kater-ai/kater-python-sdk/commit/c857cdffde92d6374bdf10f0ad3956ff753308f1))
+* Worktree feat/mcp brainstorming ([517addc](https://github.com/kater-ai/kater-python-sdk/commit/517addc78a136ce35ddcf3c2e05b46f77a33ee7e))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([62e8960](https://github.com/kater-ai/kater-python-sdk/commit/62e89609a398366b2b0ef96fc5f061d4e8b564c2))
+* update placeholder string ([4fd1831](https://github.com/kater-ai/kater-python-sdk/commit/4fd183188c806681b2920f2ab5a70c663ef672af))
+
 ## 0.11.0 (2026-03-05)
 
 Full Changelog: [v0.10.1...v0.11.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.10.1...v0.11.0)

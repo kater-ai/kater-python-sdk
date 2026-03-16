@@ -52,7 +52,7 @@ class TestTenants:
     @parametrize
     def test_method_import_from_csv(self, client: Kater) -> None:
         tenant = client.v1.tenants.import_from_csv(
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
@@ -60,7 +60,7 @@ class TestTenants:
     @parametrize
     def test_method_import_from_csv_with_all_params(self, client: Kater) -> None:
         tenant = client.v1.tenants.import_from_csv(
-            file=b"raw file contents",
+            file=b"Example data",
             source="source",
             attribute_columns="attribute_columns",
             x_kater_cli_id="X-Kater-CLI-ID",
@@ -71,7 +71,7 @@ class TestTenants:
     @parametrize
     def test_raw_response_import_from_csv(self, client: Kater) -> None:
         response = client.v1.tenants.with_raw_response.import_from_csv(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -83,7 +83,7 @@ class TestTenants:
     @parametrize
     def test_streaming_response_import_from_csv(self, client: Kater) -> None:
         with client.v1.tenants.with_streaming_response.import_from_csv(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -194,7 +194,7 @@ class TestAsyncTenants:
     @parametrize
     async def test_method_import_from_csv(self, async_client: AsyncKater) -> None:
         tenant = await async_client.v1.tenants.import_from_csv(
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
@@ -202,7 +202,7 @@ class TestAsyncTenants:
     @parametrize
     async def test_method_import_from_csv_with_all_params(self, async_client: AsyncKater) -> None:
         tenant = await async_client.v1.tenants.import_from_csv(
-            file=b"raw file contents",
+            file=b"Example data",
             source="source",
             attribute_columns="attribute_columns",
             x_kater_cli_id="X-Kater-CLI-ID",
@@ -213,7 +213,7 @@ class TestAsyncTenants:
     @parametrize
     async def test_raw_response_import_from_csv(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.tenants.with_raw_response.import_from_csv(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -225,7 +225,7 @@ class TestAsyncTenants:
     @parametrize
     async def test_streaming_response_import_from_csv(self, async_client: AsyncKater) -> None:
         async with async_client.v1.tenants.with_streaming_response.import_from_csv(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
