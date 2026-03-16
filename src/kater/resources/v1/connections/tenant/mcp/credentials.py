@@ -15,8 +15,7 @@ from ......_response import (
     async_to_streamed_response_wrapper,
 )
 from ......_base_client import make_request_options
-from ......types.v1.connections.tenant.mcp import credential_create_params, credential_revoke_params
-from ......types.v1.connections.tenant.mcp.credential_create_response import CredentialCreateResponse
+from ......types.v1.connections.tenant.mcp import credential_revoke_params
 
 __all__ = ["CredentialsResource", "AsyncCredentialsResource"]
 
@@ -42,60 +41,6 @@ class CredentialsResource(SyncAPIResource):
         For more information, see https://www.github.com/kater-ai/kater-python-sdk#with_streaming_response
         """
         return CredentialsResourceWithStreamingResponse(self)
-
-    def create(
-        self,
-        mcp_id: str,
-        *,
-        tenant_id: str,
-        tenant_user_id: str,
-        api_key: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> CredentialCreateResponse:
-        """
-        Create an API key credential for an MCP server connection.
-
-        The API key is encrypted via CredentialEncryptionService and stored as a
-        Credential row. A McpCredentialSettings row links the user to the server. The
-        plaintext API key is never returned in any response.
-
-        Args:
-          api_key: The API key to store (write-only)
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not mcp_id:
-            raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
-        return self._post(
-            f"/api/v1/tenant/mcp/{mcp_id}/credentials",
-            body=maybe_transform({"api_key": api_key}, credential_create_params.CredentialCreateParams),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform(
-                    {
-                        "tenant_id": tenant_id,
-                        "tenant_user_id": tenant_user_id,
-                    },
-                    credential_create_params.CredentialCreateParams,
-                ),
-                security={"propel_auth": True},
-            ),
-            cast_to=CredentialCreateResponse,
-        )
 
     def revoke(
         self,
@@ -171,60 +116,6 @@ class AsyncCredentialsResource(AsyncAPIResource):
         """
         return AsyncCredentialsResourceWithStreamingResponse(self)
 
-    async def create(
-        self,
-        mcp_id: str,
-        *,
-        tenant_id: str,
-        tenant_user_id: str,
-        api_key: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> CredentialCreateResponse:
-        """
-        Create an API key credential for an MCP server connection.
-
-        The API key is encrypted via CredentialEncryptionService and stored as a
-        Credential row. A McpCredentialSettings row links the user to the server. The
-        plaintext API key is never returned in any response.
-
-        Args:
-          api_key: The API key to store (write-only)
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not mcp_id:
-            raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
-        return await self._post(
-            f"/api/v1/tenant/mcp/{mcp_id}/credentials",
-            body=await async_maybe_transform({"api_key": api_key}, credential_create_params.CredentialCreateParams),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {
-                        "tenant_id": tenant_id,
-                        "tenant_user_id": tenant_user_id,
-                    },
-                    credential_create_params.CredentialCreateParams,
-                ),
-                security={"propel_auth": True},
-            ),
-            cast_to=CredentialCreateResponse,
-        )
-
     async def revoke(
         self,
         mcp_id: str,
@@ -281,9 +172,6 @@ class CredentialsResourceWithRawResponse:
     def __init__(self, credentials: CredentialsResource) -> None:
         self._credentials = credentials
 
-        self.create = to_raw_response_wrapper(
-            credentials.create,
-        )
         self.revoke = to_raw_response_wrapper(
             credentials.revoke,
         )
@@ -293,9 +181,6 @@ class AsyncCredentialsResourceWithRawResponse:
     def __init__(self, credentials: AsyncCredentialsResource) -> None:
         self._credentials = credentials
 
-        self.create = async_to_raw_response_wrapper(
-            credentials.create,
-        )
         self.revoke = async_to_raw_response_wrapper(
             credentials.revoke,
         )
@@ -305,9 +190,6 @@ class CredentialsResourceWithStreamingResponse:
     def __init__(self, credentials: CredentialsResource) -> None:
         self._credentials = credentials
 
-        self.create = to_streamed_response_wrapper(
-            credentials.create,
-        )
         self.revoke = to_streamed_response_wrapper(
             credentials.revoke,
         )
@@ -317,9 +199,6 @@ class AsyncCredentialsResourceWithStreamingResponse:
     def __init__(self, credentials: AsyncCredentialsResource) -> None:
         self._credentials = credentials
 
-        self.create = async_to_streamed_response_wrapper(
-            credentials.create,
-        )
         self.revoke = async_to_streamed_response_wrapper(
             credentials.revoke,
         )

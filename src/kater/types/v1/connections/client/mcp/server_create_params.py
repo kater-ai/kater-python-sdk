@@ -18,6 +18,9 @@ class ServerCreateParams(TypedDict, total=False):
     slug: Required[str]
     """Unique snake_case identifier"""
 
+    api_key: Optional[str]
+    """API key (for auth_type=api_key). Stored as shared client-level credential."""
+
     auth_type: Literal["api_key", "oauth2", "none"]
     """Authentication type"""
 

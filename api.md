@@ -82,6 +82,7 @@ from kater.types.v1.connections.client.mcp import (
     ServerListResponse,
     ServerDiscoverResponse,
     ServerRediscoverResponse,
+    ServerUpdateConfigResponse,
 )
 ```
 
@@ -91,8 +92,10 @@ Methods:
 - <code title="put /api/v1/client/mcp/servers/{mcp_id}">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">update</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/client/mcp/server_update_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/client/mcp/server_update_response.py">ServerUpdateResponse</a></code>
 - <code title="get /api/v1/client/mcp/servers">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">list</a>() -> <a href="./src/kater/types/v1/connections/client/mcp/server_list_response.py">ServerListResponse</a></code>
 - <code title="delete /api/v1/client/mcp/servers/{mcp_id}">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">delete</a>(mcp_id) -> None</code>
-- <code title="post /api/v1/client/mcp/servers/{mcp_id}/discover">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">discover</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/client/mcp/server_discover_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/client/mcp/server_discover_response.py">ServerDiscoverResponse</a></code>
-- <code title="post /api/v1/client/mcp/servers/{mcp_id}/rediscover">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">rediscover</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/client/mcp/server_rediscover_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/client/mcp/server_rediscover_response.py">ServerRediscoverResponse</a></code>
+- <code title="post /api/v1/client/mcp/servers/{mcp_id}/discover">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">discover</a>(mcp_id) -> <a href="./src/kater/types/v1/connections/client/mcp/server_discover_response.py">ServerDiscoverResponse</a></code>
+- <code title="post /api/v1/client/mcp/servers/{mcp_id}/rediscover">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">rediscover</a>(mcp_id) -> <a href="./src/kater/types/v1/connections/client/mcp/server_rediscover_response.py">ServerRediscoverResponse</a></code>
+- <code title="put /api/v1/client/mcp/servers/{mcp_id}/api-key">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">update_api_key</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/client/mcp/server_update_api_key_params.py">params</a>) -> None</code>
+- <code title="patch /api/v1/client/mcp/servers/{mcp_id}/config">client.v1.connections.client.mcp.servers.<a href="./src/kater/resources/v1/connections/client/mcp/servers.py">update_config</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/client/mcp/server_update_config_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/client/mcp/server_update_config_response.py">ServerUpdateConfigResponse</a></code>
 
 ### OAuth
 
@@ -123,15 +126,8 @@ Methods:
 
 ##### Credentials
 
-Types:
-
-```python
-from kater.types.v1.connections.tenant.mcp import CredentialCreateResponse
-```
-
 Methods:
 
-- <code title="post /api/v1/tenant/mcp/{mcp_id}/credentials">client.v1.connections.tenant.mcp.credentials.<a href="./src/kater/resources/v1/connections/tenant/mcp/credentials.py">create</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/tenant/mcp/credential_create_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/tenant/mcp/credential_create_response.py">CredentialCreateResponse</a></code>
 - <code title="delete /api/v1/tenant/mcp/{mcp_id}/credentials">client.v1.connections.tenant.mcp.credentials.<a href="./src/kater/resources/v1/connections/tenant/mcp/credentials.py">revoke</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/tenant/mcp/credential_revoke_params.py">params</a>) -> None</code>
 
 ##### OAuth

@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 from typing_extensions import Literal, TypeAlias
 
@@ -36,6 +36,22 @@ class ServerListResponseItem(BaseModel):
 
     transport: Literal["auto", "streamable_http", "sse"]
     """Transport protocol for MCP server communication."""
+
+    allowed_capabilities: Optional[List[object]] = None
+
+    capabilities: Optional[List[object]] = None
+
+    description: Optional[str] = None
+
+    oauth_authorize_url: Optional[str] = None
+
+    oauth_client_id: Optional[str] = None
+
+    oauth_revoke_url: Optional[str] = None
+
+    oauth_scopes_requested: Optional[str] = None
+
+    oauth_token_url: Optional[str] = None
 
 
 ServerListResponse: TypeAlias = List[ServerListResponseItem]
