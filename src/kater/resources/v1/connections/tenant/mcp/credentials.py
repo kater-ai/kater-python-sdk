@@ -5,7 +5,7 @@ from __future__ import annotations
 import httpx
 
 from ......_types import Body, Query, Headers, NoneType, NotGiven, not_given
-from ......_utils import maybe_transform, async_maybe_transform
+from ......_utils import path_template, maybe_transform, async_maybe_transform
 from ......_compat import cached_property
 from ......_resource import SyncAPIResource, AsyncAPIResource
 from ......_response import (
@@ -75,7 +75,7 @@ class CredentialsResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return self._delete(
-            f"/api/v1/tenant/mcp/{mcp_id}/credentials",
+            path_template("/api/v1/tenant/mcp/{mcp_id}/credentials", mcp_id=mcp_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -149,7 +149,7 @@ class AsyncCredentialsResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return await self._delete(
-            f"/api/v1/tenant/mcp/{mcp_id}/credentials",
+            path_template("/api/v1/tenant/mcp/{mcp_id}/credentials", mcp_id=mcp_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,

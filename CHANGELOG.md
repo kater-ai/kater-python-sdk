@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.12.1 (2026-03-20)
+
+Full Changelog: [v0.12.0...v0.12.1](https://github.com/kater-ai/kater-python-sdk/compare/v0.12.0...v0.12.1)
+
+### Bug Fixes
+
+* **deps:** bump minimum typing-extensions version ([d4865e5](https://github.com/kater-ai/kater-python-sdk/commit/d4865e500bbe5703060c7d8262c3f3b17369166a))
+* **pydantic:** do not pass `by_alias` unless set ([367ba97](https://github.com/kater-ai/kater-python-sdk/commit/367ba978bb400f30b6f6ec83bc8325815ee085af))
+* sanitize endpoint path params ([480ee8a](https://github.com/kater-ai/kater-python-sdk/commit/480ee8a1c64248cebecf55bb36ef053150aeeac4))
+
+
+### Chores
+
+* **internal:** tweak CI branches ([7cb9f8d](https://github.com/kater-ai/kater-python-sdk/commit/7cb9f8de00fc7f84bef3274828b28ea728e210fa))
+
 ## 0.12.0 (2026-03-16)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.11.0...v0.12.0)

@@ -8,7 +8,7 @@ from typing_extensions import Literal
 import httpx
 
 from ......_types import Body, Omit, Query, Headers, NoneType, NotGiven, omit, not_given
-from ......_utils import maybe_transform, async_maybe_transform
+from ......_utils import path_template, maybe_transform, async_maybe_transform
 from ......_compat import cached_property
 from ......_resource import SyncAPIResource, AsyncAPIResource
 from ......_response import (
@@ -189,7 +189,7 @@ class ServersResource(SyncAPIResource):
         if not mcp_id:
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return self._put(
-            f"/api/v1/client/mcp/servers/{mcp_id}",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}", mcp_id=mcp_id),
             body=maybe_transform(
                 {
                     "allowed_capabilities": allowed_capabilities,
@@ -269,7 +269,7 @@ class ServersResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return self._delete(
-            f"/api/v1/client/mcp/servers/{mcp_id}",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}", mcp_id=mcp_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -309,7 +309,7 @@ class ServersResource(SyncAPIResource):
         if not mcp_id:
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return self._post(
-            f"/api/v1/client/mcp/servers/{mcp_id}/discover",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}/discover", mcp_id=mcp_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -350,7 +350,7 @@ class ServersResource(SyncAPIResource):
         if not mcp_id:
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return self._post(
-            f"/api/v1/client/mcp/servers/{mcp_id}/rediscover",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}/rediscover", mcp_id=mcp_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -393,7 +393,7 @@ class ServersResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return self._put(
-            f"/api/v1/client/mcp/servers/{mcp_id}/api-key",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}/api-key", mcp_id=mcp_id),
             body=maybe_transform({"api_key": api_key}, server_update_api_key_params.ServerUpdateAPIKeyParams),
             options=make_request_options(
                 extra_headers=extra_headers,
@@ -449,7 +449,7 @@ class ServersResource(SyncAPIResource):
         if not mcp_id:
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return self._patch(
-            f"/api/v1/client/mcp/servers/{mcp_id}/config",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}/config", mcp_id=mcp_id),
             body=maybe_transform(
                 {
                     "auth_type": auth_type,
@@ -632,7 +632,7 @@ class AsyncServersResource(AsyncAPIResource):
         if not mcp_id:
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return await self._put(
-            f"/api/v1/client/mcp/servers/{mcp_id}",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}", mcp_id=mcp_id),
             body=await async_maybe_transform(
                 {
                     "allowed_capabilities": allowed_capabilities,
@@ -712,7 +712,7 @@ class AsyncServersResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return await self._delete(
-            f"/api/v1/client/mcp/servers/{mcp_id}",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}", mcp_id=mcp_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -752,7 +752,7 @@ class AsyncServersResource(AsyncAPIResource):
         if not mcp_id:
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return await self._post(
-            f"/api/v1/client/mcp/servers/{mcp_id}/discover",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}/discover", mcp_id=mcp_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -793,7 +793,7 @@ class AsyncServersResource(AsyncAPIResource):
         if not mcp_id:
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return await self._post(
-            f"/api/v1/client/mcp/servers/{mcp_id}/rediscover",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}/rediscover", mcp_id=mcp_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -836,7 +836,7 @@ class AsyncServersResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return await self._put(
-            f"/api/v1/client/mcp/servers/{mcp_id}/api-key",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}/api-key", mcp_id=mcp_id),
             body=await async_maybe_transform(
                 {"api_key": api_key}, server_update_api_key_params.ServerUpdateAPIKeyParams
             ),
@@ -894,7 +894,7 @@ class AsyncServersResource(AsyncAPIResource):
         if not mcp_id:
             raise ValueError(f"Expected a non-empty value for `mcp_id` but received {mcp_id!r}")
         return await self._patch(
-            f"/api/v1/client/mcp/servers/{mcp_id}/config",
+            path_template("/api/v1/client/mcp/servers/{mcp_id}/config", mcp_id=mcp_id),
             body=await async_maybe_transform(
                 {
                     "auth_type": auth_type,
