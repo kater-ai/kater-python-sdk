@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.12.2 (2026-03-27)
+
+Full Changelog: [v0.12.1...v0.12.2](https://github.com/kater-ai/kater-python-sdk/compare/v0.12.1...v0.12.2)
+
+### Features
+
+* Feat/dashboard widget rendering ([a15de56](https://github.com/kater-ai/kater-python-sdk/commit/a15de56d22886ffae75d3b408b28974f3ed7da3c))
+* Feat/real estate test cont ([d0f5722](https://github.com/kater-ai/kater-python-sdk/commit/d0f5722ec076685f5fce1b67b8bd4f757dd7dc08))
+* **internal:** implement indices array format for query and form serialization ([2e134c6](https://github.com/kater-ai/kater-python-sdk/commit/2e134c6724d23fe6de306e8a5d50dda833511790))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([6bb1f52](https://github.com/kater-ai/kater-python-sdk/commit/6bb1f529d69602b081b25563f919f483723fb1b2))
+* **internal:** update gitignore ([defefd5](https://github.com/kater-ai/kater-python-sdk/commit/defefd538c12483309fa2f56455d9bf8963634a3))
+
 ## 0.12.1 (2026-03-20)
 
 Full Changelog: [v0.12.0...v0.12.1](https://github.com/kater-ai/kater-python-sdk/compare/v0.12.0...v0.12.1)
