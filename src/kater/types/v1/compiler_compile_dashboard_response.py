@@ -67,7 +67,7 @@ class Filter(BaseModel):
     current_value: Union[str, List[str], None] = None
     """Current filter value"""
 
-    default: Optional[Dict[str, str]] = None
+    default: Union[str, Dict[str, str], None] = None
     """Default value specification"""
 
     field: Optional[str] = None

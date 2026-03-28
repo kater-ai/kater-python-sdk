@@ -162,7 +162,15 @@ ResolvedQueryMeasure: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str
 class ResolvedQueryOrderBy(TypedDict, total=False):
     """Sort order specification for query results.
 
-    Use desc for descending (highest/newest first) and asc for ascending (lowest/oldest first).
+    Fields are emitted in YAML declaration order. If ``asc`` appears before
+    ``desc`` in the YAML, ASC items sort first; if ``desc`` appears first,
+    DESC items sort first::
+
+        order_by:
+          asc:
+            - 'ref(metro_market_monthly.month.year)'
+          desc:
+            - 'ref(home_value_yoy_pct)'
     """
 
     asc: Optional[SequenceNotStr[str]]
@@ -412,8 +420,14 @@ class ResolvedQuery(TypedDict, total=False):
     order_by: Optional[ResolvedQueryOrderBy]
     """Sort order specification for query results.
 
-    Use desc for descending (highest/newest first) and asc for ascending
-    (lowest/oldest first).
+    Fields are emitted in YAML declaration order. If `asc` appears before `desc` in
+    the YAML, ASC items sort first; if `desc` appears first, DESC items sort first::
+
+        order_by:
+          asc:
+            - 'ref(metro_market_monthly.month.year)'
+          desc:
+            - 'ref(home_value_yoy_pct)'
     """
 
     resolved_chart: Optional[ResolvedQueryResolvedChart]
