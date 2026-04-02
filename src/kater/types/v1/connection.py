@@ -17,6 +17,7 @@ __all__ = [
     "WarehouseMetadataDatabricksMetadata",
     "WarehouseMetadataClickhouseMetadata",
     "WarehouseMetadataMssqlMetadata",
+    "Health",
 ]
 
 
@@ -132,6 +133,41 @@ WarehouseMetadata: TypeAlias = Annotated[
 ]
 
 
+class Health(BaseModel):
+    """Latest runtime health snapshot for this warehouse connection"""
+
+    issue_code: Literal[
+        "none",
+        "not_checked",
+        "configuration_invalid",
+        "credentials_missing",
+        "credentials_decryption_failed",
+        "authentication_failed",
+        "connectivity_failed",
+        "timed_out",
+        "database_not_found",
+        "schema_not_found",
+        "verification_query_failed",
+        "unknown_error",
+    ]
+    """Stable issue code for UI and telemetry"""
+
+    message: str
+    """Concise description of what happened"""
+
+    status: Literal["healthy", "warning", "error", "unknown"]
+    """High-level health state"""
+
+    title: str
+    """Short status label for compact UI"""
+
+    action: Optional[str] = None
+    """Concise next step for the user"""
+
+    checked_at: Optional[datetime] = None
+    """When this health snapshot was last evaluated"""
+
+
 class Connection(BaseModel):
     """Response model for a single connection.
 
@@ -168,6 +204,9 @@ class Connection(BaseModel):
 
     description: Optional[str] = None
     """Connection description"""
+
+    health: Optional[Health] = None
+    """Latest runtime health snapshot for this warehouse connection"""
 
     is_pending_approval: Optional[bool] = None
     """True if this connection is awaiting PR approval"""

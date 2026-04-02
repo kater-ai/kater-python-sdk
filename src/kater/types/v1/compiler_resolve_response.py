@@ -145,15 +145,7 @@ ResolvedQueryMeasure: TypeAlias = Union[RefWithLabel, InlineField, str]
 class ResolvedQueryOrderBy(BaseModel):
     """Sort order specification for query results.
 
-    Fields are emitted in YAML declaration order. If ``asc`` appears before
-    ``desc`` in the YAML, ASC items sort first; if ``desc`` appears first,
-    DESC items sort first::
-
-        order_by:
-          asc:
-            - 'ref(metro_market_monthly.month.year)'
-          desc:
-            - 'ref(home_value_yoy_pct)'
+    Use desc for descending (highest/newest first) and asc for ascending (lowest/oldest first).
     """
 
     asc: Optional[List[str]] = None
@@ -361,7 +353,7 @@ class ResolvedQuery(BaseModel):
                 "axis_metric_by_dimension",
                 "axis_metric_by_dimensiondate",
                 "axis_metric_by_dimensiondate_sliced_by_dimension",
-                "axis_scatter_plot",
+                "axis_metric_by_metric",
                 "funnel_funnel_chart",
                 "heatmap_heatmap",
                 "image_image_grid",
@@ -402,14 +394,8 @@ class ResolvedQuery(BaseModel):
     order_by: Optional[ResolvedQueryOrderBy] = None
     """Sort order specification for query results.
 
-    Fields are emitted in YAML declaration order. If `asc` appears before `desc` in
-    the YAML, ASC items sort first; if `desc` appears first, DESC items sort first::
-
-        order_by:
-          asc:
-            - 'ref(metro_market_monthly.month.year)'
-          desc:
-            - 'ref(home_value_yoy_pct)'
+    Use desc for descending (highest/newest first) and asc for ascending
+    (lowest/oldest first).
     """
 
     resolved_chart: Optional[ResolvedQueryResolvedChart] = None

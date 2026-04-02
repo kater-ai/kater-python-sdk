@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.13.0 (2026-04-02)
+
+Full Changelog: [v0.12.2...v0.13.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.12.2...v0.13.0)
+
+### Features
+
+* Feat/query builder cont ([7b10148](https://github.com/kater-ai/kater-python-sdk/commit/7b1014824d407dd74373608591e5055fddef73d5))
+* **lint:** block manual edits to generated schema files ([808b7ce](https://github.com/kater-ai/kater-python-sdk/commit/808b7cee5818247fc237b371639fbd9857da1426))
+* theme builder, query builder, connection health, and widget chrome ([6b3eaaa](https://github.com/kater-ai/kater-python-sdk/commit/6b3eaaaa19585a297f29a77a6f4b7520abf9ab58))
+* Worktree feat+config panel cont ([847884d](https://github.com/kater-ai/kater-python-sdk/commit/847884d638cccaf4d7ac5b1df6eff189c01abed2))
+
 ## 0.12.2 (2026-03-27)
 
 Full Changelog: [v0.12.1...v0.12.2](https://github.com/kater-ai/kater-python-sdk/compare/v0.12.1...v0.12.2)
