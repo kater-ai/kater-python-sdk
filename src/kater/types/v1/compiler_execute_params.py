@@ -369,7 +369,7 @@ class ResolvedQuery(TypedDict, total=False):
                 "axis_metric_by_dimension",
                 "axis_metric_by_dimensiondate",
                 "axis_metric_by_dimensiondate_sliced_by_dimension",
-                "axis_scatter_plot",
+                "axis_metric_by_metric",
                 "funnel_funnel_chart",
                 "heatmap_heatmap",
                 "image_image_grid",
