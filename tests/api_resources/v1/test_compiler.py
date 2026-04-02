@@ -97,10 +97,12 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
-                "order_by": {
-                    "asc": ["string"],
-                    "desc": ["string"],
-                },
+                "order_by": [
+                    {
+                        "direction": "asc",
+                        "field": "ref(created_date)",
+                    }
+                ],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -378,10 +380,12 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
-                "order_by": {
-                    "asc": ["string"],
-                    "desc": ["string"],
-                },
+                "order_by": [
+                    {
+                        "direction": "asc",
+                        "field": "ref(created_date)",
+                    }
+                ],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -653,10 +657,12 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
-                "order_by": {
-                    "asc": ["string"],
-                    "desc": ["string"],
-                },
+                "order_by": [
+                    {
+                        "direction": "asc",
+                        "field": "ref(created_date)",
+                    }
+                ],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -934,10 +940,12 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
-                "order_by": {
-                    "asc": ["string"],
-                    "desc": ["string"],
-                },
+                "order_by": [
+                    {
+                        "direction": "asc",
+                        "field": "ref(created_date)",
+                    }
+                ],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",

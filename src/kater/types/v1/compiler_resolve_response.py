@@ -25,6 +25,7 @@ __all__ = [
     "ResolvedQueryFilterInlineExistsFilter2",
     "ResolvedQueryMeasure",
     "ResolvedQueryOrderBy",
+    "ResolvedQueryOrderByOrderByItem",
     "ResolvedQueryResolvedChart",
     "ResolvedQueryResolvedVariable",
     "ResolvedQueryResolvedVariableAllowedValues",
@@ -142,17 +143,20 @@ ResolvedQueryFilter: TypeAlias = Union[
 ResolvedQueryMeasure: TypeAlias = Union[RefWithLabel, InlineField, str]
 
 
-class ResolvedQueryOrderBy(BaseModel):
-    """Sort order specification for query results.
+class ResolvedQueryOrderByOrderByItem(BaseModel):
+    """Explicit sort direction for a field."""
 
-    Use desc for descending (highest/newest first) and asc for ascending (lowest/oldest first).
+    direction: Literal["asc", "desc"]
+    """
+    Sort direction: asc (ascending, A-Z / oldest first) or desc (descending, Z-A /
+    newest first).
     """
 
-    asc: Optional[List[str]] = None
-    """Fields to sort in ascending order (lowest/oldest first)"""
+    field: str
+    """A string that may be a ref(), var(), or expr() reference"""
 
-    desc: Optional[List[str]] = None
-    """Fields to sort in descending order (highest/newest first)"""
+
+ResolvedQueryOrderBy: TypeAlias = Union[ResolvedQueryOrderByOrderByItem, str]
 
 
 class ResolvedQueryResolvedChart(BaseModel):
@@ -391,12 +395,8 @@ class ResolvedQuery(BaseModel):
     measures: Optional[List[ResolvedQueryMeasure]] = None
     """Merged required + selected optional measures"""
 
-    order_by: Optional[ResolvedQueryOrderBy] = None
-    """Sort order specification for query results.
-
-    Use desc for descending (highest/newest first) and asc for ascending
-    (lowest/oldest first).
-    """
+    order_by: Optional[List[ResolvedQueryOrderBy]] = None
+    """Sort order for query results"""
 
     resolved_chart: Optional[ResolvedQueryResolvedChart] = None
     """The matched chart recommendation after evaluating chart hints"""
