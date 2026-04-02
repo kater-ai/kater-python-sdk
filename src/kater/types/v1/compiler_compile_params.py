@@ -27,6 +27,7 @@ __all__ = [
     "ResolvedQueryFilterInlineExistsFilter2",
     "ResolvedQueryMeasure",
     "ResolvedQueryOrderBy",
+    "ResolvedQueryOrderByOrderByItem",
     "ResolvedQueryResolvedChart",
     "ResolvedQueryResolvedVariable",
     "ResolvedQueryResolvedVariableAllowedValues",
@@ -159,17 +160,20 @@ ResolvedQueryFilter: TypeAlias = Union[
 ResolvedQueryMeasure: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
 
 
-class ResolvedQueryOrderBy(TypedDict, total=False):
-    """Sort order specification for query results.
+class ResolvedQueryOrderByOrderByItem(TypedDict, total=False):
+    """Explicit sort direction for a field."""
 
-    Use desc for descending (highest/newest first) and asc for ascending (lowest/oldest first).
+    direction: Required[Literal["asc", "desc"]]
+    """
+    Sort direction: asc (ascending, A-Z / oldest first) or desc (descending, Z-A /
+    newest first).
     """
 
-    asc: Optional[SequenceNotStr[str]]
-    """Fields to sort in ascending order (lowest/oldest first)"""
+    field: Required[str]
+    """A string that may be a ref(), var(), or expr() reference"""
 
-    desc: Optional[SequenceNotStr[str]]
-    """Fields to sort in descending order (highest/newest first)"""
+
+ResolvedQueryOrderBy: TypeAlias = Union[ResolvedQueryOrderByOrderByItem, str]
 
 
 class ResolvedQueryResolvedChart(TypedDict, total=False):
@@ -409,12 +413,8 @@ class ResolvedQuery(TypedDict, total=False):
     measures: Optional[SequenceNotStr[ResolvedQueryMeasure]]
     """Merged required + selected optional measures"""
 
-    order_by: Optional[ResolvedQueryOrderBy]
-    """Sort order specification for query results.
-
-    Use desc for descending (highest/newest first) and asc for ascending
-    (lowest/oldest first).
-    """
+    order_by: Optional[SequenceNotStr[ResolvedQueryOrderBy]]
+    """Sort order for query results"""
 
     resolved_chart: Optional[ResolvedQueryResolvedChart]
     """The matched chart recommendation after evaluating chart hints"""
