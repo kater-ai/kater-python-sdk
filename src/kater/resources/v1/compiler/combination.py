@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Iterable, Optional
 
 import httpx
 
@@ -53,6 +53,7 @@ class CombinationResource(SyncAPIResource):
         query_id: str,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
+        filter_state: Optional[Iterable[combination_preview_params.FilterState]] | Omit = omit,
         pinned_variant: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -81,6 +82,8 @@ class CombinationResource(SyncAPIResource):
           tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
               clients.
 
+          filter_state: Optional V2 runtime filter-state payload keyed by effective filter ID.
+
           pinned_variant: Optional pinned variant name (e.g. '\\__base').
 
           extra_headers: Send extra headers
@@ -100,6 +103,7 @@ class CombinationResource(SyncAPIResource):
                     "connection_id": connection_id,
                     "query_id": query_id,
                     "tenant_key": tenant_key,
+                    "filter_state": filter_state,
                     "pinned_variant": pinned_variant,
                 },
                 combination_preview_params.CombinationPreviewParams,
@@ -145,6 +149,7 @@ class AsyncCombinationResource(AsyncAPIResource):
         query_id: str,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
+        filter_state: Optional[Iterable[combination_preview_params.FilterState]] | Omit = omit,
         pinned_variant: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -173,6 +178,8 @@ class AsyncCombinationResource(AsyncAPIResource):
           tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
               clients.
 
+          filter_state: Optional V2 runtime filter-state payload keyed by effective filter ID.
+
           pinned_variant: Optional pinned variant name (e.g. '\\__base').
 
           extra_headers: Send extra headers
@@ -192,6 +199,7 @@ class AsyncCombinationResource(AsyncAPIResource):
                     "connection_id": connection_id,
                     "query_id": query_id,
                     "tenant_key": tenant_key,
+                    "filter_state": filter_state,
                     "pinned_variant": pinned_variant,
                 },
                 combination_preview_params.CombinationPreviewParams,
