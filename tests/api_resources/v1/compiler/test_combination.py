@@ -37,6 +37,16 @@ class TestCombination:
             query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             tenant_key="tenant_key",
             source="source",
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             pinned_variant="pinned_variant",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
@@ -100,6 +110,16 @@ class TestAsyncCombination:
             query_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             tenant_key="tenant_key",
             source="source",
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             pinned_variant="pinned_variant",
             x_kater_cli_id="X-Kater-CLI-ID",
         )

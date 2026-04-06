@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Union, Optional
+from typing import Iterable, Optional
 
 import httpx
 
@@ -90,6 +90,7 @@ class CompilerResource(SyncAPIResource):
         resolved_query: compiler_compile_params.ResolvedQuery,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
+        filter_state: Optional[Iterable[compiler_compile_params.FilterState]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -115,6 +116,8 @@ class CompilerResource(SyncAPIResource):
               no-tenancy clients or to bypass tenant isolation. For database tenancy, maps to
               the tenant's database. For row tenancy, used as the row-level filter value.
 
+          filter_state: Optional V2 runtime filter-state payload keyed by effective filter ID.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -131,6 +134,7 @@ class CompilerResource(SyncAPIResource):
                     "connection_id": connection_id,
                     "resolved_query": resolved_query,
                     "tenant_key": tenant_key,
+                    "filter_state": filter_state,
                 },
                 compiler_compile_params.CompilerCompileParams,
             ),
@@ -151,7 +155,7 @@ class CompilerResource(SyncAPIResource):
         dashboard_path: str,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
-        filters: Optional[Dict[str, Union[str, SequenceNotStr[str], None]]] | Omit = omit,
+        filter_state: Optional[Iterable[compiler_compile_dashboard_params.FilterState]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -176,7 +180,7 @@ class CompilerResource(SyncAPIResource):
           tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
               clients.
 
-          filters: Optional filter overrides from UI
+          filter_state: Optional V2 runtime filter-state payload keyed by dashboard filter IDs.
 
           extra_headers: Send extra headers
 
@@ -194,7 +198,7 @@ class CompilerResource(SyncAPIResource):
                     "connection_id": connection_id,
                     "dashboard_path": dashboard_path,
                     "tenant_key": tenant_key,
-                    "filters": filters,
+                    "filter_state": filter_state,
                 },
                 compiler_compile_dashboard_params.CompilerCompileDashboardParams,
             ),
@@ -277,6 +281,7 @@ class CompilerResource(SyncAPIResource):
         resolved_query: compiler_execute_params.ResolvedQuery,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
+        filter_state: Optional[Iterable[compiler_execute_params.FilterState]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -302,6 +307,8 @@ class CompilerResource(SyncAPIResource):
           tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
               clients.
 
+          filter_state: Optional V2 runtime filter-state payload keyed by effective filter ID.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -318,6 +325,7 @@ class CompilerResource(SyncAPIResource):
                     "connection_id": connection_id,
                     "resolved_query": resolved_query,
                     "tenant_key": tenant_key,
+                    "filter_state": filter_state,
                 },
                 compiler_execute_params.CompilerExecuteParams,
             ),
@@ -339,6 +347,7 @@ class CompilerResource(SyncAPIResource):
         source: Optional[str] | Omit = omit,
         auto_fix: bool | Omit = omit,
         combination: str | Omit = omit,
+        filter_state: Optional[Iterable[compiler_resolve_params.FilterState]] | Omit = omit,
         pinned_variant: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -365,9 +374,10 @@ class CompilerResource(SyncAPIResource):
 
           combination:
               Comma-separated slot selections and variable assignments. Reserved keys:
-              measure, dimension, filter, calculation. All other keys are variable
-              assignments. Example: 'measure=Compliance
-              Rate,dimension=Department,breakdown=region'
+              measure, dimension, calculation. All other keys are variable assignments.
+              Example: 'measure=Compliance Rate,dimension=Department,breakdown=region'
+
+          filter_state: Optional V2 runtime filter-state payload keyed by effective filter ID.
 
           pinned_variant: Optional pinned variant name (e.g. '\\__base'). Selects a specific pinned
               configuration.
@@ -389,6 +399,7 @@ class CompilerResource(SyncAPIResource):
                     "query_id": query_id,
                     "auto_fix": auto_fix,
                     "combination": combination,
+                    "filter_state": filter_state,
                     "pinned_variant": pinned_variant,
                 },
                 compiler_resolve_params.CompilerResolveParams,
@@ -498,6 +509,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         resolved_query: compiler_compile_params.ResolvedQuery,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
+        filter_state: Optional[Iterable[compiler_compile_params.FilterState]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -523,6 +535,8 @@ class AsyncCompilerResource(AsyncAPIResource):
               no-tenancy clients or to bypass tenant isolation. For database tenancy, maps to
               the tenant's database. For row tenancy, used as the row-level filter value.
 
+          filter_state: Optional V2 runtime filter-state payload keyed by effective filter ID.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -539,6 +553,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                     "connection_id": connection_id,
                     "resolved_query": resolved_query,
                     "tenant_key": tenant_key,
+                    "filter_state": filter_state,
                 },
                 compiler_compile_params.CompilerCompileParams,
             ),
@@ -559,7 +574,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         dashboard_path: str,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
-        filters: Optional[Dict[str, Union[str, SequenceNotStr[str], None]]] | Omit = omit,
+        filter_state: Optional[Iterable[compiler_compile_dashboard_params.FilterState]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -584,7 +599,7 @@ class AsyncCompilerResource(AsyncAPIResource):
           tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
               clients.
 
-          filters: Optional filter overrides from UI
+          filter_state: Optional V2 runtime filter-state payload keyed by dashboard filter IDs.
 
           extra_headers: Send extra headers
 
@@ -602,7 +617,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                     "connection_id": connection_id,
                     "dashboard_path": dashboard_path,
                     "tenant_key": tenant_key,
-                    "filters": filters,
+                    "filter_state": filter_state,
                 },
                 compiler_compile_dashboard_params.CompilerCompileDashboardParams,
             ),
@@ -687,6 +702,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         resolved_query: compiler_execute_params.ResolvedQuery,
         tenant_key: str,
         source: Optional[str] | Omit = omit,
+        filter_state: Optional[Iterable[compiler_execute_params.FilterState]] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -712,6 +728,8 @@ class AsyncCompilerResource(AsyncAPIResource):
           tenant_key: Tenant key for multi-tenant execution. Use 'kater_global_tenant' for no-tenancy
               clients.
 
+          filter_state: Optional V2 runtime filter-state payload keyed by effective filter ID.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -728,6 +746,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                     "connection_id": connection_id,
                     "resolved_query": resolved_query,
                     "tenant_key": tenant_key,
+                    "filter_state": filter_state,
                 },
                 compiler_execute_params.CompilerExecuteParams,
             ),
@@ -749,6 +768,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         source: Optional[str] | Omit = omit,
         auto_fix: bool | Omit = omit,
         combination: str | Omit = omit,
+        filter_state: Optional[Iterable[compiler_resolve_params.FilterState]] | Omit = omit,
         pinned_variant: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -775,9 +795,10 @@ class AsyncCompilerResource(AsyncAPIResource):
 
           combination:
               Comma-separated slot selections and variable assignments. Reserved keys:
-              measure, dimension, filter, calculation. All other keys are variable
-              assignments. Example: 'measure=Compliance
-              Rate,dimension=Department,breakdown=region'
+              measure, dimension, calculation. All other keys are variable assignments.
+              Example: 'measure=Compliance Rate,dimension=Department,breakdown=region'
+
+          filter_state: Optional V2 runtime filter-state payload keyed by effective filter ID.
 
           pinned_variant: Optional pinned variant name (e.g. '\\__base'). Selects a specific pinned
               configuration.
@@ -799,6 +820,7 @@ class AsyncCompilerResource(AsyncAPIResource):
                     "query_id": query_id,
                     "auto_fix": auto_fix,
                     "combination": combination,
+                    "filter_state": filter_state,
                     "pinned_variant": pinned_variant,
                 },
                 compiler_resolve_params.CompilerResolveParams,
