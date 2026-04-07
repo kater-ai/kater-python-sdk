@@ -232,6 +232,9 @@ class CompilerExecuteResponse(BaseModel):
     execution_time_ms: Optional[float] = None
     """Total execution time in milliseconds"""
 
+    is_row_limited: Optional[bool] = None
+    """True when the app-wide row limit was applied and results were truncated"""
+
     metadata: Optional[Metadata] = None
     """Compilation metadata from the compiler."""
 
