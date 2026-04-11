@@ -25,6 +25,7 @@ __all__ = [
     "AppliedFilterStateValuePresetReferenceFilterValue",
     "AppliedFilterStateValueNullFilterValue",
     "ColumnMap",
+    "ColumnProfiles",
     "DefaultFilterState",
     "DefaultFilterStateValue",
     "DefaultFilterStateValueScalarFilterValue",
@@ -243,6 +244,49 @@ class ColumnMap(BaseModel):
 
     label: Optional[str] = None
     """Display label"""
+
+
+class ColumnProfiles(BaseModel):
+    """Statistical profile for a single result column."""
+
+    cardinality: Optional[int] = None
+    """Distinct non-null values for dimension columns.
+
+    Null for measures and calculations.
+    """
+
+    cv: Optional[float] = None
+    """Coefficient of variation (|stdev / mean|)."""
+
+    has_outliers: Optional[bool] = None
+    """True if any value lies outside [q1 - 1.5*IQR, q3 + 1.5*IQR]."""
+
+    iqr: Optional[float] = None
+    """Interquartile range (q3 - q1)."""
+
+    max: Optional[float] = None
+    """Maximum numeric value."""
+
+    mean: Optional[float] = None
+    """Arithmetic mean."""
+
+    min: Optional[float] = None
+    """Minimum numeric value. Null when the column has no numeric data."""
+
+    null_count: Optional[int] = None
+    """Number of null values in the column."""
+
+    null_pct: Optional[float] = None
+    """Fraction of null values (0.0-1.0)."""
+
+    q1: Optional[float] = None
+    """First quartile (25th percentile)."""
+
+    q3: Optional[float] = None
+    """Third quartile (75th percentile)."""
+
+    stdev: Optional[float] = None
+    """Population standard deviation."""
 
 
 class DefaultFilterStateValueScalarFilterValue(BaseModel):
@@ -740,6 +784,9 @@ class FilterDefinition(BaseModel):
     required: bool
     """Whether the filter is always active"""
 
+    scope: str
+    """Filter scope: model, topic, dashboard, or query"""
+
     ai_context: Optional[str] = None
     """AI-facing filter context"""
 
@@ -803,6 +850,9 @@ class CombinationPreviewResponse(BaseModel):
 
     column_map: Optional[List[ColumnMap]] = None
     """Enriched column metadata"""
+
+    column_profiles: Optional[Dict[str, ColumnProfiles]] = None
+    """Per-column statistical profiles keyed by kater_id (UUID column alias)."""
 
     config: Optional[Dict[str, object]] = None
     """Resolved WidgetConfig (from config builder)"""

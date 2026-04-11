@@ -1158,6 +1158,9 @@ class FilterDefinition(BaseModel):
     required: bool
     """Whether the filter is always active"""
 
+    scope: str
+    """Filter scope: model, topic, dashboard, or query"""
+
     ai_context: Optional[str] = None
     """AI-facing filter context"""
 
