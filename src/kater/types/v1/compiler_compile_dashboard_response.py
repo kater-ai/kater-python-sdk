@@ -81,6 +81,8 @@ __all__ = [
     "WidgetGrid",
     "WidgetColumnProfilesUnionMember0WidgetColumnProfilesUnionMember0Item",
     "WidgetColumnProfilesUnionMember1WidgetColumnProfilesUnionMember1Item",
+    "WidgetDependencies",
+    "WidgetDependenciesSlot",
 ]
 
 
@@ -831,6 +833,32 @@ class WidgetColumnProfilesUnionMember1WidgetColumnProfilesUnionMember1Item(BaseM
     """Population standard deviation."""
 
 
+class WidgetDependenciesSlot(BaseModel):
+    """A dashboard data slot that a widget depends on."""
+
+    query_kater_id: str
+    """Query kater_id backing the slot"""
+
+    query_name: str
+    """Query name backing the slot"""
+
+    slot_name: str
+    """Dashboard slot name"""
+
+    combination: Optional[str] = None
+    """Combination string used for the slot, if any"""
+
+    pinned_variant: Optional[str] = None
+    """Pinned query variant used for the slot, if any"""
+
+
+class WidgetDependencies(BaseModel):
+    """Dependency metadata describing which dashboard slots feed this widget"""
+
+    slots: Optional[List[WidgetDependenciesSlot]] = None
+    """Dashboard data slots that feed this widget"""
+
+
 class Widget(BaseModel):
     """A fully resolved widget ready for rendering."""
 
@@ -862,6 +890,9 @@ class Widget(BaseModel):
     dict for single-query widgets, list of dicts for multi-query widgets (aligned
     with column_map). Null when no slot was resolved.
     """
+
+    dependencies: Optional[WidgetDependencies] = None
+    """Dependency metadata describing which dashboard slots feed this widget"""
 
     display_mode: Optional[str] = None
     """Display mode for multi-query: 'tabs' or 'grid'"""
