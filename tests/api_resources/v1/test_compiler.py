@@ -97,10 +97,12 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
-                "order_by": {
-                    "asc": ["string"],
-                    "desc": ["string"],
-                },
+                "order_by": [
+                    {
+                        "direction": "asc",
+                        "field": "ref(created_date)",
+                    }
+                ],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -154,9 +156,20 @@ class TestCompiler:
                         "variables": {"foo": "string"},
                     }
                 ],
+                "totals": True,
             },
             tenant_key="tenant_key",
             source="source",
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
@@ -221,7 +234,16 @@ class TestCompiler:
             dashboard_path="dashboard_path",
             tenant_key="tenant_key",
             source="source",
-            filters={"foo": "string"},
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
@@ -378,10 +400,12 @@ class TestCompiler:
                         "label": "label",
                     }
                 ],
-                "order_by": {
-                    "asc": ["string"],
-                    "desc": ["string"],
-                },
+                "order_by": [
+                    {
+                        "direction": "asc",
+                        "field": "ref(created_date)",
+                    }
+                ],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -435,9 +459,20 @@ class TestCompiler:
                         "variables": {"foo": "string"},
                     }
                 ],
+                "totals": True,
             },
             tenant_key="tenant_key",
             source="source",
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
@@ -502,6 +537,16 @@ class TestCompiler:
             source="source",
             auto_fix=True,
             combination="combination",
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             pinned_variant="pinned_variant",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
@@ -653,10 +698,12 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
-                "order_by": {
-                    "asc": ["string"],
-                    "desc": ["string"],
-                },
+                "order_by": [
+                    {
+                        "direction": "asc",
+                        "field": "ref(created_date)",
+                    }
+                ],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -710,9 +757,20 @@ class TestAsyncCompiler:
                         "variables": {"foo": "string"},
                     }
                 ],
+                "totals": True,
             },
             tenant_key="tenant_key",
             source="source",
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileResponse, compiler, path=["response"])
@@ -777,7 +835,16 @@ class TestAsyncCompiler:
             dashboard_path="dashboard_path",
             tenant_key="tenant_key",
             source="source",
-            filters={"foo": "string"},
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerCompileDashboardResponse, compiler, path=["response"])
@@ -934,10 +1001,12 @@ class TestAsyncCompiler:
                         "label": "label",
                     }
                 ],
-                "order_by": {
-                    "asc": ["string"],
-                    "desc": ["string"],
-                },
+                "order_by": [
+                    {
+                        "direction": "asc",
+                        "field": "ref(created_date)",
+                    }
+                ],
                 "resolved_chart": {
                     "config": {
                         "color_by": "ref(created_date)",
@@ -991,9 +1060,20 @@ class TestAsyncCompiler:
                         "variables": {"foo": "string"},
                     }
                 ],
+                "totals": True,
             },
             tenant_key="tenant_key",
             source="source",
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
@@ -1058,6 +1138,16 @@ class TestAsyncCompiler:
             source="source",
             auto_fix=True,
             combination="combination",
+            filter_state=[
+                {
+                    "effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "enabled": True,
+                    "value": {
+                        "value": "string",
+                        "mode": "scalar",
+                    },
+                }
+            ],
             pinned_variant="pinned_variant",
             x_kater_cli_id="X-Kater-CLI-ID",
         )
