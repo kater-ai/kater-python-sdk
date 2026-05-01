@@ -1,5 +1,39 @@
 # Changelog
 
+## 0.14.0 (2026-05-01)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* add filter v2 schema, update docs and query system ([6ce80db](https://github.com/kater-ai/kater-python-sdk/commit/6ce80db89674cd6e48473ecfe0872de18231c23e))
+* improve dashboard filter refresh behavior ([88ddc51](https://github.com/kater-ai/kater-python-sdk/commit/88ddc51a959b04aafe754c473fccfd5d332c58ff))
+* landing page + filter patch fixes ([c2080ff](https://github.com/kater-ai/kater-python-sdk/commit/c2080ff14f62f1f4adb3579f455ff52a32a90869))
+* redesign order_by DSL to explicit ordered list ([c438614](https://github.com/kater-ai/kater-python-sdk/commit/c4386144386206e7ad8e202554f9725d30ef83ae))
+* support setting headers via env ([f9452ff](https://github.com/kater-ai/kater-python-sdk/commit/f9452ff8327f4b29a770aa4e893c86a8dc643690))
+* Worktree feat+app row limit ([4e04192](https://github.com/kater-ai/kater-python-sdk/commit/4e041929b958be522d08e31dbb354da2633b3615))
+
+
+### Bug Fixes
+
+* **client:** preserve hardcoded query params when merging with user params ([3b44cd5](https://github.com/kater-ai/kater-python-sdk/commit/3b44cd5ab732c58722c577246c6258bd6542f132))
+* ensure file data are only sent as 1 parameter ([c50d733](https://github.com/kater-ai/kater-python-sdk/commit/c50d733e1ec7e2458caadabcf10bfc5ba4d1a611))
+* use correct field name format for multipart file arrays ([3f20ed2](https://github.com/kater-ai/kater-python-sdk/commit/3f20ed24e70e4573536fb75d137c801208459202))
+
+
+### Performance Improvements
+
+* **client:** optimize file structure copying in multipart requests ([f5288a7](https://github.com/kater-ai/kater-python-sdk/commit/f5288a74cf6d4b157d62f1a87d8f7c5f3a5c76c1))
+
+
+### Chores
+
+* bump pygments to 2.20.0 to fix ReDoS CVE ([#24](https://github.com/kater-ai/kater-python-sdk/issues/24)) ([8c7f520](https://github.com/kater-ai/kater-python-sdk/commit/8c7f52084581b41c3ab6f21c43ab39d937c4d971))
+* bump pytest to 9.0.3 to fix CVE-2025-71176 ([#25](https://github.com/kater-ai/kater-python-sdk/issues/25)) ([93384a6](https://github.com/kater-ai/kater-python-sdk/commit/93384a6a7abd1efbfbb939e0d2ca1cc868a47d2a))
+* **ci:** remove release-doctor workflow ([ced1a6b](https://github.com/kater-ai/kater-python-sdk/commit/ced1a6b0df61ecd45cb9260ea34e4cfac84c22e5))
+* **internal:** more robust bootstrap script ([66c2897](https://github.com/kater-ai/kater-python-sdk/commit/66c2897659f6e3a443dd5e5af1009badcf726325))
+* **internal:** reformat pyproject.toml ([75ea8da](https://github.com/kater-ai/kater-python-sdk/commit/75ea8da2f2388ba76678eddf3be41296616de329))
+
 ## 0.13.0 (2026-04-02)
 
 Full Changelog: [v0.12.2...v0.13.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.12.2...v0.13.0)
