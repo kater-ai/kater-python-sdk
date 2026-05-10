@@ -24,6 +24,7 @@ __all__ = [
     "DefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "DefaultFilterStateValuePresetReferenceFilterValue",
     "DefaultFilterStateValueNullFilterValue",
+    "FieldMetadataFieldMetadataItem",
     "FilterDefinition",
     "FilterDefinitionDefaultValue",
     "FilterDefinitionDefaultValueScalarFilterValue",
@@ -245,6 +246,31 @@ class DefaultFilterState(BaseModel):
 
     value: Optional[DefaultFilterStateValue] = None
     """Current typed runtime value"""
+
+
+class FieldMetadataFieldMetadataItem(BaseModel):
+    """Metadata for a single field in a query's enumerate result."""
+
+    field_type: str
+    """Field type: measure, dimension, dimension_date, or calculation"""
+
+    description: Optional[str] = None
+
+    formula: Optional[str] = None
+    """SQL expression (measure sql, calculation formula, derived dimension sql)"""
+
+    kater_id: Optional[str] = None
+
+    label: Optional[str] = None
+
+    output_type: Optional[str] = None
+    """Return data type for calculations, e.g. 'number'"""
+
+    params: Optional[List[str]] = None
+    """Formatted parameter strings for calculations, e.g. ['metric: measure']"""
+
+    source_path: Optional[str] = None
+    """Source file path and line number, e.g. measures/compliance_rate.yaml#L12"""
 
 
 class FilterDefinitionDefaultValueScalarFilterValue(BaseModel):
@@ -716,6 +742,8 @@ class VariableDefinition(BaseModel):
 
     default: Union[str, float, bool, List[Union[str, float, bool]], None] = None
 
+    description: Optional[str] = None
+
     label: Optional[str] = None
 
 
@@ -733,6 +761,9 @@ class CompilerEnumerateResponse(BaseModel):
 
     field_labels: Optional[Dict[str, Dict[str, str]]] = None
     """Display labels for slot fields, keyed by query_kater_id then field name"""
+
+    field_metadata: Optional[Dict[str, Dict[str, FieldMetadataFieldMetadataItem]]] = None
+    """Rich metadata for slot fields, keyed by query_kater_id then field name"""
 
     filter_definitions: Optional[Dict[str, List[FilterDefinition]]] = None
     """Effective filter definitions keyed by query_kater_id"""

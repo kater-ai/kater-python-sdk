@@ -71,6 +71,12 @@ class CombinationResource(SyncAPIResource):
 
         RLS: Filtered to current client (ClientRLSDB).
 
+        Migration: this is the legacy combination-string path. The target consumer
+        surface is `POST /api/v1/compiler/render` (delivered by the remove-combos
+        prerequisite PRD at `_bmad-output/epics/demo/patch/remove-combos/prd.md`). The
+        new `rendered_query_key` field on the response is shared between both paths to
+        enable cross-consumer state during the migration window.
+
         Args:
           combination: Comma-separated slot selections, same format as ResolveRequest.combination.
               Example: 'dimension=due_month,measure=compliance_rate'
@@ -166,6 +172,12 @@ class AsyncCombinationResource(AsyncAPIResource):
         Returns data + WidgetConfig for immediate rendering.
 
         RLS: Filtered to current client (ClientRLSDB).
+
+        Migration: this is the legacy combination-string path. The target consumer
+        surface is `POST /api/v1/compiler/render` (delivered by the remove-combos
+        prerequisite PRD at `_bmad-output/epics/demo/patch/remove-combos/prd.md`). The
+        new `rendered_query_key` field on the response is shared between both paths to
+        enable cross-consumer state during the migration window.
 
         Args:
           combination: Comma-separated slot selections, same format as ResolveRequest.combination.

@@ -291,6 +291,7 @@ class ResolvedQueryResolvedVariable(TypedDict, total=False):
             "MEASURE",
             "CALCULATION",
             "FILTER",
+            "TIMEFRAME",
         ]
     ]
     """Data type of the variable"""
