@@ -24,6 +24,7 @@ __all__ = [
     "DefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "DefaultFilterStateValuePresetReferenceFilterValue",
     "DefaultFilterStateValueNullFilterValue",
+    "Deprecation",
     "FieldMetadataFieldMetadataItem",
     "FilterDefinition",
     "FilterDefinitionDefaultValue",
@@ -246,6 +247,14 @@ class DefaultFilterState(BaseModel):
 
     value: Optional[DefaultFilterStateValue] = None
     """Current typed runtime value"""
+
+
+class Deprecation(BaseModel):
+    """Two-field deprecation block embedded in response payloads."""
+
+    message: str
+
+    replacement: str
 
 
 class FieldMetadataFieldMetadataItem(BaseModel):
@@ -758,6 +767,9 @@ class CompilerEnumerateResponse(BaseModel):
 
     default_filter_state: Optional[Dict[str, List[DefaultFilterState]]] = None
     """Default filter state keyed by query_kater_id"""
+
+    deprecation: Optional[Deprecation] = None
+    """Two-field deprecation block embedded in response payloads."""
 
     field_labels: Optional[Dict[str, Dict[str, str]]] = None
     """Display labels for slot fields, keyed by query_kater_id then field name"""

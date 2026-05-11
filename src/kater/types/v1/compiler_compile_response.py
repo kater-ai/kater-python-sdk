@@ -3,7 +3,6 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
-from .manifest import Manifest
 from ..._models import BaseModel
 from .compiler_error_item import CompilerErrorItem
 
@@ -26,7 +25,6 @@ __all__ = [
     "AppliedFilterStateValuePresetReferenceFilterValue",
     "AppliedFilterStateValueNullFilterValue",
     "ColumnMap",
-    "Metadata",
     "RenderedQueryKey",
     "RenderedQueryKeyCanonical",
     "RenderedQueryKeyCanonicalCacheProjection",
@@ -220,28 +218,6 @@ class ColumnMap(BaseModel):
 
     source_kater_id: Optional[str] = None
     """Authored source field UUID for derived timeframe columns."""
-
-
-class Metadata(BaseModel):
-    """Compilation metadata from the compiler."""
-
-    dialect: str
-    """SQL dialect used (e.g. 'snowflake')"""
-
-    query_ref: str
-    """Reference to the compiled query"""
-
-    dimensions_used: Optional[List[str]] = None
-    """Dimension names used in compilation"""
-
-    filters_used: Optional[List[str]] = None
-    """Filter names used in compilation"""
-
-    measures_used: Optional[List[str]] = None
-    """Measure names used in compilation"""
-
-    views_used: Optional[List[str]] = None
-    """View names used in compilation"""
 
 
 class RenderedQueryKeyCanonicalCacheProjectionAggregateDimension(BaseModel):
@@ -819,28 +795,40 @@ class RenderedQueryKey(BaseModel):
 
 
 class CompilerCompileResponse(BaseModel):
-    """Response model for SQL compilation."""
+    """Compile-stage projection from ``RenderResponse`` (Story 2.1 frozen dataclass).
 
-    dialect: str
-    """SQL dialect used (e.g. 'snowflake')"""
+    Has NO ``combination`` / ``combination_id`` field by contract. The
+    combination-free invariant is asserted by AST-scan tests in
+    ``test_compile_route.py``. Execute-only fields (``data``, ``cache_hit``,
+    ``row_count``) are zeroed because compile does not run execute.
+    """
 
     success: bool
-    """Whether compilation succeeded"""
+    """Whether the compile succeeded"""
 
     applied_filter_state: Optional[List[AppliedFilterState]] = None
-    """Applied runtime filter state used for compilation"""
+    """Applied runtime filter state used for compilation."""
+
+    auto_description: Optional[str] = None
+    """Auto-generated description text."""
+
+    auto_title: Optional[str] = None
+    """Auto-generated title."""
+
+    cache_hit: Optional[bool] = None
+    """Compile-stage no-op: always False."""
 
     column_map: Optional[List[ColumnMap]] = None
-    """Maps UUID column aliases to human-readable names and types"""
+    """Column metadata for the compiled output columns."""
+
+    data: Optional[List[Dict[str, object]]] = None
+    """Compile-stage no-op: always empty. `execute` did not run."""
+
+    dialect: Optional[str] = None
+    """SQL dialect used."""
 
     errors: Optional[List[CompilerErrorItem]] = None
-    """Compilation errors"""
-
-    manifest: Optional[Manifest] = None
-    """Compilation manifest with all named objects."""
-
-    metadata: Optional[Metadata] = None
-    """Compilation metadata from the compiler."""
+    """Compilation errors (if any)."""
 
     rendered_query_key: Optional[RenderedQueryKey] = None
     """Top-level natural key returned by every runtime data and widget path.
@@ -852,12 +840,17 @@ class CompilerCompileResponse(BaseModel):
     - `aggregate_cache_key_id`: `rqk_cache_agg_v1:<64 lowercase hex chars>` or null
     """
 
-    request_id: Optional[str] = None
-    """Reserved for write-back flows.
-
-    Compile responses currently return null because compiled SQL and resolved-query
-    artifacts are not written back.
-    """
+    row_count: Optional[int] = None
+    """Compile-stage no-op: always 0."""
 
     sql: Optional[str] = None
-    """Generated SQL statement"""
+    """Generated SQL statement."""
+
+    style_config: Optional[Dict[str, object]] = None
+    """Resolved style config."""
+
+    widget_config: Optional[Dict[str, object]] = None
+    """Resolved widget config."""
+
+    widget_type: Optional[str] = None
+    """Resolved widget type."""

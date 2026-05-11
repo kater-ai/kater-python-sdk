@@ -24,6 +24,14 @@ from .combination import (
     CombinationResourceWithStreamingResponse,
     AsyncCombinationResourceWithStreamingResponse,
 )
+from .capabilities import (
+    CapabilitiesResource,
+    AsyncCapabilitiesResource,
+    CapabilitiesResourceWithRawResponse,
+    AsyncCapabilitiesResourceWithRawResponse,
+    CapabilitiesResourceWithStreamingResponse,
+    AsyncCapabilitiesResourceWithStreamingResponse,
+)
 
 __all__ = [
     "CombinationResource",
@@ -38,6 +46,12 @@ __all__ = [
     "AsyncManifestResourceWithRawResponse",
     "ManifestResourceWithStreamingResponse",
     "AsyncManifestResourceWithStreamingResponse",
+    "CapabilitiesResource",
+    "AsyncCapabilitiesResource",
+    "CapabilitiesResourceWithRawResponse",
+    "AsyncCapabilitiesResourceWithRawResponse",
+    "CapabilitiesResourceWithStreamingResponse",
+    "AsyncCapabilitiesResourceWithStreamingResponse",
     "CompilerResource",
     "AsyncCompilerResource",
     "CompilerResourceWithRawResponse",

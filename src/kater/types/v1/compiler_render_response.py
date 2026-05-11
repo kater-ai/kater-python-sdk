@@ -3,11 +3,11 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
-from ...._models import BaseModel
-from ..compiler_error_item import CompilerErrorItem
+from ..._models import BaseModel
+from .compiler_error_item import CompilerErrorItem
 
 __all__ = [
-    "CombinationPreviewResponse",
+    "CompilerRenderResponse",
     "AppliedFilterState",
     "AppliedFilterStateValue",
     "AppliedFilterStateValueScalarFilterValue",
@@ -42,7 +42,6 @@ __all__ = [
     "DefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "DefaultFilterStateValuePresetReferenceFilterValue",
     "DefaultFilterStateValueNullFilterValue",
-    "Deprecation",
     "FilterDefinition",
     "FilterDefinitionDefaultValue",
     "FilterDefinitionDefaultValueScalarFilterValue",
@@ -458,14 +457,6 @@ class DefaultFilterState(BaseModel):
 
     value: Optional[DefaultFilterStateValue] = None
     """Current typed runtime value"""
-
-
-class Deprecation(BaseModel):
-    """Two-field deprecation block embedded in response payloads."""
-
-    message: str
-
-    replacement: str
 
 
 class FilterDefinitionDefaultValueScalarFilterValue(BaseModel):
@@ -1454,58 +1445,70 @@ class RenderedQueryKey(BaseModel):
     version: Literal[1]
 
 
-class CombinationPreviewResponse(BaseModel):
-    """Response from combination preview with data + resolved config.
+class CompilerRenderResponse(BaseModel):
+    """Route-side projection of ``RenderResponse`` (Story 2.1 frozen dataclass).
 
-    Legacy migration surface: this response is produced by the legacy
-    combination-string path (`POST /api/v1/compiler/combination/preview`).
-    The target consumer surface is the structured render endpoint
-    (`POST /api/v1/compiler/render`, delivered by the remove-combos
-    prerequisite at `_bmad-output/epics/demo/patch/remove-combos/prd.md`),
-    which accepts a `RenderedQueryRequestV1` instead of a `combination`
-    string. Both paths return the same `rendered_query_key` for equivalent
-    logical inputs (verified by the deferred parity test once the
-    structured render endpoint lands).
+    Has NO ``combination`` or ``combination_id`` field by contract. The
+    combination-free invariant is asserted by AST-scan tests in
+    ``test_render_route.py``.
     """
 
     success: bool
-    """Whether preview succeeded"""
+    """Whether the render succeeded"""
 
     applied_filter_state: Optional[List[AppliedFilterState]] = None
-    """Applied runtime filter state used for the preview"""
+    """Applied runtime filter state used for the render."""
+
+    auto_description: Optional[str] = None
+    """Auto-generated description text."""
+
+    auto_description_structured: Optional[Dict[str, object]] = None
+    """Structured auto-description payload, if available."""
 
     auto_title: Optional[str] = None
-    """Auto-generated title"""
+    """Auto-generated title."""
 
     cache_hit: Optional[bool] = None
-    """Whether the result was served from cache"""
+    """Whether the result was served from cache."""
 
     column_map: Optional[List[ColumnMap]] = None
-    """Enriched column metadata"""
+    """Column metadata for the compiled output columns."""
 
     column_profiles: Optional[Dict[str, ColumnProfiles]] = None
-    """Per-column statistical profiles keyed by kater_id (UUID column alias)."""
+    """Per-column statistical profiles keyed by column_key."""
 
     config: Optional[Dict[str, object]] = None
-    """Resolved WidgetConfig (from config builder)"""
+    """
+    Resolved widget config with `style_config` merged under `config.style` for
+    parity with the legacy preview response.
+    """
+
+    config_controls: Optional[Dict[str, object]] = None
+    """Resolved config controls metadata."""
 
     data: Optional[List[Dict[str, object]]] = None
-    """Query result rows"""
+    """Query result rows."""
 
     default_filter_state: Optional[List[DefaultFilterState]] = None
-    """Default runtime filter state derived from filter definitions"""
+    """Default runtime filter state derived from definitions."""
 
-    deprecation: Optional[Deprecation] = None
-    """Two-field deprecation block embedded in response payloads."""
+    dialect: Optional[str] = None
+    """Warehouse dialect for the compiled SQL."""
 
     errors: Optional[List[CompilerErrorItem]] = None
-    """Compilation errors (if any)"""
+    """Compilation or pipeline errors (if any)."""
 
     execution_time_ms: Optional[float] = None
-    """Total execution time in milliseconds"""
+    """Total render duration in milliseconds."""
 
     filter_definitions: Optional[List[FilterDefinition]] = None
-    """Resolved effective filter definitions for this preview"""
+    """Resolved effective filter definitions."""
+
+    next_cursor: Optional[str] = None
+    """Pagination cursor for the next page."""
+
+    page_size: Optional[int] = None
+    """Page size used by the compiled query."""
 
     rendered_query_key: Optional[RenderedQueryKey] = None
     """Top-level natural key returned by every runtime data and widget path.
@@ -1518,10 +1521,16 @@ class CombinationPreviewResponse(BaseModel):
     """
 
     row_count: Optional[int] = None
-    """Total rows represented by this preview"""
+    """Total rows returned by the compiled query."""
+
+    sql: Optional[str] = None
+    """Compiled SQL (display form)."""
+
+    style_config: Optional[Dict[str, object]] = None
+    """Standalone style config (also merged into `config`)."""
 
     totals_row: Optional[Dict[str, object]] = None
-    """Totals row over returned measure columns (UUID alias keys)"""
+    """Totals row over returned measure columns (column_key keys)."""
 
     widget_type: Optional[str] = None
-    """Resolved widget type (e.g. 'axis_metric_by_dimensiondate')"""
+    """Resolved widget type."""
