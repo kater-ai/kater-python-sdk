@@ -3,11 +3,11 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
-from ...._models import BaseModel
-from ..compiler_error_item import CompilerErrorItem
+from ....._models import BaseModel
+from ...compiler_error_item import CompilerErrorItem
 
 __all__ = [
-    "CombinationPreviewResponse",
+    "WidgetRenderResponse",
     "AppliedFilterState",
     "AppliedFilterStateValue",
     "AppliedFilterStateValueScalarFilterValue",
@@ -26,6 +26,9 @@ __all__ = [
     "AppliedFilterStateValueNullFilterValue",
     "ColumnMap",
     "ColumnProfiles",
+    "ConfigControls",
+    "ConfigControlsChart",
+    "ConfigControlsChartOption",
     "DefaultFilterState",
     "DefaultFilterStateValue",
     "DefaultFilterStateValueScalarFilterValue",
@@ -90,6 +93,11 @@ __all__ = [
     "FilterDefinitionValuesStaticFilterValuesSource",
     "FilterDefinitionValuesStaticFilterValuesSourceItem",
     "FilterDefinitionValuesDynamicDistinctFilterValuesSource",
+    "InsightRun",
+    "InsightRunFinding",
+    "InsightRunFindingEvidence",
+    "InsightRunFindingFollowUp",
+    "InsightRunSummary",
     "RenderedQueryKey",
     "RenderedQueryKeyCanonical",
     "RenderedQueryKeyCanonicalCacheProjection",
@@ -326,6 +334,30 @@ class ColumnProfiles(BaseModel):
 
     stdev: Optional[float] = None
     """Population standard deviation."""
+
+
+class ConfigControlsChartOption(BaseModel):
+    """Single select option for a backend-owned widget config control."""
+
+    label: str
+    """Human-readable display label"""
+
+    value: str
+    """Underlying config value"""
+
+
+class ConfigControlsChart(BaseModel):
+    """Backend-owned metadata for a widget config control."""
+
+    options: Optional[List[ConfigControlsChartOption]] = None
+    """Selectable options for the control when applicable"""
+
+
+class ConfigControls(BaseModel):
+    """Backend-owned widget config controls for the query builder panel."""
+
+    chart: Optional[Dict[str, ConfigControlsChart]] = None
+    """Chart config controls keyed by field name"""
 
 
 class DefaultFilterStateValueScalarFilterValue(BaseModel):
@@ -878,6 +910,69 @@ class FilterDefinition(BaseModel):
 
     values: Optional[FilterDefinitionValues] = None
     """Selectable values metadata"""
+
+
+class InsightRunFindingEvidence(BaseModel):
+    """Structured evidence attached to a finding."""
+
+    label: str
+
+    value: Union[str, float, bool]
+
+    description: Optional[str] = None
+
+
+class InsightRunFindingFollowUp(BaseModel):
+    """Structured action hint emitted by an insight finding."""
+
+    id: str
+
+    instructions: str
+
+    label: str
+
+    payload: Optional[Dict[str, object]] = None
+
+
+class InsightRunFinding(BaseModel):
+    """Single analytical finding emitted by an insight run."""
+
+    kind: str
+
+    summary: str
+
+    confidence: Optional[float] = None
+
+    details: Optional[List[str]] = None
+
+    evidence: Optional[List[InsightRunFindingEvidence]] = None
+
+    follow_ups: Optional[List[InsightRunFindingFollowUp]] = None
+
+    metadata: Optional[Dict[str, object]] = None
+
+    severity: Optional[Literal["info", "positive", "warning", "critical"]] = None
+
+
+class InsightRunSummary(BaseModel):
+    """Top-level summary for an insight run."""
+
+    text: str
+
+    confidence: Optional[float] = None
+
+    severity: Optional[Literal["info", "positive", "warning", "critical"]] = None
+
+
+class InsightRun(BaseModel):
+    """Validated structured output for a completed insight run."""
+
+    findings: Optional[List[InsightRunFinding]] = None
+
+    metadata: Optional[Dict[str, object]] = None
+
+    summary: Optional[InsightRunSummary] = None
+    """Top-level summary for an insight run."""
 
 
 class RenderedQueryKeyCanonicalCacheProjectionAggregateDimension(BaseModel):
@@ -1454,58 +1549,67 @@ class RenderedQueryKey(BaseModel):
     version: Literal[1]
 
 
-class CombinationPreviewResponse(BaseModel):
-    """Response from combination preview with data + resolved config.
+class WidgetRenderResponse(BaseModel):
+    """Response from GET /api/v1/sdk/widget.
 
-    Legacy migration surface: this response is produced by the legacy
-    combination-string path (`POST /api/v1/compiler/combination/preview`).
-    The target consumer surface is the structured render endpoint
-    (`POST /api/v1/compiler/render`, delivered by the remove-combos
-    prerequisite at `_bmad-output/epics/demo/patch/remove-combos/prd.md`),
-    which accepts a `RenderedQueryRequestV1` instead of a `combination`
-    string. Both paths return the same `rendered_query_key` for equivalent
-    logical inputs (verified by the deferred parity test once the
-    structured render endpoint lands).
+    Returns a single widget's data + config for SDK consumers, plus a
+    canonical `rendered_query_key` for stable cross-consumer identity.
+    Shape matches CombinationPreviewResponse (minus internal metrics).
     """
 
     success: bool
-    """Whether preview succeeded"""
+    """Whether the preview succeeded"""
 
     applied_filter_state: Optional[List[AppliedFilterState]] = None
-    """Applied runtime filter state used for the preview"""
+    """Applied runtime filter state for this widget preview"""
 
     auto_title: Optional[str] = None
     """Auto-generated title"""
 
-    cache_hit: Optional[bool] = None
-    """Whether the result was served from cache"""
-
     column_map: Optional[List[ColumnMap]] = None
-    """Enriched column metadata"""
+    """Column metadata"""
 
     column_profiles: Optional[Dict[str, ColumnProfiles]] = None
     """Per-column statistical profiles keyed by kater_id (UUID column alias)."""
 
     config: Optional[Dict[str, object]] = None
-    """Resolved WidgetConfig (from config builder)"""
+    """Resolved WidgetConfig"""
+
+    config_controls: Optional[ConfigControls] = None
+    """Backend-owned widget config controls for the query builder panel."""
 
     data: Optional[List[Dict[str, object]]] = None
     """Query result rows"""
 
     default_filter_state: Optional[List[DefaultFilterState]] = None
-    """Default runtime filter state derived from filter definitions"""
+    """Default runtime filter state for this widget preview"""
 
     deprecation: Optional[Deprecation] = None
     """Two-field deprecation block embedded in response payloads."""
 
-    errors: Optional[List[CompilerErrorItem]] = None
-    """Compilation errors (if any)"""
+    dialect: Optional[str] = None
+    """Warehouse dialect (e.g. snowflake, postgresql, databricks)"""
 
-    execution_time_ms: Optional[float] = None
-    """Total execution time in milliseconds"""
+    errors: Optional[List[CompilerErrorItem]] = None
+    """Compilation errors"""
 
     filter_definitions: Optional[List[FilterDefinition]] = None
-    """Resolved effective filter definitions for this preview"""
+    """Resolved effective filter definitions for this widget preview"""
+
+    has_more: Optional[bool] = None
+    """Whether additional table rows can be fetched with next_cursor"""
+
+    insight_runs: Optional[List[InsightRun]] = None
+    """Structured runtime insight results for this widget preview."""
+
+    is_row_limited: Optional[bool] = None
+    """True when the app-wide row limit was applied and results were truncated"""
+
+    next_cursor: Optional[str] = None
+    """Opaque cursor for fetching the next table page"""
+
+    page_size: Optional[int] = None
+    """Number of rows requested per table page"""
 
     rendered_query_key: Optional[RenderedQueryKey] = None
     """Top-level natural key returned by every runtime data and widget path.
@@ -1518,10 +1622,13 @@ class CombinationPreviewResponse(BaseModel):
     """
 
     row_count: Optional[int] = None
-    """Total rows represented by this preview"""
+    """Total rows represented by this widget result"""
+
+    sql: Optional[str] = None
+    """Compiled SQL query"""
 
     totals_row: Optional[Dict[str, object]] = None
     """Totals row over returned measure columns (UUID alias keys)"""
 
     widget_type: Optional[str] = None
-    """Resolved widget type (e.g. 'axis_metric_by_dimensiondate')"""
+    """Resolved widget type"""

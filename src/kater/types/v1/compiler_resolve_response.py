@@ -3,38 +3,11 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
-from .manifest import Manifest
 from ..._models import BaseModel
-from .chart_config import ChartConfig
-from .inline_field import InlineField
-from .ref_with_label import RefWithLabel
-from .subquery_condition import SubqueryCondition
+from .compiler_error_item import CompilerErrorItem
 
 __all__ = [
     "CompilerResolveResponse",
-    "ResolvedQuery",
-    "ResolvedQueryCalculation",
-    "ResolvedQueryChartHint",
-    "ResolvedQueryChartHintChartHint1Output",
-    "ResolvedQueryChartHintChartHint2Output",
-    "ResolvedQueryChartHintChartHint2OutputDefault",
-    "ResolvedQueryDimension",
-    "ResolvedQueryFilter",
-    "ResolvedQueryFilterInlineFormulaFilter",
-    "ResolvedQueryFilterInlineExistsFilter1",
-    "ResolvedQueryFilterInlineExistsFilter2",
-    "ResolvedQueryMeasure",
-    "ResolvedQueryOrderBy",
-    "ResolvedQueryOrderByOrderByItem",
-    "ResolvedQueryResolvedChart",
-    "ResolvedQueryResolvedVariable",
-    "ResolvedQueryResolvedVariableAllowedValues",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2",
-    "ResolvedQueryResolvedVariableConstraints",
-    "ResolvedQuerySelectFrom",
-    "ResolvedQuerySelectFromOutputColumn",
     "AppliedFilterState",
     "AppliedFilterStateValue",
     "AppliedFilterStateValueScalarFilterValue",
@@ -67,8 +40,6 @@ __all__ = [
     "DefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "DefaultFilterStateValuePresetReferenceFilterValue",
     "DefaultFilterStateValueNullFilterValue",
-    "DependencyGraph",
-    "DependencyGraphNodes",
     "FilterDefinition",
     "FilterDefinitionDefaultValue",
     "FilterDefinitionDefaultValueScalarFilterValue",
@@ -116,8 +87,6 @@ __all__ = [
     "FilterDefinitionValuesStaticFilterValuesSource",
     "FilterDefinitionValuesStaticFilterValuesSourceItem",
     "FilterDefinitionValuesDynamicDistinctFilterValuesSource",
-    "RefFix",
-    "RefFixReplacement",
     "RenderedQueryKey",
     "RenderedQueryKeyCanonical",
     "RenderedQueryKeyCanonicalCacheProjection",
@@ -148,385 +117,6 @@ __all__ = [
     "RenderedQueryKeyCanonicalTenant",
     "RenderedQueryKeyCanonicalVariable",
 ]
-
-ResolvedQueryCalculation: TypeAlias = Union[RefWithLabel, InlineField, str]
-
-
-class ResolvedQueryChartHintChartHint1Output(BaseModel):
-    """A chart recommendation rule"""
-
-    config: ChartConfig
-    """Chart configuration with variable references"""
-
-    recommend: Literal[
-        "line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"
-    ]
-    """Type of chart visualization"""
-
-    when: Dict[str, Union[str, List[str]]]
-    """
-    Conditions based on variable values - can be single value (string) or multiple
-    values (array)
-    """
-
-
-class ResolvedQueryChartHintChartHint2OutputDefault(BaseModel):
-    config: ChartConfig
-    """Chart configuration with variable references"""
-
-    recommend: Literal[
-        "line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"
-    ]
-    """Type of chart visualization"""
-
-
-class ResolvedQueryChartHintChartHint2Output(BaseModel):
-    """A chart recommendation rule"""
-
-    default: ResolvedQueryChartHintChartHint2OutputDefault
-
-
-ResolvedQueryChartHint: TypeAlias = Union[
-    ResolvedQueryChartHintChartHint1Output, ResolvedQueryChartHintChartHint2Output
-]
-
-ResolvedQueryDimension: TypeAlias = Union[RefWithLabel, InlineField, str]
-
-
-class ResolvedQueryFilterInlineFormulaFilter(BaseModel):
-    """An inline filter using a SQL/expression formula"""
-
-    name: str
-    """Name of the inline filter"""
-
-    sql: str
-    """SQL expression for the filter condition"""
-
-
-class ResolvedQueryFilterInlineExistsFilter1(BaseModel):
-    """An inline filter using EXISTS or NOT EXISTS with a subquery"""
-
-    exists: SubqueryCondition
-    """EXISTS subquery condition"""
-
-    name: str
-    """Name of the inline filter"""
-
-    description: Optional[str] = None
-    """Description of the filter"""
-
-    label: Optional[str] = None
-    """Human-readable label"""
-
-    not_exists: Optional[SubqueryCondition] = None
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-
-class ResolvedQueryFilterInlineExistsFilter2(BaseModel):
-    """An inline filter using EXISTS or NOT EXISTS with a subquery"""
-
-    name: str
-    """Name of the inline filter"""
-
-    not_exists: SubqueryCondition
-    """NOT EXISTS subquery condition"""
-
-    description: Optional[str] = None
-    """Description of the filter"""
-
-    exists: Optional[SubqueryCondition] = None
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-    label: Optional[str] = None
-    """Human-readable label"""
-
-
-ResolvedQueryFilter: TypeAlias = Union[
-    ResolvedQueryFilterInlineFormulaFilter,
-    str,
-    ResolvedQueryFilterInlineExistsFilter1,
-    ResolvedQueryFilterInlineExistsFilter2,
-]
-
-ResolvedQueryMeasure: TypeAlias = Union[RefWithLabel, InlineField, str]
-
-
-class ResolvedQueryOrderByOrderByItem(BaseModel):
-    """Explicit sort direction for a field."""
-
-    direction: Literal["asc", "desc"]
-    """
-    Sort direction: asc (ascending, A-Z / oldest first) or desc (descending, Z-A /
-    newest first).
-    """
-
-    field: str
-    """A string that may be a ref(), var(), or expr() reference"""
-
-
-ResolvedQueryOrderBy: TypeAlias = Union[ResolvedQueryOrderByOrderByItem, str]
-
-
-class ResolvedQueryResolvedChart(BaseModel):
-    """The matched chart recommendation after evaluating chart hints"""
-
-    config: ChartConfig
-    """Chart configuration"""
-
-    recommend: Literal[
-        "line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"
-    ]
-    """Recommended chart type"""
-
-
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static(BaseModel):
-    """A value with optional display label"""
-
-    value: Union[str, float, bool]
-    """The actual value"""
-
-    label: Optional[str] = None
-    """Human-readable label for the value"""
-
-
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1(BaseModel):
-    """Allowed values for a variable - either static list or from column"""
-
-    static: List[ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static]
-    """Static list of allowed values with optional labels"""
-
-
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2(BaseModel):
-    """Allowed values for a variable - either static list or from column"""
-
-    from_column: str
-    """Reference to column for dynamic values"""
-
-    cache_ttl: Optional[int] = None
-    """Cache time-to-live in seconds"""
-
-    limit: Optional[int] = None
-    """Maximum number of values to retrieve"""
-
-    order_by: Optional[Literal["asc", "desc"]] = None
-    """Sort order for values"""
-
-
-ResolvedQueryResolvedVariableAllowedValues: TypeAlias = Union[
-    ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1,
-    ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2,
-    None,
-]
-
-
-class ResolvedQueryResolvedVariableConstraints(BaseModel):
-    """Constraints for variable types"""
-
-    max: Optional[float] = None
-    """Maximum allowed value"""
-
-    max_length: Optional[int] = None
-    """Maximum length for STRING variables"""
-
-    min: Optional[float] = None
-    """Minimum allowed value"""
-
-    step: Optional[float] = None
-    """Step increment for numeric input"""
-
-
-class ResolvedQueryResolvedVariable(BaseModel):
-    """A variable definition with its bound value"""
-
-    bound_value: Union[str, float, bool, List[Union[str, float, bool]]]
-    """The concrete value bound for this resolution"""
-
-    default: Union[str, float, bool, List[Union[str, float, bool]]]
-    """Default value for this variable"""
-
-    kater_id: str
-    """Unique identifier for this variable"""
-
-    name: str
-    """Variable name identifier"""
-
-    type: Literal[
-        "STRING",
-        "INT",
-        "FLOAT",
-        "DATE",
-        "TIMESTAMP",
-        "BOOL",
-        "STRING[]",
-        "INT[]",
-        "FLOAT[]",
-        "DATE[]",
-        "DIMENSION",
-        "MEASURE",
-        "CALCULATION",
-        "FILTER",
-        "TIMEFRAME",
-    ]
-    """Data type of the variable"""
-
-    allowed_values: Optional[ResolvedQueryResolvedVariableAllowedValues] = None
-    """Allowed values configuration"""
-
-    constraints: Optional[ResolvedQueryResolvedVariableConstraints] = None
-    """Constraints for variable types"""
-
-    description: Optional[str] = None
-    """Description of the variable's purpose"""
-
-    is_default: Optional[bool] = None
-    """True if bound_value equals the default value"""
-
-    is_runtime: Optional[bool] = None
-    """True if this is a runtime variable (not resolved at compile time).
-
-    Runtime variables have var() placeholders left in compiled SQL for literal
-    substitution at execution time.
-    """
-
-    label: Optional[str] = None
-    """Human-readable label for the variable"""
-
-
-class ResolvedQuerySelectFromOutputColumn(BaseModel):
-    """A column produced by a select_from CTE"""
-
-    column_alias: str
-    """The SQL column alias in the CTE output"""
-
-    field_name: str
-    """The field name used in q:query_name.field_name references"""
-
-    source_type: Literal["dimension", "dimension_date", "measure", "calculation"]
-    """Original type of the field in the source query"""
-
-
-class ResolvedQuerySelectFrom(BaseModel):
-    """A resolved select_from entry with CTE metadata"""
-
-    cte_alias: str
-    """CTE alias used in the WITH clause (e.g., **sf_compliance_rate**base)"""
-
-    output_columns: List[ResolvedQuerySelectFromOutputColumn]
-    """Columns produced by the CTE, available as q:query_name.field_name in the parent"""
-
-    ref: str
-    """Reference to the source query"""
-
-    variables: Optional[Dict[str, Union[str, float, bool]]] = None
-    """Variable overrides passed to the referenced query"""
-
-
-class ResolvedQuery(BaseModel):
-    """The fully resolved query object"""
-
-    kater_id: str
-    """Unique identifier for this resolved query instance"""
-
-    name: str
-    """Name from the leaf query in the inheritance chain"""
-
-    source_query: str
-    """Reference to the original query template this was resolved from"""
-
-    topic: str
-    """
-    Reference to the topic this query uses (always known after inheritance
-    resolution)
-    """
-
-    widget_category: Literal["axis", "funnel", "heatmap", "image", "kpi_card", "pie", "radial", "table", "text"]
-    """Widget category that determines data shape constraints"""
-
-    ai_context: Optional[str] = None
-    """Usage guidance for AI processing"""
-
-    calculations: Optional[List[ResolvedQueryCalculation]] = None
-    """Merged required + selected optional calculations"""
-
-    chart_hints: Optional[List[ResolvedQueryChartHint]] = None
-    """Chart recommendations preserved for evaluation"""
-
-    custom_properties: Optional[Dict[str, object]] = None
-    """Custom properties"""
-
-    description: Optional[str] = None
-    """Description of the query"""
-
-    dimensions: Optional[List[ResolvedQueryDimension]] = None
-    """Merged required + selected optional dimensions"""
-
-    disallowed_widget_types: Optional[
-        List[
-            Literal[
-                "axis_metric_by_dimension",
-                "axis_metric_by_dimensiondate",
-                "axis_metric_by_dimensiondate_sliced_by_dimension",
-                "axis_metric_by_metric",
-                "funnel_funnel_chart",
-                "heatmap_heatmap",
-                "image_image_grid",
-                "image_single_image",
-                "kpi_measure_with_dimension_expression",
-                "kpi_measure_with_secondary_metric",
-                "kpi_measure_with_target_progress",
-                "kpi_single_measure_compared_to_prev_period_sparkline",
-                "kpi_single_value",
-                "pie_donut_chart",
-                "pie_donut_with_measure",
-                "pie_pie_chart",
-                "radial_chart",
-                "radial_with_single_value",
-                "radial_with_single_value_stacked",
-                "table_data_table",
-                "table_fancy_subtotal_table",
-                "table_key_value_list",
-                "table_styled_table",
-                "text_data_readout_with_sparkline",
-                "text_narrative_text",
-            ]
-        ]
-    ] = None
-    """
-    Widget types within the declared widget_category that must NOT render this query
-    """
-
-    filters: Optional[List[ResolvedQueryFilter]] = None
-    """Merged required + selected optional filters"""
-
-    inheritance_chain: Optional[List[str]] = None
-    """Ordered list of query refs that were merged during inheritance resolution"""
-
-    label: Optional[str] = None
-    """Human-readable label with var() values substituted"""
-
-    limit: Optional[int] = None
-    """Maximum number of rows to return"""
-
-    measures: Optional[List[ResolvedQueryMeasure]] = None
-    """Merged required + selected optional measures"""
-
-    order_by: Optional[List[ResolvedQueryOrderBy]] = None
-    """Sort order for query results"""
-
-    resolved_chart: Optional[ResolvedQueryResolvedChart] = None
-    """The matched chart recommendation after evaluating chart hints"""
-
-    resolved_variables: Optional[List[ResolvedQueryResolvedVariable]] = None
-    """Full variable definitions with bound values"""
-
-    select_from: Optional[List[ResolvedQuerySelectFrom]] = None
-    """Resolved select_from entries with CTE metadata"""
-
-    totals: Optional[bool] = None
-    """
-    When true, compute a totals_row over returned measure columns and expose it
-    alongside data.
-    """
 
 
 class AppliedFilterStateValueScalarFilterValue(BaseModel):
@@ -791,38 +381,6 @@ class DefaultFilterState(BaseModel):
 
     value: Optional[DefaultFilterStateValue] = None
     """Current typed runtime value"""
-
-
-class DependencyGraphNodes(BaseModel):
-    """A node in the dependency graph."""
-
-    file: str
-    """Source file path"""
-
-    fqn: str
-    """Fully qualified name (e.g. 'dim_customer.region')"""
-
-    kater_id: str
-    """UUID of the schema object"""
-
-    line: int
-    """Line number in source file"""
-
-    node_type: str
-    """Node type: QUERY, VIEW, DIMENSION, MEASURE, FILTER, EXPRESSION"""
-
-    column: Optional[int] = None
-    """Column number in source file"""
-
-
-class DependencyGraph(BaseModel):
-    """Dependency graph between schema objects."""
-
-    edges: Dict[str, Dict[str, List[str]]]
-    """Edge relationships with UUID string keys"""
-
-    nodes: Dict[str, DependencyGraphNodes]
-    """UUID string to node mapping"""
 
 
 class FilterDefinitionDefaultValueScalarFilterValue(BaseModel):
@@ -1235,35 +793,6 @@ class FilterDefinition(BaseModel):
 
     values: Optional[FilterDefinitionValues] = None
     """Selectable values metadata"""
-
-
-class RefFixReplacement(BaseModel):
-    """A single ref replacement within a file."""
-
-    file_path: str
-    """Path to the file containing the replaced ref"""
-
-    line_number: int
-    """Line number where the replacement occurred"""
-
-    new_ref: str
-    """Updated reference string"""
-
-    old_ref: str
-    """Original reference string"""
-
-
-class RefFix(BaseModel):
-    """A file that was modified by auto-fix with its replacements."""
-
-    file_path: str
-    """Path to the modified file"""
-
-    new_content: str
-    """Full updated file content after fixes"""
-
-    replacements: List[RefFixReplacement]
-    """Individual ref replacements made in this file"""
 
 
 class RenderedQueryKeyCanonicalCacheProjectionAggregateDimension(BaseModel):
@@ -1841,28 +1370,36 @@ class RenderedQueryKey(BaseModel):
 
 
 class CompilerResolveResponse(BaseModel):
-    """Response model for a resolved query."""
+    """Resolve-stage projection from ``RenderResponse`` + ``RenderService`` internals.
 
-    resolved_query: ResolvedQuery
-    """The fully resolved query object"""
+    Has NO ``combination`` / ``combination_id`` field by contract. The
+    combination-free invariant is asserted by AST-scan tests in
+    ``test_resolve_route.py``.
+    """
+
+    success: bool
+    """Whether the resolve succeeded"""
 
     applied_filter_state: Optional[List[AppliedFilterState]] = None
-    """Applied runtime filter state after request overrides"""
+    """Applied runtime filter state used for the resolve."""
+
+    auto_description: Optional[str] = None
+    """Auto-generated description text."""
+
+    auto_description_structured: Optional[Dict[str, object]] = None
+    """Structured auto-description payload, if available."""
+
+    auto_title: Optional[str] = None
+    """Auto-generated title."""
 
     default_filter_state: Optional[List[DefaultFilterState]] = None
-    """Default runtime filter state derived from filter definitions"""
+    """Default runtime filter state derived from definitions."""
 
-    dependency_graph: Optional[DependencyGraph] = None
-    """Dependency graph between schema objects."""
+    errors: Optional[List[CompilerErrorItem]] = None
+    """Resolver errors (if any)."""
 
     filter_definitions: Optional[List[FilterDefinition]] = None
-    """Resolved effective filter definitions for this query context"""
-
-    manifest: Optional[Manifest] = None
-    """Compilation manifest with all named objects."""
-
-    ref_fixes: Optional[List[RefFix]] = None
-    """Files auto-fixed due to renamed refs. None when no renames detected."""
+    """Resolved effective filter definitions."""
 
     rendered_query_key: Optional[RenderedQueryKey] = None
     """Top-level natural key returned by every runtime data and widget path.
@@ -1874,8 +1411,14 @@ class CompilerResolveResponse(BaseModel):
     - `aggregate_cache_key_id`: `rqk_cache_agg_v1:<64 lowercase hex chars>` or null
     """
 
-    request_id: Optional[str] = None
-    """Write-back request ID.
+    resolved_query: Optional[Dict[str, object]] = None
+    """The fully resolved query object."""
 
-    Non-null when ref-fix files were dispatched to CLI via WebSocket.
-    """
+    style_config: Optional[Dict[str, object]] = None
+    """Resolved style config."""
+
+    widget_config: Optional[Dict[str, object]] = None
+    """Resolved widget config."""
+
+    widget_type: Optional[str] = None
+    """Resolved widget type (when available)."""

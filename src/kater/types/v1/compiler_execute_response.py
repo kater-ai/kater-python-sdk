@@ -25,7 +25,6 @@ __all__ = [
     "AppliedFilterStateValuePresetReferenceFilterValue",
     "AppliedFilterStateValueNullFilterValue",
     "ColumnMap",
-    "Metadata",
     "RenderedQueryKey",
     "RenderedQueryKeyCanonical",
     "RenderedQueryKeyCanonicalCacheProjection",
@@ -219,28 +218,6 @@ class ColumnMap(BaseModel):
 
     source_kater_id: Optional[str] = None
     """Authored source field UUID for derived timeframe columns."""
-
-
-class Metadata(BaseModel):
-    """Compilation metadata from the compiler."""
-
-    dialect: str
-    """SQL dialect used (e.g. 'snowflake')"""
-
-    query_ref: str
-    """Reference to the compiled query"""
-
-    dimensions_used: Optional[List[str]] = None
-    """Dimension names used in compilation"""
-
-    filters_used: Optional[List[str]] = None
-    """Filter names used in compilation"""
-
-    measures_used: Optional[List[str]] = None
-    """Measure names used in compilation"""
-
-    views_used: Optional[List[str]] = None
-    """View names used in compilation"""
 
 
 class RenderedQueryKeyCanonicalCacheProjectionAggregateDimension(BaseModel):
@@ -818,37 +795,45 @@ class RenderedQueryKey(BaseModel):
 
 
 class CompilerExecuteResponse(BaseModel):
-    """Response model for query execution."""
+    """Execute-stage projection from ``RenderResponse`` (Story 2.1 frozen dataclass).
 
-    dialect: str
-    """SQL dialect used"""
+    Has NO ``combination`` / ``combination_id`` field by contract. Carries
+    every field the legacy ``ExecuteResponse`` exposes so consumer
+    migrations swap legacy → structured with no response-handling changes.
+    """
 
     success: bool
     """Whether execution succeeded"""
 
     applied_filter_state: Optional[List[AppliedFilterState]] = None
-    """Applied runtime filter state used for execution"""
+    """Applied runtime filter state used for execution."""
+
+    auto_description: Optional[str] = None
+    """Auto-generated description text."""
+
+    auto_title: Optional[str] = None
+    """Auto-generated title."""
 
     cache_hit: Optional[bool] = None
-    """Whether the result was served from cache"""
+    """Whether the result was served from cache."""
 
     column_map: Optional[List[ColumnMap]] = None
-    """Maps UUID column aliases to human-readable names"""
+    """Column metadata for the executed query's output."""
 
     data: Optional[List[Dict[str, object]]] = None
-    """Query result rows as list of column-value dicts"""
+    """Query result rows."""
+
+    dialect: Optional[str] = None
+    """SQL dialect used."""
 
     errors: Optional[List[CompilerErrorItem]] = None
-    """Compilation errors (if any)"""
+    """Compilation/execution errors (if any)."""
 
     execution_time_ms: Optional[float] = None
-    """Total execution time in milliseconds"""
+    """Total execution duration in milliseconds."""
 
     is_row_limited: Optional[bool] = None
-    """True when the app-wide row limit was applied and results were truncated"""
-
-    metadata: Optional[Metadata] = None
-    """Compilation metadata from the compiler."""
+    """True when the app-wide row limit was applied."""
 
     rendered_query_key: Optional[RenderedQueryKey] = None
     """Top-level natural key returned by every runtime data and widget path.
@@ -861,7 +846,16 @@ class CompilerExecuteResponse(BaseModel):
     """
 
     row_count: Optional[int] = None
-    """Number of rows returned"""
+    """Total rows returned by the executed query."""
 
     sql: Optional[str] = None
-    """Generated SQL statement"""
+    """Generated SQL statement."""
+
+    style_config: Optional[Dict[str, object]] = None
+    """Resolved style config."""
+
+    widget_config: Optional[Dict[str, object]] = None
+    """Resolved widget config."""
+
+    widget_type: Optional[str] = None
+    """Resolved widget type."""
