@@ -14,6 +14,14 @@ from .oauth import (
     OAuthResourceWithStreamingResponse,
     AsyncOAuthResourceWithStreamingResponse,
 )
+from .sdk.sdk import (
+    SDKResource,
+    AsyncSDKResource,
+    SDKResourceWithRawResponse,
+    AsyncSDKResourceWithRawResponse,
+    SDKResourceWithStreamingResponse,
+    AsyncSDKResourceWithStreamingResponse,
+)
 from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from ...._utils import maybe_transform, async_maybe_transform
 from ...._compat import cached_property
@@ -62,6 +70,10 @@ class ConnectionsResource(SyncAPIResource):
     @cached_property
     def tenant(self) -> TenantResource:
         return TenantResource(self._client)
+
+    @cached_property
+    def sdk(self) -> SDKResource:
+        return SDKResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> ConnectionsResourceWithRawResponse:
@@ -146,6 +158,10 @@ class AsyncConnectionsResource(AsyncAPIResource):
     @cached_property
     def tenant(self) -> AsyncTenantResource:
         return AsyncTenantResource(self._client)
+
+    @cached_property
+    def sdk(self) -> AsyncSDKResource:
+        return AsyncSDKResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncConnectionsResourceWithRawResponse:
@@ -236,6 +252,10 @@ class ConnectionsResourceWithRawResponse:
     def tenant(self) -> TenantResourceWithRawResponse:
         return TenantResourceWithRawResponse(self._connections.tenant)
 
+    @cached_property
+    def sdk(self) -> SDKResourceWithRawResponse:
+        return SDKResourceWithRawResponse(self._connections.sdk)
+
 
 class AsyncConnectionsResourceWithRawResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -257,6 +277,10 @@ class AsyncConnectionsResourceWithRawResponse:
     @cached_property
     def tenant(self) -> AsyncTenantResourceWithRawResponse:
         return AsyncTenantResourceWithRawResponse(self._connections.tenant)
+
+    @cached_property
+    def sdk(self) -> AsyncSDKResourceWithRawResponse:
+        return AsyncSDKResourceWithRawResponse(self._connections.sdk)
 
 
 class ConnectionsResourceWithStreamingResponse:
@@ -280,6 +304,10 @@ class ConnectionsResourceWithStreamingResponse:
     def tenant(self) -> TenantResourceWithStreamingResponse:
         return TenantResourceWithStreamingResponse(self._connections.tenant)
 
+    @cached_property
+    def sdk(self) -> SDKResourceWithStreamingResponse:
+        return SDKResourceWithStreamingResponse(self._connections.sdk)
+
 
 class AsyncConnectionsResourceWithStreamingResponse:
     def __init__(self, connections: AsyncConnectionsResource) -> None:
@@ -301,3 +329,7 @@ class AsyncConnectionsResourceWithStreamingResponse:
     @cached_property
     def tenant(self) -> AsyncTenantResourceWithStreamingResponse:
         return AsyncTenantResourceWithStreamingResponse(self._connections.tenant)
+
+    @cached_property
+    def sdk(self) -> AsyncSDKResourceWithStreamingResponse:
+        return AsyncSDKResourceWithStreamingResponse(self._connections.sdk)

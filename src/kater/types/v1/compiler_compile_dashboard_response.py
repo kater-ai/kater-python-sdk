@@ -88,6 +88,8 @@ __all__ = [
     "WidgetColumnProfilesUnionMember1WidgetColumnProfilesUnionMember1Item",
     "WidgetDependencies",
     "WidgetDependenciesSlot",
+    "WidgetDependenciesSlotTimeframeOverride",
+    "WidgetDependenciesSlotVariableValue",
     "WidgetRenderedQueryKey",
     "WidgetRenderedQueryKeyCanonical",
     "WidgetRenderedQueryKeyCanonicalCacheProjection",
@@ -948,6 +950,36 @@ class WidgetColumnProfilesUnionMember1WidgetColumnProfilesUnionMember1Item(BaseM
     """Population standard deviation."""
 
 
+class WidgetDependenciesSlotTimeframeOverride(BaseModel):
+    """Runtime grain choice for a temporal source dimension."""
+
+    active_timeframe: str
+
+    source_kater_id: str
+
+
+class WidgetDependenciesSlotVariableValue(BaseModel):
+    """Runtime variable value as supplied in a `RenderedQueryRequestV1`.
+
+    `variable_kater_id` is preferred. Until every surface exposes it,
+    `(query_kater_id, scope, name)` is the migration fallback identity.
+    """
+
+    name: str
+    """Variable name within scope"""
+
+    query_kater_id: str
+    """Owning query UUID"""
+
+    scope: Literal["query", "global"]
+
+    value: Union[str, float, bool, List[object], Dict[str, object], None] = None
+    """Free-form JSON variable value"""
+
+    variable_kater_id: Optional[str] = None
+    """Stable variable UUID; fall back to (query_kater_id, scope, name) when null"""
+
+
 class WidgetDependenciesSlot(BaseModel):
     """A dashboard data slot that a widget depends on."""
 
@@ -957,11 +989,20 @@ class WidgetDependenciesSlot(BaseModel):
     query_name: str
     """Query name backing the slot"""
 
+    selected_field_ids: List[str]
+    """UUIDs of selected fields for this dependency slot"""
+
     slot_name: str
     """Dashboard slot name"""
 
+    timeframe_overrides: List[WidgetDependenciesSlotTimeframeOverride]
+    """Temporal grain overrides for selected fields"""
+
+    variable_values: List[WidgetDependenciesSlotVariableValue]
+    """Runtime variable values applied to the slot"""
+
     combination: Optional[str] = None
-    """Combination string used for the slot, if any"""
+    """Legacy combination string (derived, deprecated)"""
 
     pinned_variant: Optional[str] = None
     """Pinned query variant used for the slot, if any"""

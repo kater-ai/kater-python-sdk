@@ -1,5 +1,13 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+from .sdk import (
+    SDKResource,
+    AsyncSDKResource,
+    SDKResourceWithRawResponse,
+    AsyncSDKResourceWithRawResponse,
+    SDKResourceWithStreamingResponse,
+    AsyncSDKResourceWithStreamingResponse,
+)
 from .oauth import (
     OAuthResource,
     AsyncOAuthResource,
@@ -52,6 +60,12 @@ __all__ = [
     "AsyncTenantResourceWithRawResponse",
     "TenantResourceWithStreamingResponse",
     "AsyncTenantResourceWithStreamingResponse",
+    "SDKResource",
+    "AsyncSDKResource",
+    "SDKResourceWithRawResponse",
+    "AsyncSDKResourceWithRawResponse",
+    "SDKResourceWithStreamingResponse",
+    "AsyncSDKResourceWithStreamingResponse",
     "ConnectionsResource",
     "AsyncConnectionsResource",
     "ConnectionsResourceWithRawResponse",
