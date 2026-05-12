@@ -261,7 +261,7 @@ class FieldMetadataFieldMetadataItem(BaseModel):
     """Metadata for a single field in a query's enumerate result."""
 
     field_type: str
-    """Field type: measure, dimension, dimension_date, or calculation"""
+    """Field type: measure, dimension, or calculation"""
 
     description: Optional[str] = None
 
