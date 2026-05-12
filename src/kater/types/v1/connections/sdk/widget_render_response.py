@@ -25,6 +25,8 @@ __all__ = [
     "AppliedFilterStateValuePresetReferenceFilterValue",
     "AppliedFilterStateValueNullFilterValue",
     "ColumnMap",
+    "ColumnMapDataType",
+    "ColumnMapDataTypeExtension",
     "ColumnProfiles",
     "ConfigControls",
     "ConfigControlsChart",
@@ -262,8 +264,43 @@ class AppliedFilterState(BaseModel):
     """Current typed runtime value"""
 
 
+class ColumnMapDataTypeExtension(BaseModel):
+    """Vendor-specific type extension"""
+
+    engine: str
+    """Database engine/dialect"""
+
+    orig_type: str
+    """Original type name in the source database"""
+
+    options: Optional[Dict[str, object]] = None
+    """Additional vendor-specific options"""
+
+    raw_ddl: Optional[str] = None
+    """Raw DDL for the type"""
+
+
+class ColumnMapDataType(BaseModel):
+    """Canonical data type metadata for this output column"""
+
+    kind: Literal["Bool", "Text", "Number", "Datetime", "Complex", "Unknown"]
+    """The canonical data type kind"""
+
+    nullable: bool
+    """Whether the field can be null"""
+
+    extension: Optional[ColumnMapDataTypeExtension] = None
+    """Vendor-specific type extension"""
+
+    params: Optional[object] = None
+    """Optional coarse metadata for the canonical type"""
+
+
 class ColumnMap(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
+
+    data_type: ColumnMapDataType
+    """Canonical data type metadata for this output column"""
 
     field_type: str
     """Field type: dimension, measure, or calculation"""
