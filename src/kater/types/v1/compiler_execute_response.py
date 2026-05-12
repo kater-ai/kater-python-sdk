@@ -370,7 +370,7 @@ class RenderedQueryKeyCanonicalCacheProjectionExactOutputColumn(BaseModel):
 
     column_key: str
 
-    field_type: Literal["dimension", "dimension_date", "measure", "calculation"]
+    field_type: Literal["dimension", "measure", "calculation"]
 
     kater_id: str
 
@@ -513,7 +513,7 @@ class RenderedQueryKeyCanonicalFieldsActiveField(BaseModel):
 
     active_timeframe: Optional[str] = None
 
-    field_type: Literal["dimension", "dimension_date", "measure", "calculation"]
+    field_type: Literal["dimension", "measure", "calculation"]
 
     kater_id: str
 
@@ -529,7 +529,7 @@ class RenderedQueryKeyCanonicalFieldsOutputColumn(BaseModel):
     column_key: str
     """SQL result alias / row payload key"""
 
-    field_type: Literal["dimension", "dimension_date", "measure", "calculation"]
+    field_type: Literal["dimension", "measure", "calculation"]
 
     kater_id: str
     """Authored source field UUID"""
@@ -554,7 +554,7 @@ class RenderedQueryKeyCanonicalFieldsSelectedField(BaseModel):
 
     active_timeframe: Optional[str] = None
 
-    field_type: Literal["dimension", "dimension_date", "measure", "calculation"]
+    field_type: Literal["dimension", "measure", "calculation"]
 
     kater_id: str
 
