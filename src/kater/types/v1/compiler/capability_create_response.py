@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Union, Optional
+from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
 from ...._models import BaseModel
@@ -30,6 +30,8 @@ __all__ = [
     "QueryDefaultFilterStateValueNullFilterValue",
     "QueryFilterDefinition",
     "QuerySelectableField",
+    "QuerySelectableFieldDataType",
+    "QuerySelectableFieldDataTypeExtension",
     "QueryVariableDefinition",
 ]
 
@@ -41,13 +43,13 @@ class QueryWidgetConstraintsConstraintsDimensions(BaseModel):
 
     min: int
 
-    excludes_dimension_date: Optional[bool] = None
+    excludes_datetime_dimension: Optional[bool] = None
 
     max_cardinality: Optional[int] = None
 
     requires_categorical: Optional[bool] = None
 
-    requires_dimension_date: Optional[bool] = None
+    requires_datetime_dimension: Optional[bool] = None
 
 
 class QueryWidgetConstraintsConstraintsMetrics(BaseModel):
@@ -262,6 +264,38 @@ class QueryFilterDefinition(BaseModel):
     """Owner UUIDs from model/topic/dashboard/query precedence order"""
 
 
+class QuerySelectableFieldDataTypeExtension(BaseModel):
+    """Vendor-specific type extension"""
+
+    engine: str
+    """Database engine/dialect"""
+
+    orig_type: str
+    """Original type name in the source database"""
+
+    options: Optional[Dict[str, object]] = None
+    """Additional vendor-specific options"""
+
+    raw_ddl: Optional[str] = None
+    """Raw DDL for the type"""
+
+
+class QuerySelectableFieldDataType(BaseModel):
+    """Canonical data type for this field"""
+
+    kind: Literal["Bool", "Text", "Number", "Datetime", "Complex", "Unknown"]
+    """The canonical data type kind"""
+
+    nullable: bool
+    """Whether the field can be null"""
+
+    extension: Optional[QuerySelectableFieldDataTypeExtension] = None
+    """Vendor-specific type extension"""
+
+    params: Optional[object] = None
+    """Optional coarse metadata for the canonical type"""
+
+
 class QuerySelectableField(BaseModel):
     """One selectable field exposed by a query, with temporal grain metadata.
 
@@ -277,14 +311,17 @@ class QuerySelectableField(BaseModel):
     See PRD section `QueryCapabilitiesResponseV1` for the canonical rules.
     """
 
+    data_type: QuerySelectableFieldDataType
+    """Canonical data type for this field"""
+
     default_selected: bool
     """True when the field appears in the deterministic backend default selection"""
 
     description: Optional[str] = None
     """Long-form description for UI tooltips"""
 
-    field_type: Literal["dimension", "dimension_date", "measure", "calculation"]
-    """Field kind: dimension, dimension_date, measure, or calculation"""
+    field_type: Literal["dimension", "measure", "calculation"]
+    """Field kind: dimension, measure, or calculation"""
 
     kater_id: str
     """Authored field UUID (stable identity)"""
