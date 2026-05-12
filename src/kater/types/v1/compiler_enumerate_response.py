@@ -738,7 +738,7 @@ class VariableDefinition(BaseModel):
     name: str
 
     type: str
-    """Variable data type, e.g. STRING, INT, DATE, BOOL, STRING[]"""
+    """Canonical variable kind, e.g. Text, Number, Datetime, Bool, Text[]"""
 
     allowed_values_column_kater_id: Optional[str] = None
     """kater_id of the dimension column for from_column variables"""
@@ -754,6 +754,12 @@ class VariableDefinition(BaseModel):
     description: Optional[str] = None
 
     label: Optional[str] = None
+
+    numeric_kind: Optional[Literal["integer", "decimal"]] = None
+    """Optional numeric sub-kind when type=Number."""
+
+    temporal_kind: Optional[Literal["date", "timestamp"]] = None
+    """Optional temporal sub-kind when type=Datetime."""
 
 
 class CompilerEnumerateResponse(BaseModel):

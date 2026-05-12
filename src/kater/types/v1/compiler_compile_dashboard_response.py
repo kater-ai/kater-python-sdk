@@ -82,7 +82,11 @@ __all__ = [
     "InsightRunSummary",
     "Widget",
     "WidgetColumnMapUnionMember0",
+    "WidgetColumnMapUnionMember0DataType",
+    "WidgetColumnMapUnionMember0DataTypeExtension",
     "WidgetColumnMapUnionMember1",
+    "WidgetColumnMapUnionMember1DataType",
+    "WidgetColumnMapUnionMember1DataTypeExtension",
     "WidgetGrid",
     "WidgetColumnProfilesUnionMember0WidgetColumnProfilesUnionMember0Item",
     "WidgetColumnProfilesUnionMember1WidgetColumnProfilesUnionMember1Item",
@@ -790,8 +794,43 @@ class InsightRun(BaseModel):
     """Top-level summary for an insight run."""
 
 
+class WidgetColumnMapUnionMember0DataTypeExtension(BaseModel):
+    """Vendor-specific type extension"""
+
+    engine: str
+    """Database engine/dialect"""
+
+    orig_type: str
+    """Original type name in the source database"""
+
+    options: Optional[Dict[str, object]] = None
+    """Additional vendor-specific options"""
+
+    raw_ddl: Optional[str] = None
+    """Raw DDL for the type"""
+
+
+class WidgetColumnMapUnionMember0DataType(BaseModel):
+    """Canonical data type metadata for this output column"""
+
+    kind: Literal["Bool", "Text", "Number", "Datetime", "Complex", "Unknown"]
+    """The canonical data type kind"""
+
+    nullable: bool
+    """Whether the field can be null"""
+
+    extension: Optional[WidgetColumnMapUnionMember0DataTypeExtension] = None
+    """Vendor-specific type extension"""
+
+    params: Optional[object] = None
+    """Optional coarse metadata for the canonical type"""
+
+
 class WidgetColumnMapUnionMember0(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
+
+    data_type: WidgetColumnMapUnionMember0DataType
+    """Canonical data type metadata for this output column"""
 
     field_type: str
     """Field type: dimension, measure, or calculation"""
@@ -821,8 +860,43 @@ class WidgetColumnMapUnionMember0(BaseModel):
     """Authored source field UUID for derived timeframe columns."""
 
 
+class WidgetColumnMapUnionMember1DataTypeExtension(BaseModel):
+    """Vendor-specific type extension"""
+
+    engine: str
+    """Database engine/dialect"""
+
+    orig_type: str
+    """Original type name in the source database"""
+
+    options: Optional[Dict[str, object]] = None
+    """Additional vendor-specific options"""
+
+    raw_ddl: Optional[str] = None
+    """Raw DDL for the type"""
+
+
+class WidgetColumnMapUnionMember1DataType(BaseModel):
+    """Canonical data type metadata for this output column"""
+
+    kind: Literal["Bool", "Text", "Number", "Datetime", "Complex", "Unknown"]
+    """The canonical data type kind"""
+
+    nullable: bool
+    """Whether the field can be null"""
+
+    extension: Optional[WidgetColumnMapUnionMember1DataTypeExtension] = None
+    """Vendor-specific type extension"""
+
+    params: Optional[object] = None
+    """Optional coarse metadata for the canonical type"""
+
+
 class WidgetColumnMapUnionMember1(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
+
+    data_type: WidgetColumnMapUnionMember1DataType
+    """Canonical data type metadata for this output column"""
 
     field_type: str
     """Field type: dimension, measure, or calculation"""
