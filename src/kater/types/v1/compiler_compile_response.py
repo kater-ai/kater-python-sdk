@@ -61,7 +61,7 @@ __all__ = [
 
 class AppliedFilterStateValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -181,8 +181,8 @@ class AppliedFilterState(BaseModel):
     required: bool
     """Whether the filter is required"""
 
-    kind: Optional[str] = None
-    """Interactive filter kind"""
+    filter_type: Optional[str] = None
+    """Interactive filter control type"""
 
     label: Optional[str] = None
     """Human-readable filter label"""
