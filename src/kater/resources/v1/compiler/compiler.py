@@ -23,16 +23,7 @@ from ....types.v1 import (
     compiler_execute_params,
     compiler_resolve_params,
     compiler_validate_params,
-    compiler_enumerate_params,
     compiler_compile_dashboard_params,
-)
-from .combination import (
-    CombinationResource,
-    AsyncCombinationResource,
-    CombinationResourceWithRawResponse,
-    AsyncCombinationResourceWithRawResponse,
-    CombinationResourceWithStreamingResponse,
-    AsyncCombinationResourceWithStreamingResponse,
 )
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
@@ -55,7 +46,6 @@ from ....types.v1.compiler_compile_response import CompilerCompileResponse
 from ....types.v1.compiler_execute_response import CompilerExecuteResponse
 from ....types.v1.compiler_resolve_response import CompilerResolveResponse
 from ....types.v1.compiler_validate_response import CompilerValidateResponse
-from ....types.v1.compiler_enumerate_response import CompilerEnumerateResponse
 from ....types.v1.compiler_compile_dashboard_response import CompilerCompileDashboardResponse
 
 __all__ = ["CompilerResource", "AsyncCompilerResource"]
@@ -63,11 +53,6 @@ __all__ = ["CompilerResource", "AsyncCompilerResource"]
 
 class CompilerResource(SyncAPIResource):
     """Validate, resolve, and compile query templates to SQL"""
-
-    @cached_property
-    def combination(self) -> CombinationResource:
-        """Validate, resolve, and compile query templates to SQL"""
-        return CombinationResource(self._client)
 
     @cached_property
     def manifest(self) -> ManifestResource:
@@ -252,66 +237,6 @@ class CompilerResource(SyncAPIResource):
                 ),
             ),
             cast_to=CompilerCompileDashboardResponse,
-        )
-
-    def enumerate(
-        self,
-        *,
-        connection_id: str,
-        tenant_key: str,
-        source: Optional[str] | Omit = omit,
-        query_ids: Optional[SequenceNotStr[str]] | Omit = omit,
-        x_kater_cli_id: str | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> CompilerEnumerateResponse:
-        """
-        Enumerate every valid query configuration for a connection.
-
-        Generates all valid combinations of optional dimensions, measures, calculations,
-        filters, and variable values, constrained by widget category rules.
-
-        RLS: Filtered to current client (ClientRLSDB).
-
-        Args:
-          connection_id: Connection to enumerate against
-
-          tenant_key: Tenant key for multi-tenant clients. Use 'kater_global_tenant' for no-tenancy
-              clients or when no tenant isolation is needed.
-
-          query_ids: Optional query UUIDs to limit enumeration. If omitted, enumerates all queries.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
-        return self._post(
-            "/api/v1/compiler/enumerate",
-            body=maybe_transform(
-                {
-                    "connection_id": connection_id,
-                    "tenant_key": tenant_key,
-                    "query_ids": query_ids,
-                },
-                compiler_enumerate_params.CompilerEnumerateParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform({"source": source}, compiler_enumerate_params.CompilerEnumerateParams),
-            ),
-            cast_to=CompilerEnumerateResponse,
         )
 
     def execute(
@@ -661,11 +586,6 @@ class AsyncCompilerResource(AsyncAPIResource):
     """Validate, resolve, and compile query templates to SQL"""
 
     @cached_property
-    def combination(self) -> AsyncCombinationResource:
-        """Validate, resolve, and compile query templates to SQL"""
-        return AsyncCombinationResource(self._client)
-
-    @cached_property
     def manifest(self) -> AsyncManifestResource:
         """Validate, resolve, and compile query templates to SQL"""
         return AsyncManifestResource(self._client)
@@ -848,68 +768,6 @@ class AsyncCompilerResource(AsyncAPIResource):
                 ),
             ),
             cast_to=CompilerCompileDashboardResponse,
-        )
-
-    async def enumerate(
-        self,
-        *,
-        connection_id: str,
-        tenant_key: str,
-        source: Optional[str] | Omit = omit,
-        query_ids: Optional[SequenceNotStr[str]] | Omit = omit,
-        x_kater_cli_id: str | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> CompilerEnumerateResponse:
-        """
-        Enumerate every valid query configuration for a connection.
-
-        Generates all valid combinations of optional dimensions, measures, calculations,
-        filters, and variable values, constrained by widget category rules.
-
-        RLS: Filtered to current client (ClientRLSDB).
-
-        Args:
-          connection_id: Connection to enumerate against
-
-          tenant_key: Tenant key for multi-tenant clients. Use 'kater_global_tenant' for no-tenancy
-              clients or when no tenant isolation is needed.
-
-          query_ids: Optional query UUIDs to limit enumeration. If omitted, enumerates all queries.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
-        return await self._post(
-            "/api/v1/compiler/enumerate",
-            body=await async_maybe_transform(
-                {
-                    "connection_id": connection_id,
-                    "tenant_key": tenant_key,
-                    "query_ids": query_ids,
-                },
-                compiler_enumerate_params.CompilerEnumerateParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {"source": source}, compiler_enumerate_params.CompilerEnumerateParams
-                ),
-            ),
-            cast_to=CompilerEnumerateResponse,
         )
 
     async def execute(
@@ -1265,9 +1123,6 @@ class CompilerResourceWithRawResponse:
         self.compile_dashboard = to_raw_response_wrapper(
             compiler.compile_dashboard,
         )
-        self.enumerate = to_raw_response_wrapper(
-            compiler.enumerate,
-        )
         self.execute = to_raw_response_wrapper(
             compiler.execute,
         )
@@ -1280,11 +1135,6 @@ class CompilerResourceWithRawResponse:
         self.validate = to_raw_response_wrapper(
             compiler.validate,
         )
-
-    @cached_property
-    def combination(self) -> CombinationResourceWithRawResponse:
-        """Validate, resolve, and compile query templates to SQL"""
-        return CombinationResourceWithRawResponse(self._compiler.combination)
 
     @cached_property
     def manifest(self) -> ManifestResourceWithRawResponse:
@@ -1307,9 +1157,6 @@ class AsyncCompilerResourceWithRawResponse:
         self.compile_dashboard = async_to_raw_response_wrapper(
             compiler.compile_dashboard,
         )
-        self.enumerate = async_to_raw_response_wrapper(
-            compiler.enumerate,
-        )
         self.execute = async_to_raw_response_wrapper(
             compiler.execute,
         )
@@ -1322,11 +1169,6 @@ class AsyncCompilerResourceWithRawResponse:
         self.validate = async_to_raw_response_wrapper(
             compiler.validate,
         )
-
-    @cached_property
-    def combination(self) -> AsyncCombinationResourceWithRawResponse:
-        """Validate, resolve, and compile query templates to SQL"""
-        return AsyncCombinationResourceWithRawResponse(self._compiler.combination)
 
     @cached_property
     def manifest(self) -> AsyncManifestResourceWithRawResponse:
@@ -1349,9 +1191,6 @@ class CompilerResourceWithStreamingResponse:
         self.compile_dashboard = to_streamed_response_wrapper(
             compiler.compile_dashboard,
         )
-        self.enumerate = to_streamed_response_wrapper(
-            compiler.enumerate,
-        )
         self.execute = to_streamed_response_wrapper(
             compiler.execute,
         )
@@ -1364,11 +1203,6 @@ class CompilerResourceWithStreamingResponse:
         self.validate = to_streamed_response_wrapper(
             compiler.validate,
         )
-
-    @cached_property
-    def combination(self) -> CombinationResourceWithStreamingResponse:
-        """Validate, resolve, and compile query templates to SQL"""
-        return CombinationResourceWithStreamingResponse(self._compiler.combination)
 
     @cached_property
     def manifest(self) -> ManifestResourceWithStreamingResponse:
@@ -1391,9 +1225,6 @@ class AsyncCompilerResourceWithStreamingResponse:
         self.compile_dashboard = async_to_streamed_response_wrapper(
             compiler.compile_dashboard,
         )
-        self.enumerate = async_to_streamed_response_wrapper(
-            compiler.enumerate,
-        )
         self.execute = async_to_streamed_response_wrapper(
             compiler.execute,
         )
@@ -1406,11 +1237,6 @@ class AsyncCompilerResourceWithStreamingResponse:
         self.validate = async_to_streamed_response_wrapper(
             compiler.validate,
         )
-
-    @cached_property
-    def combination(self) -> AsyncCombinationResourceWithStreamingResponse:
-        """Validate, resolve, and compile query templates to SQL"""
-        return AsyncCombinationResourceWithStreamingResponse(self._compiler.combination)
 
     @cached_property
     def manifest(self) -> AsyncManifestResourceWithStreamingResponse:
