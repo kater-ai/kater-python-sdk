@@ -76,6 +76,12 @@ __all__ = [
     "FilterStateValuePresetReferenceFilterValue",
     "FilterStateValueNullFilterValue",
     "InsightRun",
+    "InsightRunContext",
+    "InsightRunContextExecution",
+    "InsightRunContextInsight",
+    "InsightRunContextHost",
+    "InsightRunContextInput",
+    "InsightRunContextInputQuery",
     "InsightRunFinding",
     "InsightRunFindingEvidence",
     "InsightRunFindingFollowUp",
@@ -731,6 +737,84 @@ class FilterState(BaseModel):
     """Current typed runtime value"""
 
 
+class InsightRunContextExecution(BaseModel):
+    """Execution metadata captured for a completed insight run."""
+
+    kater_id: str
+
+    surface: Literal["dashboard", "preview", "chat"]
+
+    params: Optional[Dict[str, object]] = None
+
+
+class InsightRunContextInsight(BaseModel):
+    """Insight definition metadata attached to a run result."""
+
+    entrypoint: str
+
+    kater_id: str
+
+    name: str
+
+    description: Optional[str] = None
+
+
+class InsightRunContextHost(BaseModel):
+    """Host surface metadata for the container that triggered the run."""
+
+    dashboard_kater_id: Optional[str] = None
+
+    dashboard_name: Optional[str] = None
+
+    query_kater_id: Optional[str] = None
+
+    query_name: Optional[str] = None
+
+    widget_kater_id: Optional[str] = None
+
+
+class InsightRunContextInputQuery(BaseModel):
+    """Query metadata describing the source of an insight input."""
+
+    description: Optional[str] = None
+
+    kater_id: Optional[str] = None
+
+    name: Optional[str] = None
+
+    rendered_query_key: Optional[str] = None
+
+
+class InsightRunContextInput(BaseModel):
+    """Normalized input metadata attached to an insight run."""
+
+    dataset_name: str
+
+    input_name: str
+
+    row_count: int
+
+    bindings: Optional[Dict[str, str]] = None
+
+    query: Optional[InsightRunContextInputQuery] = None
+    """Query metadata describing the source of an insight input."""
+
+
+class InsightRunContext(BaseModel):
+    """Typed execution context attached to an insight run result."""
+
+    execution: InsightRunContextExecution
+    """Execution metadata captured for a completed insight run."""
+
+    insight: InsightRunContextInsight
+    """Insight definition metadata attached to a run result."""
+
+    host: Optional[InsightRunContextHost] = None
+    """Host surface metadata for the container that triggered the run."""
+
+    inputs: Optional[List[InsightRunContextInput]] = None
+
+
 class InsightRunFindingEvidence(BaseModel):
     """Structured evidence attached to a finding."""
 
@@ -785,6 +869,9 @@ class InsightRunSummary(BaseModel):
 
 class InsightRun(BaseModel):
     """Validated structured output for a completed insight run."""
+
+    context: Optional[InsightRunContext] = None
+    """Typed execution context attached to an insight run result."""
 
     findings: Optional[List[InsightRunFinding]] = None
 
