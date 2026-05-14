@@ -195,7 +195,7 @@ class FilterApplicability(BaseModel):
 
 class FilterDefinitionDefaultValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -302,7 +302,7 @@ FilterDefinitionDefaultValue: TypeAlias = Union[
 
 class FilterDefinitionPresetValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -501,7 +501,7 @@ FilterDefinitionStaticValue: TypeAlias = Union[
 
 class FilterDefinitionValuesStaticFilterValuesSourceItem(BaseModel):
     value: Union[str, float, bool]
-    """Selectable scalar value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     label: Optional[str] = None
     """Optional selectable value label"""
@@ -577,11 +577,11 @@ class FilterDefinition(BaseModel):
     description: Optional[str] = None
     """Filter description"""
 
+    filter_type: Optional[str] = None
+    """Interactive filter control type"""
+
     help_text: Optional[str] = None
     """Optional UI help text"""
-
-    kind: Optional[str] = None
-    """Interactive filter kind"""
 
     label: Optional[str] = None
     """Human-readable filter label"""
@@ -607,7 +607,7 @@ class FilterDefinition(BaseModel):
 
 class FilterStateValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -727,8 +727,8 @@ class FilterState(BaseModel):
     required: bool
     """Whether the filter is required"""
 
-    kind: Optional[str] = None
-    """Interactive filter kind"""
+    filter_type: Optional[str] = None
+    """Interactive filter control type"""
 
     label: Optional[str] = None
     """Human-readable filter label"""
