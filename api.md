@@ -15,7 +15,6 @@ from kater.types.v1 import (
     SubqueryCondition,
     CompilerCompileResponse,
     CompilerCompileDashboardResponse,
-    CompilerEnumerateResponse,
     CompilerExecuteResponse,
     CompilerRenderResponse,
     CompilerResolveResponse,
@@ -27,23 +26,10 @@ Methods:
 
 - <code title="post /api/v1/compiler/compile/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">compile</a>(\*\*<a href="src/kater/types/v1/compiler_compile_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_compile_response.py">CompilerCompileResponse</a></code>
 - <code title="post /api/v1/compiler/dashboard">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">compile_dashboard</a>(\*\*<a href="src/kater/types/v1/compiler_compile_dashboard_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_compile_dashboard_response.py">CompilerCompileDashboardResponse</a></code>
-- <code title="post /api/v1/compiler/enumerate">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">enumerate</a>(\*\*<a href="src/kater/types/v1/compiler_enumerate_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_enumerate_response.py">CompilerEnumerateResponse</a></code>
 - <code title="post /api/v1/compiler/execute/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">execute</a>(\*\*<a href="src/kater/types/v1/compiler_execute_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_execute_response.py">CompilerExecuteResponse</a></code>
 - <code title="post /api/v1/compiler/render">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">render</a>(\*\*<a href="src/kater/types/v1/compiler_render_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_render_response.py">CompilerRenderResponse</a></code>
 - <code title="post /api/v1/compiler/resolve/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">resolve</a>(\*\*<a href="src/kater/types/v1/compiler_resolve_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_resolve_response.py">CompilerResolveResponse</a></code>
 - <code title="post /api/v1/compiler/validate">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">validate</a>(\*\*<a href="src/kater/types/v1/compiler_validate_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_validate_response.py">CompilerValidateResponse</a></code>
-
-### Combination
-
-Types:
-
-```python
-from kater.types.v1.compiler import CombinationPreviewResponse
-```
-
-Methods:
-
-- <code title="post /api/v1/compiler/combination/preview">client.v1.compiler.combination.<a href="./src/kater/resources/v1/compiler/combination.py">preview</a>(\*\*<a href="src/kater/types/v1/compiler/combination_preview_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler/combination_preview_response.py">CombinationPreviewResponse</a></code>
 
 ### Manifest
 
