@@ -54,7 +54,7 @@ __all__ = [
 
 class SampleDashboardDashboardFilterStateValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -200,7 +200,7 @@ class SampleFieldSelection(BaseModel):
 
 class SampleFilterStateValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
