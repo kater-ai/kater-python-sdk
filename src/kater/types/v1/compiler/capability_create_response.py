@@ -28,6 +28,10 @@ __all__ = [
     "QueryDefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "QueryDefaultFilterStateValuePresetReferenceFilterValue",
     "QueryDefaultFilterStateValueNullFilterValue",
+    "QueryFieldSelectionConstraints",
+    "QueryFieldSelectionConstraintsConstraints",
+    "QueryFieldSelectionConstraintsConstraintsDimensions",
+    "QueryFieldSelectionConstraintsConstraintsMetrics",
     "QueryFilterDefinition",
     "QuerySelectableField",
     "QuerySelectableFieldDataType",
@@ -200,6 +204,54 @@ class QueryDefaultFilterState(BaseModel):
 
     value: Optional[QueryDefaultFilterStateValue] = None
     """Requested runtime value override for this effective filter"""
+
+
+class QueryFieldSelectionConstraintsConstraintsDimensions(BaseModel):
+    """Numeric min/max range constraint."""
+
+    max: Optional[int] = None
+
+    min: int
+
+
+class QueryFieldSelectionConstraintsConstraintsMetrics(BaseModel):
+    """Numeric min/max range constraint."""
+
+    max: Optional[int] = None
+
+    min: int
+
+
+class QueryFieldSelectionConstraintsConstraints(BaseModel):
+    """Exact category-level constraints used by the backend resolver"""
+
+    calculations_allowed: bool
+
+    dimensions: QueryFieldSelectionConstraintsConstraintsDimensions
+    """Numeric min/max range constraint."""
+
+    metrics: QueryFieldSelectionConstraintsConstraintsMetrics
+    """Numeric min/max range constraint."""
+
+
+class QueryFieldSelectionConstraints(BaseModel):
+    """Category-level field selection constraints for one query.
+
+    Sourced from `widget_constraints.load_widget_constraints(widget_category)`
+    and consumed by the frontend Query Builder field selector to prevent the
+    user from constructing an active field set that
+    `FieldSelectionResolver.validate_constraints()` would reject.
+
+    `widget_constraints` (the sibling field on `QueryCapabilitiesItemV1`) is
+    per-widget-type and is the wrong contract for the field selector, which
+    enforces the *category* limits the backend resolver uses.
+    """
+
+    constraints: QueryFieldSelectionConstraintsConstraints
+    """Exact category-level constraints used by the backend resolver"""
+
+    widget_category: str
+    """Widget category name (matches WidgetCategoryMapping keys)"""
 
 
 class QueryFilterDefinition(BaseModel):
@@ -443,6 +495,19 @@ class Query(BaseModel):
     `field_selection.selected_field_ids`. Typically empty (required fields cover the
     base render); non-empty when the team wants to highlight an optional dimension
     or measure.
+    """
+
+    field_selection_constraints: Optional[QueryFieldSelectionConstraints] = None
+    """Category-level field selection constraints for one query.
+
+    Sourced from `widget_constraints.load_widget_constraints(widget_category)` and
+    consumed by the frontend Query Builder field selector to prevent the user from
+    constructing an active field set that
+    `FieldSelectionResolver.validate_constraints()` would reject.
+
+    `widget_constraints` (the sibling field on `QueryCapabilitiesItemV1`) is
+    per-widget-type and is the wrong contract for the field selector, which enforces
+    the _category_ limits the backend resolver uses.
     """
 
     filter_definitions: Optional[List[QueryFilterDefinition]] = None
