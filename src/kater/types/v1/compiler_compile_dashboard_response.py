@@ -75,6 +75,7 @@ __all__ = [
     "FilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "FilterStateValuePresetReferenceFilterValue",
     "FilterStateValueNullFilterValue",
+    "InsightBanner",
     "InsightRun",
     "InsightRunContext",
     "InsightRunContextExecution",
@@ -735,6 +736,16 @@ class FilterState(BaseModel):
 
     value: Optional[FilterStateValue] = None
     """Current typed runtime value"""
+
+
+class InsightBanner(BaseModel):
+    """Compact dashboard insight summary banner."""
+
+    body: str
+    """Short paragraph summarizing the strongest insight pattern"""
+
+    headline: str
+    """Short scannable dashboard insight headline"""
 
 
 class InsightRunContextExecution(BaseModel):
@@ -1834,6 +1845,9 @@ class CompilerCompileDashboardResponse(BaseModel):
 
     filter_state: Optional[List[FilterState]] = None
     """Applied dashboard filter state after defaults and runtime overrides"""
+
+    insight_banner: Optional[InsightBanner] = None
+    """Compact dashboard insight summary banner."""
 
     insight_runs: Optional[List[InsightRun]] = None
     """Structured dashboard-root insight execution results"""
