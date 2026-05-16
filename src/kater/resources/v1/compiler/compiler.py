@@ -126,7 +126,7 @@ class CompilerResource(SyncAPIResource):
         Args:
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           presentation: Presentation config block in `RenderedQueryRequestV1`.
 
@@ -280,7 +280,7 @@ class CompilerResource(SyncAPIResource):
         Args:
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           presentation: Presentation config block in `RenderedQueryRequestV1`.
 
@@ -387,7 +387,7 @@ class CompilerResource(SyncAPIResource):
         Args:
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           presentation: Presentation config block in `RenderedQueryRequestV1`.
 
@@ -480,7 +480,7 @@ class CompilerResource(SyncAPIResource):
         VSCode `runQuery`, chat tool resolve.
 
         Args:
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
@@ -657,7 +657,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         Args:
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           presentation: Presentation config block in `RenderedQueryRequestV1`.
 
@@ -811,7 +811,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         Args:
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           presentation: Presentation config block in `RenderedQueryRequestV1`.
 
@@ -918,7 +918,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         Args:
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           presentation: Presentation config block in `RenderedQueryRequestV1`.
 
@@ -1011,7 +1011,7 @@ class AsyncCompilerResource(AsyncAPIResource):
         VSCode `runQuery`, chat tool resolve.
 
         Args:
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 

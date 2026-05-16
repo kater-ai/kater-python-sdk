@@ -28,7 +28,8 @@ __all__ = [
     "SampleDashboardDashboardFilterStateValuePresetReferenceFilterValue",
     "SampleDashboardDashboardFilterStateValueNullFilterValue",
     "SampleFieldSelection",
-    "SampleFieldSelectionTimeframeOverride",
+    "SampleFieldSelectionSelectedField",
+    "SampleFieldSelectionSelectedFieldModifier",
     "SampleFilterState",
     "SampleFilterStateValue",
     "SampleFilterStateValueScalarFilterValue",
@@ -182,20 +183,41 @@ class SampleDashboard(BaseModel):
     widget_kater_id: Optional[str] = None
 
 
-class SampleFieldSelectionTimeframeOverride(BaseModel):
-    """Runtime grain choice for a temporal source dimension."""
+class SampleFieldSelectionSelectedFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
 
-    active_timeframe: str
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class SampleFieldSelectionSelectedField(BaseModel):
+    """
+    Semantic identity for an active output field: source_kater_id plus normalized modifiers.
+    """
+
+    modifiers: List[SampleFieldSelectionSelectedFieldModifier]
+    """Normalized modifiers sorted by kind.
+
+    Raw timeframe is represented by an empty array.
+    """
 
     source_kater_id: str
+    """Stable UUID of the source field this occurrence projects."""
 
 
 class SampleFieldSelection(BaseModel):
-    """Structured field selection: source field IDs plus optional grain overrides."""
+    """Structured field selection expressed as semantic field occurrences."""
 
-    selected_field_ids: List[str]
-
-    timeframe_overrides: Optional[List[SampleFieldSelectionTimeframeOverride]] = None
+    selected_fields: List[SampleFieldSelectionSelectedField]
 
 
 class SampleFilterStateValueScalarFilterValue(BaseModel):
@@ -389,7 +411,7 @@ class Sample(BaseModel):
     """Dashboard context block in `RenderedQueryRequestV1`."""
 
     field_selection: SampleFieldSelection
-    """Structured field selection: source field IDs plus optional grain overrides."""
+    """Structured field selection expressed as semantic field occurrences."""
 
     filter_state: List[SampleFilterState]
 
