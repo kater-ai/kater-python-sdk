@@ -91,27 +91,34 @@ __all__ = [
     "WidgetColumnMapUnionMember0",
     "WidgetColumnMapUnionMember0DataType",
     "WidgetColumnMapUnionMember0DataTypeExtension",
+    "WidgetColumnMapUnionMember0Modifier",
     "WidgetColumnMapUnionMember1",
     "WidgetColumnMapUnionMember1DataType",
     "WidgetColumnMapUnionMember1DataTypeExtension",
+    "WidgetColumnMapUnionMember1Modifier",
     "WidgetGrid",
     "WidgetColumnProfilesUnionMember0WidgetColumnProfilesUnionMember0Item",
     "WidgetColumnProfilesUnionMember1WidgetColumnProfilesUnionMember1Item",
     "WidgetDependencies",
     "WidgetDependenciesSlot",
-    "WidgetDependenciesSlotTimeframeOverride",
+    "WidgetDependenciesSlotSelectedField",
+    "WidgetDependenciesSlotSelectedFieldModifier",
     "WidgetDependenciesSlotVariableValue",
     "WidgetRenderedQueryKey",
     "WidgetRenderedQueryKeyCanonical",
     "WidgetRenderedQueryKeyCanonicalCacheProjection",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionAggregate",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateDimension",
+    "WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateDimensionModifier",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateFilter",
+    "WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateFilterFieldModifier",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateMeasure",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateVariable",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionExact",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionExactFilter",
+    "WidgetRenderedQueryKeyCanonicalCacheProjectionExactFilterFieldModifier",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionExactOutputColumn",
+    "WidgetRenderedQueryKeyCanonicalCacheProjectionExactOutputColumnModifier",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionExactResultWindow",
     "WidgetRenderedQueryKeyCanonicalCacheProjectionExactVariable",
     "WidgetRenderedQueryKeyCanonicalContract",
@@ -119,10 +126,16 @@ __all__ = [
     "WidgetRenderedQueryKeyCanonicalDashboardDashboardFilterState",
     "WidgetRenderedQueryKeyCanonicalFields",
     "WidgetRenderedQueryKeyCanonicalFieldsActiveField",
+    "WidgetRenderedQueryKeyCanonicalFieldsActiveFieldModifier",
     "WidgetRenderedQueryKeyCanonicalFieldsOutputColumn",
+    "WidgetRenderedQueryKeyCanonicalFieldsOutputColumnModifier",
+    "WidgetRenderedQueryKeyCanonicalFieldsOutputColumnDataType",
+    "WidgetRenderedQueryKeyCanonicalFieldsOutputColumnDataTypeExtension",
     "WidgetRenderedQueryKeyCanonicalFieldsSelectedField",
+    "WidgetRenderedQueryKeyCanonicalFieldsSelectedFieldModifier",
     "WidgetRenderedQueryKeyCanonicalFilters",
     "WidgetRenderedQueryKeyCanonicalFiltersEffectiveFilter",
+    "WidgetRenderedQueryKeyCanonicalFiltersEffectiveFilterFieldModifier",
     "WidgetRenderedQueryKeyCanonicalPresentation",
     "WidgetRenderedQueryKeyCanonicalQuery",
     "WidgetRenderedQueryKeyCanonicalResultWindow",
@@ -924,6 +937,22 @@ class WidgetColumnMapUnionMember0DataType(BaseModel):
     """Optional coarse metadata for the canonical type"""
 
 
+class WidgetColumnMapUnionMember0Modifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
 class WidgetColumnMapUnionMember0(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
 
@@ -933,14 +962,8 @@ class WidgetColumnMapUnionMember0(BaseModel):
     field_type: str
     """Field type: dimension, measure, or calculation"""
 
-    kater_id: str
-    """Authored source field UUID"""
-
-    name: str
-    """Human-readable column name"""
-
-    active_timeframe: Optional[str] = None
-    """Concrete active timeframe for temporal dimensions, e.g. raw, month, quarter."""
+    source_name: str
+    """Source field name"""
 
     aggregation: Optional[str] = None
     """Aggregation type for measures: sum, count, min, max, avg, unknown.
@@ -951,11 +974,20 @@ class WidgetColumnMapUnionMember0(BaseModel):
     column_key: Optional[str] = None
     """SQL result alias for this concrete output column."""
 
-    label: Optional[str] = None
-    """Display label"""
+    display_label: Optional[str] = None
+    """Backend-provided display label"""
+
+    modifiers: Optional[List[WidgetColumnMapUnionMember0Modifier]] = None
+    """Normalized modifiers for this output occurrence.
+
+    Raw timeframe is represented by an empty array.
+    """
 
     source_kater_id: Optional[str] = None
-    """Authored source field UUID for derived timeframe columns."""
+    """Stable source field UUID for this output occurrence."""
+
+    source_label: Optional[str] = None
+    """Source field label"""
 
 
 class WidgetColumnMapUnionMember1DataTypeExtension(BaseModel):
@@ -990,6 +1022,22 @@ class WidgetColumnMapUnionMember1DataType(BaseModel):
     """Optional coarse metadata for the canonical type"""
 
 
+class WidgetColumnMapUnionMember1Modifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
 class WidgetColumnMapUnionMember1(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
 
@@ -999,14 +1047,8 @@ class WidgetColumnMapUnionMember1(BaseModel):
     field_type: str
     """Field type: dimension, measure, or calculation"""
 
-    kater_id: str
-    """Authored source field UUID"""
-
-    name: str
-    """Human-readable column name"""
-
-    active_timeframe: Optional[str] = None
-    """Concrete active timeframe for temporal dimensions, e.g. raw, month, quarter."""
+    source_name: str
+    """Source field name"""
 
     aggregation: Optional[str] = None
     """Aggregation type for measures: sum, count, min, max, avg, unknown.
@@ -1017,11 +1059,20 @@ class WidgetColumnMapUnionMember1(BaseModel):
     column_key: Optional[str] = None
     """SQL result alias for this concrete output column."""
 
-    label: Optional[str] = None
-    """Display label"""
+    display_label: Optional[str] = None
+    """Backend-provided display label"""
+
+    modifiers: Optional[List[WidgetColumnMapUnionMember1Modifier]] = None
+    """Normalized modifiers for this output occurrence.
+
+    Raw timeframe is represented by an empty array.
+    """
 
     source_kater_id: Optional[str] = None
-    """Authored source field UUID for derived timeframe columns."""
+    """Stable source field UUID for this output occurrence."""
+
+    source_label: Optional[str] = None
+    """Source field label"""
 
 
 class WidgetGrid(BaseModel):
@@ -1122,12 +1173,35 @@ class WidgetColumnProfilesUnionMember1WidgetColumnProfilesUnionMember1Item(BaseM
     """Population standard deviation."""
 
 
-class WidgetDependenciesSlotTimeframeOverride(BaseModel):
-    """Runtime grain choice for a temporal source dimension."""
+class WidgetDependenciesSlotSelectedFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
 
-    active_timeframe: str
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class WidgetDependenciesSlotSelectedField(BaseModel):
+    """
+    Semantic identity for an active output field: source_kater_id plus normalized modifiers.
+    """
+
+    modifiers: List[WidgetDependenciesSlotSelectedFieldModifier]
+    """Normalized modifiers sorted by kind.
+
+    Raw timeframe is represented by an empty array.
+    """
 
     source_kater_id: str
+    """Stable UUID of the source field this occurrence projects."""
 
 
 class WidgetDependenciesSlotVariableValue(BaseModel):
@@ -1161,14 +1235,11 @@ class WidgetDependenciesSlot(BaseModel):
     query_name: str
     """Query name backing the slot"""
 
-    selected_field_ids: List[str]
-    """UUIDs of selected fields for this dependency slot"""
+    selected_fields: List[WidgetDependenciesSlotSelectedField]
+    """Selected field occurrences for this dependency slot"""
 
     slot_name: str
     """Dashboard slot name"""
-
-    timeframe_overrides: List[WidgetDependenciesSlotTimeframeOverride]
-    """Temporal grain overrides for selected fields"""
 
     variable_values: List[WidgetDependenciesSlotVariableValue]
     """Runtime variable values applied to the slot"""
@@ -1187,18 +1258,50 @@ class WidgetDependencies(BaseModel):
     """Dashboard data slots that feed this widget"""
 
 
+class WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateDimensionModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
 class WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateDimension(BaseModel):
     """Dimension entry inside the aggregate cache projection.
 
-    `source_kater_id` is required (not nullable) here so two timeframe variants
-    of the same temporal source dimension produce different cache projections.
+    `source_kater_id` plus normalized modifiers identify the projected source
+    dimension in cache projections.
     """
-
-    active_timeframe: Optional[str] = None
 
     column_key: str
 
+    modifiers: List[WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateDimensionModifier]
+
     source_kater_id: str
+
+
+class WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateFilterFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
 
 
 class WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateFilter(BaseModel):
@@ -1210,11 +1313,11 @@ class WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateFilter(BaseModel):
 
     expression: str
 
-    field_active_timeframe: Optional[str] = None
-
     field_column_key: Optional[str] = None
 
     field_kater_id: Optional[str] = None
+
+    field_modifiers: Optional[List[WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateFilterFieldModifier]] = None
 
     field_source_kater_id: Optional[str] = None
 
@@ -1273,6 +1376,22 @@ class WidgetRenderedQueryKeyCanonicalCacheProjectionAggregate(BaseModel):
     variables: List[WidgetRenderedQueryKeyCanonicalCacheProjectionAggregateVariable]
 
 
+class WidgetRenderedQueryKeyCanonicalCacheProjectionExactFilterFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
 class WidgetRenderedQueryKeyCanonicalCacheProjectionExactFilter(BaseModel):
     """Filter entry inside an exact or aggregate cache projection."""
 
@@ -1282,27 +1401,43 @@ class WidgetRenderedQueryKeyCanonicalCacheProjectionExactFilter(BaseModel):
 
     expression: str
 
-    field_active_timeframe: Optional[str] = None
-
     field_column_key: Optional[str] = None
 
     field_kater_id: Optional[str] = None
+
+    field_modifiers: Optional[List[WidgetRenderedQueryKeyCanonicalCacheProjectionExactFilterFieldModifier]] = None
 
     field_source_kater_id: Optional[str] = None
 
     normalized_value: Optional[str] = None
 
 
+class WidgetRenderedQueryKeyCanonicalCacheProjectionExactOutputColumnModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
 class WidgetRenderedQueryKeyCanonicalCacheProjectionExactOutputColumn(BaseModel):
     """Column entry inside the exact cache projection."""
-
-    active_timeframe: Optional[str] = None
 
     column_key: str
 
     field_type: Literal["dimension", "measure", "calculation"]
 
     kater_id: str
+
+    modifiers: List[WidgetRenderedQueryKeyCanonicalCacheProjectionExactOutputColumnModifier]
 
     source_kater_id: Optional[str] = None
 
@@ -1438,35 +1573,94 @@ class WidgetRenderedQueryKeyCanonicalDashboard(BaseModel):
     widget_name: Optional[str] = None
 
 
+class WidgetRenderedQueryKeyCanonicalFieldsActiveFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
 class WidgetRenderedQueryKeyCanonicalFieldsActiveField(BaseModel):
     """A selected/active source field entry — strict subset of the field item."""
 
-    active_timeframe: Optional[str] = None
-
     field_type: Literal["dimension", "measure", "calculation"]
 
-    kater_id: str
+    modifiers: List[WidgetRenderedQueryKeyCanonicalFieldsActiveFieldModifier]
+
+    source_kater_id: str
+
+
+class WidgetRenderedQueryKeyCanonicalFieldsOutputColumnModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class WidgetRenderedQueryKeyCanonicalFieldsOutputColumnDataTypeExtension(BaseModel):
+    """Vendor-specific type extension"""
+
+    engine: str
+    """Database engine/dialect"""
+
+    orig_type: str
+    """Original type name in the source database"""
+
+    options: Optional[Dict[str, object]] = None
+    """Additional vendor-specific options"""
+
+    raw_ddl: Optional[str] = None
+    """Raw DDL for the type"""
+
+
+class WidgetRenderedQueryKeyCanonicalFieldsOutputColumnDataType(BaseModel):
+    """Data type specification"""
+
+    kind: Literal["Bool", "Text", "Number", "Datetime", "Complex", "Unknown"]
+    """The canonical data type kind"""
+
+    nullable: bool
+    """Whether the field can be null"""
+
+    extension: Optional[WidgetRenderedQueryKeyCanonicalFieldsOutputColumnDataTypeExtension] = None
+    """Vendor-specific type extension"""
+
+    params: Optional[object] = None
+    """Optional coarse metadata for the canonical type"""
 
 
 class WidgetRenderedQueryKeyCanonicalFieldsOutputColumn(BaseModel):
     """An output column entry in `canonical.fields.output_columns`."""
-
-    active_timeframe: Optional[str] = None
-    """Concrete temporal grain (e.g. 'raw', 'month'); null for non-temporal"""
 
     aggregation: Optional[Literal["sum", "count", "min", "max", "avg", "unknown"]] = None
 
     column_key: str
     """SQL result alias / row payload key"""
 
+    display_label: Optional[str] = None
+
     field_type: Literal["dimension", "measure", "calculation"]
 
-    kater_id: str
-    """Authored source field UUID"""
-
-    label: Optional[str] = None
-
-    name: str
+    modifiers: List[WidgetRenderedQueryKeyCanonicalFieldsOutputColumnModifier]
+    """Normalized modifiers for this output occurrence"""
 
     output_index: int
     """Zero-based output column position"""
@@ -1475,18 +1669,41 @@ class WidgetRenderedQueryKeyCanonicalFieldsOutputColumn(BaseModel):
 
     slot: Literal["required", "optional"]
 
-    source_kater_id: Optional[str] = None
-    """Source field UUID when derived from an authored field"""
+    source_kater_id: str
+    """Stable source field UUID for this output occurrence"""
+
+    source_label: Optional[str] = None
+
+    source_name: str
+
+    data_type: Optional[WidgetRenderedQueryKeyCanonicalFieldsOutputColumnDataType] = None
+    """Data type specification"""
+
+
+class WidgetRenderedQueryKeyCanonicalFieldsSelectedFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
 
 
 class WidgetRenderedQueryKeyCanonicalFieldsSelectedField(BaseModel):
     """A selected/active source field entry — strict subset of the field item."""
 
-    active_timeframe: Optional[str] = None
-
     field_type: Literal["dimension", "measure", "calculation"]
 
-    kater_id: str
+    modifiers: List[WidgetRenderedQueryKeyCanonicalFieldsSelectedFieldModifier]
+
+    source_kater_id: str
 
 
 class WidgetRenderedQueryKeyCanonicalFields(BaseModel):
@@ -1503,6 +1720,22 @@ class WidgetRenderedQueryKeyCanonicalFields(BaseModel):
     selected_fields: List[WidgetRenderedQueryKeyCanonicalFieldsSelectedField]
 
 
+class WidgetRenderedQueryKeyCanonicalFiltersEffectiveFilterFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
 class WidgetRenderedQueryKeyCanonicalFiltersEffectiveFilter(BaseModel):
     """An effective filter entry in `canonical.filters.effective_filters`."""
 
@@ -1516,11 +1749,11 @@ class WidgetRenderedQueryKeyCanonicalFiltersEffectiveFilter(BaseModel):
 
     expression: str
 
-    field_active_timeframe: Optional[str] = None
-
     field_column_key: Optional[str] = None
 
     field_kater_id: Optional[str] = None
+
+    field_modifiers: Optional[List[WidgetRenderedQueryKeyCanonicalFiltersEffectiveFilterFieldModifier]] = None
 
     field_source_kater_id: Optional[str] = None
 
@@ -1629,7 +1862,7 @@ class WidgetRenderedQueryKeyCanonicalSource(BaseModel):
 class WidgetRenderedQueryKeyCanonicalTemporal(BaseModel):
     """Request clock context — makes date-relative filters deterministic.
 
-    Selected date-grain identity lives in `fields.*.active_timeframe` and
+    Selected date-grain identity lives in `fields.*.modifiers` and
     `fields.output_columns[].column_key`, not here.
     """
 
@@ -1727,7 +1960,7 @@ class WidgetRenderedQueryKeyCanonical(BaseModel):
     temporal: WidgetRenderedQueryKeyCanonicalTemporal
     """Request clock context — makes date-relative filters deterministic.
 
-    Selected date-grain identity lives in `fields.*.active_timeframe` and
+    Selected date-grain identity lives in `fields.*.modifiers` and
     `fields.output_columns[].column_key`, not here.
     """
 
@@ -1741,22 +1974,22 @@ class WidgetRenderedQueryKey(BaseModel):
     """Top-level natural key returned by every runtime data and widget path.
 
     Format invariants (validation enforced by Story 1.2's hashing helpers):
-    - `key_id`: `rqk_v1:<64 lowercase hex chars>`
-    - `exact_cache_key_id`: `rqk_cache_exact_v1:<64 lowercase hex chars>`
-    - `aggregate_cache_key_id`: `rqk_cache_agg_v1:<64 lowercase hex chars>` or null
+    - `key_id`: `rqk_v2:<64 lowercase hex chars>`
+    - `exact_cache_key_id`: `rqk_cache_exact_v2:<64 lowercase hex chars>`
+    - `aggregate_cache_key_id`: `rqk_cache_agg_v2:<64 lowercase hex chars>` or null
     """
 
     aggregate_cache_key_id: Optional[str] = None
-    """rqk_cache_agg_v1:<sha256-hex> or null when not eligible"""
+    """rqk_cache_agg_v2:<sha256-hex> or null when not eligible"""
 
     canonical: WidgetRenderedQueryKeyCanonical
     """The canonical sub-document. Hashing this produces `key_id`."""
 
     exact_cache_key_id: str
-    """rqk_cache_exact_v1:<sha256-hex>"""
+    """rqk_cache_exact_v2:<sha256-hex>"""
 
     key_id: str
-    """rqk_v1:<sha256-hex>"""
+    """rqk_v2:<sha256-hex>"""
 
     version: Literal[1]
 
@@ -1807,9 +2040,9 @@ class Widget(BaseModel):
 
     Format invariants (validation enforced by Story 1.2's hashing helpers):
 
-    - `key_id`: `rqk_v1:<64 lowercase hex chars>`
-    - `exact_cache_key_id`: `rqk_cache_exact_v1:<64 lowercase hex chars>`
-    - `aggregate_cache_key_id`: `rqk_cache_agg_v1:<64 lowercase hex chars>` or null
+    - `key_id`: `rqk_v2:<64 lowercase hex chars>`
+    - `exact_cache_key_id`: `rqk_cache_exact_v2:<64 lowercase hex chars>`
+    - `aggregate_cache_key_id`: `rqk_cache_agg_v2:<64 lowercase hex chars>` or null
     """
 
     row_count: Union[int, List[int], None] = None

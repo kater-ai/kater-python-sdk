@@ -28,7 +28,8 @@ __all__ = [
     "DashboardDashboardFilterStateValuePresetReferenceFilterValue",
     "DashboardDashboardFilterStateValueNullFilterValue",
     "FieldSelection",
-    "FieldSelectionTimeframeOverride",
+    "FieldSelectionSelectedField",
+    "FieldSelectionSelectedFieldModifier",
     "FilterState",
     "FilterStateValue",
     "FilterStateValueScalarFilterValue",
@@ -59,7 +60,7 @@ class CompilerExecuteParams(TypedDict, total=False):
     """Dashboard context block in `RenderedQueryRequestV1`."""
 
     field_selection: Required[FieldSelection]
-    """Structured field selection: source field IDs plus optional grain overrides."""
+    """Structured field selection expressed as semantic field occurrences."""
 
     filter_state: Required[Iterable[FilterState]]
 
@@ -220,20 +221,41 @@ class Dashboard(TypedDict, total=False):
     widget_kater_id: Required[Optional[str]]
 
 
-class FieldSelectionTimeframeOverride(TypedDict, total=False):
-    """Runtime grain choice for a temporal source dimension."""
+class FieldSelectionSelectedFieldModifier(TypedDict, total=False):
+    """A normalized modifier applied to a source field occurrence.
 
-    active_timeframe: Required[str]
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Required[Literal["timeframe"]]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: Required[str]
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class FieldSelectionSelectedField(TypedDict, total=False):
+    """
+    Semantic identity for an active output field: source_kater_id plus normalized modifiers.
+    """
+
+    modifiers: Required[Iterable[FieldSelectionSelectedFieldModifier]]
+    """Normalized modifiers sorted by kind.
+
+    Raw timeframe is represented by an empty array.
+    """
 
     source_kater_id: Required[str]
+    """Stable UUID of the source field this occurrence projects."""
 
 
 class FieldSelection(TypedDict, total=False):
-    """Structured field selection: source field IDs plus optional grain overrides."""
+    """Structured field selection expressed as semantic field occurrences."""
 
-    selected_field_ids: Required[SequenceNotStr[str]]
-
-    timeframe_overrides: Iterable[FieldSelectionTimeframeOverride]
+    selected_fields: Required[Iterable[FieldSelectionSelectedField]]
 
 
 class FilterStateValueScalarFilterValue(TypedDict, total=False):

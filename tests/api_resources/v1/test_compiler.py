@@ -35,7 +35,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -83,13 +95,17 @@ class TestCompiler:
                 "widget_kater_id": "widget_kater_id",
             },
             field_selection={
-                "selected_field_ids": ["string"],
-                "timeframe_overrides": [
+                "selected_fields": [
                     {
-                        "active_timeframe": "active_timeframe",
-                        "source_kater_id": "source_kater_id",
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
                     }
-                ],
+                ]
             },
             filter_state=[
                 {
@@ -143,7 +159,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -185,7 +213,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -291,7 +331,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -339,13 +391,17 @@ class TestCompiler:
                 "widget_kater_id": "widget_kater_id",
             },
             field_selection={
-                "selected_field_ids": ["string"],
-                "timeframe_overrides": [
+                "selected_fields": [
                     {
-                        "active_timeframe": "active_timeframe",
-                        "source_kater_id": "source_kater_id",
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
                     }
-                ],
+                ]
             },
             filter_state=[
                 {
@@ -399,7 +455,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -441,7 +509,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -485,7 +565,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -533,13 +625,17 @@ class TestCompiler:
                 "widget_kater_id": "widget_kater_id",
             },
             field_selection={
-                "selected_field_ids": ["string"],
-                "timeframe_overrides": [
+                "selected_fields": [
                     {
-                        "active_timeframe": "active_timeframe",
-                        "source_kater_id": "source_kater_id",
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
                     }
-                ],
+                ]
             },
             filter_state=[
                 {
@@ -593,7 +689,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -635,7 +743,19 @@ class TestCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -673,7 +793,19 @@ class TestCompiler:
     def test_method_resolve(self, client: Kater) -> None:
         compiler = client.v1.compiler.resolve(
             connection_id="connection_id",
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             query_kater_id="query_kater_id",
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
@@ -684,13 +816,17 @@ class TestCompiler:
         compiler = client.v1.compiler.resolve(
             connection_id="connection_id",
             field_selection={
-                "selected_field_ids": ["string"],
-                "timeframe_overrides": [
+                "selected_fields": [
                     {
-                        "active_timeframe": "active_timeframe",
-                        "source_kater_id": "source_kater_id",
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
                     }
-                ],
+                ]
             },
             query_kater_id="query_kater_id",
             source="source",
@@ -748,7 +884,19 @@ class TestCompiler:
     def test_raw_response_resolve(self, client: Kater) -> None:
         response = client.v1.compiler.with_raw_response.resolve(
             connection_id="connection_id",
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             query_kater_id="query_kater_id",
         )
 
@@ -762,7 +910,19 @@ class TestCompiler:
     def test_streaming_response_resolve(self, client: Kater) -> None:
         with client.v1.compiler.with_streaming_response.resolve(
             connection_id="connection_id",
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             query_kater_id="query_kater_id",
         ) as response:
             assert not response.is_closed
@@ -829,7 +989,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -877,13 +1049,17 @@ class TestAsyncCompiler:
                 "widget_kater_id": "widget_kater_id",
             },
             field_selection={
-                "selected_field_ids": ["string"],
-                "timeframe_overrides": [
+                "selected_fields": [
                     {
-                        "active_timeframe": "active_timeframe",
-                        "source_kater_id": "source_kater_id",
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
                     }
-                ],
+                ]
             },
             filter_state=[
                 {
@@ -937,7 +1113,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -979,7 +1167,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -1085,7 +1285,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -1133,13 +1345,17 @@ class TestAsyncCompiler:
                 "widget_kater_id": "widget_kater_id",
             },
             field_selection={
-                "selected_field_ids": ["string"],
-                "timeframe_overrides": [
+                "selected_fields": [
                     {
-                        "active_timeframe": "active_timeframe",
-                        "source_kater_id": "source_kater_id",
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
                     }
-                ],
+                ]
             },
             filter_state=[
                 {
@@ -1193,7 +1409,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -1235,7 +1463,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -1279,7 +1519,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -1327,13 +1579,17 @@ class TestAsyncCompiler:
                 "widget_kater_id": "widget_kater_id",
             },
             field_selection={
-                "selected_field_ids": ["string"],
-                "timeframe_overrides": [
+                "selected_fields": [
                     {
-                        "active_timeframe": "active_timeframe",
-                        "source_kater_id": "source_kater_id",
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
                     }
-                ],
+                ]
             },
             filter_state=[
                 {
@@ -1387,7 +1643,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -1429,7 +1697,19 @@ class TestAsyncCompiler:
                 "slot_name": "slot_name",
                 "widget_kater_id": "widget_kater_id",
             },
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
             pinned_variant="pinned_variant",
             presentation={},
@@ -1467,7 +1747,19 @@ class TestAsyncCompiler:
     async def test_method_resolve(self, async_client: AsyncKater) -> None:
         compiler = await async_client.v1.compiler.resolve(
             connection_id="connection_id",
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             query_kater_id="query_kater_id",
         )
         assert_matches_type(CompilerResolveResponse, compiler, path=["response"])
@@ -1478,13 +1770,17 @@ class TestAsyncCompiler:
         compiler = await async_client.v1.compiler.resolve(
             connection_id="connection_id",
             field_selection={
-                "selected_field_ids": ["string"],
-                "timeframe_overrides": [
+                "selected_fields": [
                     {
-                        "active_timeframe": "active_timeframe",
-                        "source_kater_id": "source_kater_id",
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
                     }
-                ],
+                ]
             },
             query_kater_id="query_kater_id",
             source="source",
@@ -1542,7 +1838,19 @@ class TestAsyncCompiler:
     async def test_raw_response_resolve(self, async_client: AsyncKater) -> None:
         response = await async_client.v1.compiler.with_raw_response.resolve(
             connection_id="connection_id",
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             query_kater_id="query_kater_id",
         )
 
@@ -1556,7 +1864,19 @@ class TestAsyncCompiler:
     async def test_streaming_response_resolve(self, async_client: AsyncKater) -> None:
         async with async_client.v1.compiler.with_streaming_response.resolve(
             connection_id="connection_id",
-            field_selection={"selected_field_ids": ["string"]},
+            field_selection={
+                "selected_fields": [
+                    {
+                        "modifiers": [
+                            {
+                                "kind": "timeframe",
+                                "value": "x",
+                            }
+                        ],
+                        "source_kater_id": "x",
+                    }
+                ]
+            },
             query_kater_id="query_kater_id",
         ) as response:
             assert not response.is_closed
