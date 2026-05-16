@@ -70,11 +70,9 @@ class WidgetResource(SyncAPIResource):
         """
         Render a single SDK widget from a `RenderedQueryRequestV1` body.
 
-        The structured replacement for `GET /api/v1/sdk/widget?combination_id=...`. The
-        handler:
+        The handler:
 
-        1. Resolves the SDK filesystem (reusing the legacy `_resolve_sdk_filesystem`
-           helper).
+        1. Resolves the SDK filesystem.
         2. Calls `share_render_request_resolution(...)` with the SDK auth context.
            Tenant key comes from the SDK token's `tenant_key` claim.
         3. Awaits `RenderService.render(...)` for the full pipeline.
@@ -83,13 +81,12 @@ class WidgetResource(SyncAPIResource):
         5. Projects the `RenderResponse` onto `SdkWidgetResponse` (the existing model
            from `routes/client/sdk/models.py:156`).
 
-        Pydantic `extra="forbid"` (inherited from `RenderedQueryRequestV1`) rejects
-        `combination` / `combination_id` fields with HTTP 422.
+        Pydantic `extra="forbid"` rejects unknown request fields with HTTP 422.
 
         Args:
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           presentation: Presentation config block in `RenderedQueryRequestV1`.
 
@@ -185,11 +182,9 @@ class AsyncWidgetResource(AsyncAPIResource):
         """
         Render a single SDK widget from a `RenderedQueryRequestV1` body.
 
-        The structured replacement for `GET /api/v1/sdk/widget?combination_id=...`. The
-        handler:
+        The handler:
 
-        1. Resolves the SDK filesystem (reusing the legacy `_resolve_sdk_filesystem`
-           helper).
+        1. Resolves the SDK filesystem.
         2. Calls `share_render_request_resolution(...)` with the SDK auth context.
            Tenant key comes from the SDK token's `tenant_key` claim.
         3. Awaits `RenderService.render(...)` for the full pipeline.
@@ -198,13 +193,12 @@ class AsyncWidgetResource(AsyncAPIResource):
         5. Projects the `RenderResponse` onto `SdkWidgetResponse` (the existing model
            from `routes/client/sdk/models.py:156`).
 
-        Pydantic `extra="forbid"` (inherited from `RenderedQueryRequestV1`) rejects
-        `combination` / `combination_id` fields with HTTP 422.
+        Pydantic `extra="forbid"` rejects unknown request fields with HTTP 422.
 
         Args:
           dashboard: Dashboard context block in `RenderedQueryRequestV1`.
 
-          field_selection: Structured field selection: source field IDs plus optional grain overrides.
+          field_selection: Structured field selection expressed as semantic field occurrences.
 
           presentation: Presentation config block in `RenderedQueryRequestV1`.
 

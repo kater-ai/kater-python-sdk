@@ -28,14 +28,19 @@ __all__ = [
     "QueryDefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "QueryDefaultFilterStateValuePresetReferenceFilterValue",
     "QueryDefaultFilterStateValueNullFilterValue",
+    "QueryDefaultSelectedField",
+    "QueryDefaultSelectedFieldModifier",
     "QueryFieldSelectionConstraints",
     "QueryFieldSelectionConstraintsConstraints",
     "QueryFieldSelectionConstraintsConstraintsDimensions",
     "QueryFieldSelectionConstraintsConstraintsMetrics",
     "QueryFilterDefinition",
+    "QueryRequiredField",
+    "QueryRequiredFieldModifier",
     "QuerySelectableField",
     "QuerySelectableFieldDataType",
     "QuerySelectableFieldDataTypeExtension",
+    "QuerySelectableFieldModifierControl",
     "QueryVariableDefinition",
 ]
 
@@ -206,6 +211,37 @@ class QueryDefaultFilterState(BaseModel):
     """Requested runtime value override for this effective filter"""
 
 
+class QueryDefaultSelectedFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class QueryDefaultSelectedField(BaseModel):
+    """
+    Semantic identity for an active output field: source_kater_id plus normalized modifiers.
+    """
+
+    modifiers: List[QueryDefaultSelectedFieldModifier]
+    """Normalized modifiers sorted by kind.
+
+    Raw timeframe is represented by an empty array.
+    """
+
+    source_kater_id: str
+    """Stable UUID of the source field this occurrence projects."""
+
+
 class QueryFieldSelectionConstraintsConstraintsDimensions(BaseModel):
     """Numeric min/max range constraint."""
 
@@ -316,6 +352,37 @@ class QueryFilterDefinition(BaseModel):
     """Owner UUIDs from model/topic/dashboard/query precedence order"""
 
 
+class QueryRequiredFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class QueryRequiredField(BaseModel):
+    """
+    Semantic identity for an active output field: source_kater_id plus normalized modifiers.
+    """
+
+    modifiers: List[QueryRequiredFieldModifier]
+    """Normalized modifiers sorted by kind.
+
+    Raw timeframe is represented by an empty array.
+    """
+
+    source_kater_id: str
+    """Stable UUID of the source field this occurrence projects."""
+
+
 class QuerySelectableFieldDataTypeExtension(BaseModel):
     """Vendor-specific type extension"""
 
@@ -348,19 +415,32 @@ class QuerySelectableFieldDataType(BaseModel):
     """Optional coarse metadata for the canonical type"""
 
 
+class QuerySelectableFieldModifierControl(BaseModel):
+    """UI/control metadata for choosing a modifier value for one source field."""
+
+    allowed_values: List[str]
+    """Allowed values for this control. Raw may appear here as a UI value."""
+
+    default_value: str
+    """Default value consumers should preselect. Must appear in allowed_values."""
+
+    fixed: bool
+    """When true, default_value is the only selectable value exposed by capabilities."""
+
+    kind: Literal["timeframe"]
+    """Modifier kind this control edits."""
+
+
 class QuerySelectableField(BaseModel):
-    """One selectable field exposed by a query, with temporal grain metadata.
+    """One selectable field exposed by a query, with generic modifier controls.
 
     Identity is `kater_id` (UUID). `name` is a display-only label.
 
-    Temporal invariants (enforced by `validate_temporal_consistency`):
-    - Non-temporal fields must have `available_timeframes == []` and
-      `default_active_timeframe is None`.
-    - Temporal fields with non-null `default_active_timeframe` must list it
-      in `available_timeframes`.
-    - `default_active_timeframe` is `null` when no grain default is chosen.
-
-    See PRD section `QueryCapabilitiesResponseV1` for the canonical rules.
+    Modifier invariants (enforced by `validate_modifier_controls`):
+    - Non-dimension fields must not expose modifier controls.
+    - Timeframe controls require `data_type.kind == Datetime`.
+    - `default_value` must appear in `allowed_values`.
+    - Fixed controls expose only `default_value`.
     """
 
     data_type: QuerySelectableFieldDataType
@@ -393,19 +473,11 @@ class QuerySelectableField(BaseModel):
     query, or pinned through a query variant.
     """
 
-    available_timeframes: Optional[
-        List[Literal["raw", "date", "day", "week", "month", "quarter", "year", "day_of_week", "hour"]]
-    ] = None
-    """Temporal grains the field can be projected to.
+    modifier_controls: Optional[List[QuerySelectableFieldModifierControl]] = None
+    """Generic modifier controls this field exposes.
 
-    Empty for non-temporal fields. For temporal fields, includes `raw` plus authored
-    timeframes in deterministic display order.
+    Empty for fields with no editable or fixed modifiers.
     """
-
-    default_active_timeframe: Optional[
-        Literal["raw", "date", "day", "week", "month", "quarter", "year", "day_of_week", "hour"]
-    ] = None
-    """Time granularity for datetime dimensions"""
 
 
 class QueryVariableDefinition(BaseModel):
@@ -489,12 +561,11 @@ class Query(BaseModel):
     default_filter_state: Optional[List[QueryDefaultFilterState]] = None
     """Default runtime filter state to seed `RenderedQueryRequestV1.filter_state`"""
 
-    default_selected_field_ids: Optional[List[str]] = None
+    default_selected_fields: Optional[List[QueryDefaultSelectedField]] = None
     """
-    Field UUIDs that the backend selects by default when a consumer omits
-    `field_selection.selected_field_ids`. Typically empty (required fields cover the
-    base render); non-empty when the team wants to highlight an optional dimension
-    or measure.
+    Field occurrences the backend selects by default when a consumer omits
+    `field_selection.selected_fields`. Typically empty when required fields cover
+    the base render.
     """
 
     field_selection_constraints: Optional[QueryFieldSelectionConstraints] = None
@@ -513,11 +584,8 @@ class Query(BaseModel):
     filter_definitions: Optional[List[QueryFilterDefinition]] = None
     """Effective filter definitions in scope for this query"""
 
-    required_field_ids: Optional[List[str]] = None
-    """Field UUIDs that the backend always includes in the rendered output.
-
-    Replaces the legacy enumerate `required_fields` name list.
-    """
+    required_fields: Optional[List[QueryRequiredField]] = None
+    """Field occurrences that the backend always includes in the rendered output."""
 
     selectable_fields: Optional[List[QuerySelectableField]] = None
     """All fields a consumer can select, including required ones.
@@ -534,7 +602,7 @@ class CapabilityCreateResponse(BaseModel):
 
     Replaces `EnumerateResponse.combinations`; consumers build
     `RenderedQueryRequestV1.field_selection` from `selectable_fields` plus
-    `default_selected_field_ids` instead of enumerating combinations.
+    `default_selected_fields` instead of enumerating combinations.
     """
 
     connection_id: str

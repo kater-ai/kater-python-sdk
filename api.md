@@ -8,7 +8,6 @@ Types:
 from kater.types.v1 import (
     ChartConfig,
     CompilerErrorItem,
-    InlineField,
     Manifest,
     ManifestEntry,
     RefWithLabel,
