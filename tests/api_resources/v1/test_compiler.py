@@ -16,6 +16,7 @@ from kater.types.v1 import (
     CompilerResolveResponse,
     CompilerValidateResponse,
     CompilerCompileDashboardResponse,
+    CompilerRegenerateMetadataResponse,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -551,6 +552,113 @@ class TestCompiler:
 
             compiler = response.parse()
             assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_regenerate_metadata(self, client: Kater) -> None:
+        compiler = client.v1.compiler.regenerate_metadata(
+            persist={"mode": "mode"},
+            post_query_state={},
+            query_kater_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            rendered_query_key_id="rendered_query_key_id",
+        )
+        assert_matches_type(CompilerRegenerateMetadataResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_regenerate_metadata_with_all_params(self, client: Kater) -> None:
+        compiler = client.v1.compiler.regenerate_metadata(
+            persist={
+                "mode": "mode",
+                "scope": {
+                    "chat_thread_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "message_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "session_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "widget_instance_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                },
+                "scope_type": "scope_type",
+            },
+            post_query_state={
+                "filters": [
+                    {
+                        "expression": "equals",
+                        "field": {
+                            "ref": "ref(dim_customer.sale_price)",
+                            "modifiers": [
+                                {
+                                    "kind": "timeframe",
+                                    "value": "x",
+                                }
+                            ],
+                        },
+                        "kind": "date",
+                        "default_enabled": True,
+                        "default_value": "string",
+                        "values": {
+                            "source": "result_distinct",
+                            "limit": 1,
+                            "searchable": True,
+                            "sort": "asc",
+                        },
+                    }
+                ],
+                "sorts": [
+                    {
+                        "field": {
+                            "ref": "ref(dim_customer.sale_price)",
+                            "modifiers": [
+                                {
+                                    "kind": "timeframe",
+                                    "value": "x",
+                                }
+                            ],
+                        },
+                        "default_direction": "asc",
+                        "default_enabled": True,
+                        "priority": 1,
+                    }
+                ],
+            },
+            query_kater_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            rendered_query_key_id="rendered_query_key_id",
+            source="source",
+            post_query_state_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            revision=0,
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerRegenerateMetadataResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_regenerate_metadata(self, client: Kater) -> None:
+        response = client.v1.compiler.with_raw_response.regenerate_metadata(
+            persist={"mode": "mode"},
+            post_query_state={},
+            query_kater_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            rendered_query_key_id="rendered_query_key_id",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = response.parse()
+        assert_matches_type(CompilerRegenerateMetadataResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_regenerate_metadata(self, client: Kater) -> None:
+        with client.v1.compiler.with_streaming_response.regenerate_metadata(
+            persist={"mode": "mode"},
+            post_query_state={},
+            query_kater_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            rendered_query_key_id="rendered_query_key_id",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = response.parse()
+            assert_matches_type(CompilerRegenerateMetadataResponse, compiler, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1505,6 +1613,113 @@ class TestAsyncCompiler:
 
             compiler = await response.parse()
             assert_matches_type(CompilerExecuteResponse, compiler, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_regenerate_metadata(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.regenerate_metadata(
+            persist={"mode": "mode"},
+            post_query_state={},
+            query_kater_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            rendered_query_key_id="rendered_query_key_id",
+        )
+        assert_matches_type(CompilerRegenerateMetadataResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_regenerate_metadata_with_all_params(self, async_client: AsyncKater) -> None:
+        compiler = await async_client.v1.compiler.regenerate_metadata(
+            persist={
+                "mode": "mode",
+                "scope": {
+                    "chat_thread_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "message_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "session_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "widget_instance_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                },
+                "scope_type": "scope_type",
+            },
+            post_query_state={
+                "filters": [
+                    {
+                        "expression": "equals",
+                        "field": {
+                            "ref": "ref(dim_customer.sale_price)",
+                            "modifiers": [
+                                {
+                                    "kind": "timeframe",
+                                    "value": "x",
+                                }
+                            ],
+                        },
+                        "kind": "date",
+                        "default_enabled": True,
+                        "default_value": "string",
+                        "values": {
+                            "source": "result_distinct",
+                            "limit": 1,
+                            "searchable": True,
+                            "sort": "asc",
+                        },
+                    }
+                ],
+                "sorts": [
+                    {
+                        "field": {
+                            "ref": "ref(dim_customer.sale_price)",
+                            "modifiers": [
+                                {
+                                    "kind": "timeframe",
+                                    "value": "x",
+                                }
+                            ],
+                        },
+                        "default_direction": "asc",
+                        "default_enabled": True,
+                        "priority": 1,
+                    }
+                ],
+            },
+            query_kater_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            rendered_query_key_id="rendered_query_key_id",
+            source="source",
+            post_query_state_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            revision=0,
+            x_kater_cli_id="X-Kater-CLI-ID",
+        )
+        assert_matches_type(CompilerRegenerateMetadataResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_regenerate_metadata(self, async_client: AsyncKater) -> None:
+        response = await async_client.v1.compiler.with_raw_response.regenerate_metadata(
+            persist={"mode": "mode"},
+            post_query_state={},
+            query_kater_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            rendered_query_key_id="rendered_query_key_id",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        compiler = await response.parse()
+        assert_matches_type(CompilerRegenerateMetadataResponse, compiler, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_regenerate_metadata(self, async_client: AsyncKater) -> None:
+        async with async_client.v1.compiler.with_streaming_response.regenerate_metadata(
+            persist={"mode": "mode"},
+            post_query_state={},
+            query_kater_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+            rendered_query_key_id="rendered_query_key_id",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            compiler = await response.parse()
+            assert_matches_type(CompilerRegenerateMetadataResponse, compiler, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

@@ -17,8 +17,9 @@ from ....._response import (
     async_to_streamed_response_wrapper,
 )
 from ....._base_client import make_request_options
-from .....types.v1.connections.sdk import widget_render_params
+from .....types.v1.connections.sdk import widget_render_params, widget_regenerate_metadata_params
 from .....types.v1.connections.sdk.widget_render_response import WidgetRenderResponse
+from .....types.v1.connections.sdk.widget_regenerate_metadata_response import WidgetRegenerateMetadataResponse
 
 __all__ = ["WidgetResource", "AsyncWidgetResource"]
 
@@ -44,6 +45,87 @@ class WidgetResource(SyncAPIResource):
         For more information, see https://www.github.com/kater-ai/kater-python-sdk#with_streaming_response
         """
         return WidgetResourceWithStreamingResponse(self)
+
+    def regenerate_metadata(
+        self,
+        *,
+        persist: widget_regenerate_metadata_params.Persist,
+        post_query_state: widget_regenerate_metadata_params.PostQueryState,
+        query_kater_id: str,
+        rendered_query_key_id: str,
+        source: Optional[str] | Omit = omit,
+        post_query_state_id: Optional[str] | Omit = omit,
+        revision: Optional[int] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> WidgetRegenerateMetadataResponse:
+        """
+        Regenerate SDK widget narrative metadata from post-query state mutation.
+
+        This endpoint accepts post-query state changes for SDK widgets and returns
+        regenerated narrative metadata based on the transformed row set.
+
+        The endpoint mirrors the compiler post-query mutation behavior but uses SDK
+        authentication and authorization context.
+
+        Persistence behavior:
+
+        - persist.mode="none": Returns metadata without saving state
+        - persist.mode="upsert": Saves state with revision tracking under SDK tenant
+          scope
+
+        Args:
+          persist: Persistence behavior configuration
+
+          post_query_state: Canonical post-query filters, sorts, and refinements
+
+          query_kater_id: Query kater_id this state applies to
+
+          rendered_query_key_id: Base rendered query key ID (without post-query state)
+
+          post_query_state_id: Existing post-query state ID for updates
+
+          revision: Expected revision for conflict detection
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return self._post(
+            "/api/v1/sdk/widget/render/post-query",
+            body=maybe_transform(
+                {
+                    "persist": persist,
+                    "post_query_state": post_query_state,
+                    "query_kater_id": query_kater_id,
+                    "rendered_query_key_id": rendered_query_key_id,
+                    "post_query_state_id": post_query_state_id,
+                    "revision": revision,
+                },
+                widget_regenerate_metadata_params.WidgetRegenerateMetadataParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {"source": source}, widget_regenerate_metadata_params.WidgetRegenerateMetadataParams
+                ),
+                security={},
+            ),
+            cast_to=WidgetRegenerateMetadataResponse,
+        )
 
     def render(
         self,
@@ -157,6 +239,87 @@ class AsyncWidgetResource(AsyncAPIResource):
         """
         return AsyncWidgetResourceWithStreamingResponse(self)
 
+    async def regenerate_metadata(
+        self,
+        *,
+        persist: widget_regenerate_metadata_params.Persist,
+        post_query_state: widget_regenerate_metadata_params.PostQueryState,
+        query_kater_id: str,
+        rendered_query_key_id: str,
+        source: Optional[str] | Omit = omit,
+        post_query_state_id: Optional[str] | Omit = omit,
+        revision: Optional[int] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> WidgetRegenerateMetadataResponse:
+        """
+        Regenerate SDK widget narrative metadata from post-query state mutation.
+
+        This endpoint accepts post-query state changes for SDK widgets and returns
+        regenerated narrative metadata based on the transformed row set.
+
+        The endpoint mirrors the compiler post-query mutation behavior but uses SDK
+        authentication and authorization context.
+
+        Persistence behavior:
+
+        - persist.mode="none": Returns metadata without saving state
+        - persist.mode="upsert": Saves state with revision tracking under SDK tenant
+          scope
+
+        Args:
+          persist: Persistence behavior configuration
+
+          post_query_state: Canonical post-query filters, sorts, and refinements
+
+          query_kater_id: Query kater_id this state applies to
+
+          rendered_query_key_id: Base rendered query key ID (without post-query state)
+
+          post_query_state_id: Existing post-query state ID for updates
+
+          revision: Expected revision for conflict detection
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return await self._post(
+            "/api/v1/sdk/widget/render/post-query",
+            body=await async_maybe_transform(
+                {
+                    "persist": persist,
+                    "post_query_state": post_query_state,
+                    "query_kater_id": query_kater_id,
+                    "rendered_query_key_id": rendered_query_key_id,
+                    "post_query_state_id": post_query_state_id,
+                    "revision": revision,
+                },
+                widget_regenerate_metadata_params.WidgetRegenerateMetadataParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"source": source}, widget_regenerate_metadata_params.WidgetRegenerateMetadataParams
+                ),
+                security={},
+            ),
+            cast_to=WidgetRegenerateMetadataResponse,
+        )
+
     async def render(
         self,
         *,
@@ -251,6 +414,9 @@ class WidgetResourceWithRawResponse:
     def __init__(self, widget: WidgetResource) -> None:
         self._widget = widget
 
+        self.regenerate_metadata = to_raw_response_wrapper(
+            widget.regenerate_metadata,
+        )
         self.render = to_raw_response_wrapper(
             widget.render,
         )
@@ -260,6 +426,9 @@ class AsyncWidgetResourceWithRawResponse:
     def __init__(self, widget: AsyncWidgetResource) -> None:
         self._widget = widget
 
+        self.regenerate_metadata = async_to_raw_response_wrapper(
+            widget.regenerate_metadata,
+        )
         self.render = async_to_raw_response_wrapper(
             widget.render,
         )
@@ -269,6 +438,9 @@ class WidgetResourceWithStreamingResponse:
     def __init__(self, widget: WidgetResource) -> None:
         self._widget = widget
 
+        self.regenerate_metadata = to_streamed_response_wrapper(
+            widget.regenerate_metadata,
+        )
         self.render = to_streamed_response_wrapper(
             widget.render,
         )
@@ -278,6 +450,9 @@ class AsyncWidgetResourceWithStreamingResponse:
     def __init__(self, widget: AsyncWidgetResource) -> None:
         self._widget = widget
 
+        self.regenerate_metadata = async_to_streamed_response_wrapper(
+            widget.regenerate_metadata,
+        )
         self.render = async_to_streamed_response_wrapper(
             widget.render,
         )

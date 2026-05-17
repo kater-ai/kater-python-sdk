@@ -959,6 +959,9 @@ class WidgetColumnMapUnionMember0Modifier(BaseModel):
 class WidgetColumnMapUnionMember0(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
 
+    column_type: Dict[str, object]
+    """Canonical column type metadata for post-query contracts"""
+
     data_type: WidgetColumnMapUnionMember0DataType
     """Canonical data type metadata for this output column"""
 
@@ -1043,6 +1046,9 @@ class WidgetColumnMapUnionMember1Modifier(BaseModel):
 
 class WidgetColumnMapUnionMember1(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
+
+    column_type: Dict[str, object]
+    """Canonical column type metadata for post-query contracts"""
 
     data_type: WidgetColumnMapUnionMember1DataType
     """Canonical data type metadata for this output column"""

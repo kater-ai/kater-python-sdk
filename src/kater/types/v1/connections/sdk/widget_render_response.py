@@ -334,6 +334,9 @@ class ColumnMapModifier(BaseModel):
 class ColumnMap(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
 
+    column_type: Dict[str, object]
+    """Canonical column type metadata for post-query contracts"""
+
     data_type: ColumnMapDataType
     """Canonical data type metadata for this output column"""
 
@@ -1965,6 +1968,9 @@ class WidgetRenderResponse(BaseModel):
 
     page_size: Optional[int] = None
     """Number of rows requested per table page"""
+
+    post_query_refinements: Optional[Dict[str, object]] = None
+    """Derived post-query filter and sort definitions keyed by occurrence identity."""
 
     rendered_query_key: Optional[RenderedQueryKey] = None
     """Top-level natural key returned by every runtime data and widget path.
