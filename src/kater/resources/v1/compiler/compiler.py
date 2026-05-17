@@ -24,6 +24,7 @@ from ....types.v1 import (
     compiler_resolve_params,
     compiler_validate_params,
     compiler_compile_dashboard_params,
+    compiler_regenerate_metadata_params,
 )
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
@@ -47,6 +48,7 @@ from ....types.v1.compiler_execute_response import CompilerExecuteResponse
 from ....types.v1.compiler_resolve_response import CompilerResolveResponse
 from ....types.v1.compiler_validate_response import CompilerValidateResponse
 from ....types.v1.compiler_compile_dashboard_response import CompilerCompileDashboardResponse
+from ....types.v1.compiler_regenerate_metadata_response import CompilerRegenerateMetadataResponse
 
 __all__ = ["CompilerResource", "AsyncCompilerResource"]
 
@@ -325,6 +327,98 @@ class CompilerResource(SyncAPIResource):
                 query=maybe_transform({"source": source}, compiler_execute_params.CompilerExecuteParams),
             ),
             cast_to=CompilerExecuteResponse,
+        )
+
+    def regenerate_metadata(
+        self,
+        *,
+        persist: compiler_regenerate_metadata_params.Persist,
+        post_query_state: compiler_regenerate_metadata_params.PostQueryState,
+        query_kater_id: str,
+        rendered_query_key_id: str,
+        source: Optional[str] | Omit = omit,
+        post_query_state_id: Optional[str] | Omit = omit,
+        revision: Optional[int] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerRegenerateMetadataResponse:
+        """
+        Regenerate narrative metadata from post-query state mutation.
+
+        This endpoint accepts post-query state changes and returns regenerated narrative
+        metadata (title, description, footnote, insights) based on the transformed row
+        set, without recompiling or executing SQL.
+
+        The endpoint:
+
+        1. Validates the base rendered query key and authorizes access
+        2. Loads trusted base rows from cache using the rendered query key
+        3. Applies the canonical post-query state to transform the rows
+        4. Persists the post-query state when persist.mode="upsert"
+        5. Regenerates narrative metadata for the transformed dataset
+        6. Returns canonical state, revision info, and narrative metadata
+
+        Persistence behavior:
+
+        - persist.mode="none": Returns metadata without saving state
+        - persist.mode="upsert": Saves state with revision tracking
+
+        Error responses:
+
+        - 400: Invalid request, revision conflict, or stale base key
+        - 404: Base rows unavailable or query not found
+        - 403: Unauthorized access to scope or query
+
+        Args:
+          persist: Persistence behavior configuration
+
+          post_query_state: Canonical post-query filters, sorts, and refinements
+
+          query_kater_id: Query kater_id this state applies to
+
+          rendered_query_key_id: Base rendered query key ID (without post-query state)
+
+          post_query_state_id: Existing post-query state ID for updates
+
+          revision: Expected revision for conflict detection
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return self._post(
+            "/api/v1/compiler/render/post-query",
+            body=maybe_transform(
+                {
+                    "persist": persist,
+                    "post_query_state": post_query_state,
+                    "query_kater_id": query_kater_id,
+                    "rendered_query_key_id": rendered_query_key_id,
+                    "post_query_state_id": post_query_state_id,
+                    "revision": revision,
+                },
+                compiler_regenerate_metadata_params.CompilerRegenerateMetadataParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {"source": source}, compiler_regenerate_metadata_params.CompilerRegenerateMetadataParams
+                ),
+            ),
+            cast_to=CompilerRegenerateMetadataResponse,
         )
 
     def render(
@@ -858,6 +952,98 @@ class AsyncCompilerResource(AsyncAPIResource):
             cast_to=CompilerExecuteResponse,
         )
 
+    async def regenerate_metadata(
+        self,
+        *,
+        persist: compiler_regenerate_metadata_params.Persist,
+        post_query_state: compiler_regenerate_metadata_params.PostQueryState,
+        query_kater_id: str,
+        rendered_query_key_id: str,
+        source: Optional[str] | Omit = omit,
+        post_query_state_id: Optional[str] | Omit = omit,
+        revision: Optional[int] | Omit = omit,
+        x_kater_cli_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> CompilerRegenerateMetadataResponse:
+        """
+        Regenerate narrative metadata from post-query state mutation.
+
+        This endpoint accepts post-query state changes and returns regenerated narrative
+        metadata (title, description, footnote, insights) based on the transformed row
+        set, without recompiling or executing SQL.
+
+        The endpoint:
+
+        1. Validates the base rendered query key and authorizes access
+        2. Loads trusted base rows from cache using the rendered query key
+        3. Applies the canonical post-query state to transform the rows
+        4. Persists the post-query state when persist.mode="upsert"
+        5. Regenerates narrative metadata for the transformed dataset
+        6. Returns canonical state, revision info, and narrative metadata
+
+        Persistence behavior:
+
+        - persist.mode="none": Returns metadata without saving state
+        - persist.mode="upsert": Saves state with revision tracking
+
+        Error responses:
+
+        - 400: Invalid request, revision conflict, or stale base key
+        - 404: Base rows unavailable or query not found
+        - 403: Unauthorized access to scope or query
+
+        Args:
+          persist: Persistence behavior configuration
+
+          post_query_state: Canonical post-query filters, sorts, and refinements
+
+          query_kater_id: Query kater_id this state applies to
+
+          rendered_query_key_id: Base rendered query key ID (without post-query state)
+
+          post_query_state_id: Existing post-query state ID for updates
+
+          revision: Expected revision for conflict detection
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
+        return await self._post(
+            "/api/v1/compiler/render/post-query",
+            body=await async_maybe_transform(
+                {
+                    "persist": persist,
+                    "post_query_state": post_query_state,
+                    "query_kater_id": query_kater_id,
+                    "rendered_query_key_id": rendered_query_key_id,
+                    "post_query_state_id": post_query_state_id,
+                    "revision": revision,
+                },
+                compiler_regenerate_metadata_params.CompilerRegenerateMetadataParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {"source": source}, compiler_regenerate_metadata_params.CompilerRegenerateMetadataParams
+                ),
+            ),
+            cast_to=CompilerRegenerateMetadataResponse,
+        )
+
     async def render(
         self,
         *,
@@ -1126,6 +1312,9 @@ class CompilerResourceWithRawResponse:
         self.execute = to_raw_response_wrapper(
             compiler.execute,
         )
+        self.regenerate_metadata = to_raw_response_wrapper(
+            compiler.regenerate_metadata,
+        )
         self.render = to_raw_response_wrapper(
             compiler.render,
         )
@@ -1159,6 +1348,9 @@ class AsyncCompilerResourceWithRawResponse:
         )
         self.execute = async_to_raw_response_wrapper(
             compiler.execute,
+        )
+        self.regenerate_metadata = async_to_raw_response_wrapper(
+            compiler.regenerate_metadata,
         )
         self.render = async_to_raw_response_wrapper(
             compiler.render,
@@ -1194,6 +1386,9 @@ class CompilerResourceWithStreamingResponse:
         self.execute = to_streamed_response_wrapper(
             compiler.execute,
         )
+        self.regenerate_metadata = to_streamed_response_wrapper(
+            compiler.regenerate_metadata,
+        )
         self.render = to_streamed_response_wrapper(
             compiler.render,
         )
@@ -1227,6 +1422,9 @@ class AsyncCompilerResourceWithStreamingResponse:
         )
         self.execute = async_to_streamed_response_wrapper(
             compiler.execute,
+        )
+        self.regenerate_metadata = async_to_streamed_response_wrapper(
+            compiler.regenerate_metadata,
         )
         self.render = async_to_streamed_response_wrapper(
             compiler.render,
