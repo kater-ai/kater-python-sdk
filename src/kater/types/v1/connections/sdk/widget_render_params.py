@@ -30,6 +30,7 @@ __all__ = [
     "FieldSelection",
     "FieldSelectionSelectedField",
     "FieldSelectionSelectedFieldModifier",
+    "FieldSelectionTimeframeOverride",
     "FilterState",
     "FilterStateValue",
     "FilterStateValueScalarFilterValue",
@@ -252,10 +253,30 @@ class FieldSelectionSelectedField(TypedDict, total=False):
     """Stable UUID of the source field this occurrence projects."""
 
 
+class FieldSelectionTimeframeOverride(TypedDict, total=False):
+    """A timeframe modifier override for a specific source field."""
+
+    active_timeframe: Required[str]
+
+    source_kater_id: Required[str]
+
+
 class FieldSelection(TypedDict, total=False):
     """Structured field selection expressed as semantic field occurrences."""
 
     selected_fields: Required[Iterable[FieldSelectionSelectedField]]
+
+    selected_field_ids: SequenceNotStr[str]
+    """Backward-compatible source field UUIDs.
+
+    New consumers should use selected_fields instead.
+    """
+
+    timeframe_overrides: Iterable[FieldSelectionTimeframeOverride]
+    """Backward-compatible timeframe overrides.
+
+    New consumers should encode timeframes as selected_fields modifiers.
+    """
 
 
 class FilterStateValueScalarFilterValue(TypedDict, total=False):

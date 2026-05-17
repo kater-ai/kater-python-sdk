@@ -479,6 +479,19 @@ class QuerySelectableField(BaseModel):
     query, or pinned through a query variant.
     """
 
+    available_timeframes: Optional[
+        List[Literal["raw", "date", "day", "week", "month", "quarter", "year", "day_of_week", "hour"]]
+    ] = None
+    """Backward-compatible temporal grain values for Datetime dimensions.
+
+    New consumers should read modifier_controls instead.
+    """
+
+    default_active_timeframe: Optional[
+        Literal["raw", "date", "day", "week", "month", "quarter", "year", "day_of_week", "hour"]
+    ] = None
+    """Time granularity for datetime dimensions"""
+
     modifier_controls: Optional[List[QuerySelectableFieldModifierControl]] = None
     """Generic modifier controls this field exposes.
 
@@ -649,6 +662,12 @@ class Query(BaseModel):
     default_filter_state: Optional[List[QueryDefaultFilterState]] = None
     """Default runtime filter state to seed `RenderedQueryRequestV1.filter_state`"""
 
+    default_selected_field_ids: Optional[List[str]] = None
+    """Backward-compatible default selected source field UUIDs.
+
+    New consumers should read default_selected_fields instead.
+    """
+
     default_selected_fields: Optional[List[QueryDefaultSelectedField]] = None
     """
     Field occurrences the backend selects by default when a consumer omits
@@ -671,6 +690,12 @@ class Query(BaseModel):
 
     filter_definitions: Optional[List[QueryFilterDefinition]] = None
     """Effective filter definitions in scope for this query"""
+
+    required_field_ids: Optional[List[str]] = None
+    """Backward-compatible required source field UUIDs.
+
+    New consumers should read required_fields instead.
+    """
 
     required_fields: Optional[List[QueryRequiredField]] = None
     """Field occurrences that the backend always includes in the rendered output."""
