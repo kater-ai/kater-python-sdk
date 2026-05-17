@@ -256,6 +256,9 @@ class ColumnMapModifier(BaseModel):
 class ColumnMap(BaseModel):
     """Maps a UUID column alias to its human-readable name and type."""
 
+    column_type: Dict[str, object]
+    """Canonical column type metadata for post-query contracts"""
+
     data_type: ColumnMapDataType
     """Canonical data type metadata for this output column"""
 

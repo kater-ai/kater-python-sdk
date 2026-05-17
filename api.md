@@ -15,6 +15,7 @@ from kater.types.v1 import (
     CompilerCompileResponse,
     CompilerCompileDashboardResponse,
     CompilerExecuteResponse,
+    CompilerRegenerateMetadataResponse,
     CompilerRenderResponse,
     CompilerResolveResponse,
     CompilerValidateResponse,
@@ -26,6 +27,7 @@ Methods:
 - <code title="post /api/v1/compiler/compile/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">compile</a>(\*\*<a href="src/kater/types/v1/compiler_compile_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_compile_response.py">CompilerCompileResponse</a></code>
 - <code title="post /api/v1/compiler/dashboard">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">compile_dashboard</a>(\*\*<a href="src/kater/types/v1/compiler_compile_dashboard_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_compile_dashboard_response.py">CompilerCompileDashboardResponse</a></code>
 - <code title="post /api/v1/compiler/execute/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">execute</a>(\*\*<a href="src/kater/types/v1/compiler_execute_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_execute_response.py">CompilerExecuteResponse</a></code>
+- <code title="post /api/v1/compiler/render/post-query">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">regenerate_metadata</a>(\*\*<a href="src/kater/types/v1/compiler_regenerate_metadata_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_regenerate_metadata_response.py">CompilerRegenerateMetadataResponse</a></code>
 - <code title="post /api/v1/compiler/render">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">render</a>(\*\*<a href="src/kater/types/v1/compiler_render_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_render_response.py">CompilerRenderResponse</a></code>
 - <code title="post /api/v1/compiler/resolve/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">resolve</a>(\*\*<a href="src/kater/types/v1/compiler_resolve_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_resolve_response.py">CompilerResolveResponse</a></code>
 - <code title="post /api/v1/compiler/validate">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">validate</a>(\*\*<a href="src/kater/types/v1/compiler_validate_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_validate_response.py">CompilerValidateResponse</a></code>
@@ -149,11 +151,12 @@ Methods:
 Types:
 
 ```python
-from kater.types.v1.connections.sdk import WidgetRenderResponse
+from kater.types.v1.connections.sdk import WidgetRegenerateMetadataResponse, WidgetRenderResponse
 ```
 
 Methods:
 
+- <code title="post /api/v1/sdk/widget/render/post-query">client.v1.connections.sdk.widget.<a href="./src/kater/resources/v1/connections/sdk/widget.py">regenerate_metadata</a>(\*\*<a href="src/kater/types/v1/connections/sdk/widget_regenerate_metadata_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/sdk/widget_regenerate_metadata_response.py">WidgetRegenerateMetadataResponse</a></code>
 - <code title="post /api/v1/sdk/widget/render">client.v1.connections.sdk.widget.<a href="./src/kater/resources/v1/connections/sdk/widget.py">render</a>(\*\*<a href="src/kater/types/v1/connections/sdk/widget_render_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/sdk/widget_render_response.py">WidgetRenderResponse</a></code>
 
 ## Tenants
