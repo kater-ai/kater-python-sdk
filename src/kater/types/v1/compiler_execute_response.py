@@ -268,6 +268,9 @@ class ColumnMap(BaseModel):
     source_name: str
     """Source field name"""
 
+    active_timeframe: Optional[str] = None
+    """Backward-compatible timeframe modifier value."""
+
     aggregation: Optional[str] = None
     """Aggregation type for measures: sum, count, min, max, avg, unknown.
 
@@ -731,8 +734,20 @@ class RenderedQueryKeyCanonicalFieldsOutputColumn(BaseModel):
 
     source_name: str
 
+    active_timeframe: Optional[str] = None
+    """Backward-compatible timeframe modifier value."""
+
     data_type: Optional[RenderedQueryKeyCanonicalFieldsOutputColumnDataType] = None
     """Data type specification"""
+
+    kater_id: Optional[str] = None
+    """Backward-compatible alias for source_kater_id."""
+
+    label: Optional[str] = None
+    """Backward-compatible display label."""
+
+    name: Optional[str] = None
+    """Backward-compatible alias for source_name."""
 
 
 class RenderedQueryKeyCanonicalFieldsSelectedFieldModifier(BaseModel):

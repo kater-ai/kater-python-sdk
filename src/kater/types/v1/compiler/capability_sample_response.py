@@ -30,6 +30,7 @@ __all__ = [
     "SampleFieldSelection",
     "SampleFieldSelectionSelectedField",
     "SampleFieldSelectionSelectedFieldModifier",
+    "SampleFieldSelectionTimeframeOverride",
     "SampleFilterState",
     "SampleFilterStateValue",
     "SampleFilterStateValueScalarFilterValue",
@@ -214,10 +215,30 @@ class SampleFieldSelectionSelectedField(BaseModel):
     """Stable UUID of the source field this occurrence projects."""
 
 
+class SampleFieldSelectionTimeframeOverride(BaseModel):
+    """A timeframe modifier override for a specific source field."""
+
+    active_timeframe: str
+
+    source_kater_id: str
+
+
 class SampleFieldSelection(BaseModel):
     """Structured field selection expressed as semantic field occurrences."""
 
     selected_fields: List[SampleFieldSelectionSelectedField]
+
+    selected_field_ids: Optional[List[str]] = None
+    """Backward-compatible source field UUIDs.
+
+    New consumers should use selected_fields instead.
+    """
+
+    timeframe_overrides: Optional[List[SampleFieldSelectionTimeframeOverride]] = None
+    """Backward-compatible timeframe overrides.
+
+    New consumers should encode timeframes as selected_fields modifiers.
+    """
 
 
 class SampleFilterStateValueScalarFilterValue(BaseModel):
