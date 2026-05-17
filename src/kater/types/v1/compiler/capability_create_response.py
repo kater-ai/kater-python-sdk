@@ -42,6 +42,12 @@ __all__ = [
     "QuerySelectableFieldDataTypeExtension",
     "QuerySelectableFieldModifierControl",
     "QueryVariableDefinition",
+    "QueryVariableDefinitionDataType",
+    "QueryVariableDefinitionDataTypeExtension",
+    "QueryVariableDefinitionAllowedValuesStatic",
+    "QueryVariableDefinitionDefault",
+    "QueryVariableDefinitionDefaultNumberRangeDefault",
+    "QueryVariableDefinitionDefaultRelativeDateDefault",
 ]
 
 
@@ -480,6 +486,82 @@ class QuerySelectableField(BaseModel):
     """
 
 
+class QueryVariableDefinitionDataTypeExtension(BaseModel):
+    """Vendor-specific type extension"""
+
+    engine: str
+    """Database engine/dialect"""
+
+    orig_type: str
+    """Original type name in the source database"""
+
+    options: Optional[Dict[str, object]] = None
+    """Additional vendor-specific options"""
+
+    raw_ddl: Optional[str] = None
+    """Raw DDL for the type"""
+
+
+class QueryVariableDefinitionDataType(BaseModel):
+    """Canonical data type inferred from the shared variable model helper"""
+
+    kind: Literal["Bool", "Text", "Number", "Datetime", "Complex", "Unknown"]
+    """The canonical data type kind"""
+
+    nullable: bool
+    """Whether the field can be null"""
+
+    extension: Optional[QueryVariableDefinitionDataTypeExtension] = None
+    """Vendor-specific type extension"""
+
+    params: Optional[object] = None
+    """Optional coarse metadata for the canonical type"""
+
+
+class QueryVariableDefinitionAllowedValuesStatic(BaseModel):
+    """A value with optional display label"""
+
+    value: Union[str, float, bool]
+    """The actual value"""
+
+    label: Optional[str] = None
+    """Human-readable label for the value"""
+
+
+class QueryVariableDefinitionDefaultNumberRangeDefault(BaseModel):
+    """Default payload for number range variables."""
+
+    end: float
+
+    start: float
+
+    mode: Optional[Literal["number_range"]] = None
+
+
+class QueryVariableDefinitionDefaultRelativeDateDefault(BaseModel):
+    """A relative date default for DATE/TIMESTAMP variables.
+
+    Computes a concrete date relative to the current date at resolve time.
+    """
+
+    amount: int
+    """Offset amount. Negative = past, positive = future (e.g., -30 = 30 days ago)"""
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+    """Time unit for the offset"""
+
+
+QueryVariableDefinitionDefault: TypeAlias = Union[
+    str,
+    float,
+    bool,
+    List[Union[str, float, bool]],
+    QueryVariableDefinitionDefaultNumberRangeDefault,
+    QueryVariableDefinitionDefaultRelativeDateDefault,
+    None,
+]
+
+
 class QueryVariableDefinition(BaseModel):
     """A variable's schema exposed via capabilities.
 
@@ -488,6 +570,9 @@ class QueryVariableDefinition(BaseModel):
     `(query_kater_id, scope, name)`. Consumers SHOULD prefer
     `variable_kater_id` and fall back only when it is `null`.
     """
+
+    data_type: QueryVariableDefinitionDataType
+    """Canonical data type inferred from the shared variable model helper"""
 
     is_runtime: bool
     """
@@ -504,25 +589,25 @@ class QueryVariableDefinition(BaseModel):
     scope: Literal["query", "global"]
     """Variable scope: query-local or global"""
 
-    type: str
-    """Variable data type, e.g. STRING, INT, DATE, BOOL, STRING[], TIMEFRAME"""
-
     variable_kater_id: Optional[str] = None
     """Stable variable UUID.
 
     Fall back to (query_kater_id, scope, name) when null (migration fallback only).
     """
 
+    variable_type: Literal["date", "number_input", "text_input", "dropdown", "multiselect", "number_range"]
+    """Variable control type"""
+
     allowed_values_column_kater_id: Optional[str] = None
     """Dimension column UUID for from-column variables; null otherwise"""
 
-    allowed_values_static: Optional[List[Union[str, float, bool]]] = None
+    allowed_values_static: Optional[List[QueryVariableDefinitionAllowedValuesStatic]] = None
     """
     Static enumeration of allowed values; null when the variable is unconstrained or
     column-derived
     """
 
-    default: Union[str, float, bool, List[Union[str, float, bool]], None] = None
+    default: Optional[QueryVariableDefinitionDefault] = None
     """Authored default value"""
 
     description: Optional[str] = None
@@ -530,6 +615,9 @@ class QueryVariableDefinition(BaseModel):
 
     label: Optional[str] = None
     """Display label"""
+
+    source_kind: Optional[Literal["Literal", "Dimension", "Measure", "Calculation"]] = None
+    """Selection domain for selectable query variables"""
 
 
 class Query(BaseModel):
