@@ -106,7 +106,14 @@ class TestCompiler:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             filter_state=[
                 {
@@ -402,7 +409,14 @@ class TestCompiler:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             filter_state=[
                 {
@@ -743,7 +757,14 @@ class TestCompiler:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             filter_state=[
                 {
@@ -934,7 +955,14 @@ class TestCompiler:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             query_kater_id="query_kater_id",
             source="source",
@@ -1167,7 +1195,14 @@ class TestAsyncCompiler:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             filter_state=[
                 {
@@ -1463,7 +1498,14 @@ class TestAsyncCompiler:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             filter_state=[
                 {
@@ -1804,7 +1846,14 @@ class TestAsyncCompiler:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             filter_state=[
                 {
@@ -1995,7 +2044,14 @@ class TestAsyncCompiler:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             query_kater_id="query_kater_id",
             source="source",

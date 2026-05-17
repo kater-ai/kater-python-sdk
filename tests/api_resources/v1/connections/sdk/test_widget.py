@@ -208,7 +208,14 @@ class TestWidget:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             filter_state=[
                 {
@@ -555,7 +562,14 @@ class TestAsyncWidget:
                         ],
                         "source_kater_id": "x",
                     }
-                ]
+                ],
+                "selected_field_ids": ["string"],
+                "timeframe_overrides": [
+                    {
+                        "active_timeframe": "active_timeframe",
+                        "source_kater_id": "source_kater_id",
+                    }
+                ],
             },
             filter_state=[
                 {

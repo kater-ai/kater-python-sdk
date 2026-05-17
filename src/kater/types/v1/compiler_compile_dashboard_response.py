@@ -104,6 +104,7 @@ __all__ = [
     "WidgetDependenciesSlotSelectedField",
     "WidgetDependenciesSlotSelectedFieldModifier",
     "WidgetDependenciesSlotVariableValue",
+    "WidgetDependenciesSlotTimeframeOverride",
     "WidgetRenderedQueryKey",
     "WidgetRenderedQueryKeyCanonical",
     "WidgetRenderedQueryKeyCanonicalCacheProjection",
@@ -971,6 +972,9 @@ class WidgetColumnMapUnionMember0(BaseModel):
     source_name: str
     """Source field name"""
 
+    active_timeframe: Optional[str] = None
+    """Backward-compatible timeframe modifier value."""
+
     aggregation: Optional[str] = None
     """Aggregation type for measures: sum, count, min, max, avg, unknown.
 
@@ -1058,6 +1062,9 @@ class WidgetColumnMapUnionMember1(BaseModel):
 
     source_name: str
     """Source field name"""
+
+    active_timeframe: Optional[str] = None
+    """Backward-compatible timeframe modifier value."""
 
     aggregation: Optional[str] = None
     """Aggregation type for measures: sum, count, min, max, avg, unknown.
@@ -1235,6 +1242,14 @@ class WidgetDependenciesSlotVariableValue(BaseModel):
     """Stable variable UUID; fall back to (query_kater_id, scope, name) when null"""
 
 
+class WidgetDependenciesSlotTimeframeOverride(BaseModel):
+    """A timeframe modifier override for a specific source field."""
+
+    active_timeframe: str
+
+    source_kater_id: str
+
+
 class WidgetDependenciesSlot(BaseModel):
     """A dashboard data slot that a widget depends on."""
 
@@ -1258,6 +1273,12 @@ class WidgetDependenciesSlot(BaseModel):
 
     pinned_variant: Optional[str] = None
     """Pinned query variant used for the slot, if any"""
+
+    selected_field_ids: Optional[List[str]] = None
+    """Backward-compatible selected source field UUIDs."""
+
+    timeframe_overrides: Optional[List[WidgetDependenciesSlotTimeframeOverride]] = None
+    """Backward-compatible timeframe overrides."""
 
 
 class WidgetDependencies(BaseModel):
@@ -1705,8 +1726,20 @@ class WidgetRenderedQueryKeyCanonicalFieldsOutputColumn(BaseModel):
 
     source_name: str
 
+    active_timeframe: Optional[str] = None
+    """Backward-compatible timeframe modifier value."""
+
     data_type: Optional[WidgetRenderedQueryKeyCanonicalFieldsOutputColumnDataType] = None
     """Data type specification"""
+
+    kater_id: Optional[str] = None
+    """Backward-compatible alias for source_kater_id."""
+
+    label: Optional[str] = None
+    """Backward-compatible display label."""
+
+    name: Optional[str] = None
+    """Backward-compatible alias for source_name."""
 
 
 class WidgetRenderedQueryKeyCanonicalFieldsSelectedFieldModifier(BaseModel):
