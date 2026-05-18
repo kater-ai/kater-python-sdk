@@ -1,6 +1,7 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from typing import Dict, List, Union, Optional
+from datetime import date
 from typing_extensions import Literal, TypeAlias
 
 from ..._models import BaseModel
@@ -12,8 +13,11 @@ __all__ = [
     "CanonicalPostQueryStateFilterField",
     "CanonicalPostQueryStateFilterFieldModifier",
     "CanonicalPostQueryStateFilterDefaultValue",
-    "CanonicalPostQueryStateFilterDefaultValueDateRangeValue",
     "CanonicalPostQueryStateFilterDefaultValueNumberRangeValue",
+    "CanonicalPostQueryStateFilterDefaultValueAbsoluteDateRangeValue",
+    "CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutput",
+    "CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutputEnd",
+    "CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutputStart",
     "CanonicalPostQueryStateFilterValues",
     "CanonicalPostQueryStateSort",
     "CanonicalPostQueryStateSortField",
@@ -28,6 +32,7 @@ __all__ = [
     "InsightRunFinding",
     "InsightRunFindingEvidence",
     "InsightRunFindingFollowUp",
+    "InsightRunFollowUp",
     "InsightRunSummary",
     "ResultScope",
 ]
@@ -59,12 +64,6 @@ class CanonicalPostQueryStateFilterField(BaseModel):
     """Optional modifiers for the field (e.g. timeframe)"""
 
 
-class CanonicalPostQueryStateFilterDefaultValueDateRangeValue(BaseModel):
-    """Date range filter value"""
-
-    mode: Literal["absolute_range", "relative_range"]
-
-
 class CanonicalPostQueryStateFilterDefaultValueNumberRangeValue(BaseModel):
     """Number range filter value"""
 
@@ -75,13 +74,56 @@ class CanonicalPostQueryStateFilterDefaultValueNumberRangeValue(BaseModel):
     """Minimum value (inclusive)"""
 
 
+class CanonicalPostQueryStateFilterDefaultValueAbsoluteDateRangeValue(BaseModel):
+    """Absolute date range filter value"""
+
+    end: date
+
+    mode: Literal["absolute_range"]
+
+    start: date
+
+
+class CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutputEnd(BaseModel):
+    """Relative date offset for date ranges"""
+
+    amount: int
+    """Offset amount (negative = past, positive = future)"""
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+    """Time unit for the offset"""
+
+
+class CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutputStart(BaseModel):
+    """Relative date offset for date ranges"""
+
+    amount: int
+    """Offset amount (negative = past, positive = future)"""
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+    """Time unit for the offset"""
+
+
+class CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutput(BaseModel):
+    """Relative date range filter value"""
+
+    end: CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutputEnd
+    """Relative date offset for date ranges"""
+
+    mode: Literal["relative_range"]
+
+    start: CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutputStart
+    """Relative date offset for date ranges"""
+
+
 CanonicalPostQueryStateFilterDefaultValue: TypeAlias = Union[
     str,
     float,
     bool,
     List[Union[str, float, bool]],
-    CanonicalPostQueryStateFilterDefaultValueDateRangeValue,
     CanonicalPostQueryStateFilterDefaultValueNumberRangeValue,
+    CanonicalPostQueryStateFilterDefaultValueAbsoluteDateRangeValue,
+    CanonicalPostQueryStateFilterDefaultValueRelativeDateRangeValueOutput,
     None,
 ]
 
@@ -267,7 +309,7 @@ class InsightRunFindingEvidence(BaseModel):
 
 
 class InsightRunFindingFollowUp(BaseModel):
-    """Structured action hint emitted by an insight finding."""
+    """Structured action hint emitted by an insight run or finding."""
 
     id: str
 
@@ -275,7 +317,27 @@ class InsightRunFindingFollowUp(BaseModel):
 
     label: str
 
+    finding_index: Optional[int] = None
+
+    finding_kind: Optional[str] = None
+
     payload: Optional[Dict[str, object]] = None
+
+    query_description: Optional[str] = None
+
+    query_kater_id: Optional[str] = None
+
+    query_name: Optional[str] = None
+
+    rationale: Optional[str] = None
+
+    readiness: Optional[Literal["ready", "needs_discovery"]] = None
+
+    scope: Optional[Literal["run", "finding"]] = None
+
+    slot_hints: Optional[Dict[str, object]] = None
+
+    source: Optional[Literal["authored", "llm"]] = None
 
 
 class InsightRunFinding(BaseModel):
@@ -298,6 +360,38 @@ class InsightRunFinding(BaseModel):
     severity: Optional[Literal["info", "positive", "warning", "critical"]] = None
 
 
+class InsightRunFollowUp(BaseModel):
+    """Structured action hint emitted by an insight run or finding."""
+
+    id: str
+
+    instructions: str
+
+    label: str
+
+    finding_index: Optional[int] = None
+
+    finding_kind: Optional[str] = None
+
+    payload: Optional[Dict[str, object]] = None
+
+    query_description: Optional[str] = None
+
+    query_kater_id: Optional[str] = None
+
+    query_name: Optional[str] = None
+
+    rationale: Optional[str] = None
+
+    readiness: Optional[Literal["ready", "needs_discovery"]] = None
+
+    scope: Optional[Literal["run", "finding"]] = None
+
+    slot_hints: Optional[Dict[str, object]] = None
+
+    source: Optional[Literal["authored", "llm"]] = None
+
+
 class InsightRunSummary(BaseModel):
     """Top-level summary for an insight run."""
 
@@ -315,6 +409,8 @@ class InsightRun(BaseModel):
     """Typed execution context attached to an insight run result."""
 
     findings: Optional[List[InsightRunFinding]] = None
+
+    follow_ups: Optional[List[InsightRunFollowUp]] = None
 
     metadata: Optional[Dict[str, object]] = None
 
