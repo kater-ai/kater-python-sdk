@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Union, Iterable, Optional
+from datetime import date
 from typing_extensions import Literal, Required, Annotated, TypeAlias, TypedDict
 
 from ....._types import SequenceNotStr
@@ -17,8 +18,11 @@ __all__ = [
     "PostQueryStateFilterField",
     "PostQueryStateFilterFieldModifier",
     "PostQueryStateFilterDefaultValue",
-    "PostQueryStateFilterDefaultValueDateRangeValue",
     "PostQueryStateFilterDefaultValueNumberRangeValue",
+    "PostQueryStateFilterDefaultValueAbsoluteDateRangeValue",
+    "PostQueryStateFilterDefaultValueRelativeDateRangeValueInput",
+    "PostQueryStateFilterDefaultValueRelativeDateRangeValueInputEnd",
+    "PostQueryStateFilterDefaultValueRelativeDateRangeValueInputStart",
     "PostQueryStateFilterValues",
     "PostQueryStateSort",
     "PostQueryStateSortField",
@@ -105,12 +109,6 @@ class PostQueryStateFilterField(TypedDict, total=False):
     """Optional modifiers for the field (e.g. timeframe)"""
 
 
-class PostQueryStateFilterDefaultValueDateRangeValue(TypedDict, total=False):
-    """Date range filter value"""
-
-    mode: Required[Literal["absolute_range", "relative_range"]]
-
-
 class PostQueryStateFilterDefaultValueNumberRangeValue(TypedDict, total=False):
     """Number range filter value"""
 
@@ -121,13 +119,56 @@ class PostQueryStateFilterDefaultValueNumberRangeValue(TypedDict, total=False):
     """Minimum value (inclusive)"""
 
 
+class PostQueryStateFilterDefaultValueAbsoluteDateRangeValue(TypedDict, total=False):
+    """Absolute date range filter value"""
+
+    end: Required[Annotated[Union[str, date], PropertyInfo(format="iso8601")]]
+
+    mode: Required[Literal["absolute_range"]]
+
+    start: Required[Annotated[Union[str, date], PropertyInfo(format="iso8601")]]
+
+
+class PostQueryStateFilterDefaultValueRelativeDateRangeValueInputEnd(TypedDict, total=False):
+    """Relative date offset for date ranges"""
+
+    amount: Required[int]
+    """Offset amount (negative = past, positive = future)"""
+
+    unit: Required[Literal["day", "week", "month", "quarter", "year"]]
+    """Time unit for the offset"""
+
+
+class PostQueryStateFilterDefaultValueRelativeDateRangeValueInputStart(TypedDict, total=False):
+    """Relative date offset for date ranges"""
+
+    amount: Required[int]
+    """Offset amount (negative = past, positive = future)"""
+
+    unit: Required[Literal["day", "week", "month", "quarter", "year"]]
+    """Time unit for the offset"""
+
+
+class PostQueryStateFilterDefaultValueRelativeDateRangeValueInput(TypedDict, total=False):
+    """Relative date range filter value"""
+
+    end: Required[PostQueryStateFilterDefaultValueRelativeDateRangeValueInputEnd]
+    """Relative date offset for date ranges"""
+
+    mode: Required[Literal["relative_range"]]
+
+    start: Required[PostQueryStateFilterDefaultValueRelativeDateRangeValueInputStart]
+    """Relative date offset for date ranges"""
+
+
 PostQueryStateFilterDefaultValue: TypeAlias = Union[
     str,
     float,
     bool,
     SequenceNotStr[Union[str, float, bool]],
-    PostQueryStateFilterDefaultValueDateRangeValue,
     PostQueryStateFilterDefaultValueNumberRangeValue,
+    PostQueryStateFilterDefaultValueAbsoluteDateRangeValue,
+    PostQueryStateFilterDefaultValueRelativeDateRangeValueInput,
 ]
 
 

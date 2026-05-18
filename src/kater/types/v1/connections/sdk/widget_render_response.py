@@ -105,6 +105,7 @@ __all__ = [
     "InsightRunFinding",
     "InsightRunFindingEvidence",
     "InsightRunFindingFollowUp",
+    "InsightRunFollowUp",
     "InsightRunSummary",
     "RenderedQueryKey",
     "RenderedQueryKeyCanonical",
@@ -1074,7 +1075,7 @@ class InsightRunFindingEvidence(BaseModel):
 
 
 class InsightRunFindingFollowUp(BaseModel):
-    """Structured action hint emitted by an insight finding."""
+    """Structured action hint emitted by an insight run or finding."""
 
     id: str
 
@@ -1082,7 +1083,27 @@ class InsightRunFindingFollowUp(BaseModel):
 
     label: str
 
+    finding_index: Optional[int] = None
+
+    finding_kind: Optional[str] = None
+
     payload: Optional[Dict[str, object]] = None
+
+    query_description: Optional[str] = None
+
+    query_kater_id: Optional[str] = None
+
+    query_name: Optional[str] = None
+
+    rationale: Optional[str] = None
+
+    readiness: Optional[Literal["ready", "needs_discovery"]] = None
+
+    scope: Optional[Literal["run", "finding"]] = None
+
+    slot_hints: Optional[Dict[str, object]] = None
+
+    source: Optional[Literal["authored", "llm"]] = None
 
 
 class InsightRunFinding(BaseModel):
@@ -1105,6 +1126,38 @@ class InsightRunFinding(BaseModel):
     severity: Optional[Literal["info", "positive", "warning", "critical"]] = None
 
 
+class InsightRunFollowUp(BaseModel):
+    """Structured action hint emitted by an insight run or finding."""
+
+    id: str
+
+    instructions: str
+
+    label: str
+
+    finding_index: Optional[int] = None
+
+    finding_kind: Optional[str] = None
+
+    payload: Optional[Dict[str, object]] = None
+
+    query_description: Optional[str] = None
+
+    query_kater_id: Optional[str] = None
+
+    query_name: Optional[str] = None
+
+    rationale: Optional[str] = None
+
+    readiness: Optional[Literal["ready", "needs_discovery"]] = None
+
+    scope: Optional[Literal["run", "finding"]] = None
+
+    slot_hints: Optional[Dict[str, object]] = None
+
+    source: Optional[Literal["authored", "llm"]] = None
+
+
 class InsightRunSummary(BaseModel):
     """Top-level summary for an insight run."""
 
@@ -1122,6 +1175,8 @@ class InsightRun(BaseModel):
     """Typed execution context attached to an insight run result."""
 
     findings: Optional[List[InsightRunFinding]] = None
+
+    follow_ups: Optional[List[InsightRunFollowUp]] = None
 
     metadata: Optional[Dict[str, object]] = None
 
