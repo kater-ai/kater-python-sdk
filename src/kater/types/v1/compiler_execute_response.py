@@ -28,6 +28,9 @@ __all__ = [
     "ColumnMapDataType",
     "ColumnMapDataTypeExtension",
     "ColumnMapModifier",
+    "RecommendedInsight",
+    "RecommendedInsightCandidateBinding",
+    "RecommendedInsightReason",
     "RenderedQueryKey",
     "RenderedQueryKeyCanonical",
     "RenderedQueryKeyCanonicalCacheProjection",
@@ -294,6 +297,51 @@ class ColumnMap(BaseModel):
 
     source_label: Optional[str] = None
     """Source field label"""
+
+
+class RecommendedInsightCandidateBinding(BaseModel):
+    """Input/result bindings the recommendation engine resolved"""
+
+    column_bindings: Optional[Dict[str, Dict[str, str]]] = None
+    """Maps insight input bindings to result column keys"""
+
+    result_bindings: Optional[Dict[str, str]] = None
+    """Maps insight input names to available result dataset names"""
+
+
+class RecommendedInsightReason(BaseModel):
+    """Human-readable explanation for why an insight was recommended."""
+
+    code: str
+    """Machine-readable reason code"""
+
+    message: str
+    """Short explanation of the recommendation signal"""
+
+
+class RecommendedInsight(BaseModel):
+    """Ranked recommendation for a follow-on insight that can run on this result."""
+
+    can_run_now: bool
+    """Whether the recommendation can execute without extra parameter discovery"""
+
+    candidate_binding: RecommendedInsightCandidateBinding
+    """Input/result bindings the recommendation engine resolved"""
+
+    confidence: Literal["high", "medium", "low"]
+    """Qualitative confidence band for the recommendation"""
+
+    insight_kater_id: str
+    """Stable kater_id for the suggested insight"""
+
+    insight_name: str
+    """Insight name from its definition"""
+
+    relevance_score: float
+    """Relative ranking score for this recommendation"""
+
+    reasons: Optional[List[RecommendedInsightReason]] = None
+    """Signals that contributed to the recommendation score"""
 
 
 class RenderedQueryKeyCanonicalCacheProjectionAggregateDimensionModifier(BaseModel):
@@ -1132,6 +1180,9 @@ class CompilerExecuteResponse(BaseModel):
 
     is_row_limited: Optional[bool] = None
     """True when the app-wide row limit was applied."""
+
+    recommended_insights: Optional[List[RecommendedInsight]] = None
+    """Ranked follow-on insight recommendations inferred from the result dataset"""
 
     rendered_query_key: Optional[RenderedQueryKey] = None
     """Top-level natural key returned by every runtime data and widget path.
