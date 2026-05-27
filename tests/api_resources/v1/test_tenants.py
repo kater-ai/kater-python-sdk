@@ -114,11 +114,9 @@ class TestTenants:
             schema="x",
             table="x",
             tenant_key_column="x",
-            source="source",
             attribute_columns={"foo": "string"},
             tenant_group_column="tenant_group_column",
             tenant_name_column="tenant_name_column",
-            x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
@@ -256,11 +254,9 @@ class TestAsyncTenants:
             schema="x",
             table="x",
             tenant_key_column="x",
-            source="source",
             attribute_columns={"foo": "string"},
             tenant_group_column="tenant_group_column",
             tenant_name_column="tenant_name_column",
-            x_kater_cli_id="X-Kater-CLI-ID",
         )
         assert_matches_type(ImportTenantsResponse, tenant, path=["response"])
 
