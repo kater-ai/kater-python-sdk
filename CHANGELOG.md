@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.15.0 (2026-06-18)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* add dashboard insight banner summarization ([129ae03](https://github.com/kater-ai/kater-python-sdk/commit/129ae03073c7726d019df9f21763b6f95cfc428e))
+* Add insight recommendation engine and execution integration ([1d94746](https://github.com/kater-ai/kater-python-sdk/commit/1d947469419d8dc18da72c5a81c9138add3632a4))
+* Cut over Filter V2 authoring to inferred filter data types ([9bbbc37](https://github.com/kater-ai/kater-python-sdk/commit/9bbbc37404bf4a12399913a388dd66326329d28e))
+* deps(npm): bump the react group across 1 directory with 7 updates ([cdfadd8](https://github.com/kater-ai/kater-python-sdk/commit/cdfadd8129d2ccf556638a24616bbee2616bc3f7))
+* feat(all) added column key modifiers ([4b5b949](https://github.com/kater-ai/kater-python-sdk/commit/4b5b949e7615e12f71c408f2f34cd747c7e7bc0e))
+* feat(all) added refinments section ([59ea6f5](https://github.com/kater-ai/kater-python-sdk/commit/59ea6f56a7db146db0e0a563e9228e4035e98025))
+* finish dashboard insight runtime integration ([064ddfb](https://github.com/kater-ai/kater-python-sdk/commit/064ddfb585dbb5924847eb261eed85248a2cec9a))
+* finish insight follow-up rollout and sync real-estate demo ([963a66e](https://github.com/kater-ai/kater-python-sdk/commit/963a66e8acf9e5a911daf509a71f185a9d1d5468))
+* Fix dependency CVEs and harden NAT instance patching ([ef6c9c4](https://github.com/kater-ai/kater-python-sdk/commit/ef6c9c4c595725443c4ff2f2e099cb72c351b88f))
+* Fix security dependency alerts ([46670ea](https://github.com/kater-ai/kater-python-sdk/commit/46670ea870e49b923cb005f19cdf27ab018c985a))
+* Harden onboarding state restoration ([945687d](https://github.com/kater-ai/kater-python-sdk/commit/945687d005adbdc6c74da8f6cd9a4f08ed726d83))
+* Implement dashboard insight executions ([3c823b9](https://github.com/kater-ai/kater-python-sdk/commit/3c823b91e141311c14b4822228170c0d4bbb09ef))
+* **internal/types:** support eagerly validating pydantic iterators ([4b7f212](https://github.com/kater-ai/kater-python-sdk/commit/4b7f212c9f25bdda175d395dd72592b4cd6876c1))
+* Remove dimension_date in favor of Datetime dimensions ([9100c35](https://github.com/kater-ai/kater-python-sdk/commit/9100c35fcd3df70523588cbd913aa8f1d2fa2519))
+* Remove legacy combinations APIs and update widget specs ([5286701](https://github.com/kater-ai/kater-python-sdk/commit/5286701a9601d354eef6714cd402a51ff838879e))
+* Replace variable type with variable_type ([fc3fe5f](https://github.com/kater-ai/kater-python-sdk/commit/fc3fe5f454e4a3c19723be26afacee24127ef791))
+* update landing page ([8d0d11f](https://github.com/kater-ai/kater-python-sdk/commit/8d0d11f65e823c7e2755bcffc8921d6353544b49))
+
+
+### Bug Fixes
+
+* **auth:** prioritize first auth header ([1b6c10e](https://github.com/kater-ai/kater-python-sdk/commit/1b6c10e1a2e32e4ac5c364ba17d5e6e8b5dc073e))
+* **client:** add missing f-string prefix in file type error message ([52ee6fd](https://github.com/kater-ai/kater-python-sdk/commit/52ee6fddf6b420446dd9b23fe8a3fa78f5879bd3))
+
+
+### Refactors
+
+* canonicalize DataKind across schema sync and metadata ([2df8f73](https://github.com/kater-ai/kater-python-sdk/commit/2df8f730206ce2a8c33cefd0217d8e851bd66add))
+
 ## 0.14.0 (2026-05-01)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.13.0...v0.14.0)
