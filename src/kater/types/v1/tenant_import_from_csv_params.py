@@ -5,14 +5,13 @@ from __future__ import annotations
 from typing import Optional
 from typing_extensions import Required, Annotated, TypedDict
 
-from ..._types import FileTypes
 from ..._utils import PropertyInfo
 
 __all__ = ["TenantImportFromCsvParams"]
 
 
 class TenantImportFromCsvParams(TypedDict, total=False):
-    file: Required[FileTypes]
+    file: Required[str]
     """CSV file with tenant data"""
 
     source: Optional[str]

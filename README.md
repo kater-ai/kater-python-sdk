@@ -113,35 +113,52 @@ from kater import Kater
 client = Kater()
 
 response = client.v1.compiler.compile(
-    connection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-    resolved_query={
-        "kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-        "name": "x",
-        "source_query": "ref(dim_customer.sale_price)",
-        "topic": "ref(dim_customer.sale_price)",
-        "widget_category": "axis",
+    connection_id="connection_id",
+    dashboard={
+        "dashboard_filter_state": [{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
+        "dashboard_kater_id": "dashboard_kater_id",
+        "slot_name": "slot_name",
+        "widget_kater_id": "widget_kater_id",
     },
-    tenant_key="tenant_key",
+    field_selection={
+        "selected_fields": [
+            {
+                "modifiers": [
+                    {
+                        "kind": "timeframe",
+                        "value": "x",
+                    }
+                ],
+                "source_kater_id": "x",
+            }
+        ]
+    },
+    filter_state=[{"effective_kater_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}],
+    pinned_variant="pinned_variant",
+    presentation={},
+    query_kater_id="query_kater_id",
+    result_window={
+        "cursor": "cursor",
+        "page_size": 0,
+        "sort_by": "sort_by",
+        "sort_order": "asc",
+    },
+    temporal={
+        "as_of": "as_of",
+        "timezone": "timezone",
+    },
+    variables=[
+        {
+            "name": "name",
+            "query_kater_id": "query_kater_id",
+            "scope": "query",
+            "value": "string",
+            "variable_kater_id": "variable_kater_id",
+        }
+    ],
 )
-print(response.resolved_query)
+print(response.dashboard)
 ```
-
-## File uploads
-
-Request parameters that correspond to file uploads can be passed as `bytes`, or a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance or a tuple of `(filename, contents, media type)`.
-
-```python
-from pathlib import Path
-from kater import Kater
-
-client = Kater()
-
-client.v1.tenants.import_from_csv(
-    file=Path("/path/to/file"),
-)
-```
-
-The async client uses the exact same interface. If you pass a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance, the file contents will be read asynchronously automatically.
 
 ## Handling errors
 

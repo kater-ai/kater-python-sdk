@@ -52,7 +52,7 @@ class CompilerCompileDashboardParams(TypedDict, total=False):
 
 class FilterStateValueScalarFilterValue(TypedDict, total=False):
     value: Required[Union[str, float, bool]]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Literal["scalar"]
 

@@ -2,41 +2,35 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, Union, Iterable, Optional
+from typing import Dict, Union, Iterable, Optional
 from typing_extensions import Literal, Required, Annotated, TypeAlias, TypedDict
 
 from ..._types import SequenceNotStr
 from ..._utils import PropertyInfo
-from .chart_config_param import ChartConfigParam
-from .inline_field_param import InlineFieldParam
-from .ref_with_label_param import RefWithLabelParam
-from .subquery_condition_param import SubqueryConditionParam
 
 __all__ = [
     "CompilerExecuteParams",
-    "ResolvedQuery",
-    "ResolvedQueryCalculation",
-    "ResolvedQueryChartHint",
-    "ResolvedQueryChartHintChartHint1Input",
-    "ResolvedQueryChartHintChartHint2Input",
-    "ResolvedQueryChartHintChartHint2InputDefault",
-    "ResolvedQueryDimension",
-    "ResolvedQueryFilter",
-    "ResolvedQueryFilterInlineFormulaFilter",
-    "ResolvedQueryFilterInlineExistsFilter1",
-    "ResolvedQueryFilterInlineExistsFilter2",
-    "ResolvedQueryMeasure",
-    "ResolvedQueryOrderBy",
-    "ResolvedQueryOrderByOrderByItem",
-    "ResolvedQueryResolvedChart",
-    "ResolvedQueryResolvedVariable",
-    "ResolvedQueryResolvedVariableAllowedValues",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2",
-    "ResolvedQueryResolvedVariableConstraints",
-    "ResolvedQuerySelectFrom",
-    "ResolvedQuerySelectFromOutputColumn",
+    "Dashboard",
+    "DashboardDashboardFilterState",
+    "DashboardDashboardFilterStateValue",
+    "DashboardDashboardFilterStateValueScalarFilterValue",
+    "DashboardDashboardFilterStateValueMultiFilterValue",
+    "DashboardDashboardFilterStateValueNumberRangeFilterValue",
+    "DashboardDashboardFilterStateValueAbsoluteDateFilterValue",
+    "DashboardDashboardFilterStateValueAbsoluteRangeFilterValue",
+    "DashboardDashboardFilterStateValueRelativeRangeFilterValue",
+    "DashboardDashboardFilterStateValueRelativeRangeFilterValueEnd",
+    "DashboardDashboardFilterStateValueRelativeRangeFilterValueEndRelativeOffsetBoundary",
+    "DashboardDashboardFilterStateValueRelativeRangeFilterValueEndRelativeAnchorBoundary",
+    "DashboardDashboardFilterStateValueRelativeRangeFilterValueStart",
+    "DashboardDashboardFilterStateValueRelativeRangeFilterValueStartRelativeOffsetBoundary",
+    "DashboardDashboardFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
+    "DashboardDashboardFilterStateValuePresetReferenceFilterValue",
+    "DashboardDashboardFilterStateValueNullFilterValue",
+    "FieldSelection",
+    "FieldSelectionSelectedField",
+    "FieldSelectionSelectedFieldModifier",
+    "FieldSelectionTimeframeOverride",
     "FilterState",
     "FilterStateValue",
     "FilterStateValueScalarFilterValue",
@@ -53,413 +47,241 @@ __all__ = [
     "FilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "FilterStateValuePresetReferenceFilterValue",
     "FilterStateValueNullFilterValue",
+    "Presentation",
+    "ResultWindow",
+    "Temporal",
+    "Variable",
 ]
 
 
 class CompilerExecuteParams(TypedDict, total=False):
     connection_id: Required[str]
-    """Connection to execute against"""
 
-    resolved_query: Required[ResolvedQuery]
-    """Previously resolved query object from /resolve"""
+    dashboard: Required[Optional[Dashboard]]
+    """Dashboard context block in `RenderedQueryRequestV1`."""
 
-    tenant_key: Required[str]
-    """Tenant key for multi-tenant execution.
+    field_selection: Required[FieldSelection]
+    """Structured field selection expressed as semantic field occurrences."""
 
-    Use 'kater_global_tenant' for no-tenancy clients.
+    filter_state: Required[Iterable[FilterState]]
+
+    pinned_variant: Required[Optional[str]]
+
+    presentation: Required[Presentation]
+    """Presentation config block in `RenderedQueryRequestV1`."""
+
+    query_kater_id: Required[str]
+
+    result_window: Required[ResultWindow]
+    """
+    Result window block in `RenderedQueryRequestV1` (consumers do not supply
+    backend-computed `query_limit`, `max_row_limit`, `effective_limit`).
     """
 
-    source: Optional[str]
+    temporal: Required[Temporal]
+    """Request clock block in `RenderedQueryRequestV1`.
 
-    filter_state: Optional[Iterable[FilterState]]
-    """Optional V2 runtime filter-state payload keyed by effective filter ID."""
+    Either field may be `null` on the request; the backend resolves both before
+    canonicalization (the canonical `temporal` block requires non-null `timezone`
+    and `as_of`).
+    """
+
+    variables: Required[Iterable[Variable]]
+
+    source: Optional[str]
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]
 
 
-ResolvedQueryCalculation: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
-
-
-class ResolvedQueryChartHintChartHint1Input(TypedDict, total=False):
-    """A chart recommendation rule"""
-
-    config: Required[ChartConfigParam]
-    """Chart configuration with variable references"""
-
-    recommend: Required[
-        Literal["line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"]
-    ]
-    """Type of chart visualization"""
-
-    when: Required[Dict[str, Union[str, SequenceNotStr[str]]]]
-    """
-    Conditions based on variable values - can be single value (string) or multiple
-    values (array)
-    """
-
-
-class ResolvedQueryChartHintChartHint2InputDefault(TypedDict, total=False):
-    config: Required[ChartConfigParam]
-    """Chart configuration with variable references"""
-
-    recommend: Required[
-        Literal["line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"]
-    ]
-    """Type of chart visualization"""
-
-
-class ResolvedQueryChartHintChartHint2Input(TypedDict, total=False):
-    """A chart recommendation rule"""
-
-    default: Required[ResolvedQueryChartHintChartHint2InputDefault]
-
-
-ResolvedQueryChartHint: TypeAlias = Union[ResolvedQueryChartHintChartHint1Input, ResolvedQueryChartHintChartHint2Input]
-
-ResolvedQueryDimension: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
-
-
-class ResolvedQueryFilterInlineFormulaFilter(TypedDict, total=False):
-    """An inline filter using a SQL/expression formula"""
-
-    name: Required[str]
-    """Name of the inline filter"""
-
-    sql: Required[str]
-    """SQL expression for the filter condition"""
-
-
-class ResolvedQueryFilterInlineExistsFilter1(TypedDict, total=False):
-    """An inline filter using EXISTS or NOT EXISTS with a subquery"""
-
-    exists: Required[SubqueryConditionParam]
-    """EXISTS subquery condition"""
-
-    name: Required[str]
-    """Name of the inline filter"""
-
-    description: Optional[str]
-    """Description of the filter"""
-
-    label: Optional[str]
-    """Human-readable label"""
-
-    not_exists: Optional[SubqueryConditionParam]
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-
-class ResolvedQueryFilterInlineExistsFilter2(TypedDict, total=False):
-    """An inline filter using EXISTS or NOT EXISTS with a subquery"""
-
-    name: Required[str]
-    """Name of the inline filter"""
-
-    not_exists: Required[SubqueryConditionParam]
-    """NOT EXISTS subquery condition"""
-
-    description: Optional[str]
-    """Description of the filter"""
-
-    exists: Optional[SubqueryConditionParam]
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-    label: Optional[str]
-    """Human-readable label"""
-
-
-ResolvedQueryFilter: TypeAlias = Union[
-    ResolvedQueryFilterInlineFormulaFilter,
-    str,
-    ResolvedQueryFilterInlineExistsFilter1,
-    ResolvedQueryFilterInlineExistsFilter2,
-]
-
-ResolvedQueryMeasure: TypeAlias = Union[RefWithLabelParam, InlineFieldParam, str]
-
-
-class ResolvedQueryOrderByOrderByItem(TypedDict, total=False):
-    """Explicit sort direction for a field."""
-
-    direction: Required[Literal["asc", "desc"]]
-    """
-    Sort direction: asc (ascending, A-Z / oldest first) or desc (descending, Z-A /
-    newest first).
-    """
-
-    field: Required[str]
-    """A string that may be a ref(), var(), or expr() reference"""
-
-
-ResolvedQueryOrderBy: TypeAlias = Union[ResolvedQueryOrderByOrderByItem, str]
-
-
-class ResolvedQueryResolvedChart(TypedDict, total=False):
-    """The matched chart recommendation after evaluating chart hints"""
-
-    config: Required[ChartConfigParam]
-    """Chart configuration"""
-
-    recommend: Required[
-        Literal["line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"]
-    ]
-    """Recommended chart type"""
-
-
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static(TypedDict, total=False):
-    """A value with optional display label"""
-
+class DashboardDashboardFilterStateValueScalarFilterValue(TypedDict, total=False):
     value: Required[Union[str, float, bool]]
-    """The actual value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
-    label: Optional[str]
-    """Human-readable label for the value"""
-
-
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1(TypedDict, total=False):
-    """Allowed values for a variable - either static list or from column"""
-
-    static: Required[Iterable[ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static]]
-    """Static list of allowed values with optional labels"""
+    mode: Literal["scalar"]
 
 
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2(TypedDict, total=False):
-    """Allowed values for a variable - either static list or from column"""
+class DashboardDashboardFilterStateValueMultiFilterValue(TypedDict, total=False):
+    values: Required[SequenceNotStr[Union[str, float, bool]]]
+    """List of scalar runtime values"""
 
-    from_column: Required[str]
-    """Reference to column for dynamic values"""
-
-    cache_ttl: int
-    """Cache time-to-live in seconds"""
-
-    limit: int
-    """Maximum number of values to retrieve"""
-
-    order_by: Literal["asc", "desc"]
-    """Sort order for values"""
+    mode: Literal["multi"]
 
 
-ResolvedQueryResolvedVariableAllowedValues: TypeAlias = Union[
-    ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1,
-    ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2,
+class DashboardDashboardFilterStateValueNumberRangeFilterValue(TypedDict, total=False):
+    end: Required[float]
+
+    start: Required[float]
+
+    mode: Literal["number_range"]
+
+
+class DashboardDashboardFilterStateValueAbsoluteDateFilterValue(TypedDict, total=False):
+    value: Required[str]
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Literal["absolute_date"]
+
+
+class DashboardDashboardFilterStateValueAbsoluteRangeFilterValue(TypedDict, total=False):
+    end: Required[str]
+    """Absolute DATE or TIMESTAMP string"""
+
+    start: Required[str]
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Literal["absolute_range"]
+
+
+class DashboardDashboardFilterStateValueRelativeRangeFilterValueEndRelativeOffsetBoundary(TypedDict, total=False):
+    amount: Required[int]
+
+    direction: Required[Literal["ago", "ahead"]]
+
+    unit: Required[Literal["day", "week", "month", "quarter", "year"]]
+
+
+class DashboardDashboardFilterStateValueRelativeRangeFilterValueEndRelativeAnchorBoundary(TypedDict, total=False):
+    anchor: Required[Literal["today", "now"]]
+
+
+DashboardDashboardFilterStateValueRelativeRangeFilterValueEnd: TypeAlias = Union[
+    DashboardDashboardFilterStateValueRelativeRangeFilterValueEndRelativeOffsetBoundary,
+    DashboardDashboardFilterStateValueRelativeRangeFilterValueEndRelativeAnchorBoundary,
 ]
 
 
-class ResolvedQueryResolvedVariableConstraints(TypedDict, total=False):
-    """Constraints for variable types"""
+class DashboardDashboardFilterStateValueRelativeRangeFilterValueStartRelativeOffsetBoundary(TypedDict, total=False):
+    amount: Required[int]
 
-    max: Optional[float]
-    """Maximum allowed value"""
+    direction: Required[Literal["ago", "ahead"]]
 
-    max_length: Optional[int]
-    """Maximum length for STRING variables"""
-
-    min: Optional[float]
-    """Minimum allowed value"""
-
-    step: Optional[float]
-    """Step increment for numeric input"""
+    unit: Required[Literal["day", "week", "month", "quarter", "year"]]
 
 
-class ResolvedQueryResolvedVariable(TypedDict, total=False):
-    """A variable definition with its bound value"""
+class DashboardDashboardFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary(TypedDict, total=False):
+    anchor: Required[Literal["today", "now"]]
 
-    bound_value: Required[Union[str, float, bool, SequenceNotStr[Union[str, float, bool]]]]
-    """The concrete value bound for this resolution"""
 
-    default: Required[Union[str, float, bool, SequenceNotStr[Union[str, float, bool]]]]
-    """Default value for this variable"""
+DashboardDashboardFilterStateValueRelativeRangeFilterValueStart: TypeAlias = Union[
+    DashboardDashboardFilterStateValueRelativeRangeFilterValueStartRelativeOffsetBoundary,
+    DashboardDashboardFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary,
+]
 
-    kater_id: Required[str]
-    """Unique identifier for this variable"""
 
-    name: Required[str]
-    """Variable name identifier"""
+class DashboardDashboardFilterStateValueRelativeRangeFilterValue(TypedDict, total=False):
+    end: Required[DashboardDashboardFilterStateValueRelativeRangeFilterValueEnd]
 
-    type: Required[
-        Literal[
-            "STRING",
-            "INT",
-            "FLOAT",
-            "DATE",
-            "TIMESTAMP",
-            "BOOL",
-            "STRING[]",
-            "INT[]",
-            "FLOAT[]",
-            "DATE[]",
-            "DIMENSION",
-            "MEASURE",
-            "CALCULATION",
-            "FILTER",
-        ]
-    ]
-    """Data type of the variable"""
+    start: Required[DashboardDashboardFilterStateValueRelativeRangeFilterValueStart]
 
-    allowed_values: Optional[ResolvedQueryResolvedVariableAllowedValues]
-    """Allowed values configuration"""
+    mode: Literal["relative_range"]
 
-    constraints: Optional[ResolvedQueryResolvedVariableConstraints]
-    """Constraints for variable types"""
 
-    description: Optional[str]
-    """Description of the variable's purpose"""
+class DashboardDashboardFilterStateValuePresetReferenceFilterValue(TypedDict, total=False):
+    preset: Required[str]
+    """Stable preset key matching presets[].name"""
 
-    is_default: Optional[bool]
-    """True if bound_value equals the default value"""
+    mode: Literal["preset"]
 
-    is_runtime: Optional[bool]
-    """True if this is a runtime variable (not resolved at compile time).
 
-    Runtime variables have var() placeholders left in compiled SQL for literal
-    substitution at execution time.
+class DashboardDashboardFilterStateValueNullFilterValue(TypedDict, total=False):
+    mode: Literal["null"]
+
+
+DashboardDashboardFilterStateValue: TypeAlias = Union[
+    DashboardDashboardFilterStateValueScalarFilterValue,
+    DashboardDashboardFilterStateValueMultiFilterValue,
+    DashboardDashboardFilterStateValueNumberRangeFilterValue,
+    DashboardDashboardFilterStateValueAbsoluteDateFilterValue,
+    DashboardDashboardFilterStateValueAbsoluteRangeFilterValue,
+    DashboardDashboardFilterStateValueRelativeRangeFilterValue,
+    DashboardDashboardFilterStateValuePresetReferenceFilterValue,
+    DashboardDashboardFilterStateValueNullFilterValue,
+]
+
+
+class DashboardDashboardFilterState(TypedDict, total=False):
+    effective_kater_id: Required[str]
+    """Stable effective runtime filter ID"""
+
+    enabled: Optional[bool]
+    """Requested enabled state override for this effective filter"""
+
+    value: Optional[DashboardDashboardFilterStateValue]
+    """Requested runtime value override for this effective filter"""
+
+
+class Dashboard(TypedDict, total=False):
+    """Dashboard context block in `RenderedQueryRequestV1`."""
+
+    dashboard_filter_state: Required[Iterable[DashboardDashboardFilterState]]
+
+    dashboard_kater_id: Required[Optional[str]]
+
+    slot_name: Required[Optional[str]]
+
+    widget_kater_id: Required[Optional[str]]
+
+
+class FieldSelectionSelectedFieldModifier(TypedDict, total=False):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
     """
 
-    label: Optional[str]
-    """Human-readable label for the variable"""
+    kind: Required[Literal["timeframe"]]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
 
+    value: Required[str]
+    """Concrete modifier value.
 
-class ResolvedQuerySelectFromOutputColumn(TypedDict, total=False):
-    """A column produced by a select_from CTE"""
-
-    column_alias: Required[str]
-    """The SQL column alias in the CTE output"""
-
-    field_name: Required[str]
-    """The field name used in q:query_name.field_name references"""
-
-    source_type: Required[Literal["dimension", "dimension_date", "measure", "calculation"]]
-    """Original type of the field in the source query"""
-
-
-class ResolvedQuerySelectFrom(TypedDict, total=False):
-    """A resolved select_from entry with CTE metadata"""
-
-    cte_alias: Required[str]
-    """CTE alias used in the WITH clause (e.g., **sf_compliance_rate**base)"""
-
-    output_columns: Required[Iterable[ResolvedQuerySelectFromOutputColumn]]
-    """Columns produced by the CTE, available as q:query_name.field_name in the parent"""
-
-    ref: Required[str]
-    """Reference to the source query"""
-
-    variables: Optional[Dict[str, Union[str, float, bool]]]
-    """Variable overrides passed to the referenced query"""
-
-
-class ResolvedQuery(TypedDict, total=False):
-    """Previously resolved query object from /resolve"""
-
-    kater_id: Required[str]
-    """Unique identifier for this resolved query instance"""
-
-    name: Required[str]
-    """Name from the leaf query in the inheritance chain"""
-
-    source_query: Required[str]
-    """Reference to the original query template this was resolved from"""
-
-    topic: Required[str]
-    """
-    Reference to the topic this query uses (always known after inheritance
-    resolution)
+    Canonical contexts omit raw timeframe instead of storing value raw.
     """
 
-    widget_category: Required[
-        Literal["axis", "funnel", "heatmap", "image", "kpi_card", "pie", "radial", "table", "text"]
-    ]
-    """Widget category that determines data shape constraints"""
 
-    ai_context: Optional[str]
-    """Usage guidance for AI processing"""
-
-    calculations: Optional[SequenceNotStr[ResolvedQueryCalculation]]
-    """Merged required + selected optional calculations"""
-
-    chart_hints: Optional[Iterable[ResolvedQueryChartHint]]
-    """Chart recommendations preserved for evaluation"""
-
-    custom_properties: Optional[Dict[str, object]]
-    """Custom properties"""
-
-    description: Optional[str]
-    """Description of the query"""
-
-    dimensions: Optional[SequenceNotStr[ResolvedQueryDimension]]
-    """Merged required + selected optional dimensions"""
-
-    disallowed_widget_types: Optional[
-        List[
-            Literal[
-                "axis_metric_by_dimension",
-                "axis_metric_by_dimensiondate",
-                "axis_metric_by_dimensiondate_sliced_by_dimension",
-                "axis_metric_by_metric",
-                "funnel_funnel_chart",
-                "heatmap_heatmap",
-                "image_image_grid",
-                "image_single_image",
-                "kpi_measure_with_dimension_expression",
-                "kpi_measure_with_secondary_metric",
-                "kpi_measure_with_target_progress",
-                "kpi_single_measure_compared_to_prev_period_sparkline",
-                "kpi_single_value",
-                "pie_donut_chart",
-                "pie_donut_with_measure",
-                "pie_pie_chart",
-                "radial_chart",
-                "radial_with_single_value",
-                "radial_with_single_value_stacked",
-                "table_data_table",
-                "table_fancy_subtotal_table",
-                "table_key_value_list",
-                "table_styled_table",
-                "text_data_readout_with_sparkline",
-                "text_narrative_text",
-            ]
-        ]
-    ]
+class FieldSelectionSelectedField(TypedDict, total=False):
     """
-    Widget types within the declared widget_category that must NOT render this query
+    Semantic identity for an active output field: source_kater_id plus normalized modifiers.
     """
 
-    filters: Optional[SequenceNotStr[ResolvedQueryFilter]]
-    """Merged required + selected optional filters"""
+    modifiers: Required[Iterable[FieldSelectionSelectedFieldModifier]]
+    """Normalized modifiers sorted by kind.
 
-    inheritance_chain: Optional[SequenceNotStr[str]]
-    """Ordered list of query refs that were merged during inheritance resolution"""
-
-    label: Optional[str]
-    """Human-readable label with var() values substituted"""
-
-    limit: Optional[int]
-    """Maximum number of rows to return"""
-
-    measures: Optional[SequenceNotStr[ResolvedQueryMeasure]]
-    """Merged required + selected optional measures"""
-
-    order_by: Optional[SequenceNotStr[ResolvedQueryOrderBy]]
-    """Sort order for query results"""
-
-    resolved_chart: Optional[ResolvedQueryResolvedChart]
-    """The matched chart recommendation after evaluating chart hints"""
-
-    resolved_variables: Optional[Iterable[ResolvedQueryResolvedVariable]]
-    """Full variable definitions with bound values"""
-
-    select_from: Optional[Iterable[ResolvedQuerySelectFrom]]
-    """Resolved select_from entries with CTE metadata"""
-
-    totals: Optional[bool]
+    Raw timeframe is represented by an empty array.
     """
-    When true, compute a totals_row over returned measure columns and expose it
-    alongside data.
+
+    source_kater_id: Required[str]
+    """Stable UUID of the source field this occurrence projects."""
+
+
+class FieldSelectionTimeframeOverride(TypedDict, total=False):
+    """A timeframe modifier override for a specific source field."""
+
+    active_timeframe: Required[str]
+
+    source_kater_id: Required[str]
+
+
+class FieldSelection(TypedDict, total=False):
+    """Structured field selection expressed as semantic field occurrences."""
+
+    selected_fields: Required[Iterable[FieldSelectionSelectedField]]
+
+    selected_field_ids: SequenceNotStr[str]
+    """Backward-compatible source field UUIDs.
+
+    New consumers should use selected_fields instead.
+    """
+
+    timeframe_overrides: Iterable[FieldSelectionTimeframeOverride]
+    """Backward-compatible timeframe overrides.
+
+    New consumers should encode timeframes as selected_fields modifiers.
     """
 
 
 class FilterStateValueScalarFilterValue(TypedDict, total=False):
     value: Required[Union[str, float, bool]]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Literal["scalar"]
 
@@ -572,3 +394,63 @@ class FilterState(TypedDict, total=False):
 
     value: Optional[FilterStateValue]
     """Requested runtime value override for this effective filter"""
+
+
+class Presentation(TypedDict, total=False):
+    """Presentation config block in `RenderedQueryRequestV1`."""
+
+    chart: Dict[str, Union[str, int, float, bool, None, Iterable[object], Dict[str, object]]]
+
+    display: Dict[str, Union[str, int, float, bool, None, Iterable[object], Dict[str, object]]]
+
+    style: Dict[str, Union[str, int, float, bool, None, Iterable[object], Dict[str, object]]]
+
+
+class ResultWindow(TypedDict, total=False):
+    """
+    Result window block in `RenderedQueryRequestV1` (consumers do not supply
+    backend-computed `query_limit`, `max_row_limit`, `effective_limit`).
+    """
+
+    cursor: Required[Optional[str]]
+
+    page_size: Required[Optional[int]]
+
+    sort_by: Required[Optional[str]]
+
+    sort_order: Required[Optional[Literal["asc", "desc"]]]
+
+
+class Temporal(TypedDict, total=False):
+    """Request clock block in `RenderedQueryRequestV1`.
+
+    Either field may be `null`
+    on the request; the backend resolves both before canonicalization (the
+    canonical `temporal` block requires non-null `timezone` and `as_of`).
+    """
+
+    as_of: Required[Optional[str]]
+
+    timezone: Required[Optional[str]]
+
+
+class Variable(TypedDict, total=False):
+    """Runtime variable value as supplied in a `RenderedQueryRequestV1`.
+
+    `variable_kater_id` is preferred. Until every surface exposes it,
+    `(query_kater_id, scope, name)` is the migration fallback identity.
+    """
+
+    name: Required[str]
+    """Variable name within scope"""
+
+    query_kater_id: Required[str]
+    """Owning query UUID"""
+
+    scope: Required[Literal["query", "global"]]
+
+    value: Required[Union[str, float, bool, Iterable[object], Dict[str, object], None]]
+    """Free-form JSON variable value"""
+
+    variable_kater_id: Required[Optional[str]]
+    """Stable variable UUID; fall back to (query_kater_id, scope, name) when null"""

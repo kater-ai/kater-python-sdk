@@ -8,15 +8,15 @@ Types:
 from kater.types.v1 import (
     ChartConfig,
     CompilerErrorItem,
-    InlineField,
     Manifest,
     ManifestEntry,
     RefWithLabel,
     SubqueryCondition,
     CompilerCompileResponse,
     CompilerCompileDashboardResponse,
-    CompilerEnumerateResponse,
     CompilerExecuteResponse,
+    CompilerRegenerateMetadataResponse,
+    CompilerRenderResponse,
     CompilerResolveResponse,
     CompilerValidateResponse,
 )
@@ -24,24 +24,13 @@ from kater.types.v1 import (
 
 Methods:
 
-- <code title="post /api/v1/compiler/compile">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">compile</a>(\*\*<a href="src/kater/types/v1/compiler_compile_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_compile_response.py">CompilerCompileResponse</a></code>
+- <code title="post /api/v1/compiler/compile/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">compile</a>(\*\*<a href="src/kater/types/v1/compiler_compile_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_compile_response.py">CompilerCompileResponse</a></code>
 - <code title="post /api/v1/compiler/dashboard">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">compile_dashboard</a>(\*\*<a href="src/kater/types/v1/compiler_compile_dashboard_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_compile_dashboard_response.py">CompilerCompileDashboardResponse</a></code>
-- <code title="post /api/v1/compiler/enumerate">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">enumerate</a>(\*\*<a href="src/kater/types/v1/compiler_enumerate_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_enumerate_response.py">CompilerEnumerateResponse</a></code>
-- <code title="post /api/v1/compiler/execute">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">execute</a>(\*\*<a href="src/kater/types/v1/compiler_execute_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_execute_response.py">CompilerExecuteResponse</a></code>
-- <code title="post /api/v1/compiler/resolve">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">resolve</a>(\*\*<a href="src/kater/types/v1/compiler_resolve_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_resolve_response.py">CompilerResolveResponse</a></code>
+- <code title="post /api/v1/compiler/execute/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">execute</a>(\*\*<a href="src/kater/types/v1/compiler_execute_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_execute_response.py">CompilerExecuteResponse</a></code>
+- <code title="post /api/v1/compiler/render/post-query">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">regenerate_metadata</a>(\*\*<a href="src/kater/types/v1/compiler_regenerate_metadata_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_regenerate_metadata_response.py">CompilerRegenerateMetadataResponse</a></code>
+- <code title="post /api/v1/compiler/render">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">render</a>(\*\*<a href="src/kater/types/v1/compiler_render_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_render_response.py">CompilerRenderResponse</a></code>
+- <code title="post /api/v1/compiler/resolve/structured">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">resolve</a>(\*\*<a href="src/kater/types/v1/compiler_resolve_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_resolve_response.py">CompilerResolveResponse</a></code>
 - <code title="post /api/v1/compiler/validate">client.v1.compiler.<a href="./src/kater/resources/v1/compiler/compiler.py">validate</a>(\*\*<a href="src/kater/types/v1/compiler_validate_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler_validate_response.py">CompilerValidateResponse</a></code>
-
-### Combination
-
-Types:
-
-```python
-from kater.types.v1.compiler import CombinationPreviewResponse
-```
-
-Methods:
-
-- <code title="post /api/v1/compiler/combination/preview">client.v1.compiler.combination.<a href="./src/kater/resources/v1/compiler/combination.py">preview</a>(\*\*<a href="src/kater/types/v1/compiler/combination_preview_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler/combination_preview_response.py">CombinationPreviewResponse</a></code>
 
 ### Manifest
 
@@ -54,6 +43,19 @@ from kater.types.v1.compiler import ManifestRegenerateAndCreatePrResponse
 Methods:
 
 - <code title="post /api/v1/compiler/manifest/recovery-pr">client.v1.compiler.manifest.<a href="./src/kater/resources/v1/compiler/manifest.py">regenerate_and_create_pr</a>(\*\*<a href="src/kater/types/v1/compiler/manifest_regenerate_and_create_pr_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler/manifest_regenerate_and_create_pr_response.py">ManifestRegenerateAndCreatePrResponse</a></code>
+
+### Capabilities
+
+Types:
+
+```python
+from kater.types.v1.compiler import CapabilityCreateResponse, CapabilitySampleResponse
+```
+
+Methods:
+
+- <code title="post /api/v1/compiler/capabilities">client.v1.compiler.capabilities.<a href="./src/kater/resources/v1/compiler/capabilities.py">create</a>(\*\*<a href="src/kater/types/v1/compiler/capability_create_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler/capability_create_response.py">CapabilityCreateResponse</a></code>
+- <code title="post /api/v1/compiler/capabilities/sample">client.v1.compiler.capabilities.<a href="./src/kater/resources/v1/compiler/capabilities.py">sample</a>(\*\*<a href="src/kater/types/v1/compiler/capability_sample_params.py">params</a>) -> <a href="./src/kater/types/v1/compiler/capability_sample_response.py">CapabilitySampleResponse</a></code>
 
 ## Connections
 
@@ -141,6 +143,21 @@ from kater.types.v1.connections.tenant.mcp import OAuthInitiateResponse
 Methods:
 
 - <code title="get /api/v1/tenant/mcp/{mcp_id}/oauth/authorize">client.v1.connections.tenant.mcp.oauth.<a href="./src/kater/resources/v1/connections/tenant/mcp/oauth.py">initiate</a>(mcp_id, \*\*<a href="src/kater/types/v1/connections/tenant/mcp/oauth_initiate_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/tenant/mcp/oauth_initiate_response.py">OAuthInitiateResponse</a></code>
+
+### SDK
+
+#### Widget
+
+Types:
+
+```python
+from kater.types.v1.connections.sdk import WidgetRegenerateMetadataResponse, WidgetRenderResponse
+```
+
+Methods:
+
+- <code title="post /api/v1/sdk/widget/render/post-query">client.v1.connections.sdk.widget.<a href="./src/kater/resources/v1/connections/sdk/widget.py">regenerate_metadata</a>(\*\*<a href="src/kater/types/v1/connections/sdk/widget_regenerate_metadata_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/sdk/widget_regenerate_metadata_response.py">WidgetRegenerateMetadataResponse</a></code>
+- <code title="post /api/v1/sdk/widget/render">client.v1.connections.sdk.widget.<a href="./src/kater/resources/v1/connections/sdk/widget.py">render</a>(\*\*<a href="src/kater/types/v1/connections/sdk/widget_render_params.py">params</a>) -> <a href="./src/kater/types/v1/connections/sdk/widget_render_response.py">WidgetRenderResponse</a></code>
 
 ## Tenants
 

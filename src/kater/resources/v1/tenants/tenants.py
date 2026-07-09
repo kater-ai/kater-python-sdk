@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Mapping, Optional, cast
+from typing import Dict, Optional
 
 import httpx
 
@@ -14,9 +14,8 @@ from .groups import (
     GroupsResourceWithStreamingResponse,
     AsyncGroupsResourceWithStreamingResponse,
 )
-from ...._files import deepcopy_with_paths
-from ...._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
-from ...._utils import extract_files, maybe_transform, strip_not_given, async_maybe_transform
+from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ...._utils import maybe_transform, strip_not_given, async_maybe_transform
 from ...._compat import cached_property
 from ....types.v1 import tenant_import_from_csv_params, tenant_import_from_warehouse_params
 from ...._resource import SyncAPIResource, AsyncAPIResource
@@ -90,7 +89,7 @@ class TenantsResource(SyncAPIResource):
     def import_from_csv(
         self,
         *,
-        file: FileTypes,
+        file: str,
         source: Optional[str] | Omit = omit,
         attribute_columns: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
@@ -136,22 +135,19 @@ class TenantsResource(SyncAPIResource):
           timeout: Override the client-level default timeout for this request, in seconds
         """
         extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
-        body = deepcopy_with_paths(
-            {
-                "file": file,
-                "attribute_columns": attribute_columns,
-            },
-            [["file"]],
-        )
-        files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return self._post(
             "/api/v1/tenants/import/csv",
-            body=maybe_transform(body, tenant_import_from_csv_params.TenantImportFromCsvParams),
-            files=files,
+            body=maybe_transform(
+                {
+                    "file": file,
+                    "attribute_columns": attribute_columns,
+                },
+                tenant_import_from_csv_params.TenantImportFromCsvParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -170,11 +166,9 @@ class TenantsResource(SyncAPIResource):
         schema: str,
         table: str,
         tenant_key_column: str,
-        source: Optional[str] | Omit = omit,
         attribute_columns: Optional[Dict[str, str]] | Omit = omit,
         tenant_group_column: Optional[str] | Omit = omit,
         tenant_name_column: Optional[str] | Omit = omit,
-        x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -224,7 +218,6 @@ class TenantsResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
         return self._post(
             "/api/v1/tenants/import/warehouse",
             body=maybe_transform(
@@ -241,13 +234,7 @@ class TenantsResource(SyncAPIResource):
                 tenant_import_from_warehouse_params.TenantImportFromWarehouseParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform(
-                    {"source": source}, tenant_import_from_warehouse_params.TenantImportFromWarehouseParams
-                ),
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ImportTenantsResponse,
         )
@@ -310,7 +297,7 @@ class AsyncTenantsResource(AsyncAPIResource):
     async def import_from_csv(
         self,
         *,
-        file: FileTypes,
+        file: str,
         source: Optional[str] | Omit = omit,
         attribute_columns: Optional[str] | Omit = omit,
         x_kater_cli_id: str | Omit = omit,
@@ -356,22 +343,19 @@ class AsyncTenantsResource(AsyncAPIResource):
           timeout: Override the client-level default timeout for this request, in seconds
         """
         extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
-        body = deepcopy_with_paths(
-            {
-                "file": file,
-                "attribute_columns": attribute_columns,
-            },
-            [["file"]],
-        )
-        files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
         # sent to the server will contain a `boundary` parameter, e.g.
         # multipart/form-data; boundary=---abc--
         extra_headers = {"Content-Type": "multipart/form-data", **(extra_headers or {})}
         return await self._post(
             "/api/v1/tenants/import/csv",
-            body=await async_maybe_transform(body, tenant_import_from_csv_params.TenantImportFromCsvParams),
-            files=files,
+            body=await async_maybe_transform(
+                {
+                    "file": file,
+                    "attribute_columns": attribute_columns,
+                },
+                tenant_import_from_csv_params.TenantImportFromCsvParams,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -392,11 +376,9 @@ class AsyncTenantsResource(AsyncAPIResource):
         schema: str,
         table: str,
         tenant_key_column: str,
-        source: Optional[str] | Omit = omit,
         attribute_columns: Optional[Dict[str, str]] | Omit = omit,
         tenant_group_column: Optional[str] | Omit = omit,
         tenant_name_column: Optional[str] | Omit = omit,
-        x_kater_cli_id: str | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -446,7 +428,6 @@ class AsyncTenantsResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        extra_headers = {**strip_not_given({"X-Kater-CLI-ID": x_kater_cli_id}), **(extra_headers or {})}
         return await self._post(
             "/api/v1/tenants/import/warehouse",
             body=await async_maybe_transform(
@@ -463,13 +444,7 @@ class AsyncTenantsResource(AsyncAPIResource):
                 tenant_import_from_warehouse_params.TenantImportFromWarehouseParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {"source": source}, tenant_import_from_warehouse_params.TenantImportFromWarehouseParams
-                ),
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ImportTenantsResponse,
         )

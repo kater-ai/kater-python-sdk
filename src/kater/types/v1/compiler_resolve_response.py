@@ -3,38 +3,11 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
-from .manifest import Manifest
 from ..._models import BaseModel
-from .chart_config import ChartConfig
-from .inline_field import InlineField
-from .ref_with_label import RefWithLabel
-from .subquery_condition import SubqueryCondition
+from .compiler_error_item import CompilerErrorItem
 
 __all__ = [
     "CompilerResolveResponse",
-    "ResolvedQuery",
-    "ResolvedQueryCalculation",
-    "ResolvedQueryChartHint",
-    "ResolvedQueryChartHintChartHint1Output",
-    "ResolvedQueryChartHintChartHint2Output",
-    "ResolvedQueryChartHintChartHint2OutputDefault",
-    "ResolvedQueryDimension",
-    "ResolvedQueryFilter",
-    "ResolvedQueryFilterInlineFormulaFilter",
-    "ResolvedQueryFilterInlineExistsFilter1",
-    "ResolvedQueryFilterInlineExistsFilter2",
-    "ResolvedQueryMeasure",
-    "ResolvedQueryOrderBy",
-    "ResolvedQueryOrderByOrderByItem",
-    "ResolvedQueryResolvedChart",
-    "ResolvedQueryResolvedVariable",
-    "ResolvedQueryResolvedVariableAllowedValues",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static",
-    "ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2",
-    "ResolvedQueryResolvedVariableConstraints",
-    "ResolvedQuerySelectFrom",
-    "ResolvedQuerySelectFromOutputColumn",
     "AppliedFilterState",
     "AppliedFilterStateValue",
     "AppliedFilterStateValueScalarFilterValue",
@@ -67,8 +40,6 @@ __all__ = [
     "DefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "DefaultFilterStateValuePresetReferenceFilterValue",
     "DefaultFilterStateValueNullFilterValue",
-    "DependencyGraph",
-    "DependencyGraphNodes",
     "FilterDefinition",
     "FilterDefinitionDefaultValue",
     "FilterDefinitionDefaultValueScalarFilterValue",
@@ -116,392 +87,54 @@ __all__ = [
     "FilterDefinitionValuesStaticFilterValuesSource",
     "FilterDefinitionValuesStaticFilterValuesSourceItem",
     "FilterDefinitionValuesDynamicDistinctFilterValuesSource",
-    "RefFix",
-    "RefFixReplacement",
+    "RenderedQueryKey",
+    "RenderedQueryKeyCanonical",
+    "RenderedQueryKeyCanonicalCacheProjection",
+    "RenderedQueryKeyCanonicalCacheProjectionAggregate",
+    "RenderedQueryKeyCanonicalCacheProjectionAggregateDimension",
+    "RenderedQueryKeyCanonicalCacheProjectionAggregateDimensionModifier",
+    "RenderedQueryKeyCanonicalCacheProjectionAggregateFilter",
+    "RenderedQueryKeyCanonicalCacheProjectionAggregateFilterFieldModifier",
+    "RenderedQueryKeyCanonicalCacheProjectionAggregateMeasure",
+    "RenderedQueryKeyCanonicalCacheProjectionAggregateMeasureModifier",
+    "RenderedQueryKeyCanonicalCacheProjectionAggregateVariable",
+    "RenderedQueryKeyCanonicalCacheProjectionExact",
+    "RenderedQueryKeyCanonicalCacheProjectionExactFilter",
+    "RenderedQueryKeyCanonicalCacheProjectionExactFilterFieldModifier",
+    "RenderedQueryKeyCanonicalCacheProjectionExactOutputColumn",
+    "RenderedQueryKeyCanonicalCacheProjectionExactOutputColumnModifier",
+    "RenderedQueryKeyCanonicalCacheProjectionExactResultWindow",
+    "RenderedQueryKeyCanonicalCacheProjectionExactVariable",
+    "RenderedQueryKeyCanonicalContract",
+    "RenderedQueryKeyCanonicalDashboard",
+    "RenderedQueryKeyCanonicalDashboardDashboardFilterState",
+    "RenderedQueryKeyCanonicalFields",
+    "RenderedQueryKeyCanonicalFieldsActiveField",
+    "RenderedQueryKeyCanonicalFieldsActiveFieldModifier",
+    "RenderedQueryKeyCanonicalFieldsOutputColumn",
+    "RenderedQueryKeyCanonicalFieldsOutputColumnModifier",
+    "RenderedQueryKeyCanonicalFieldsOutputColumnDataType",
+    "RenderedQueryKeyCanonicalFieldsOutputColumnDataTypeExtension",
+    "RenderedQueryKeyCanonicalFieldsSelectedField",
+    "RenderedQueryKeyCanonicalFieldsSelectedFieldModifier",
+    "RenderedQueryKeyCanonicalFieldsRequiredField",
+    "RenderedQueryKeyCanonicalFieldsRequiredFieldModifier",
+    "RenderedQueryKeyCanonicalFilters",
+    "RenderedQueryKeyCanonicalFiltersEffectiveFilter",
+    "RenderedQueryKeyCanonicalFiltersEffectiveFilterFieldModifier",
+    "RenderedQueryKeyCanonicalPresentation",
+    "RenderedQueryKeyCanonicalQuery",
+    "RenderedQueryKeyCanonicalResultWindow",
+    "RenderedQueryKeyCanonicalSource",
+    "RenderedQueryKeyCanonicalTemporal",
+    "RenderedQueryKeyCanonicalTenant",
+    "RenderedQueryKeyCanonicalVariable",
 ]
-
-ResolvedQueryCalculation: TypeAlias = Union[RefWithLabel, InlineField, str]
-
-
-class ResolvedQueryChartHintChartHint1Output(BaseModel):
-    """A chart recommendation rule"""
-
-    config: ChartConfig
-    """Chart configuration with variable references"""
-
-    recommend: Literal[
-        "line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"
-    ]
-    """Type of chart visualization"""
-
-    when: Dict[str, Union[str, List[str]]]
-    """
-    Conditions based on variable values - can be single value (string) or multiple
-    values (array)
-    """
-
-
-class ResolvedQueryChartHintChartHint2OutputDefault(BaseModel):
-    config: ChartConfig
-    """Chart configuration with variable references"""
-
-    recommend: Literal[
-        "line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"
-    ]
-    """Type of chart visualization"""
-
-
-class ResolvedQueryChartHintChartHint2Output(BaseModel):
-    """A chart recommendation rule"""
-
-    default: ResolvedQueryChartHintChartHint2OutputDefault
-
-
-ResolvedQueryChartHint: TypeAlias = Union[
-    ResolvedQueryChartHintChartHint1Output, ResolvedQueryChartHintChartHint2Output
-]
-
-ResolvedQueryDimension: TypeAlias = Union[RefWithLabel, InlineField, str]
-
-
-class ResolvedQueryFilterInlineFormulaFilter(BaseModel):
-    """An inline filter using a SQL/expression formula"""
-
-    name: str
-    """Name of the inline filter"""
-
-    sql: str
-    """SQL expression for the filter condition"""
-
-
-class ResolvedQueryFilterInlineExistsFilter1(BaseModel):
-    """An inline filter using EXISTS or NOT EXISTS with a subquery"""
-
-    exists: SubqueryCondition
-    """EXISTS subquery condition"""
-
-    name: str
-    """Name of the inline filter"""
-
-    description: Optional[str] = None
-    """Description of the filter"""
-
-    label: Optional[str] = None
-    """Human-readable label"""
-
-    not_exists: Optional[SubqueryCondition] = None
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-
-class ResolvedQueryFilterInlineExistsFilter2(BaseModel):
-    """An inline filter using EXISTS or NOT EXISTS with a subquery"""
-
-    name: str
-    """Name of the inline filter"""
-
-    not_exists: SubqueryCondition
-    """NOT EXISTS subquery condition"""
-
-    description: Optional[str] = None
-    """Description of the filter"""
-
-    exists: Optional[SubqueryCondition] = None
-    """A subquery condition for EXISTS/NOT EXISTS filters"""
-
-    label: Optional[str] = None
-    """Human-readable label"""
-
-
-ResolvedQueryFilter: TypeAlias = Union[
-    ResolvedQueryFilterInlineFormulaFilter,
-    str,
-    ResolvedQueryFilterInlineExistsFilter1,
-    ResolvedQueryFilterInlineExistsFilter2,
-]
-
-ResolvedQueryMeasure: TypeAlias = Union[RefWithLabel, InlineField, str]
-
-
-class ResolvedQueryOrderByOrderByItem(BaseModel):
-    """Explicit sort direction for a field."""
-
-    direction: Literal["asc", "desc"]
-    """
-    Sort direction: asc (ascending, A-Z / oldest first) or desc (descending, Z-A /
-    newest first).
-    """
-
-    field: str
-    """A string that may be a ref(), var(), or expr() reference"""
-
-
-ResolvedQueryOrderBy: TypeAlias = Union[ResolvedQueryOrderByOrderByItem, str]
-
-
-class ResolvedQueryResolvedChart(BaseModel):
-    """The matched chart recommendation after evaluating chart hints"""
-
-    config: ChartConfig
-    """Chart configuration"""
-
-    recommend: Literal[
-        "line", "bar", "stacked_bar", "area", "pie", "donut", "scatter", "table", "heatmap", "single_value"
-    ]
-    """Recommended chart type"""
-
-
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static(BaseModel):
-    """A value with optional display label"""
-
-    value: Union[str, float, bool]
-    """The actual value"""
-
-    label: Optional[str] = None
-    """Human-readable label for the value"""
-
-
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1(BaseModel):
-    """Allowed values for a variable - either static list or from column"""
-
-    static: List[ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1Static]
-    """Static list of allowed values with optional labels"""
-
-
-class ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2(BaseModel):
-    """Allowed values for a variable - either static list or from column"""
-
-    from_column: str
-    """Reference to column for dynamic values"""
-
-    cache_ttl: Optional[int] = None
-    """Cache time-to-live in seconds"""
-
-    limit: Optional[int] = None
-    """Maximum number of values to retrieve"""
-
-    order_by: Optional[Literal["asc", "desc"]] = None
-    """Sort order for values"""
-
-
-ResolvedQueryResolvedVariableAllowedValues: TypeAlias = Union[
-    ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues1,
-    ResolvedQueryResolvedVariableAllowedValuesVariableAllowedValues2,
-    None,
-]
-
-
-class ResolvedQueryResolvedVariableConstraints(BaseModel):
-    """Constraints for variable types"""
-
-    max: Optional[float] = None
-    """Maximum allowed value"""
-
-    max_length: Optional[int] = None
-    """Maximum length for STRING variables"""
-
-    min: Optional[float] = None
-    """Minimum allowed value"""
-
-    step: Optional[float] = None
-    """Step increment for numeric input"""
-
-
-class ResolvedQueryResolvedVariable(BaseModel):
-    """A variable definition with its bound value"""
-
-    bound_value: Union[str, float, bool, List[Union[str, float, bool]]]
-    """The concrete value bound for this resolution"""
-
-    default: Union[str, float, bool, List[Union[str, float, bool]]]
-    """Default value for this variable"""
-
-    kater_id: str
-    """Unique identifier for this variable"""
-
-    name: str
-    """Variable name identifier"""
-
-    type: Literal[
-        "STRING",
-        "INT",
-        "FLOAT",
-        "DATE",
-        "TIMESTAMP",
-        "BOOL",
-        "STRING[]",
-        "INT[]",
-        "FLOAT[]",
-        "DATE[]",
-        "DIMENSION",
-        "MEASURE",
-        "CALCULATION",
-        "FILTER",
-    ]
-    """Data type of the variable"""
-
-    allowed_values: Optional[ResolvedQueryResolvedVariableAllowedValues] = None
-    """Allowed values configuration"""
-
-    constraints: Optional[ResolvedQueryResolvedVariableConstraints] = None
-    """Constraints for variable types"""
-
-    description: Optional[str] = None
-    """Description of the variable's purpose"""
-
-    is_default: Optional[bool] = None
-    """True if bound_value equals the default value"""
-
-    is_runtime: Optional[bool] = None
-    """True if this is a runtime variable (not resolved at compile time).
-
-    Runtime variables have var() placeholders left in compiled SQL for literal
-    substitution at execution time.
-    """
-
-    label: Optional[str] = None
-    """Human-readable label for the variable"""
-
-
-class ResolvedQuerySelectFromOutputColumn(BaseModel):
-    """A column produced by a select_from CTE"""
-
-    column_alias: str
-    """The SQL column alias in the CTE output"""
-
-    field_name: str
-    """The field name used in q:query_name.field_name references"""
-
-    source_type: Literal["dimension", "dimension_date", "measure", "calculation"]
-    """Original type of the field in the source query"""
-
-
-class ResolvedQuerySelectFrom(BaseModel):
-    """A resolved select_from entry with CTE metadata"""
-
-    cte_alias: str
-    """CTE alias used in the WITH clause (e.g., **sf_compliance_rate**base)"""
-
-    output_columns: List[ResolvedQuerySelectFromOutputColumn]
-    """Columns produced by the CTE, available as q:query_name.field_name in the parent"""
-
-    ref: str
-    """Reference to the source query"""
-
-    variables: Optional[Dict[str, Union[str, float, bool]]] = None
-    """Variable overrides passed to the referenced query"""
-
-
-class ResolvedQuery(BaseModel):
-    """The fully resolved query object"""
-
-    kater_id: str
-    """Unique identifier for this resolved query instance"""
-
-    name: str
-    """Name from the leaf query in the inheritance chain"""
-
-    source_query: str
-    """Reference to the original query template this was resolved from"""
-
-    topic: str
-    """
-    Reference to the topic this query uses (always known after inheritance
-    resolution)
-    """
-
-    widget_category: Literal["axis", "funnel", "heatmap", "image", "kpi_card", "pie", "radial", "table", "text"]
-    """Widget category that determines data shape constraints"""
-
-    ai_context: Optional[str] = None
-    """Usage guidance for AI processing"""
-
-    calculations: Optional[List[ResolvedQueryCalculation]] = None
-    """Merged required + selected optional calculations"""
-
-    chart_hints: Optional[List[ResolvedQueryChartHint]] = None
-    """Chart recommendations preserved for evaluation"""
-
-    custom_properties: Optional[Dict[str, object]] = None
-    """Custom properties"""
-
-    description: Optional[str] = None
-    """Description of the query"""
-
-    dimensions: Optional[List[ResolvedQueryDimension]] = None
-    """Merged required + selected optional dimensions"""
-
-    disallowed_widget_types: Optional[
-        List[
-            Literal[
-                "axis_metric_by_dimension",
-                "axis_metric_by_dimensiondate",
-                "axis_metric_by_dimensiondate_sliced_by_dimension",
-                "axis_metric_by_metric",
-                "funnel_funnel_chart",
-                "heatmap_heatmap",
-                "image_image_grid",
-                "image_single_image",
-                "kpi_measure_with_dimension_expression",
-                "kpi_measure_with_secondary_metric",
-                "kpi_measure_with_target_progress",
-                "kpi_single_measure_compared_to_prev_period_sparkline",
-                "kpi_single_value",
-                "pie_donut_chart",
-                "pie_donut_with_measure",
-                "pie_pie_chart",
-                "radial_chart",
-                "radial_with_single_value",
-                "radial_with_single_value_stacked",
-                "table_data_table",
-                "table_fancy_subtotal_table",
-                "table_key_value_list",
-                "table_styled_table",
-                "text_data_readout_with_sparkline",
-                "text_narrative_text",
-            ]
-        ]
-    ] = None
-    """
-    Widget types within the declared widget_category that must NOT render this query
-    """
-
-    filters: Optional[List[ResolvedQueryFilter]] = None
-    """Merged required + selected optional filters"""
-
-    inheritance_chain: Optional[List[str]] = None
-    """Ordered list of query refs that were merged during inheritance resolution"""
-
-    label: Optional[str] = None
-    """Human-readable label with var() values substituted"""
-
-    limit: Optional[int] = None
-    """Maximum number of rows to return"""
-
-    measures: Optional[List[ResolvedQueryMeasure]] = None
-    """Merged required + selected optional measures"""
-
-    order_by: Optional[List[ResolvedQueryOrderBy]] = None
-    """Sort order for query results"""
-
-    resolved_chart: Optional[ResolvedQueryResolvedChart] = None
-    """The matched chart recommendation after evaluating chart hints"""
-
-    resolved_variables: Optional[List[ResolvedQueryResolvedVariable]] = None
-    """Full variable definitions with bound values"""
-
-    select_from: Optional[List[ResolvedQuerySelectFrom]] = None
-    """Resolved select_from entries with CTE metadata"""
-
-    totals: Optional[bool] = None
-    """
-    When true, compute a totals_row over returned measure columns and expose it
-    alongside data.
-    """
 
 
 class AppliedFilterStateValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -621,8 +254,8 @@ class AppliedFilterState(BaseModel):
     required: bool
     """Whether the filter is required"""
 
-    kind: Optional[str] = None
-    """Interactive filter kind"""
+    filter_type: Optional[str] = None
+    """Interactive filter control type"""
 
     label: Optional[str] = None
     """Human-readable filter label"""
@@ -633,7 +266,7 @@ class AppliedFilterState(BaseModel):
 
 class DefaultFilterStateValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -753,8 +386,8 @@ class DefaultFilterState(BaseModel):
     required: bool
     """Whether the filter is required"""
 
-    kind: Optional[str] = None
-    """Interactive filter kind"""
+    filter_type: Optional[str] = None
+    """Interactive filter control type"""
 
     label: Optional[str] = None
     """Human-readable filter label"""
@@ -763,41 +396,9 @@ class DefaultFilterState(BaseModel):
     """Current typed runtime value"""
 
 
-class DependencyGraphNodes(BaseModel):
-    """A node in the dependency graph."""
-
-    file: str
-    """Source file path"""
-
-    fqn: str
-    """Fully qualified name (e.g. 'dim_customer.region')"""
-
-    kater_id: str
-    """UUID of the schema object"""
-
-    line: int
-    """Line number in source file"""
-
-    node_type: str
-    """Node type: QUERY, VIEW, DIMENSION, MEASURE, FILTER, EXPRESSION"""
-
-    column: Optional[int] = None
-    """Column number in source file"""
-
-
-class DependencyGraph(BaseModel):
-    """Dependency graph between schema objects."""
-
-    edges: Dict[str, Dict[str, List[str]]]
-    """Edge relationships with UUID string keys"""
-
-    nodes: Dict[str, DependencyGraphNodes]
-    """UUID string to node mapping"""
-
-
 class FilterDefinitionDefaultValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -904,7 +505,7 @@ FilterDefinitionDefaultValue: TypeAlias = Union[
 
 class FilterDefinitionPresetValueScalarFilterValue(BaseModel):
     value: Union[str, float, bool]
-    """Single scalar runtime value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     mode: Optional[Literal["scalar"]] = None
 
@@ -1103,7 +704,7 @@ FilterDefinitionStaticValue: TypeAlias = Union[
 
 class FilterDefinitionValuesStaticFilterValuesSourceItem(BaseModel):
     value: Union[str, float, bool]
-    """Selectable scalar value"""
+    """Scalar value compatible with Filter V2 runtime payloads"""
 
     label: Optional[str] = None
     """Optional selectable value label"""
@@ -1179,11 +780,11 @@ class FilterDefinition(BaseModel):
     description: Optional[str] = None
     """Filter description"""
 
+    filter_type: Optional[str] = None
+    """Interactive filter control type"""
+
     help_text: Optional[str] = None
     """Optional UI help text"""
-
-    kind: Optional[str] = None
-    """Interactive filter kind"""
 
     label: Optional[str] = None
     """Human-readable filter label"""
@@ -1207,61 +808,852 @@ class FilterDefinition(BaseModel):
     """Selectable values metadata"""
 
 
-class RefFixReplacement(BaseModel):
-    """A single ref replacement within a file."""
+class RenderedQueryKeyCanonicalCacheProjectionAggregateDimensionModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
 
-    file_path: str
-    """Path to the file containing the replaced ref"""
+    The first contract supports only timeframe modifiers.
+    """
 
-    line_number: int
-    """Line number where the replacement occurred"""
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
 
-    new_ref: str
-    """Updated reference string"""
+    value: str
+    """Concrete modifier value.
 
-    old_ref: str
-    """Original reference string"""
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
 
 
-class RefFix(BaseModel):
-    """A file that was modified by auto-fix with its replacements."""
+class RenderedQueryKeyCanonicalCacheProjectionAggregateDimension(BaseModel):
+    """Dimension entry inside the aggregate cache projection.
 
-    file_path: str
-    """Path to the modified file"""
+    `source_kater_id` plus normalized modifiers identify the projected source
+    dimension in cache projections.
+    """
 
-    new_content: str
-    """Full updated file content after fixes"""
+    column_key: str
 
-    replacements: List[RefFixReplacement]
-    """Individual ref replacements made in this file"""
+    modifiers: List[RenderedQueryKeyCanonicalCacheProjectionAggregateDimensionModifier]
+
+    source_kater_id: str
+
+
+class RenderedQueryKeyCanonicalCacheProjectionAggregateFilterFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalCacheProjectionAggregateFilter(BaseModel):
+    """Filter entry inside an exact or aggregate cache projection."""
+
+    effective_kater_id: str
+
+    enabled: bool
+
+    expression: str
+
+    field_column_key: Optional[str] = None
+
+    field_kater_id: Optional[str] = None
+
+    field_modifiers: Optional[List[RenderedQueryKeyCanonicalCacheProjectionAggregateFilterFieldModifier]] = None
+
+    field_source_kater_id: Optional[str] = None
+
+    normalized_value: Optional[str] = None
+
+
+class RenderedQueryKeyCanonicalCacheProjectionAggregateMeasureModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalCacheProjectionAggregateMeasure(BaseModel):
+    """Measure entry inside the aggregate cache projection.
+
+    `aggregation` is required (no None): an eligible aggregate cache always has
+    a concrete aggregation function.
+    """
+
+    aggregation: Literal["sum", "count", "min", "max", "avg", "unknown"]
+
+    column_key: str
+
+    kater_id: str
+
+    modifiers: Optional[List[RenderedQueryKeyCanonicalCacheProjectionAggregateMeasureModifier]] = None
+
+    source_kater_id: Optional[str] = None
+
+
+class RenderedQueryKeyCanonicalCacheProjectionAggregateVariable(BaseModel):
+    """Variable entry inside an exact or aggregate cache projection."""
+
+    name: str
+
+    normalized_value: str
+
+    query_kater_id: str
+
+    variable_kater_id: Optional[str] = None
+
+
+class RenderedQueryKeyCanonicalCacheProjectionAggregate(BaseModel):
+    """Projection used to derive `aggregate_cache_key_id`. Null when not eligible."""
+
+    client_id: str
+
+    connection_kater_id: str
+
+    dimensions: List[RenderedQueryKeyCanonicalCacheProjectionAggregateDimension]
+
+    filters: List[RenderedQueryKeyCanonicalCacheProjectionAggregateFilter]
+
+    measures: List[RenderedQueryKeyCanonicalCacheProjectionAggregateMeasure]
+
+    query_kater_id: str
+
+    resolved_query_fingerprint: str
+
+    source_fingerprint: str
+
+    tenant_database: Optional[str] = None
+
+    tenant_key: str
+
+    variables: List[RenderedQueryKeyCanonicalCacheProjectionAggregateVariable]
+
+
+class RenderedQueryKeyCanonicalCacheProjectionExactFilterFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalCacheProjectionExactFilter(BaseModel):
+    """Filter entry inside an exact or aggregate cache projection."""
+
+    effective_kater_id: str
+
+    enabled: bool
+
+    expression: str
+
+    field_column_key: Optional[str] = None
+
+    field_kater_id: Optional[str] = None
+
+    field_modifiers: Optional[List[RenderedQueryKeyCanonicalCacheProjectionExactFilterFieldModifier]] = None
+
+    field_source_kater_id: Optional[str] = None
+
+    normalized_value: Optional[str] = None
+
+
+class RenderedQueryKeyCanonicalCacheProjectionExactOutputColumnModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalCacheProjectionExactOutputColumn(BaseModel):
+    """Column entry inside the exact cache projection."""
+
+    column_key: str
+
+    field_type: Literal["dimension", "measure", "calculation"]
+
+    kater_id: str
+
+    modifiers: List[RenderedQueryKeyCanonicalCacheProjectionExactOutputColumnModifier]
+
+    source_kater_id: Optional[str] = None
+
+
+class RenderedQueryKeyCanonicalCacheProjectionExactResultWindow(BaseModel):
+    """Result window subset inside the exact cache projection.
+
+    Mirrors `RenderedQueryResultWindowV1` field-for-field today; kept distinct so
+    cache-only changes do not perturb the canonical block hash, and so codegen
+    emits a TypeScript type local to the cache projection per the PRD shape.
+    """
+
+    cursor: Optional[str] = None
+
+    effective_limit: Optional[int] = None
+
+    max_row_limit: Optional[int] = None
+
+    page_size: Optional[int] = None
+
+    query_limit: Optional[int] = None
+
+    sort_by: Optional[str] = None
+
+    sort_order: Optional[Literal["asc", "desc"]] = None
+
+
+class RenderedQueryKeyCanonicalCacheProjectionExactVariable(BaseModel):
+    """Variable entry inside an exact or aggregate cache projection."""
+
+    name: str
+
+    normalized_value: str
+
+    query_kater_id: str
+
+    variable_kater_id: Optional[str] = None
+
+
+class RenderedQueryKeyCanonicalCacheProjectionExact(BaseModel):
+    """Projection used to derive `exact_cache_key_id`."""
+
+    client_id: str
+
+    connection_kater_id: str
+
+    filters: List[RenderedQueryKeyCanonicalCacheProjectionExactFilter]
+
+    output_columns: List[RenderedQueryKeyCanonicalCacheProjectionExactOutputColumn]
+
+    query_kater_id: str
+
+    resolved_query_fingerprint: str
+
+    result_window: RenderedQueryKeyCanonicalCacheProjectionExactResultWindow
+    """Result window subset inside the exact cache projection.
+
+    Mirrors `RenderedQueryResultWindowV1` field-for-field today; kept distinct so
+    cache-only changes do not perturb the canonical block hash, and so codegen emits
+    a TypeScript type local to the cache projection per the PRD shape.
+    """
+
+    source_fingerprint: str
+
+    tenant_database: Optional[str] = None
+
+    tenant_key: str
+
+    variables: List[RenderedQueryKeyCanonicalCacheProjectionExactVariable]
+
+
+class RenderedQueryKeyCanonicalCacheProjection(BaseModel):
+    """Cache projection sub-document of `canonical`.
+
+    The projection itself contains
+    no derived cache key IDs — those IDs are derived from it and live at the top level.
+    """
+
+    aggregate: Optional[RenderedQueryKeyCanonicalCacheProjectionAggregate] = None
+    """Projection used to derive `aggregate_cache_key_id`. Null when not eligible."""
+
+    exact: RenderedQueryKeyCanonicalCacheProjectionExact
+    """Projection used to derive `exact_cache_key_id`."""
+
+    version: Literal[2]
+
+
+class RenderedQueryKeyCanonicalContract(BaseModel):
+    """Identifies the canonicalization contract that produced this key.
+
+    Changes to any of these values mean the meaning of the key has changed and
+    consumers must treat it as a new key.
+    """
+
+    compiler_version: str
+
+    filter_state_version: Literal[2]
+
+    key_schema: Literal["RenderedQueryKeyV2"]
+
+    key_version: Literal[2]
+
+    widget_config_version: str
+
+
+class RenderedQueryKeyCanonicalDashboardDashboardFilterState(BaseModel):
+    """Shared dashboard filter state mapped to slot-specific effective filters."""
+
+    applied_slot_effective_kater_ids: List[str]
+
+    dashboard_effective_kater_id: str
+
+    enabled: bool
+
+    normalized_value: Optional[str] = None
+
+    value: Union[str, float, bool, List[object], Dict[str, object], None] = None
+
+
+class RenderedQueryKeyCanonicalDashboard(BaseModel):
+    """Null-filled for standalone query execution; populated for dashboard widgets."""
+
+    dashboard_filter_state: List[RenderedQueryKeyCanonicalDashboardDashboardFilterState]
+
+    dashboard_kater_id: Optional[str] = None
+
+    dashboard_name: Optional[str] = None
+
+    slot_name: Optional[str] = None
+
+    widget_kater_id: Optional[str] = None
+
+    widget_name: Optional[str] = None
+
+
+class RenderedQueryKeyCanonicalFieldsActiveFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalFieldsActiveField(BaseModel):
+    """A selected/active source field entry — strict subset of the field item."""
+
+    field_type: Literal["dimension", "measure", "calculation"]
+
+    modifiers: List[RenderedQueryKeyCanonicalFieldsActiveFieldModifier]
+
+    source_kater_id: str
+
+
+class RenderedQueryKeyCanonicalFieldsOutputColumnModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalFieldsOutputColumnDataTypeExtension(BaseModel):
+    """Vendor-specific type extension"""
+
+    engine: str
+    """Database engine/dialect"""
+
+    orig_type: str
+    """Original type name in the source database"""
+
+    options: Optional[Dict[str, object]] = None
+    """Additional vendor-specific options"""
+
+    raw_ddl: Optional[str] = None
+    """Raw DDL for the type"""
+
+
+class RenderedQueryKeyCanonicalFieldsOutputColumnDataType(BaseModel):
+    """Data type specification"""
+
+    kind: Literal["Bool", "Text", "Number", "Datetime", "Complex", "Unknown"]
+    """The canonical data type kind"""
+
+    nullable: bool
+    """Whether the field can be null"""
+
+    extension: Optional[RenderedQueryKeyCanonicalFieldsOutputColumnDataTypeExtension] = None
+    """Vendor-specific type extension"""
+
+    params: Optional[object] = None
+    """Optional coarse metadata for the canonical type"""
+
+
+class RenderedQueryKeyCanonicalFieldsOutputColumn(BaseModel):
+    """An output column entry in `canonical.fields.output_columns`."""
+
+    aggregation: Optional[Literal["sum", "count", "min", "max", "avg", "unknown"]] = None
+
+    column_key: str
+    """SQL result alias / row payload key"""
+
+    display_label: Optional[str] = None
+
+    field_type: Literal["dimension", "measure", "calculation"]
+
+    modifiers: List[RenderedQueryKeyCanonicalFieldsOutputColumnModifier]
+    """Normalized modifiers for this output occurrence"""
+
+    output_index: int
+    """Zero-based output column position"""
+
+    role: Optional[str] = None
+
+    slot: Literal["required", "optional"]
+
+    source_kater_id: str
+    """Stable source field UUID for this output occurrence"""
+
+    source_label: Optional[str] = None
+
+    source_name: str
+
+    active_timeframe: Optional[str] = None
+    """Backward-compatible timeframe modifier value."""
+
+    data_type: Optional[RenderedQueryKeyCanonicalFieldsOutputColumnDataType] = None
+    """Data type specification"""
+
+    kater_id: Optional[str] = None
+    """Backward-compatible alias for source_kater_id."""
+
+    label: Optional[str] = None
+    """Backward-compatible display label."""
+
+    name: Optional[str] = None
+    """Backward-compatible alias for source_name."""
+
+
+class RenderedQueryKeyCanonicalFieldsSelectedFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalFieldsSelectedField(BaseModel):
+    """A selected/active source field entry — strict subset of the field item."""
+
+    field_type: Literal["dimension", "measure", "calculation"]
+
+    modifiers: List[RenderedQueryKeyCanonicalFieldsSelectedFieldModifier]
+
+    source_kater_id: str
+
+
+class RenderedQueryKeyCanonicalFieldsRequiredFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalFieldsRequiredField(BaseModel):
+    """A selected/active source field entry — strict subset of the field item."""
+
+    field_type: Literal["dimension", "measure", "calculation"]
+
+    modifiers: List[RenderedQueryKeyCanonicalFieldsRequiredFieldModifier]
+
+    source_kater_id: str
+
+
+class RenderedQueryKeyCanonicalFields(BaseModel):
+    """
+    Selected, active, and output field lists that participate in compile and
+    widget roles. Ordering rules: selected/active are sorted by stable identity;
+    output_columns preserves output order.
+    """
+
+    active_fields: List[RenderedQueryKeyCanonicalFieldsActiveField]
+
+    output_columns: List[RenderedQueryKeyCanonicalFieldsOutputColumn]
+
+    selected_fields: List[RenderedQueryKeyCanonicalFieldsSelectedField]
+
+    required_fields: Optional[List[RenderedQueryKeyCanonicalFieldsRequiredField]] = None
+
+
+class RenderedQueryKeyCanonicalFiltersEffectiveFilterFieldModifier(BaseModel):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Literal["timeframe"]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: str
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class RenderedQueryKeyCanonicalFiltersEffectiveFilter(BaseModel):
+    """An effective filter entry in `canonical.filters.effective_filters`."""
+
+    data_type: str
+
+    declaration_kater_ids: List[str]
+
+    effective_kater_id: str
+
+    enabled: bool
+
+    expression: str
+
+    field_column_key: Optional[str] = None
+
+    field_kater_id: Optional[str] = None
+
+    field_modifiers: Optional[List[RenderedQueryKeyCanonicalFiltersEffectiveFilterFieldModifier]] = None
+
+    field_source_kater_id: Optional[str] = None
+
+    label: Optional[str] = None
+
+    mode: Literal["static", "parameterized"]
+
+    name: str
+
+    normalized_value: Optional[str] = None
+
+    owner_chain: List[str]
+
+    required: bool
+
+    scope: Literal["model", "topic", "dashboard", "query"]
+
+    value: Union[str, float, bool, List[object], Dict[str, object], None] = None
+
+
+class RenderedQueryKeyCanonicalFilters(BaseModel):
+    """Effective filter state (model + topic + dashboard + query, after resolution)."""
+
+    effective_filters: List[RenderedQueryKeyCanonicalFiltersEffectiveFilter]
+
+
+class RenderedQueryKeyCanonicalPresentation(BaseModel):
+    """
+    Non-data inputs that affect widget config, narrative, chart rendering, and SDK
+    rendering behavior. `display`, `chart`, and `style` are the only free-form JSON
+    sections in the canonical key.
+    """
+
+    chart: Dict[str, Union[str, int, float, bool, None, List[object], Dict[str, object]]]
+
+    config_fingerprint: str
+
+    display: Dict[str, Union[str, int, float, bool, None, List[object], Dict[str, object]]]
+
+    roles: Dict[str, str]
+    """Widget role -> column_key (not human-readable field name)"""
+
+    style: Dict[str, Union[str, int, float, bool, None, List[object], Dict[str, object]]]
+
+    widget_category: str
+
+    widget_type: Optional[str] = None
+
+
+class RenderedQueryKeyCanonicalQuery(BaseModel):
+    """Anchors the rendered result to the query template and its selected field shape."""
+
+    pinned_variant: Optional[str] = None
+
+    query_kater_id: str
+
+    resolved_query_fingerprint: str
+
+    source_query_ref: str
+    """Provenance only — consumers must not treat as identity"""
+
+
+class RenderedQueryKeyCanonicalResultWindow(BaseModel):
+    """Identifies the returned window of rows.
+
+    `sort_by`, when present, is a column_key.
+    """
+
+    cursor: Optional[str] = None
+
+    effective_limit: Optional[int] = None
+
+    max_row_limit: Optional[int] = None
+
+    page_size: Optional[int] = None
+
+    query_limit: Optional[int] = None
+
+    sort_by: Optional[str] = None
+
+    sort_order: Optional[Literal["asc", "desc"]] = None
+
+
+class RenderedQueryKeyCanonicalSource(BaseModel):
+    """Identifies the exact Kater source bundle used to resolve and compile."""
+
+    connection_config_fingerprint: str
+
+    connection_kater_id: str
+
+    dependency_graph_fingerprint: Optional[str] = None
+
+    manifest_fingerprint: Optional[str] = None
+
+    source_fingerprint: str
+
+    source_kind: Literal["saved_repo", "branch", "dev_session"]
+
+    source_ref: Optional[str] = None
+
+    theme_fingerprint: Optional[str] = None
+
+    widget_registry_fingerprint: str
+
+
+class RenderedQueryKeyCanonicalTemporal(BaseModel):
+    """Request clock context — makes date-relative filters deterministic.
+
+    Selected date-grain identity lives in `fields.*.modifiers` and
+    `fields.output_columns[].column_key`, not here.
+    """
+
+    as_of: str
+    """ISO timestamp resolved once at the start of canonicalization"""
+
+    timezone: str
+
+
+class RenderedQueryKeyCanonicalTenant(BaseModel):
+    """Hard tenant identity boundary."""
+
+    client_id: str
+
+    tenancy_mode: Literal["none", "row", "database"]
+
+    tenant_attribute_fingerprint: Optional[str] = None
+
+    tenant_database: Optional[str] = None
+
+    tenant_key: str
+
+
+class RenderedQueryKeyCanonicalVariable(BaseModel):
+    """A variable applied to compile or post-assembly runtime substitution."""
+
+    is_runtime: bool
+
+    name: str
+
+    normalized_value: str
+    """Deterministic string used for hashing and cache projection"""
+
+    query_kater_id: str
+
+    scope: Literal["query", "global"]
+
+    source: Literal["default", "request", "pinned_variant", "dashboard"]
+
+    value: Union[str, float, bool, List[object], Dict[str, object], None] = None
+    """Display/debug value (free-form JSON)"""
+
+    variable_kater_id: Optional[str] = None
+
+
+class RenderedQueryKeyCanonical(BaseModel):
+    """The canonical sub-document. Hashing this produces `key_id`."""
+
+    cache_projection: RenderedQueryKeyCanonicalCacheProjection
+    """Cache projection sub-document of `canonical`.
+
+    The projection itself contains no derived cache key IDs — those IDs are derived
+    from it and live at the top level.
+    """
+
+    contract: RenderedQueryKeyCanonicalContract
+    """Identifies the canonicalization contract that produced this key.
+
+    Changes to any of these values mean the meaning of the key has changed and
+    consumers must treat it as a new key.
+    """
+
+    dashboard: RenderedQueryKeyCanonicalDashboard
+    """Null-filled for standalone query execution; populated for dashboard widgets."""
+
+    fields: RenderedQueryKeyCanonicalFields
+    """
+    Selected, active, and output field lists that participate in compile and widget
+    roles. Ordering rules: selected/active are sorted by stable identity;
+    output_columns preserves output order.
+    """
+
+    filters: RenderedQueryKeyCanonicalFilters
+    """Effective filter state (model + topic + dashboard + query, after resolution)."""
+
+    presentation: RenderedQueryKeyCanonicalPresentation
+    """
+    Non-data inputs that affect widget config, narrative, chart rendering, and SDK
+    rendering behavior. `display`, `chart`, and `style` are the only free-form JSON
+    sections in the canonical key.
+    """
+
+    query: RenderedQueryKeyCanonicalQuery
+    """Anchors the rendered result to the query template and its selected field shape."""
+
+    result_window: RenderedQueryKeyCanonicalResultWindow
+    """Identifies the returned window of rows.
+
+    `sort_by`, when present, is a column_key.
+    """
+
+    source: RenderedQueryKeyCanonicalSource
+    """Identifies the exact Kater source bundle used to resolve and compile."""
+
+    temporal: RenderedQueryKeyCanonicalTemporal
+    """Request clock context — makes date-relative filters deterministic.
+
+    Selected date-grain identity lives in `fields.*.modifiers` and
+    `fields.output_columns[].column_key`, not here.
+    """
+
+    tenant: RenderedQueryKeyCanonicalTenant
+    """Hard tenant identity boundary."""
+
+    variables: List[RenderedQueryKeyCanonicalVariable]
+
+
+class RenderedQueryKey(BaseModel):
+    """Top-level natural key returned by every runtime data and widget path.
+
+    Format invariants:
+    - `key_id`: `rqk_v2:<64 lowercase hex chars>`
+    - `exact_cache_key_id`: `rqk_cache_exact_v2:<64 lowercase hex chars>`
+    - `aggregate_cache_key_id`: `rqk_cache_agg_v2:<64 lowercase hex chars>` or null
+    """
+
+    aggregate_cache_key_id: Optional[str] = None
+    """rqk_cache_agg_v2:<sha256-hex> or null when not eligible"""
+
+    canonical: RenderedQueryKeyCanonical
+    """The canonical sub-document. Hashing this produces `key_id`."""
+
+    exact_cache_key_id: str
+    """rqk_cache_exact_v2:<sha256-hex>"""
+
+    key_id: str
+    """rqk_v2:<sha256-hex>"""
+
+    version: Literal[2]
 
 
 class CompilerResolveResponse(BaseModel):
-    """Response model for a resolved query."""
+    """Resolve-stage projection from ``RenderResponse`` + ``RenderService`` internals.
 
-    resolved_query: ResolvedQuery
-    """The fully resolved query object"""
+    Has NO ``combination`` / ``combination_id`` field by contract. The
+    combination-free invariant is asserted by AST-scan tests in
+    ``test_resolve_route.py``.
+    """
+
+    success: bool
+    """Whether the resolve succeeded"""
 
     applied_filter_state: Optional[List[AppliedFilterState]] = None
-    """Applied runtime filter state after request overrides"""
+    """Applied runtime filter state used for the resolve."""
+
+    auto_description: Optional[str] = None
+    """Auto-generated description text."""
+
+    auto_description_structured: Optional[Dict[str, object]] = None
+    """Structured auto-description payload, if available."""
+
+    auto_title: Optional[str] = None
+    """Auto-generated title."""
 
     default_filter_state: Optional[List[DefaultFilterState]] = None
-    """Default runtime filter state derived from filter definitions"""
+    """Default runtime filter state derived from definitions."""
 
-    dependency_graph: Optional[DependencyGraph] = None
-    """Dependency graph between schema objects."""
+    errors: Optional[List[CompilerErrorItem]] = None
+    """Resolver errors (if any)."""
 
     filter_definitions: Optional[List[FilterDefinition]] = None
-    """Resolved effective filter definitions for this query context"""
+    """Resolved effective filter definitions."""
 
-    manifest: Optional[Manifest] = None
-    """Compilation manifest with all named objects."""
+    rendered_query_key: Optional[RenderedQueryKey] = None
+    """Top-level natural key returned by every runtime data and widget path.
 
-    ref_fixes: Optional[List[RefFix]] = None
-    """Files auto-fixed due to renamed refs. None when no renames detected."""
+    Format invariants:
 
-    request_id: Optional[str] = None
-    """Write-back request ID.
-
-    Non-null when ref-fix files were dispatched to CLI via WebSocket.
+    - `key_id`: `rqk_v2:<64 lowercase hex chars>`
+    - `exact_cache_key_id`: `rqk_cache_exact_v2:<64 lowercase hex chars>`
+    - `aggregate_cache_key_id`: `rqk_cache_agg_v2:<64 lowercase hex chars>` or null
     """
+
+    resolved_query: Optional[Dict[str, object]] = None
+    """The fully resolved query object."""
+
+    style_config: Optional[Dict[str, object]] = None
+    """Resolved style config."""
+
+    widget_config: Optional[Dict[str, object]] = None
+    """Resolved widget config."""
+
+    widget_type: Optional[str] = None
+    """Resolved widget type (when available)."""

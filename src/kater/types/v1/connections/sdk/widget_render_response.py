@@ -3,11 +3,11 @@
 from typing import Dict, List, Union, Optional
 from typing_extensions import Literal, TypeAlias
 
-from ..._models import BaseModel
-from .compiler_error_item import CompilerErrorItem
+from ....._models import BaseModel
+from ...compiler_error_item import CompilerErrorItem
 
 __all__ = [
-    "CompilerCompileResponse",
+    "WidgetRenderResponse",
     "AppliedFilterState",
     "AppliedFilterStateValue",
     "AppliedFilterStateValueScalarFilterValue",
@@ -28,6 +28,85 @@ __all__ = [
     "ColumnMapDataType",
     "ColumnMapDataTypeExtension",
     "ColumnMapModifier",
+    "ColumnProfiles",
+    "ConfigControls",
+    "ConfigControlsChart",
+    "ConfigControlsChartOption",
+    "DefaultFilterState",
+    "DefaultFilterStateValue",
+    "DefaultFilterStateValueScalarFilterValue",
+    "DefaultFilterStateValueMultiFilterValue",
+    "DefaultFilterStateValueNumberRangeFilterValue",
+    "DefaultFilterStateValueAbsoluteDateFilterValue",
+    "DefaultFilterStateValueAbsoluteRangeFilterValue",
+    "DefaultFilterStateValueRelativeRangeFilterValue",
+    "DefaultFilterStateValueRelativeRangeFilterValueEnd",
+    "DefaultFilterStateValueRelativeRangeFilterValueEndRelativeOffsetBoundary",
+    "DefaultFilterStateValueRelativeRangeFilterValueEndRelativeAnchorBoundary",
+    "DefaultFilterStateValueRelativeRangeFilterValueStart",
+    "DefaultFilterStateValueRelativeRangeFilterValueStartRelativeOffsetBoundary",
+    "DefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
+    "DefaultFilterStateValuePresetReferenceFilterValue",
+    "DefaultFilterStateValueNullFilterValue",
+    "FilterDefinition",
+    "FilterDefinitionDefaultValue",
+    "FilterDefinitionDefaultValueScalarFilterValue",
+    "FilterDefinitionDefaultValueMultiFilterValue",
+    "FilterDefinitionDefaultValueNumberRangeFilterValue",
+    "FilterDefinitionDefaultValueAbsoluteDateFilterValue",
+    "FilterDefinitionDefaultValueAbsoluteRangeFilterValue",
+    "FilterDefinitionDefaultValueRelativeRangeFilterValue",
+    "FilterDefinitionDefaultValueRelativeRangeFilterValueEnd",
+    "FilterDefinitionDefaultValueRelativeRangeFilterValueEndRelativeOffsetBoundary",
+    "FilterDefinitionDefaultValueRelativeRangeFilterValueEndRelativeAnchorBoundary",
+    "FilterDefinitionDefaultValueRelativeRangeFilterValueStart",
+    "FilterDefinitionDefaultValueRelativeRangeFilterValueStartRelativeOffsetBoundary",
+    "FilterDefinitionDefaultValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
+    "FilterDefinitionDefaultValuePresetReferenceFilterValue",
+    "FilterDefinitionDefaultValueNullFilterValue",
+    "FilterDefinitionPreset",
+    "FilterDefinitionPresetValue",
+    "FilterDefinitionPresetValueScalarFilterValue",
+    "FilterDefinitionPresetValueMultiFilterValue",
+    "FilterDefinitionPresetValueNumberRangeFilterValue",
+    "FilterDefinitionPresetValueAbsoluteDateFilterValue",
+    "FilterDefinitionPresetValueAbsoluteRangeFilterValue",
+    "FilterDefinitionPresetValueRelativeRangeFilterValue",
+    "FilterDefinitionPresetValueRelativeRangeFilterValueEnd",
+    "FilterDefinitionPresetValueRelativeRangeFilterValueEndRelativeOffsetBoundary",
+    "FilterDefinitionPresetValueRelativeRangeFilterValueEndRelativeAnchorBoundary",
+    "FilterDefinitionPresetValueRelativeRangeFilterValueStart",
+    "FilterDefinitionPresetValueRelativeRangeFilterValueStartRelativeOffsetBoundary",
+    "FilterDefinitionPresetValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
+    "FilterDefinitionPresetValuePresetReferenceFilterValue",
+    "FilterDefinitionPresetValueNullFilterValue",
+    "FilterDefinitionStaticValue",
+    "FilterDefinitionStaticValueNumberRangeFilterValue",
+    "FilterDefinitionStaticValueAbsoluteDateFilterValue",
+    "FilterDefinitionStaticValueAbsoluteRangeFilterValue",
+    "FilterDefinitionStaticValueRelativeRangeFilterValue",
+    "FilterDefinitionStaticValueRelativeRangeFilterValueEnd",
+    "FilterDefinitionStaticValueRelativeRangeFilterValueEndRelativeOffsetBoundary",
+    "FilterDefinitionStaticValueRelativeRangeFilterValueEndRelativeAnchorBoundary",
+    "FilterDefinitionStaticValueRelativeRangeFilterValueStart",
+    "FilterDefinitionStaticValueRelativeRangeFilterValueStartRelativeOffsetBoundary",
+    "FilterDefinitionStaticValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
+    "FilterDefinitionValues",
+    "FilterDefinitionValuesStaticFilterValuesSource",
+    "FilterDefinitionValuesStaticFilterValuesSourceItem",
+    "FilterDefinitionValuesDynamicDistinctFilterValuesSource",
+    "InsightRun",
+    "InsightRunContext",
+    "InsightRunContextExecution",
+    "InsightRunContextInsight",
+    "InsightRunContextHost",
+    "InsightRunContextInput",
+    "InsightRunContextInputQuery",
+    "InsightRunFinding",
+    "InsightRunFindingEvidence",
+    "InsightRunFindingFollowUp",
+    "InsightRunFollowUp",
+    "InsightRunSummary",
     "RenderedQueryKey",
     "RenderedQueryKeyCanonical",
     "RenderedQueryKeyCanonicalCacheProjection",
@@ -294,6 +373,815 @@ class ColumnMap(BaseModel):
 
     source_label: Optional[str] = None
     """Source field label"""
+
+
+class ColumnProfiles(BaseModel):
+    """Statistical profile for a single result column."""
+
+    cardinality: Optional[int] = None
+    """Distinct non-null values for dimension columns.
+
+    Null for measures and calculations.
+    """
+
+    cv: Optional[float] = None
+    """Coefficient of variation (|stdev / mean|)."""
+
+    has_outliers: Optional[bool] = None
+    """True if any value lies outside [q1 - 1.5*IQR, q3 + 1.5*IQR]."""
+
+    iqr: Optional[float] = None
+    """Interquartile range (q3 - q1)."""
+
+    max: Optional[float] = None
+    """Maximum numeric value."""
+
+    mean: Optional[float] = None
+    """Arithmetic mean."""
+
+    min: Optional[float] = None
+    """Minimum numeric value. Null when the column has no numeric data."""
+
+    null_count: Optional[int] = None
+    """Number of null values in the column."""
+
+    null_pct: Optional[float] = None
+    """Fraction of null values (0.0-1.0)."""
+
+    q1: Optional[float] = None
+    """First quartile (25th percentile)."""
+
+    q3: Optional[float] = None
+    """Third quartile (75th percentile)."""
+
+    stdev: Optional[float] = None
+    """Population standard deviation."""
+
+
+class ConfigControlsChartOption(BaseModel):
+    """Single select option for a backend-owned widget config control."""
+
+    label: str
+    """Human-readable display label"""
+
+    value: str
+    """Underlying config value"""
+
+
+class ConfigControlsChart(BaseModel):
+    """Backend-owned metadata for a widget config control."""
+
+    options: Optional[List[ConfigControlsChartOption]] = None
+    """Selectable options for the control when applicable"""
+
+
+class ConfigControls(BaseModel):
+    """Backend-owned widget config controls for the query builder panel."""
+
+    chart: Optional[Dict[str, ConfigControlsChart]] = None
+    """Chart config controls keyed by field name"""
+
+
+class DefaultFilterStateValueScalarFilterValue(BaseModel):
+    value: Union[str, float, bool]
+    """Scalar value compatible with Filter V2 runtime payloads"""
+
+    mode: Optional[Literal["scalar"]] = None
+
+
+class DefaultFilterStateValueMultiFilterValue(BaseModel):
+    values: List[Union[str, float, bool]]
+    """List of scalar runtime values"""
+
+    mode: Optional[Literal["multi"]] = None
+
+
+class DefaultFilterStateValueNumberRangeFilterValue(BaseModel):
+    end: float
+
+    start: float
+
+    mode: Optional[Literal["number_range"]] = None
+
+
+class DefaultFilterStateValueAbsoluteDateFilterValue(BaseModel):
+    value: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Optional[Literal["absolute_date"]] = None
+
+
+class DefaultFilterStateValueAbsoluteRangeFilterValue(BaseModel):
+    end: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    start: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Optional[Literal["absolute_range"]] = None
+
+
+class DefaultFilterStateValueRelativeRangeFilterValueEndRelativeOffsetBoundary(BaseModel):
+    amount: int
+
+    direction: Literal["ago", "ahead"]
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+
+
+class DefaultFilterStateValueRelativeRangeFilterValueEndRelativeAnchorBoundary(BaseModel):
+    anchor: Literal["today", "now"]
+
+
+DefaultFilterStateValueRelativeRangeFilterValueEnd: TypeAlias = Union[
+    DefaultFilterStateValueRelativeRangeFilterValueEndRelativeOffsetBoundary,
+    DefaultFilterStateValueRelativeRangeFilterValueEndRelativeAnchorBoundary,
+]
+
+
+class DefaultFilterStateValueRelativeRangeFilterValueStartRelativeOffsetBoundary(BaseModel):
+    amount: int
+
+    direction: Literal["ago", "ahead"]
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+
+
+class DefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary(BaseModel):
+    anchor: Literal["today", "now"]
+
+
+DefaultFilterStateValueRelativeRangeFilterValueStart: TypeAlias = Union[
+    DefaultFilterStateValueRelativeRangeFilterValueStartRelativeOffsetBoundary,
+    DefaultFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary,
+]
+
+
+class DefaultFilterStateValueRelativeRangeFilterValue(BaseModel):
+    end: DefaultFilterStateValueRelativeRangeFilterValueEnd
+
+    start: DefaultFilterStateValueRelativeRangeFilterValueStart
+
+    mode: Optional[Literal["relative_range"]] = None
+
+
+class DefaultFilterStateValuePresetReferenceFilterValue(BaseModel):
+    preset: str
+    """Stable preset key matching presets[].name"""
+
+    mode: Optional[Literal["preset"]] = None
+
+
+class DefaultFilterStateValueNullFilterValue(BaseModel):
+    mode: Optional[Literal["null"]] = None
+
+
+DefaultFilterStateValue: TypeAlias = Union[
+    DefaultFilterStateValueScalarFilterValue,
+    DefaultFilterStateValueMultiFilterValue,
+    DefaultFilterStateValueNumberRangeFilterValue,
+    DefaultFilterStateValueAbsoluteDateFilterValue,
+    DefaultFilterStateValueAbsoluteRangeFilterValue,
+    DefaultFilterStateValueRelativeRangeFilterValue,
+    DefaultFilterStateValuePresetReferenceFilterValue,
+    DefaultFilterStateValueNullFilterValue,
+    None,
+]
+
+
+class DefaultFilterState(BaseModel):
+    """Resolved runtime filter state exposed by the V2 API contract."""
+
+    effective_kater_id: str
+    """Stable effective runtime filter ID"""
+
+    enabled: bool
+    """Whether the filter is enabled at runtime"""
+
+    name: str
+    """Logical filter name"""
+
+    required: bool
+    """Whether the filter is required"""
+
+    filter_type: Optional[str] = None
+    """Interactive filter control type"""
+
+    label: Optional[str] = None
+    """Human-readable filter label"""
+
+    value: Optional[DefaultFilterStateValue] = None
+    """Current typed runtime value"""
+
+
+class FilterDefinitionDefaultValueScalarFilterValue(BaseModel):
+    value: Union[str, float, bool]
+    """Scalar value compatible with Filter V2 runtime payloads"""
+
+    mode: Optional[Literal["scalar"]] = None
+
+
+class FilterDefinitionDefaultValueMultiFilterValue(BaseModel):
+    values: List[Union[str, float, bool]]
+    """List of scalar runtime values"""
+
+    mode: Optional[Literal["multi"]] = None
+
+
+class FilterDefinitionDefaultValueNumberRangeFilterValue(BaseModel):
+    end: float
+
+    start: float
+
+    mode: Optional[Literal["number_range"]] = None
+
+
+class FilterDefinitionDefaultValueAbsoluteDateFilterValue(BaseModel):
+    value: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Optional[Literal["absolute_date"]] = None
+
+
+class FilterDefinitionDefaultValueAbsoluteRangeFilterValue(BaseModel):
+    end: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    start: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Optional[Literal["absolute_range"]] = None
+
+
+class FilterDefinitionDefaultValueRelativeRangeFilterValueEndRelativeOffsetBoundary(BaseModel):
+    amount: int
+
+    direction: Literal["ago", "ahead"]
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+
+
+class FilterDefinitionDefaultValueRelativeRangeFilterValueEndRelativeAnchorBoundary(BaseModel):
+    anchor: Literal["today", "now"]
+
+
+FilterDefinitionDefaultValueRelativeRangeFilterValueEnd: TypeAlias = Union[
+    FilterDefinitionDefaultValueRelativeRangeFilterValueEndRelativeOffsetBoundary,
+    FilterDefinitionDefaultValueRelativeRangeFilterValueEndRelativeAnchorBoundary,
+]
+
+
+class FilterDefinitionDefaultValueRelativeRangeFilterValueStartRelativeOffsetBoundary(BaseModel):
+    amount: int
+
+    direction: Literal["ago", "ahead"]
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+
+
+class FilterDefinitionDefaultValueRelativeRangeFilterValueStartRelativeAnchorBoundary(BaseModel):
+    anchor: Literal["today", "now"]
+
+
+FilterDefinitionDefaultValueRelativeRangeFilterValueStart: TypeAlias = Union[
+    FilterDefinitionDefaultValueRelativeRangeFilterValueStartRelativeOffsetBoundary,
+    FilterDefinitionDefaultValueRelativeRangeFilterValueStartRelativeAnchorBoundary,
+]
+
+
+class FilterDefinitionDefaultValueRelativeRangeFilterValue(BaseModel):
+    end: FilterDefinitionDefaultValueRelativeRangeFilterValueEnd
+
+    start: FilterDefinitionDefaultValueRelativeRangeFilterValueStart
+
+    mode: Optional[Literal["relative_range"]] = None
+
+
+class FilterDefinitionDefaultValuePresetReferenceFilterValue(BaseModel):
+    preset: str
+    """Stable preset key matching presets[].name"""
+
+    mode: Optional[Literal["preset"]] = None
+
+
+class FilterDefinitionDefaultValueNullFilterValue(BaseModel):
+    mode: Optional[Literal["null"]] = None
+
+
+FilterDefinitionDefaultValue: TypeAlias = Union[
+    FilterDefinitionDefaultValueScalarFilterValue,
+    FilterDefinitionDefaultValueMultiFilterValue,
+    FilterDefinitionDefaultValueNumberRangeFilterValue,
+    FilterDefinitionDefaultValueAbsoluteDateFilterValue,
+    FilterDefinitionDefaultValueAbsoluteRangeFilterValue,
+    FilterDefinitionDefaultValueRelativeRangeFilterValue,
+    FilterDefinitionDefaultValuePresetReferenceFilterValue,
+    FilterDefinitionDefaultValueNullFilterValue,
+    None,
+]
+
+
+class FilterDefinitionPresetValueScalarFilterValue(BaseModel):
+    value: Union[str, float, bool]
+    """Scalar value compatible with Filter V2 runtime payloads"""
+
+    mode: Optional[Literal["scalar"]] = None
+
+
+class FilterDefinitionPresetValueMultiFilterValue(BaseModel):
+    values: List[Union[str, float, bool]]
+    """List of scalar runtime values"""
+
+    mode: Optional[Literal["multi"]] = None
+
+
+class FilterDefinitionPresetValueNumberRangeFilterValue(BaseModel):
+    end: float
+
+    start: float
+
+    mode: Optional[Literal["number_range"]] = None
+
+
+class FilterDefinitionPresetValueAbsoluteDateFilterValue(BaseModel):
+    value: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Optional[Literal["absolute_date"]] = None
+
+
+class FilterDefinitionPresetValueAbsoluteRangeFilterValue(BaseModel):
+    end: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    start: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Optional[Literal["absolute_range"]] = None
+
+
+class FilterDefinitionPresetValueRelativeRangeFilterValueEndRelativeOffsetBoundary(BaseModel):
+    amount: int
+
+    direction: Literal["ago", "ahead"]
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+
+
+class FilterDefinitionPresetValueRelativeRangeFilterValueEndRelativeAnchorBoundary(BaseModel):
+    anchor: Literal["today", "now"]
+
+
+FilterDefinitionPresetValueRelativeRangeFilterValueEnd: TypeAlias = Union[
+    FilterDefinitionPresetValueRelativeRangeFilterValueEndRelativeOffsetBoundary,
+    FilterDefinitionPresetValueRelativeRangeFilterValueEndRelativeAnchorBoundary,
+]
+
+
+class FilterDefinitionPresetValueRelativeRangeFilterValueStartRelativeOffsetBoundary(BaseModel):
+    amount: int
+
+    direction: Literal["ago", "ahead"]
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+
+
+class FilterDefinitionPresetValueRelativeRangeFilterValueStartRelativeAnchorBoundary(BaseModel):
+    anchor: Literal["today", "now"]
+
+
+FilterDefinitionPresetValueRelativeRangeFilterValueStart: TypeAlias = Union[
+    FilterDefinitionPresetValueRelativeRangeFilterValueStartRelativeOffsetBoundary,
+    FilterDefinitionPresetValueRelativeRangeFilterValueStartRelativeAnchorBoundary,
+]
+
+
+class FilterDefinitionPresetValueRelativeRangeFilterValue(BaseModel):
+    end: FilterDefinitionPresetValueRelativeRangeFilterValueEnd
+
+    start: FilterDefinitionPresetValueRelativeRangeFilterValueStart
+
+    mode: Optional[Literal["relative_range"]] = None
+
+
+class FilterDefinitionPresetValuePresetReferenceFilterValue(BaseModel):
+    preset: str
+    """Stable preset key matching presets[].name"""
+
+    mode: Optional[Literal["preset"]] = None
+
+
+class FilterDefinitionPresetValueNullFilterValue(BaseModel):
+    mode: Optional[Literal["null"]] = None
+
+
+FilterDefinitionPresetValue: TypeAlias = Union[
+    FilterDefinitionPresetValueScalarFilterValue,
+    FilterDefinitionPresetValueMultiFilterValue,
+    FilterDefinitionPresetValueNumberRangeFilterValue,
+    FilterDefinitionPresetValueAbsoluteDateFilterValue,
+    FilterDefinitionPresetValueAbsoluteRangeFilterValue,
+    FilterDefinitionPresetValueRelativeRangeFilterValue,
+    FilterDefinitionPresetValuePresetReferenceFilterValue,
+    FilterDefinitionPresetValueNullFilterValue,
+]
+
+
+class FilterDefinitionPreset(BaseModel):
+    label: str
+    """Human-readable preset label"""
+
+    name: str
+    """Stable preset key"""
+
+    value: FilterDefinitionPresetValue
+    """Typed preset value payload"""
+
+
+class FilterDefinitionStaticValueNumberRangeFilterValue(BaseModel):
+    end: float
+
+    start: float
+
+    mode: Optional[Literal["number_range"]] = None
+
+
+class FilterDefinitionStaticValueAbsoluteDateFilterValue(BaseModel):
+    value: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Optional[Literal["absolute_date"]] = None
+
+
+class FilterDefinitionStaticValueAbsoluteRangeFilterValue(BaseModel):
+    end: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    start: str
+    """Absolute DATE or TIMESTAMP string"""
+
+    mode: Optional[Literal["absolute_range"]] = None
+
+
+class FilterDefinitionStaticValueRelativeRangeFilterValueEndRelativeOffsetBoundary(BaseModel):
+    amount: int
+
+    direction: Literal["ago", "ahead"]
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+
+
+class FilterDefinitionStaticValueRelativeRangeFilterValueEndRelativeAnchorBoundary(BaseModel):
+    anchor: Literal["today", "now"]
+
+
+FilterDefinitionStaticValueRelativeRangeFilterValueEnd: TypeAlias = Union[
+    FilterDefinitionStaticValueRelativeRangeFilterValueEndRelativeOffsetBoundary,
+    FilterDefinitionStaticValueRelativeRangeFilterValueEndRelativeAnchorBoundary,
+]
+
+
+class FilterDefinitionStaticValueRelativeRangeFilterValueStartRelativeOffsetBoundary(BaseModel):
+    amount: int
+
+    direction: Literal["ago", "ahead"]
+
+    unit: Literal["day", "week", "month", "quarter", "year"]
+
+
+class FilterDefinitionStaticValueRelativeRangeFilterValueStartRelativeAnchorBoundary(BaseModel):
+    anchor: Literal["today", "now"]
+
+
+FilterDefinitionStaticValueRelativeRangeFilterValueStart: TypeAlias = Union[
+    FilterDefinitionStaticValueRelativeRangeFilterValueStartRelativeOffsetBoundary,
+    FilterDefinitionStaticValueRelativeRangeFilterValueStartRelativeAnchorBoundary,
+]
+
+
+class FilterDefinitionStaticValueRelativeRangeFilterValue(BaseModel):
+    end: FilterDefinitionStaticValueRelativeRangeFilterValueEnd
+
+    start: FilterDefinitionStaticValueRelativeRangeFilterValueStart
+
+    mode: Optional[Literal["relative_range"]] = None
+
+
+FilterDefinitionStaticValue: TypeAlias = Union[
+    str,
+    float,
+    bool,
+    List[Union[str, float, bool]],
+    FilterDefinitionStaticValueNumberRangeFilterValue,
+    FilterDefinitionStaticValueAbsoluteDateFilterValue,
+    FilterDefinitionStaticValueAbsoluteRangeFilterValue,
+    FilterDefinitionStaticValueRelativeRangeFilterValue,
+    None,
+]
+
+
+class FilterDefinitionValuesStaticFilterValuesSourceItem(BaseModel):
+    value: Union[str, float, bool]
+    """Scalar value compatible with Filter V2 runtime payloads"""
+
+    label: Optional[str] = None
+    """Optional selectable value label"""
+
+
+class FilterDefinitionValuesStaticFilterValuesSource(BaseModel):
+    items: List[FilterDefinitionValuesStaticFilterValuesSourceItem]
+    """Inline selectable items"""
+
+    source: Optional[Literal["static"]] = None
+
+
+class FilterDefinitionValuesDynamicDistinctFilterValuesSource(BaseModel):
+    limit: Optional[int] = None
+    """Maximum number of values to request"""
+
+    sort: Optional[Literal["asc", "desc"]] = None
+    """Supported sort order for dynamic distinct value loading"""
+
+    source: Optional[Literal["dynamic_distinct"]] = None
+
+
+FilterDefinitionValues: TypeAlias = Union[
+    FilterDefinitionValuesStaticFilterValuesSource, FilterDefinitionValuesDynamicDistinctFilterValuesSource, None
+]
+
+
+class FilterDefinition(BaseModel):
+    """Resolved effective filter definition exposed by the V2 API contract."""
+
+    data_type: str
+    """Canonical data type"""
+
+    effective_kater_id: str
+    """Stable effective runtime filter ID"""
+
+    expression: str
+    """Structured filter expression"""
+
+    field: str
+    """Target field ref"""
+
+    kater_id: str
+    """Concrete declaration ID from the merged definition"""
+
+    mode: str
+    """Filter mode: static or parameterized"""
+
+    name: str
+    """Logical filter name"""
+
+    required: bool
+    """Whether the filter is always active"""
+
+    scope: str
+    """Filter scope: model, topic, dashboard, or query"""
+
+    ai_context: Optional[str] = None
+    """AI-facing filter context"""
+
+    allow_null_value: Optional[bool] = None
+    """Whether null is allowed"""
+
+    declaration_kater_ids: Optional[List[str]] = None
+    """Concrete declaration IDs that contributed to this effective filter"""
+
+    default_enabled: Optional[bool] = None
+    """Default enabled state"""
+
+    default_value: Optional[FilterDefinitionDefaultValue] = None
+    """Default runtime value payload"""
+
+    description: Optional[str] = None
+    """Filter description"""
+
+    filter_type: Optional[str] = None
+    """Interactive filter control type"""
+
+    help_text: Optional[str] = None
+    """Optional UI help text"""
+
+    label: Optional[str] = None
+    """Human-readable filter label"""
+
+    null_label: Optional[str] = None
+    """Null option label"""
+
+    owner_chain: Optional[List[str]] = None
+    """Owner IDs from model/topic/dashboard/query precedence order"""
+
+    placeholder: Optional[str] = None
+    """Optional input placeholder"""
+
+    presets: Optional[List[FilterDefinitionPreset]] = None
+    """Filter preset definitions"""
+
+    static_value: Optional[FilterDefinitionStaticValue] = None
+    """Static filter value payload"""
+
+    values: Optional[FilterDefinitionValues] = None
+    """Selectable values metadata"""
+
+
+class InsightRunContextExecution(BaseModel):
+    """Execution metadata captured for a completed insight run."""
+
+    kater_id: str
+
+    surface: Literal["dashboard", "preview", "chat"]
+
+    params: Optional[Dict[str, object]] = None
+
+
+class InsightRunContextInsight(BaseModel):
+    """Insight definition metadata attached to a run result."""
+
+    entrypoint: str
+
+    kater_id: str
+
+    name: str
+
+    description: Optional[str] = None
+
+
+class InsightRunContextHost(BaseModel):
+    """Host surface metadata for the container that triggered the run."""
+
+    dashboard_kater_id: Optional[str] = None
+
+    dashboard_name: Optional[str] = None
+
+    query_kater_id: Optional[str] = None
+
+    query_name: Optional[str] = None
+
+    widget_kater_id: Optional[str] = None
+
+
+class InsightRunContextInputQuery(BaseModel):
+    """Query metadata describing the source of an insight input."""
+
+    description: Optional[str] = None
+
+    kater_id: Optional[str] = None
+
+    name: Optional[str] = None
+
+    rendered_query_key: Optional[str] = None
+
+
+class InsightRunContextInput(BaseModel):
+    """Normalized input metadata attached to an insight run."""
+
+    dataset_name: str
+
+    input_name: str
+
+    row_count: int
+
+    bindings: Optional[Dict[str, str]] = None
+
+    query: Optional[InsightRunContextInputQuery] = None
+    """Query metadata describing the source of an insight input."""
+
+
+class InsightRunContext(BaseModel):
+    """Typed execution context attached to an insight run result."""
+
+    execution: InsightRunContextExecution
+    """Execution metadata captured for a completed insight run."""
+
+    insight: InsightRunContextInsight
+    """Insight definition metadata attached to a run result."""
+
+    host: Optional[InsightRunContextHost] = None
+    """Host surface metadata for the container that triggered the run."""
+
+    inputs: Optional[List[InsightRunContextInput]] = None
+
+
+class InsightRunFindingEvidence(BaseModel):
+    """Structured evidence attached to a finding."""
+
+    label: str
+
+    value: Union[str, float, bool]
+
+    description: Optional[str] = None
+
+
+class InsightRunFindingFollowUp(BaseModel):
+    """Structured action hint emitted by an insight run or finding."""
+
+    id: str
+
+    instructions: str
+
+    label: str
+
+    finding_index: Optional[int] = None
+
+    finding_kind: Optional[str] = None
+
+    payload: Optional[Dict[str, object]] = None
+
+    query_description: Optional[str] = None
+
+    query_kater_id: Optional[str] = None
+
+    query_name: Optional[str] = None
+
+    rationale: Optional[str] = None
+
+    readiness: Optional[Literal["ready", "needs_discovery"]] = None
+
+    scope: Optional[Literal["run", "finding"]] = None
+
+    slot_hints: Optional[Dict[str, object]] = None
+
+    source: Optional[Literal["authored", "llm"]] = None
+
+
+class InsightRunFinding(BaseModel):
+    """Single analytical finding emitted by an insight run."""
+
+    kind: str
+
+    summary: str
+
+    confidence: Optional[float] = None
+
+    details: Optional[List[str]] = None
+
+    evidence: Optional[List[InsightRunFindingEvidence]] = None
+
+    follow_ups: Optional[List[InsightRunFindingFollowUp]] = None
+
+    metadata: Optional[Dict[str, object]] = None
+
+    severity: Optional[Literal["info", "positive", "warning", "critical"]] = None
+
+
+class InsightRunFollowUp(BaseModel):
+    """Structured action hint emitted by an insight run or finding."""
+
+    id: str
+
+    instructions: str
+
+    label: str
+
+    finding_index: Optional[int] = None
+
+    finding_kind: Optional[str] = None
+
+    payload: Optional[Dict[str, object]] = None
+
+    query_description: Optional[str] = None
+
+    query_kater_id: Optional[str] = None
+
+    query_name: Optional[str] = None
+
+    rationale: Optional[str] = None
+
+    readiness: Optional[Literal["ready", "needs_discovery"]] = None
+
+    scope: Optional[Literal["run", "finding"]] = None
+
+    slot_hints: Optional[Dict[str, object]] = None
+
+    source: Optional[Literal["authored", "llm"]] = None
+
+
+class InsightRunSummary(BaseModel):
+    """Top-level summary for an insight run."""
+
+    text: str
+
+    confidence: Optional[float] = None
+
+    severity: Optional[Literal["info", "positive", "warning", "critical"]] = None
+
+
+class InsightRun(BaseModel):
+    """Validated structured output for a completed insight run."""
+
+    context: Optional[InsightRunContext] = None
+    """Typed execution context attached to an insight run result."""
+
+    findings: Optional[List[InsightRunFinding]] = None
+
+    follow_ups: Optional[List[InsightRunFollowUp]] = None
+
+    metadata: Optional[Dict[str, object]] = None
+
+    summary: Optional[InsightRunSummary] = None
+    """Top-level summary for an insight run."""
 
 
 class RenderedQueryKeyCanonicalCacheProjectionAggregateDimensionModifier(BaseModel):
@@ -1092,41 +1980,67 @@ class RenderedQueryKey(BaseModel):
     version: Literal[2]
 
 
-class CompilerCompileResponse(BaseModel):
-    """Compile-stage projection from ``RenderResponse`` (Story 2.1 frozen dataclass).
+class WidgetRenderResponse(BaseModel):
+    """Response from the structured SDK widget render route.
 
-    Has NO ``combination`` / ``combination_id`` field by contract. The
-    combination-free invariant is asserted by AST-scan tests in
-    ``test_compile_route.py``. Execute-only fields (``data``, ``cache_hit``,
-    ``row_count``) are zeroed because compile does not run execute.
+    Returns a single widget's data + config for SDK consumers, plus a
+    canonical `rendered_query_key` for stable cross-consumer identity.
+    Shape matches CombinationPreviewResponse (minus internal metrics).
     """
 
     success: bool
-    """Whether the compile succeeded"""
+    """Whether the preview succeeded"""
 
     applied_filter_state: Optional[List[AppliedFilterState]] = None
-    """Applied runtime filter state used for compilation."""
-
-    auto_description: Optional[str] = None
-    """Auto-generated description text."""
+    """Applied runtime filter state for this widget preview"""
 
     auto_title: Optional[str] = None
-    """Auto-generated title."""
-
-    cache_hit: Optional[bool] = None
-    """Compile-stage no-op: always False."""
+    """Auto-generated title"""
 
     column_map: Optional[List[ColumnMap]] = None
-    """Column metadata for the compiled output columns."""
+    """Column metadata"""
+
+    column_profiles: Optional[Dict[str, ColumnProfiles]] = None
+    """Per-column statistical profiles keyed by kater_id (UUID column alias)."""
+
+    config: Optional[Dict[str, object]] = None
+    """Resolved WidgetConfig"""
+
+    config_controls: Optional[ConfigControls] = None
+    """Backend-owned widget config controls for the query builder panel."""
 
     data: Optional[List[Dict[str, object]]] = None
-    """Compile-stage no-op: always empty. `execute` did not run."""
+    """Query result rows"""
+
+    default_filter_state: Optional[List[DefaultFilterState]] = None
+    """Default runtime filter state for this widget preview"""
 
     dialect: Optional[str] = None
-    """SQL dialect used."""
+    """Warehouse dialect (e.g. snowflake, postgresql, databricks)"""
 
     errors: Optional[List[CompilerErrorItem]] = None
-    """Compilation errors (if any)."""
+    """Compilation errors"""
+
+    filter_definitions: Optional[List[FilterDefinition]] = None
+    """Resolved effective filter definitions for this widget preview"""
+
+    has_more: Optional[bool] = None
+    """Whether additional table rows can be fetched with next_cursor"""
+
+    insight_runs: Optional[List[InsightRun]] = None
+    """Structured runtime insight results for this widget preview."""
+
+    is_row_limited: Optional[bool] = None
+    """True when the app-wide row limit was applied and results were truncated"""
+
+    next_cursor: Optional[str] = None
+    """Opaque cursor for fetching the next table page"""
+
+    page_size: Optional[int] = None
+    """Number of rows requested per table page"""
+
+    post_query_refinements: Optional[Dict[str, object]] = None
+    """Derived post-query filter and sort definitions keyed by occurrence identity."""
 
     rendered_query_key: Optional[RenderedQueryKey] = None
     """Top-level natural key returned by every runtime data and widget path.
@@ -1139,16 +2053,13 @@ class CompilerCompileResponse(BaseModel):
     """
 
     row_count: Optional[int] = None
-    """Compile-stage no-op: always 0."""
+    """Total rows represented by this widget result"""
 
     sql: Optional[str] = None
-    """Generated SQL statement."""
+    """Compiled SQL query"""
 
-    style_config: Optional[Dict[str, object]] = None
-    """Resolved style config."""
-
-    widget_config: Optional[Dict[str, object]] = None
-    """Resolved widget config."""
+    totals_row: Optional[Dict[str, object]] = None
+    """Totals row over returned measure columns (UUID alias keys)"""
 
     widget_type: Optional[str] = None
-    """Resolved widget type."""
+    """Resolved widget type"""

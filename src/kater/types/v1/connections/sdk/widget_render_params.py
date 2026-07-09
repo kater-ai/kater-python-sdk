@@ -5,15 +5,11 @@ from __future__ import annotations
 from typing import Dict, Union, Iterable, Optional
 from typing_extensions import Literal, Required, Annotated, TypeAlias, TypedDict
 
-from ..._types import SequenceNotStr
-from ..._utils import PropertyInfo
+from ....._types import SequenceNotStr
+from ....._utils import PropertyInfo
 
 __all__ = [
-    "CompilerResolveParams",
-    "FieldSelection",
-    "FieldSelectionSelectedField",
-    "FieldSelectionSelectedFieldModifier",
-    "FieldSelectionTimeframeOverride",
+    "WidgetRenderParams",
     "Dashboard",
     "DashboardDashboardFilterState",
     "DashboardDashboardFilterStateValue",
@@ -31,6 +27,10 @@ __all__ = [
     "DashboardDashboardFilterStateValueRelativeRangeFilterValueStartRelativeAnchorBoundary",
     "DashboardDashboardFilterStateValuePresetReferenceFilterValue",
     "DashboardDashboardFilterStateValueNullFilterValue",
+    "FieldSelection",
+    "FieldSelectionSelectedField",
+    "FieldSelectionSelectedFieldModifier",
+    "FieldSelectionTimeframeOverride",
     "FilterState",
     "FilterStateValue",
     "FilterStateValueScalarFilterValue",
@@ -48,34 +48,37 @@ __all__ = [
     "FilterStateValuePresetReferenceFilterValue",
     "FilterStateValueNullFilterValue",
     "Presentation",
+    "ResultWindow",
     "Temporal",
     "Variable",
 ]
 
 
-class CompilerResolveParams(TypedDict, total=False):
+class WidgetRenderParams(TypedDict, total=False):
     connection_id: Required[str]
+
+    dashboard: Required[Optional[Dashboard]]
+    """Dashboard context block in `RenderedQueryRequestV1`."""
 
     field_selection: Required[FieldSelection]
     """Structured field selection expressed as semantic field occurrences."""
 
-    query_kater_id: Required[str]
+    filter_state: Required[Iterable[FilterState]]
 
-    source: Optional[str]
+    pinned_variant: Required[Optional[str]]
 
-    auto_fix: bool
-
-    dashboard: Optional[Dashboard]
-    """Dashboard context block in `RenderedQueryRequestV1`."""
-
-    filter_state: Iterable[FilterState]
-
-    pinned_variant: Optional[str]
-
-    presentation: Presentation
+    presentation: Required[Presentation]
     """Presentation config block in `RenderedQueryRequestV1`."""
 
-    temporal: Temporal
+    query_kater_id: Required[str]
+
+    result_window: Required[ResultWindow]
+    """
+    Result window block in `RenderedQueryRequestV1` (consumers do not supply
+    backend-computed `query_limit`, `max_row_limit`, `effective_limit`).
+    """
+
+    temporal: Required[Temporal]
     """Request clock block in `RenderedQueryRequestV1`.
 
     Either field may be `null` on the request; the backend resolves both before
@@ -83,66 +86,11 @@ class CompilerResolveParams(TypedDict, total=False):
     and `as_of`).
     """
 
-    variables: Iterable[Variable]
+    variables: Required[Iterable[Variable]]
+
+    source: Optional[str]
 
     x_kater_cli_id: Annotated[str, PropertyInfo(alias="X-Kater-CLI-ID")]
-
-
-class FieldSelectionSelectedFieldModifier(TypedDict, total=False):
-    """A normalized modifier applied to a source field occurrence.
-
-    The first contract supports only timeframe modifiers.
-    """
-
-    kind: Required[Literal["timeframe"]]
-    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
-
-    value: Required[str]
-    """Concrete modifier value.
-
-    Canonical contexts omit raw timeframe instead of storing value raw.
-    """
-
-
-class FieldSelectionSelectedField(TypedDict, total=False):
-    """
-    Semantic identity for an active output field: source_kater_id plus normalized modifiers.
-    """
-
-    modifiers: Required[Iterable[FieldSelectionSelectedFieldModifier]]
-    """Normalized modifiers sorted by kind.
-
-    Raw timeframe is represented by an empty array.
-    """
-
-    source_kater_id: Required[str]
-    """Stable UUID of the source field this occurrence projects."""
-
-
-class FieldSelectionTimeframeOverride(TypedDict, total=False):
-    """A timeframe modifier override for a specific source field."""
-
-    active_timeframe: Required[str]
-
-    source_kater_id: Required[str]
-
-
-class FieldSelection(TypedDict, total=False):
-    """Structured field selection expressed as semantic field occurrences."""
-
-    selected_fields: Required[Iterable[FieldSelectionSelectedField]]
-
-    selected_field_ids: SequenceNotStr[str]
-    """Backward-compatible source field UUIDs.
-
-    New consumers should use selected_fields instead.
-    """
-
-    timeframe_overrides: Iterable[FieldSelectionTimeframeOverride]
-    """Backward-compatible timeframe overrides.
-
-    New consumers should encode timeframes as selected_fields modifiers.
-    """
 
 
 class DashboardDashboardFilterStateValueScalarFilterValue(TypedDict, total=False):
@@ -274,6 +222,63 @@ class Dashboard(TypedDict, total=False):
     widget_kater_id: Required[Optional[str]]
 
 
+class FieldSelectionSelectedFieldModifier(TypedDict, total=False):
+    """A normalized modifier applied to a source field occurrence.
+
+    The first contract supports only timeframe modifiers.
+    """
+
+    kind: Required[Literal["timeframe"]]
+    """Modifier kind. Unknown kinds are invalid until the shared contract is extended."""
+
+    value: Required[str]
+    """Concrete modifier value.
+
+    Canonical contexts omit raw timeframe instead of storing value raw.
+    """
+
+
+class FieldSelectionSelectedField(TypedDict, total=False):
+    """
+    Semantic identity for an active output field: source_kater_id plus normalized modifiers.
+    """
+
+    modifiers: Required[Iterable[FieldSelectionSelectedFieldModifier]]
+    """Normalized modifiers sorted by kind.
+
+    Raw timeframe is represented by an empty array.
+    """
+
+    source_kater_id: Required[str]
+    """Stable UUID of the source field this occurrence projects."""
+
+
+class FieldSelectionTimeframeOverride(TypedDict, total=False):
+    """A timeframe modifier override for a specific source field."""
+
+    active_timeframe: Required[str]
+
+    source_kater_id: Required[str]
+
+
+class FieldSelection(TypedDict, total=False):
+    """Structured field selection expressed as semantic field occurrences."""
+
+    selected_fields: Required[Iterable[FieldSelectionSelectedField]]
+
+    selected_field_ids: SequenceNotStr[str]
+    """Backward-compatible source field UUIDs.
+
+    New consumers should use selected_fields instead.
+    """
+
+    timeframe_overrides: Iterable[FieldSelectionTimeframeOverride]
+    """Backward-compatible timeframe overrides.
+
+    New consumers should encode timeframes as selected_fields modifiers.
+    """
+
+
 class FilterStateValueScalarFilterValue(TypedDict, total=False):
     value: Required[Union[str, float, bool]]
     """Scalar value compatible with Filter V2 runtime payloads"""
@@ -399,6 +404,21 @@ class Presentation(TypedDict, total=False):
     display: Dict[str, Union[str, int, float, bool, None, Iterable[object], Dict[str, object]]]
 
     style: Dict[str, Union[str, int, float, bool, None, Iterable[object], Dict[str, object]]]
+
+
+class ResultWindow(TypedDict, total=False):
+    """
+    Result window block in `RenderedQueryRequestV1` (consumers do not supply
+    backend-computed `query_limit`, `max_row_limit`, `effective_limit`).
+    """
+
+    cursor: Required[Optional[str]]
+
+    page_size: Required[Optional[int]]
+
+    sort_by: Required[Optional[str]]
+
+    sort_order: Required[Optional[Literal["asc", "desc"]]]
 
 
 class Temporal(TypedDict, total=False):
