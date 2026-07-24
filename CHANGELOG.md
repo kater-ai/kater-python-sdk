@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.16.0 (2026-07-24)
+
+Full Changelog: [v0.15.1...v0.16.0](https://github.com/kater-ai/kater-python-sdk/compare/v0.15.1...v0.16.0)
+
+### Features
+
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([cee28c9](https://github.com/kater-ai/kater-python-sdk/commit/cee28c9be0f6928719ebaacd73e8eb119e241358))
+
+
+### Bug Fixes
+
+* **internal:** resolve build failures ([c853c28](https://github.com/kater-ai/kater-python-sdk/commit/c853c28ea768fa9bcce42dc9536e025d0b06bc56))
+* **security:** address high package vulnerabilities ([abc57d1](https://github.com/kater-ai/kater-python-sdk/commit/abc57d136280da16772ef66062fb7755d5e1e637))
+
+
+### Chores
+
+* address dependabot CVEs ([#29](https://github.com/kater-ai/kater-python-sdk/issues/29)) ([f8c1e80](https://github.com/kater-ai/kater-python-sdk/commit/f8c1e80c94f2e17bb668b114df78d8c27e9afed9))
+
 ## 0.15.1 (2026-07-09)
 
 Full Changelog: [v0.15.0...v0.15.1](https://github.com/kater-ai/kater-python-sdk/compare/v0.15.0...v0.15.1)
