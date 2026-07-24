@@ -184,3 +184,15 @@ from kater.types.v1.tenants import GroupGetTenantGroupsSchemaResponse
 Methods:
 
 - <code title="get /api/v1/tenants/groups/schema">client.v1.tenants.groups.<a href="./src/kater/resources/v1/tenants/groups.py">get_tenant_groups_schema</a>() -> <a href="./src/kater/types/v1/tenants/group_get_tenant_groups_schema_response.py">GroupGetTenantGroupsSchemaResponse</a></code>
+
+# Account
+
+Types:
+
+```python
+from kater.types import AccountGetStatusResponse
+```
+
+Methods:
+
+- <code title="get /api/account/status">client.account.<a href="./src/kater/resources/account.py">get_status</a>() -> <a href="./src/kater/types/account_get_status_response.py">AccountGetStatusResponse</a></code>
