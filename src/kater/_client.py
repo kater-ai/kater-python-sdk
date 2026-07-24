@@ -37,8 +37,9 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import v1
+    from .resources import v1, account
     from .resources.v1.v1 import V1Resource, AsyncV1Resource
+    from .resources.account import AccountResource, AsyncAccountResource
 
 __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Kater", "AsyncKater", "Client", "AsyncClient"]
 
@@ -116,6 +117,13 @@ class Kater(SyncAPIClient):
         from .resources.v1 import V1Resource
 
         return V1Resource(self)
+
+    @cached_property
+    def account(self) -> AccountResource:
+        """Account activation and access status"""
+        from .resources.account import AccountResource
+
+        return AccountResource(self)
 
     @cached_property
     def with_raw_response(self) -> KaterWithRawResponse:
@@ -338,6 +346,13 @@ class AsyncKater(AsyncAPIClient):
         return AsyncV1Resource(self)
 
     @cached_property
+    def account(self) -> AsyncAccountResource:
+        """Account activation and access status"""
+        from .resources.account import AsyncAccountResource
+
+        return AsyncAccountResource(self)
+
+    @cached_property
     def with_raw_response(self) -> AsyncKaterWithRawResponse:
         return AsyncKaterWithRawResponse(self)
 
@@ -495,6 +510,13 @@ class KaterWithRawResponse:
 
         return V1ResourceWithRawResponse(self._client.v1)
 
+    @cached_property
+    def account(self) -> account.AccountResourceWithRawResponse:
+        """Account activation and access status"""
+        from .resources.account import AccountResourceWithRawResponse
+
+        return AccountResourceWithRawResponse(self._client.account)
+
 
 class AsyncKaterWithRawResponse:
     _client: AsyncKater
@@ -507,6 +529,13 @@ class AsyncKaterWithRawResponse:
         from .resources.v1 import AsyncV1ResourceWithRawResponse
 
         return AsyncV1ResourceWithRawResponse(self._client.v1)
+
+    @cached_property
+    def account(self) -> account.AsyncAccountResourceWithRawResponse:
+        """Account activation and access status"""
+        from .resources.account import AsyncAccountResourceWithRawResponse
+
+        return AsyncAccountResourceWithRawResponse(self._client.account)
 
 
 class KaterWithStreamedResponse:
@@ -521,6 +550,13 @@ class KaterWithStreamedResponse:
 
         return V1ResourceWithStreamingResponse(self._client.v1)
 
+    @cached_property
+    def account(self) -> account.AccountResourceWithStreamingResponse:
+        """Account activation and access status"""
+        from .resources.account import AccountResourceWithStreamingResponse
+
+        return AccountResourceWithStreamingResponse(self._client.account)
+
 
 class AsyncKaterWithStreamedResponse:
     _client: AsyncKater
@@ -533,6 +569,13 @@ class AsyncKaterWithStreamedResponse:
         from .resources.v1 import AsyncV1ResourceWithStreamingResponse
 
         return AsyncV1ResourceWithStreamingResponse(self._client.v1)
+
+    @cached_property
+    def account(self) -> account.AsyncAccountResourceWithStreamingResponse:
+        """Account activation and access status"""
+        from .resources.account import AsyncAccountResourceWithStreamingResponse
+
+        return AsyncAccountResourceWithStreamingResponse(self._client.account)
 
 
 Client = Kater
